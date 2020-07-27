@@ -1,0 +1,16 @@
+{
+    "name": "@playpet/firestorage",
+    "version": "1.0.0",
+    "description": "> TODO: description",
+    "author": "baekkyoungjung <baekkyoungjung@gmail.com>",
+    "homepage": "https://github.com/playpet-team/playpet#readme",
+    "license": "ISC",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/playpet-team/playpet.git"
+    },
+    "bugs": {
+      "url": "https://github.com/playpet-team/playpet/issues"
+    }
+}
+  
