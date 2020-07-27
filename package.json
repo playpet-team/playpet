@@ -1,0 +1,15 @@
+{
+  "name": "playpet",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:playpet-team/playpet.git",
+  "author": "baekkyoungjung <baekkyoungjung@gmail.com>",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ]
+}
