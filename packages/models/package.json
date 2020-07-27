@@ -1,0 +1,26 @@
+{
+  "name": "models",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "baekkyoungjung <baekkyoungjung@gmail.com>",
+  "homepage": "https://github.com/playpet-team/playpet#readme",
+  "license": "ISC",
+  "main": "lib/models.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/playpet-team/playpet.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/playpet-team/playpet/issues"
+  }
+}
