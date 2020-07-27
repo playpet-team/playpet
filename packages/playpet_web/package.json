@@ -1,24 +1,33 @@
 {
-  "name": "playpet_web",
-  "version": "0.0.0",
+  "name": "@playpet/playpet_web",
+  "version": "1.0.0",
   "description": "> TODO: description",
   "author": "baekkyoungjung <baekkyoungjung@gmail.com>",
   "homepage": "https://github.com/playpet-team/playpet#readme",
   "license": "ISC",
-  "main": "lib/playpet_web.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
-  "files": [
-    "lib"
-  ],
+  "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
+    "gatsby": "^2.23.12",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "typescript": "^3.9.7"
+  },
+  "devDependencies": {
+    "prettier": "2.0.5"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/playpet-team/playpet.git"
-  },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/playpet-team/playpet/issues"
