@@ -9,7 +9,15 @@
   "repository": "git@github.com:playpet-team/playpet.git",
   "author": "baekkyoungjung <baekkyoungjung@gmail.com>",
   "license": "MIT",
-  "workspaces": [
-    "packages/*"
-  ]
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": [
+      "@react-native-community",
+      "react-native",
+      "react-native-appearance",
+      "react-native-safe-area-context",
+      "react-native/!(react)/**",
+      "react-native-gesture-handler"
+    ]
+  }
 }
