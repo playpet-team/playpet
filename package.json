@@ -12,12 +12,16 @@
   "workspaces": {
     "packages": ["packages/*"],
     "nohoist": [
-      "@react-native-community",
-      "react-native",
-      "react-native-appearance",
-      "react-native-safe-area-context",
-      "react-native/!(react)/**",
-      "react-native-gesture-handler"
+      "*react-native*",
+      "*react-native*/**",
+      "**/react-native",
+      "**/react-native/**",
+      "**/react-native-scripts",
+      "**/react-native-scripts/**",
+      "**/expo",
+      "**/expo/**",
+      "**/jest-expo",
+      "**/jest-expo/**"
     ]
   }
 }

@@ -54,5 +54,19 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "workspaces": {
+    "nohoist": [
+      "*react-native*",
+      "*react-native*/**",
+      "**/react-native",
+      "**/react-native/**",
+      "**/react-native-scripts",
+      "**/react-native-scripts/**",
+      "**/expo",
+      "**/expo/**",
+      "**/jest-expo",
+      "**/jest-expo/**"
+    ]
   }
 }
