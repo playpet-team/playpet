@@ -1,26 +1,27 @@
 {
-  "name": "models",
+  "name": "@playpet/models",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "baekkyoungjung <baekkyoungjung@gmail.com>",
   "homepage": "https://github.com/playpet-team/playpet#readme",
   "license": "ISC",
-  "main": "lib/models.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
+  "main": "src/index.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/playpet-team/playpet.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "tsc": "tsc",
+    "esbuild": "esbuild --bundle index.ts --outdir=dist"
   },
   "bugs": {
     "url": "https://github.com/playpet-team/playpet/issues"
+  },
+  "dependencies": {
+    "esbuild": "^0.6.8",
+    "typescript": "^3.9.7"
   }
 }
