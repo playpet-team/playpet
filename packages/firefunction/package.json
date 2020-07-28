@@ -19,6 +19,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@playpet/models": "*",
     "firebase-admin": "^8.10.0",
     "firebase-functions": "^3.6.1"
   },
