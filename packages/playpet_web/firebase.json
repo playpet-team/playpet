@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "petme-1cf9e",
     "public": "public",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "headers": [
