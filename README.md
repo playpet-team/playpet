@@ -1,11 +1,75 @@
 # playpet
 
-모노레포로 구현하려다 포기함
 
-podfile와 node_modules 설치 경로로 맞지 않았었음
+### client - expo bared-workflow
+  L react-native, redux-toolkit, typescript, firebase
 
-딱히 공유할 꺼리고 없는것같아 각각 repo 를 가져가기로 했음 
+### web - gatsby + react + firebase hosting
+  L react, redux-toolkit, typescript, firebase
+  
+### function - firebase functions serverless
+  firefunctions
+    L function exports, 공통로직 분리, 
 
-으로 하려다가 마지막으로 한번 더 삽질 해보자 해서 했는데 성공
+### firestore - collection
+  L database
 
-raect native 쪽 node modules 만 독립적으로 설치함. 
+### firestorage - storage
+  L 이미지, 데이타 저장소 (쉽게 s3)
+
+### models
+  L firefunctions과 클라이언트 + 웹(추후 웹 서비스도 생길경우) 에서 공통으로 import 할 model (type 정의)
+  
+  
+model 공유를 위해 모노레포로 구성
+
+
+Root
+  L packages
+    L firefunction (api)
+    L firestore
+    L firestorage
+    L models
+    L playpet
+    L playpet_web
+
+##실행법
+
+$ yarn
+$ lerna bootstrap (각각의 packages에 있는 모노레포들 package.json 을 설치한다)
+
+
+### client
+xcode, android studio 설치
+
+$ cd packages/playpet/ios
+$ pod install
+
+
+develop
+$ yarn ios | yarn android
+
+deploy
+$ expo publish --version X.X.X
+
+### web
+$ cd packages/playpet_web
+
+develop
+$ npm run dev
+
+build
+$ npm run build
+
+deploy
+$ npm run deploy
+
+### functions
+$ cd packages/firefunction
+
+all deploy
+$ npm run deploy
+
+selected function
+$ firebase deploy --only functions:[functionName]
+
