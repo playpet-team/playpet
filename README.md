@@ -42,6 +42,7 @@ $ lerna bootstrap (각각의 packages에 있는 모노레포들 package.json 을
 xcode, android studio 설치
 
 $ cd packages/playpet/ios
+$ expo login [id: dev@playpet.me, pw: !Playpet0728]
 $ pod install
 
 
