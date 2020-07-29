@@ -66,9 +66,16 @@ $ npm run deploy
 ## functions
 $ cd packages/firefunction
 
-all deploy
-$ npm run deploy
+### all deploy
+$ firebase deploy --only functions
 
-selected function
+### selected function
 $ firebase deploy --only functions:[functionName]
 
+## firestore
+$ cd packages/firestore
+$ firebase deploy --only firestore:rules
+
+## firestorage
+$ cd packages/firestorage
+$ firebase deploy --only firestorage:rules
