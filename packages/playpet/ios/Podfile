@@ -92,6 +92,9 @@ target 'playpet' do
 
   pod 'RNCMaskedView', :path => '../node_modules/@react-native-community/masked-view'
 
+  # -----------Firebase Libraries-----------
+  
+
   post_install do |installer|
     flipper_post_install(installer)
   end
