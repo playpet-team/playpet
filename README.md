@@ -23,8 +23,6 @@
   
 ### monorepo
 
- - Root
-	 - packages
 	 - firefunction
 	 - firestore
 	 - firestorage
