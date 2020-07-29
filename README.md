@@ -33,34 +33,43 @@
 ## 설치
 
 $ yarn
+
 $ lerna bootstrap (각각의 packages에 있는 모노레포들 package.json 을 설치한다)
 
 
 ## client
 xcode, android studio 설치
+
 안드로이드의 경우 설정이 꽤 복잡하다 (Preference -> SDK Tools 탭으로 이동하면 중간 쯤에 Google Play Licensing Library 체크 후 다운로드)
 
 $ cd packages/playpet/ios
+
 $ expo login [id: dev@playpet.me, pw: !Playpet0728]
+
 $ pod install
 
 
 develop
+
 $ yarn ios | yarn android
 
 deploy
+
 $ expo publish --version X.X.X
 
 ## web
 $ cd packages/playpet_web
 
 develop
+
 $ npm run dev
 
 build
+
 $ npm run build
 
 deploy
+
 $ npm run deploy
 
 ## functions
@@ -74,8 +83,10 @@ $ firebase deploy --only functions:[functionName]
 
 ## firestore
 $ cd packages/firestore
+
 $ firebase deploy --only firestore:rules
 
 ## firestorage
 $ cd packages/firestorage
+
 $ firebase deploy --only firestorage:rules
