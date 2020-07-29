@@ -51,7 +51,7 @@ $ pod install
 
 develop
 
-$ yarn ios | yarn android
+```$ yarn ios | yarn android```
 
 deploy
 
