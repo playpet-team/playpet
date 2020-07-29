@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "petme-1cf9e",
+    "site": "playpet-5b432",
     "public": "public",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "headers": [

@@ -9,8 +9,11 @@
 
   // index.ts
   var require_models = __commonJS(() => {
+    console.log("oenuth");
   });
 
   // src/user.ts
+
+  // src/list.ts
   require_models();
 })();

@@ -7,7 +7,7 @@
   "author": "baekkyoungjung <baekkyoungjung@gmail.com>",
   "homepage": "https://github.com/playpet-team/playpet#readme",
   "license": "ISC",
-  "main": "src/index.ts",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/playpet-team/playpet.git"
@@ -15,7 +15,7 @@
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
     "tsc": "tsc",
-    "esbuild": "esbuild --bundle index.ts --outdir=dist"
+    "build": "esbuild --bundle index.ts --outdir=dist"
   },
   "bugs": {
     "url": "https://github.com/playpet-team/playpet/issues"
