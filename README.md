@@ -38,6 +38,7 @@ $ lerna bootstrap (각각의 packages에 있는 모노레포들 package.json 을
 
 ## client
 xcode, android studio 설치
+안드로이드의 경우 설정이 꽤 복잡하다 (https://docs.expo.io/workflow/android-studio-emulator/)
 
 $ cd packages/playpet/ios
 $ expo login [id: dev@playpet.me, pw: !Playpet0728]
