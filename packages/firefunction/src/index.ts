@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { User } from '@playpet/models';
+import { User } from './models';
 
 const uuu:User = {
   haha: '123',
