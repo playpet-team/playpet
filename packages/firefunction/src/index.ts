@@ -1,14 +1,25 @@
 import * as functions from 'firebase-functions';
-import { User } from './models';
+import * as admin from 'firebase-admin';
 
-const uuu:User = {
-  haha: '123',
-};
-console.log('uuu', uuu);
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
+// import { User } from './models';
+
+
 export const helloWorld = functions.https.onRequest((request, response) => {
   functions.logger.info("Hello logs!", {structuredData: true});
   response.send("Hello from Firebase!");
+});
+
+interface userParams {
+    uid: string;
+};
+export const userDetail = functions.https.onCall(async ({ uid }: userParams) => {
+    try {
+        return (await admin.firestore()
+            .collection('users')
+            .doc(uid)
+            .get()).data();
+    } catch (error) {
+        console.error('userDetail: ', error);
+        return null;
+    }
 });
