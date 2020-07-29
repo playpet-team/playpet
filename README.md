@@ -32,9 +32,9 @@
 
 ## 설치
 
-$ yarn
+```$ yarn```
 
-$ lerna bootstrap (각각의 packages에 있는 모노레포들 package.json 을 설치한다)
+```$ lerna bootstrap (각각의 packages에 있는 모노레포들 package.json 을 설치한다)```
 
 
 ## client
@@ -42,11 +42,11 @@ xcode, android studio 설치
 
 안드로이드의 경우 설정이 꽤 복잡하다 (Preference -> SDK Tools 탭으로 이동하면 중간 쯤에 Google Play Licensing Library 체크 후 다운로드)
 
-$ cd packages/playpet/ios
+```$ cd packages/playpet/ios```
 
-$ expo login [id: dev@playpet.me, pw: !Playpet0728]
+```$ expo login [id: dev@playpet.me, pw: !Playpet0728]```
 
-$ pod install
+```$ pod install```
 
 
 develop
@@ -55,38 +55,38 @@ develop
 
 deploy
 
-$ expo publish --version X.X.X
+```$ expo publish --version X.X.X```
 
 ## web
-$ cd packages/playpet_web
+```$ cd packages/playpet_web```
 
 develop
 
-$ npm run dev
+```$ npm run dev```
 
 build
 
-$ npm run build
+```$ npm run build```
 
 deploy
 
-$ npm run deploy
+```$ npm run deploy```
 
 ## functions
-$ cd packages/firefunction
+```$ cd packages/firefunction```
 
 ### all deploy
-$ firebase deploy --only functions
+```$ firebase deploy --only functions```
 
 ### selected function
-$ firebase deploy --only functions:[functionName]
+```$ firebase deploy --only functions:[functionName]```
 
 ## firestore
-$ cd packages/firestore
+```$ cd packages/firestore```
 
-$ firebase deploy --only firestore:rules
+```$ firebase deploy --only firestore:rules```
 
 ## firestorage
-$ cd packages/firestorage
+```$ cd packages/firestorage```
 
-$ firebase deploy --only firestorage:rules
+```$ firebase deploy --only firestorage:rules```
