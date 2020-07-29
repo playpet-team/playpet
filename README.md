@@ -1,45 +1,44 @@
+
 # playpet
 
 
-### client - expo bared-workflow
-  L react-native, redux-toolkit, typescript, firebase
+## client - expo bared-workflow
+	react-native, redux-toolkit, typescript, firebase
 
-### web - gatsby + react + firebase hosting
-  L react, redux-toolkit, typescript, firebase
+## web - gatsby + react + firebase hosting
+	react, redux-toolkit, typescript, firebase
   
-### function - firebase functions serverless
-  firefunctions
-    L function exports, 공통로직 분리, 
+## function - firebase functions serverless
+	function exports, 공통로직 분리, 
 
-### firestore - collection
-  L database
+## firestore - collection
+	database
 
-### firestorage - storage
-  L 이미지, 데이타 저장소 (쉽게 s3)
+## firestorage - storage
+	이미지, 데이타 저장소 (쉽게 s3)
 
-### models
-  L firefunctions과 클라이언트 + 웹(추후 웹 서비스도 생길경우) 에서 공통으로 import 할 model (type 정의)
+## models
+	firefunctions과 클라이언트 + 웹(추후 웹 서비스도 생길경우) 에서 공통으로 import 할 model (type 정의)
   
   
-model 공유를 위해 모노레포로 구성
+### monorepo
 
+ - Root
+	 - packages
+	 - firefunction
+	 - firestore
+	 - firestorage
+	 - models
+	 - playpet
+	 - playpet_web
 
-Root
-  L packages
-    L firefunction (api)
-    L firestore
-    L firestorage
-    L models
-    L playpet
-    L playpet_web
-
-##실행법
+## 설치
 
 $ yarn
 $ lerna bootstrap (각각의 packages에 있는 모노레포들 package.json 을 설치한다)
 
 
-### client
+## client
 xcode, android studio 설치
 
 $ cd packages/playpet/ios
@@ -52,7 +51,7 @@ $ yarn ios | yarn android
 deploy
 $ expo publish --version X.X.X
 
-### web
+## web
 $ cd packages/playpet_web
 
 develop
@@ -64,7 +63,7 @@ $ npm run build
 deploy
 $ npm run deploy
 
-### functions
+## functions
 $ cd packages/firefunction
 
 all deploy
