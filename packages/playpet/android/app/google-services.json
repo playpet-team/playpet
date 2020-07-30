@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "386527552204",
+    "firebase_url": "https://playpet-5b432.firebaseio.com",
+    "project_id": "playpet-5b432",
+    "storage_bucket": "playpet-5b432.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386527552204:android:96d15ba29259a2bd82d869",
+        "android_client_info": {
+          "package_name": "com.playpet.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADbmJfcse2AwMKLe-iOEJbGABGmdrWioY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "386527552204-ljgbvb6ll42b0atjhgve1f7os95ugdv0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.playpet.ios"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
