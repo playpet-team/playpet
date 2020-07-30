@@ -1,4 +1,4 @@
-package com.playpet;
+package com.playpet.android;
 
 import android.os.Bundle;
 

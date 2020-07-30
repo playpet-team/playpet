@@ -1,4 +1,4 @@
-package com.playpet.generated;
+package com.playpet.android.generated;
 
 import java.util.Arrays;
 import java.util.List;
