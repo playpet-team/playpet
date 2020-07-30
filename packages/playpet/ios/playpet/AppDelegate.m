@@ -1,3 +1,4 @@
+#import <Firebase.h>
 #import "AppDelegate.h"
 
 #import <React/RCTBridge.h>
@@ -40,6 +41,11 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  // firebase init
+  if ([FIRApp defaultApp] == nil) {
+    [FIRApp configure];
+  }
+  // firebase init
 #if DEBUG
   InitializeFlipper(application);
 #endif
