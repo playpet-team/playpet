@@ -1,5 +1,6 @@
 {
   "name": "@playpet/firefunction",
+  "types": "./lib/models/index.d.ts",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "baekkyoungjung <baekkyoungjung@gmail.com>",
@@ -13,7 +14,7 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "build": "esbuild --bundle src/models/index.ts --outdir=dist"
+    "tsc": "tsc"
   },
   "engines": {
     "node": "10"
