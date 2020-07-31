@@ -27,7 +27,7 @@ const AuthBlock = styled.View`
 `;
 
 GoogleSignin.configure({
-    webClientId: '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com'
+    webClientId: '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com';
 });
 
 const signInCredential = (credential: FirebaseAuthTypes.AuthCredential) => {
@@ -77,6 +77,7 @@ export default function AuthScreen() {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
             const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken);
+            console.log('userInfo-----', userInfo);
             signInCredential(googleCredential);
             dispatch(authActions.signIn());
         } catch (error) {
