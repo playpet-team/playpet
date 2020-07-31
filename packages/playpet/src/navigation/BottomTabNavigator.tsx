@@ -3,14 +3,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
-import { Text } from 'react-native';
 import styled from '@emotion/native';
 
 import { tintColorLight } from '../constants/Colors';
 // import useColorScheme from '../hooks/useColorScheme';
 import Home from '../screens/Home';
-import Auth from '../screens/Auth';
-import AuthSettings from '../screens/Auth/AuthSettings';
+import AuthScreen from '../screens/AuthScreen';
+import AuthSettings from '../screens/AuthScreen/AuthSettings';
 // import TabTwoScreen from '../screens/TabTwoScreen';
 // import { BottomTabParamList, HomeTabParamList, TabTwoParamList } from '../types';
 
@@ -72,7 +71,7 @@ function HomeNavigator() {
 }
 
 export type AuthTapParamList = {
-    Auth: undefined;
+    AuthScreen: undefined;
     AuthSettings: undefined;
 };
 const AuthTapStack = createStackNavigator<AuthTapParamList>();
@@ -82,7 +81,7 @@ function AuthNavigator() {
         <AuthTapStack.Navigator>
             <AuthTapStack.Screen
                 name="Auth"
-                component={Auth}
+                component={AuthScreen}
                 options={{ headerTitle: '가족정보' }}
             />
             <AuthTapStack.Screen
