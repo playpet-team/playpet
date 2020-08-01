@@ -19,8 +19,7 @@
 
 ## models
 	firefunctions과 클라이언트 + 웹(추후 웹 서비스도 생길경우) 에서 공통으로 import 할 model (type 정의)
-  
-  
+    
 ### monorepo
 
 	 - firefunction
@@ -43,9 +42,7 @@ xcode, android studio 설치
 안드로이드의 경우 설정이 꽤 복잡하다 (Preference -> SDK Tools 탭으로 이동하면 중간 쯤에 Google Play Licensing Library 체크 후 다운로드)
 
 ```$ cd packages/playpet/ios```
-
 ```$ expo login [id: dev@playpet.me, pw: !Playpet0728]```
-
 ```$ pod install```
 
 
