@@ -1,4 +1,13 @@
+
+export enum signType {
+    GOOGLE,
+    APPLE,
+    FACEBOOK,
+    KAKAO,
+    NONE,
+};
 export interface User {
+    method: signType;
     uid: string;
     isLeave: boolean;
     leaveAt: string;
