@@ -43,9 +43,7 @@ xcode, android studio 설치
 안드로이드의 경우 설정이 꽤 복잡하다 (Preference -> SDK Tools 탭으로 이동하면 중간 쯤에 Google Play Licensing Library 체크 후 다운로드)
 
 ```$ cd packages/playpet/ios```
-
 ```$ expo login [id: dev@playpet.me, pw: !Playpet0728]```
-
 ```$ pod install```
 
 
