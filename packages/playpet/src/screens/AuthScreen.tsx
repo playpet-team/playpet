@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from '@emotion/native';
@@ -7,71 +7,89 @@ import { RootState } from '../store/rootReducers';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { authActions } from '../store/authReducer';
+import { GoogleSigninButton } from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
 
-import {
-    GoogleSigninButton,
-    statusCodes,
-} from '@react-native-community/google-signin';
+import { AppleButton } from '@invertase/react-native-apple-authentication';
 
-import appleAuth, {
-    AppleButton,
-    AppleAuthRequestOperation,
-    AppleAuthRequestScope,
-} from '@invertase/react-native-apple-authentication';
-
-import { signOut, signType, signInCredential } from '../utils';
+import { signOut, checkIsExistUser, isExistsUserType, updateUserTerms } from '../utils';
 import useInitializeSignIn from '../hooks/useSignIn';
+import { signEnum } from '../models';
+import PlaypetDialog from '../components/PlaypetDialog';
+import { createUserCollection } from '../callable';
 
-const AuthBlock = styled.View`
-    display: flex;
-`;
+const currentUser = () => auth().currentUser;
+
 export default function AuthScreen() {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [overAgeAgree, setOverAgeAgree] = useState(false);
+    const [termsOfUseAgree, setTermsOfUseAgree] = useState(false);
+    const [personalCollectAgree, setPersonalCollectAgree] = useState(false);
+    const [marketingAgree, setMarketingAgree] = useState(false);
+
+    const handleAllAgree = () => {
+        setOverAgeAgree(true);
+        setTermsOfUseAgree(true);
+        setPersonalCollectAgree(true);
+        setMarketingAgree(true);
+    };
+
     const { isLogged } = useSelector((state: RootState) => state.auth);
-    const [GoogleSignin] = useInitializeSignIn();
+    const { getUidByThirdPartySignIn } = useInitializeSignIn();
 
     const dispatch = useDispatch();
 
-    const appleSignIn = async () => {
-        // Start the sign-in request
-        const appleAuthRequestResponse = await appleAuth.performRequest({
-            requestedOperation: AppleAuthRequestOperation.LOGIN,
-            requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
-        });
+    const allAgreeTarms = useMemo(() => {
+        return overAgeAgree && termsOfUseAgree && personalCollectAgree;
+    }, [overAgeAgree, termsOfUseAgree, personalCollectAgree]);
 
-        // Ensure Apple returned a user identityToken
-        if (!appleAuthRequestResponse.identityToken) {
-            throw 'Apple Sign-In failed - no identify token returned';
+    console.log("allAgreeTarms-----", allAgreeTarms);
+
+    const handleSignIn = async (method: signEnum) => {
+        await getUidByThirdPartySignIn(method);
+        const user = currentUser();
+        if (!user) {
+            return;
         }
-
-        // Create a Firebase credential from the response
-        const { identityToken, nonce } = appleAuthRequestResponse;
-        const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
-
-        // Sign the user in with the credential
-        signInCredential(appleCredential);
-        dispatch(authActions.signIn());
-    };
-
-    const googleSignIn = async () => {
-        try {
-            await GoogleSignin.hasPlayServices();
-            const userInfo = await GoogleSignin.signIn();
-            const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken);
-            signInCredential(googleCredential);
-            dispatch(authActions.signIn());
-        } catch (error) {
-            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-                // user cancelled the login flow
-            } else if (error.code === statusCodes.IN_PROGRESS) {
-                // operation (e.g. sign in) is in progress already
-            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-                // play services not available or outdated
-            } else {
-                // some other error happened
+        const uid = user.uid;
+        const result: isExistsUserType = await checkIsExistUser(uid);
+        switch (result) {
+            case isExistsUserType.empty: {
+                createUserCollection({
+                    uid,
+                    method,
+                });
+                setModalVisible(true);
+                break;
+            }
+            default:
+            case isExistsUserType.exists: {
+                dispatch(authActions.signIn());
+                break;
             }
         }
     };
+
+    const hanbleSubmitAgreeTerms = async () => {
+        const user = currentUser();
+        if (!user) {
+            return;
+        }
+        const uid = user.uid;
+        updateUserTerms(uid, {
+            overAgeAgree,
+            termsOfUseAgree,
+            personalCollectAgree,
+            marketingAgree,
+        });
+        setModalVisible(false);
+        // const res = await createUserCollection({
+        //     uid,
+        //     method,
+        // });
+
+    };
+
     const navigation = useNavigation();
     return (
         <SafeAreaView>
@@ -85,7 +103,7 @@ export default function AuthScreen() {
 
                 {isLogged ?
                     <TouchableOpacity
-                        onPress={() => signOut(signType.GOOGLE)}
+                        onPress={() => signOut(signEnum.GOOGLE)}
                     >
                         <Text>로그아웃</Text>
                     </TouchableOpacity>
@@ -95,7 +113,7 @@ export default function AuthScreen() {
                             style={{ width: 192, height: 48 }}
                             size={GoogleSigninButton.Size.Wide}
                             color={GoogleSigninButton.Color.Dark}
-                            onPress={googleSignIn}
+                            onPress={() => handleSignIn(signEnum.GOOGLE)}
                         />
                         <AppleButton
                             buttonStyle={AppleButton.Style.WHITE}
@@ -104,12 +122,48 @@ export default function AuthScreen() {
                                 width: 192,
                                 height: 48,
                             }}
-                            onPress={appleSignIn}
+                            onPress={() => handleSignIn(signEnum.APPLE)}
                         />
                     </>
                 }
 
             </AuthBlock>
+            <PlaypetDialog
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+            >
+                <Text>회원가입을 추카합니다</Text>
+                <AllTermsAgree onPress={handleAllAgree}>
+                    <Text>{}</Text><Text>약관에 모두 동의</Text>
+                </AllTermsAgree>
+                <TermsAgree onPress={() => setOverAgeAgree(!overAgeAgree)}>
+                    <Text>{overAgeAgree ? 'checked' : 'none'}</Text><Text>만 14세 이상입니다</Text>
+                </TermsAgree>
+                <TermsAgree onPress={() => setTermsOfUseAgree(!termsOfUseAgree)}>
+                    <Text>{termsOfUseAgree ? 'checked' : 'none'}</Text><Text>서비스 이용약관에 동의</Text>
+                </TermsAgree>
+                <TermsAgree onPress={() => setPersonalCollectAgree(!personalCollectAgree)}>
+                    <Text>{personalCollectAgree ? 'checked' : 'none'}</Text><Text>개인정보 수집 이용에 동의</Text>
+                </TermsAgree>
+                <TermsAgree onPress={() => setMarketingAgree(!marketingAgree)}>
+                    <Text>{marketingAgree ? 'checked' : 'none'}</Text><Text>홍보 및 마케팅 이용에 동의</Text>
+                </TermsAgree>
+                <SubmitSignIn onPress={() => hanbleSubmitAgreeTerms()} disabled={!allAgreeTarms}>
+                    <Text>확인</Text>
+                </SubmitSignIn>
+            </PlaypetDialog>
         </SafeAreaView>
     );
 };
+
+const AllTermsAgree = styled.TouchableOpacity``;
+
+const TermsAgree = styled.TouchableOpacity`
+`;
+
+const SubmitSignIn = styled.TouchableOpacity`
+    background-color: blue;
+`;
+const AuthBlock = styled.View`
+    display: flex;
+`;
