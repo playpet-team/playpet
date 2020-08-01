@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { User } from '@playpet/firefunction';
+import { User, signEnum } from '../models';
 
 interface AuthSettings extends User {
     isLogged: boolean;
@@ -7,7 +7,23 @@ interface AuthSettings extends User {
 const initialState: AuthSettings = {
     isLogged: false,
     uid: '',
-    profileImage: '',
+    method: signEnum.NONE,
+    isLeave: false,
+    leaveAt: '',
+    username: '',
+    gender: '',
+    birthDate: '',
+    phoneNumber: '',
+    photo: '',
+    lastLogin: '',
+    createdAt: '',
+    updatedAt: '',
+    terms: {
+        overAgeAgree: false,
+        termsOfUseAgree: false,
+        personalCollectAgree: false,
+        marketingAgree: false,
+    }
 };
 
 const slice = createSlice({

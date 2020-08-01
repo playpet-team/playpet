@@ -7,6 +7,8 @@ import auth from '@react-native-firebase/auth';
 import { authActions } from '../store/authReducer';
 import PlaypetDialog from '../components/PlaypetDialog';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { updateUserLastLogin, checkIsExistUser } from '../utils';
+import firestore from '@react-native-firebase/firestore';
 
 const HomeBlock = styled.View`
     display: flex;
@@ -18,17 +20,18 @@ export default function Home() {
 
     useEffect(() => {
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-        return subscriber; // unsubscribe on unmount
+        return subscriber;
     }, []);
+
     function onAuthStateChanged(user: any) {
         if (user) {
             dispatch(authActions.signIn());
+            updateUserLastLogin(user.uid);
         } else {
             dispatch(authActions.signOut());
         }
     }
 
-    // const { profileImage, isLogged } = useSelector((state: RootState) => state.auth);
     return (
         <SafeAreaView>
             <HomeBlock>
