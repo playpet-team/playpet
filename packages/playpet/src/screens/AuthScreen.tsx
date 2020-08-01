@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from '@emotion/native';
@@ -7,51 +7,32 @@ import { RootState } from '../store/rootReducers';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { authActions } from '../store/authReducer';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 
 import {
-    GoogleSignin,
     GoogleSigninButton,
     statusCodes,
 } from '@react-native-community/google-signin';
+
 import appleAuth, {
     AppleButton,
     AppleAuthRequestOperation,
     AppleAuthRequestScope,
 } from '@invertase/react-native-apple-authentication';
 
-import { appReload } from '../utils';
+import { signOut, signType, signInCredential } from '../utils';
+import useInitializeSignIn from '../hooks/useSignIn';
 
 const AuthBlock = styled.View`
     display: flex;
 `;
-
-GoogleSignin.configure({
-    webClientId: '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com',
-});
-
-const signInCredential = (credential: FirebaseAuthTypes.AuthCredential) => {
-    auth().signInWithCredential(credential);
-};
-
 export default function AuthScreen() {
     const { isLogged } = useSelector((state: RootState) => state.auth);
+    const [GoogleSignin] = useInitializeSignIn();
 
     const dispatch = useDispatch();
 
-    const signOut = async () => {
-        try {
-            // await GoogleSignin.revokeAccess();
-            await GoogleSignin.signOut();
-            await auth().signOut();
-            dispatch(authActions.signOut());
-            appReload();
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const onAppleButtonPress = async () => {
+    const appleSignIn = async () => {
         // Start the sign-in request
         const appleAuthRequestResponse = await appleAuth.performRequest({
             requestedOperation: AppleAuthRequestOperation.LOGIN,
@@ -77,7 +58,6 @@ export default function AuthScreen() {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
             const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken);
-            console.log('userInfo-----', userInfo);
             signInCredential(googleCredential);
             dispatch(authActions.signIn());
         } catch (error) {
@@ -92,9 +72,7 @@ export default function AuthScreen() {
             }
         }
     };
-
     const navigation = useNavigation();
-    // const { profileImage } = useSelector((state: RootState) => state.auth);
     return (
         <SafeAreaView>
             <AuthBlock>
@@ -107,7 +85,7 @@ export default function AuthScreen() {
 
                 {isLogged ?
                     <TouchableOpacity
-                        onPress={signOut}
+                        onPress={() => signOut(signType.GOOGLE)}
                     >
                         <Text>로그아웃</Text>
                     </TouchableOpacity>
@@ -123,10 +101,10 @@ export default function AuthScreen() {
                             buttonStyle={AppleButton.Style.WHITE}
                             buttonType={AppleButton.Type.SIGN_IN}
                             style={{
-                                width: 160,
-                                height: 45,
+                                width: 192,
+                                height: 48,
                             }}
-                            onPress={onAppleButtonPress}
+                            onPress={appleSignIn}
                         />
                     </>
                 }
