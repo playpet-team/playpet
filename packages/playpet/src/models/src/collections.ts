@@ -1,4 +1,4 @@
 export enum collections {
-    users,
-    authTokens,
+    users= 'users',
+    authTokens= 'authTokens',
 };

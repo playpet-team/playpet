@@ -1,6 +1,10 @@
-import { User } from '@playpet/firefunction';
-import { callable } from '.';
+import { signEnum } from '../models';
+import functions, { FirebaseFunctionsTypes } from '@react-native-firebase/functions';
 
-export const callSignUp = async (params: User) =>  {
-    await callable('listProducts')(params);
+interface createUserCollectionParams {
+    uid: string;
+    method?: signEnum;
+}
+export const createUserCollection = async (params: createUserCollectionParams): Promise<FirebaseFunctionsTypes.HttpsCallableResult> =>  {
+    return await functions().httpsCallable('createUserCollection')(params);
 };
