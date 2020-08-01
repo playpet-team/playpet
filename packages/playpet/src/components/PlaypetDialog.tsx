@@ -46,26 +46,24 @@ const StyledSafeAreaView = styled.SafeAreaView`
 const Container = styled.View`
     padding: 16px;
     flex-direction: column;
-    align-items: center;
     width: 320px;
-    min-height: 220px;
     background-color: #fff;
     border-radius: 4px;
 `;
 
 const PlaypetDialogHeader = styled.View`
+    justify-content: center;
     flex-direction: row;
+    width: 100%;
 `;
 
 const CloseButton = styled.TouchableOpacity`
     position: absolute;
     right: 8px;
-    top: 8px;
 `;
 
 const PlaypetDialogChildren = styled.View`
     margin-top: 16px;
-    flex: 1;
 `;
 
 export default PlaypetDialog;
