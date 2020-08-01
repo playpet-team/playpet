@@ -58,7 +58,9 @@ const PlaypetDialogHeader = styled.View`
 `;
 
 const CloseButton = styled.TouchableOpacity`
-    
+    position: absolute;
+    right: 8px;
+    top: 8px;
 `;
 
 const PlaypetDialogChildren = styled.View`
