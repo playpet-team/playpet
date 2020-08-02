@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+// import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
@@ -6,23 +6,18 @@ import * as React from 'react';
 import styled from '@emotion/native';
 
 import { tintColorLight } from '../constants/Colors';
-// import useColorScheme from '../hooks/useColorScheme';
 import Home from '../screens/Home';
 import AuthScreen from '../screens/AuthScreen';
 import AuthSettings from '../screens/AuthScreen/AuthSettings';
-// import TabTwoScreen from '../screens/TabTwoScreen';
-// import { BottomTabParamList, HomeTabParamList, TabTwoParamList } from '../types';
+import { Button } from 'react-native';
 
 export type BottomTabParamList = {
     Home: undefined;
     Auth: undefined;
 };
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
-
 const BottomIconText = styled.Text``;
 export default function BottomTabNavigator() {
-    // const colorScheme = useColorScheme();
-
     return (
         <BottomTab.Navigator
             initialRouteName="Home"
@@ -80,9 +75,18 @@ function AuthNavigator() {
     return (
         <AuthTapStack.Navigator>
             <AuthTapStack.Screen
-                name="Auth"
+                name="AuthScreen"
                 component={AuthScreen}
-                options={{ headerTitle: '가족정보' }}
+                options={({ navigation, route }) => ({
+                    headerTitle: '가족정보',
+                    headerRight: () => (
+                        <Button
+                            onPress={() => navigation.push('AuthSettings')}
+                            title="Info"
+                            color="#333"
+                        />
+                    ),
+                })}
             />
             <AuthTapStack.Screen
                 name="AuthSettings"
