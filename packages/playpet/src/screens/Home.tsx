@@ -12,7 +12,6 @@ import { User } from '../models';
 import { RootState } from '../store/rootReducers';
 
 const HomeBlock = styled.View`
-    display: flex;
 `;
 
 export default function Home() {
@@ -27,9 +26,9 @@ export default function Home() {
 
     const onAuthStateChanged = async (user: any) => {
         if (user) {
-            dispatch(authActions.signIn());
-            updateUserLastLogin(user.uid);
             dispatch(authActions.setUser(await getUser(user.uid)));
+            updateUserLastLogin(user.uid);
+            dispatch(authActions.signIn());
         } else {
             dispatch(authActions.signOut());
         }

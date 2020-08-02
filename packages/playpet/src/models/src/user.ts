@@ -17,7 +17,7 @@ export interface User {
     gender: string;
     birthDate: string;
     phoneNumber: string;
-    photo: string,
+    profilePhoto: string,
     lastLogin: string | null;
     createdAt: string | null;
     updatedAt: string | null;

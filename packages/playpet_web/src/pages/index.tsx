@@ -3,7 +3,6 @@ import styled from "@emotion/styled"
 
 const HomeBlock = styled.div`
   flex: 1;
-  display: flex;
   height: 100vh;
   justify-content: center;
   align-items: center;

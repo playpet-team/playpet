@@ -15,7 +15,7 @@ export const initialState: AuthSettings = {
     gender: '',
     birthDate: '',
     phoneNumber: '',
-    photo: '',
+    profilePhoto: '',
     lastLogin: null,
     createdAt: null,
     updatedAt: null,
