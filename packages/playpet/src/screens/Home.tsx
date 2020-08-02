@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from '@emotion/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import { authActions } from '../store/authReducer';
 import PlaypetDialog from '../components/PlaypetDialog';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { updateUserLastLogin, checkIsExistUser } from '../utils';
-import firestore from '@react-native-firebase/firestore';
+import { updateUserLastLogin, checkIsExistUser, getUser } from '../utils';
+import { User } from '../models';
+import { RootState } from '../store/rootReducers';
 
 const HomeBlock = styled.View`
     display: flex;
@@ -17,16 +18,18 @@ const HomeBlock = styled.View`
 export default function Home() {
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
+    const user = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
         return subscriber;
     }, []);
 
-    function onAuthStateChanged(user: any) {
+    const onAuthStateChanged = async (user: any) => {
         if (user) {
             dispatch(authActions.signIn());
             updateUserLastLogin(user.uid);
+            dispatch(authActions.setUser(await getUser(user.uid)));
         } else {
             dispatch(authActions.signOut());
         }

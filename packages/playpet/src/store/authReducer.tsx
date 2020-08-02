@@ -4,10 +4,11 @@ import { User, signEnum } from '../models';
 interface AuthSettings extends User {
     isLogged: boolean;
 }
-const initialState: AuthSettings = {
+export const initialState: AuthSettings = {
     isLogged: false,
     uid: '',
     method: signEnum.NONE,
+    email: '',
     isLeave: false,
     leaveAt: '',
     username: '',
@@ -15,9 +16,9 @@ const initialState: AuthSettings = {
     birthDate: '',
     phoneNumber: '',
     photo: '',
-    lastLogin: '',
-    createdAt: '',
-    updatedAt: '',
+    lastLogin: null,
+    createdAt: null,
+    updatedAt: null,
     terms: {
         overAgeAgree: false,
         termsOfUseAgree: false,
@@ -36,9 +37,14 @@ const slice = createSlice({
         signOut(state) {
             state.isLogged = false;
         },
+        setUser(state, { payload }) {
+            return state = {
+                ...state,
+                ...payload,
+            };
+        },
     },
 });
 
-// console.log('slice', slice);
 export const authActions = slice.actions;
 export default slice.reducer;

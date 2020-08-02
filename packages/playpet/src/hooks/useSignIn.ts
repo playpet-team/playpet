@@ -25,40 +25,19 @@ export default function useInitializeSignIn() {
                     const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken);
                     const { user } = await signInCredential(googleCredential);
                     return user.uid;
-                    // uid = user.uid;
-                    // break;
                 }
                 case signEnum.APPLE: {
                     const credential = await appleSignIn();
                     const { user } = await signInCredential(credential);
                     return user.uid;
-                    // uid = user.uid;
-                    // break;
                 }
                 default: {
                     return 'another';
                 }
             }
-            // updateRefreshToken({
-            //     uid,
-            //     token: user.refreshToken
-            // })
-            // const { data } = await checkIsExistUser(uid);
-            
-            // if (data.result === 'empty') {
-            //     return data;
-            // }
-
-            // const res = await createUserCollection({
-            //     uid,
-            //     method,
-            // });
-            // console.log("@@@@@@@@!!!!!!", res);
-            // return res.data;
         } catch (e) {
             console.error('handleSignInWrapper---error---', e);
             return 'error';
-            // return { result: 'error' };
         }
     };
 

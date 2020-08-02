@@ -34,7 +34,7 @@ export default function AuthScreen() {
         setMarketingAgree(true);
     };
 
-    const { isLogged } = useSelector((state: RootState) => state.auth);
+    const user = useSelector((state: RootState) => state.auth);
     const { getUidByThirdPartySignIn } = useInitializeSignIn();
 
     const dispatch = useDispatch();
@@ -43,7 +43,6 @@ export default function AuthScreen() {
         return overAgeAgree && termsOfUseAgree && personalCollectAgree;
     }, [overAgeAgree, termsOfUseAgree, personalCollectAgree]);
 
-    console.log("allAgreeTarms-----", allAgreeTarms);
 
     const handleSignIn = async (method: signEnum) => {
         await getUidByThirdPartySignIn(method);
@@ -87,7 +86,6 @@ export default function AuthScreen() {
         //     uid,
         //     method,
         // });
-
     };
 
     const navigation = useNavigation();
@@ -100,8 +98,10 @@ export default function AuthScreen() {
                 >
                     <Text>oeuth</Text>
                 </TouchableOpacity>
+                <Text>로그인여부: {user.isLogged ? 'yes' : 'no'}</Text>
+                <Text>네임: {user.username}</Text>
 
-                {isLogged ?
+                {user.isLogged ?
                     <TouchableOpacity
                         onPress={() => signOut(signEnum.GOOGLE)}
                     >

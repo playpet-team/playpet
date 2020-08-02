@@ -1,3 +1,4 @@
+import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 
 export enum signEnum {
     GOOGLE = 'GOOGLE',
@@ -9,6 +10,7 @@ export enum signEnum {
 export interface User {
     method: signEnum;
     uid: string;
+    email: string;
     isLeave: boolean;
     leaveAt: string;
     username: string;
@@ -16,9 +18,9 @@ export interface User {
     birthDate: string;
     phoneNumber: string;
     photo: string,
-    lastLogin: string;
-    createdAt: string;
-    updatedAt: string;
+    lastLogin: string | null;
+    createdAt: string | null;
+    updatedAt: string | null;
     terms: {
         overAgeAgree: boolean;
         termsOfUseAgree: boolean;

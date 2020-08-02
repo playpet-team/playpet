@@ -1,4 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { composeWithDevTools } from 'redux-devtools-extension';
 import auth from './authReducer';
 import { useDispatch } from 'react-redux';
 
@@ -8,6 +9,7 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
     reducer: rootReducer,
+    devTools: __DEV__,
 })
 export type RootState = ReturnType<typeof store.getState>;
 
