@@ -1,19 +1,20 @@
-// import { Ionicons } from '@expo/vector-icons';
+import { Icon } from 'react-native-elements'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
 import styled from '@emotion/native';
 
-import { tintColorLight } from '../constants/Colors';
+import { tintColorLight, tintColorDark, tintColorKey } from '../constants/Colors';
 import Home from '../screens/Home';
+import BlankScreen from '../screens/BlankScreen';
 import AuthScreen from '../screens/AuthScreen';
 import AuthSettings from '../screens/AuthScreen/AuthSettings';
-import { Button } from 'react-native';
 
 export type BottomTabParamList = {
     Home: undefined;
     Auth: undefined;
+    Blank: undefined;
 };
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 const BottomIconText = styled.Text``;
@@ -21,19 +22,38 @@ export default function BottomTabNavigator() {
     return (
         <BottomTab.Navigator
             initialRouteName="Home"
-            tabBarOptions={{ activeTintColor: tintColorLight }}>
+            tabBarOptions={{
+                activeTintColor: tintColorLight,
+                showLabel: false,
+            }}>
             <BottomTab.Screen
                 name="Home"
                 component={HomeNavigator}
                 options={{
-                    tabBarIcon: ({ color }) => <BottomIconText>홈</BottomIconText>,
+                    tabBarIcon: ({ focused }) => <Icon
+                        name="pets"
+                        color={focused ? tintColorKey : tintColorDark}
+                    />,
+                }}
+            />
+            <BottomTab.Screen
+                name="Blank"
+                component={BlankNavigator}
+                options={{
+                    tabBarIcon: ({ focused }) => <Icon
+                        name="check-box-outline-blank"
+                        color={focused ? tintColorKey : tintColorDark}
+                    />,
                 }}
             />
             <BottomTab.Screen
                 name="Auth"
                 component={AuthNavigator}
                 options={{
-                    tabBarIcon: ({ color }) => <BottomIconText>우리 가족</BottomIconText>,
+                    tabBarIcon: ({ focused }) => <Icon
+                        name="person"
+                        color={focused ? tintColorKey : tintColorDark}
+                    />,
                 }}
             />
         </BottomTab.Navigator>
@@ -65,6 +85,24 @@ function HomeNavigator() {
     );
 }
 
+export type BlankTapParamList = {
+    BlankScreen: undefined;
+};
+const PlayTapStack = createStackNavigator<BlankTapParamList>();
+function BlankNavigator() {
+    return (
+        <PlayTapStack.Navigator>
+            <PlayTapStack.Screen
+                name="BlankScreen"
+                component={BlankScreen}
+                options={({ navigation }) => ({
+                    headerTitle: '놀이터',
+                })}
+            />
+        </PlayTapStack.Navigator>
+    );
+};
+
 export type AuthTapParamList = {
     AuthScreen: undefined;
     AuthSettings: undefined;
@@ -80,11 +118,11 @@ function AuthNavigator() {
                 options={({ navigation, route }) => ({
                     headerTitle: '가족정보',
                     headerRight: () => (
-                        <Button
-                            onPress={() => navigation.push('AuthSettings')}
-                            title="Info"
-                            color="#333"
-                        />
+                        <HeaderButton onPress={() => navigation.push('AuthSettings')}>
+                            <Icon
+                                name="settings"
+                            />
+                        </HeaderButton>
                     ),
                 })}
             />
@@ -95,4 +133,9 @@ function AuthNavigator() {
             />
         </AuthTapStack.Navigator>
     );
-}
+};
+
+const HeaderButton = styled.TouchableOpacity`
+    padding: 8px;
+`;
+
