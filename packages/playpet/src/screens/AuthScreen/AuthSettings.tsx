@@ -1,17 +1,69 @@
 import React from 'react';
-import { Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Alert } from 'react-native';
 import styled from '@emotion/native';
+import { signOut } from '../../utils';
+import { ListItem } from 'react-native-elements';
+
+enum linkType {
+    LINK,
+    NAVIGATE,
+    FUNCTION,
+}
+interface listType {
+    icon: string;
+    label: string;
+    onPress: Function;
+    type: linkType;
+}
+export default function AuthSettings() {
+    const linkProvision = () => { };
+    const linkCustomerCenter = () => { };
+    const handleLogout = () => {
+        Alert.alert('정말로 로그아웃하시게요?', '', [
+            {
+                text: '취소',
+            },
+            {
+                text: '로그아웃',
+                onPress: () => signOut,
+            },
+        ]);
+    };
+
+    const list: listType[] = [
+        {
+            icon: 'assignment',
+            label: '서비스 약관',
+            onPress: linkProvision,
+            type: linkType.LINK,
+        },
+        {
+            icon: 'contacts',
+            label: '고객센터',
+            onPress: linkCustomerCenter,
+            type: linkType.LINK,
+        },
+        {
+            icon: 'exit-to-app',
+            label: '서비스 탈퇴',
+            onPress: handleLogout,
+            type: linkType.FUNCTION,
+        },
+    ];
+
+    return (
+        <AuthSettingsBlock>
+            {list.length && list.map(item => (
+                <ListItem
+                    key={item.label}
+                    title={item.label}
+                    leftIcon={{ name: item.icon }}
+                    onPress={() => item.onPress()}
+                />
+            ))}
+        </AuthSettingsBlock>
+    );
+};
 
 const AuthSettingsBlock = styled.View`
 `;
-
-export default function AuthSettings() {
-    return (
-        <SafeAreaView>
-            <AuthSettingsBlock>
-                <Text>우리 가족</Text>
-            </AuthSettingsBlock>
-        </SafeAreaView>
-    );
-};
