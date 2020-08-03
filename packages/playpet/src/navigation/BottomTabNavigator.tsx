@@ -8,16 +8,17 @@ import styled from '@emotion/native';
 import { tintColorLight, tintColorDark, tintColorKey } from '../constants/Colors';
 import Home from '../screens/Home';
 import BlankScreen from '../screens/BlankScreen';
+import PostCardFormScreen from '../screens/PostCardFormScreen';
 import AuthScreen from '../screens/AuthScreen';
 import AuthSettings from '../screens/AuthScreen/AuthSettings';
 
 export type BottomTabParamList = {
     Home: undefined;
     Auth: undefined;
+    PostCard: undefined;
     Blank: undefined;
 };
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
-const BottomIconText = styled.Text``;
 export default function BottomTabNavigator() {
     return (
         <BottomTab.Navigator
@@ -32,6 +33,16 @@ export default function BottomTabNavigator() {
                 options={{
                     tabBarIcon: ({ focused }) => <Icon
                         name="pets"
+                        color={focused ? tintColorKey : tintColorDark}
+                    />,
+                }}
+            />
+            <BottomTab.Screen
+                name="PostCard"
+                component={PostCardFormNavigator}
+                options={{
+                    tabBarIcon: ({ focused }) => <Icon
+                        name="add"
                         color={focused ? tintColorKey : tintColorDark}
                     />,
                 }}
@@ -85,21 +96,39 @@ function HomeNavigator() {
     );
 }
 
+export type PostCardTapParamList = {
+    PostCardFormScreen: undefined;
+};
+const PostCardTapStack = createStackNavigator<PostCardTapParamList>();
+function PostCardFormNavigator() {
+    return (
+        <PostCardTapStack.Navigator>
+            <PostCardTapStack.Screen
+                name="PostCardFormScreen"
+                component={PostCardFormScreen}
+                options={({ navigation }) => ({
+                    headerTitle: '포스트',
+                })}
+            />
+        </PostCardTapStack.Navigator>
+    );
+};
+
 export type BlankTapParamList = {
     BlankScreen: undefined;
 };
-const PlayTapStack = createStackNavigator<BlankTapParamList>();
+const BlankTapStack = createStackNavigator<BlankTapParamList>();
 function BlankNavigator() {
     return (
-        <PlayTapStack.Navigator>
-            <PlayTapStack.Screen
+        <BlankTapStack.Navigator>
+            <BlankTapStack.Screen
                 name="BlankScreen"
                 component={BlankScreen}
                 options={({ navigation }) => ({
                     headerTitle: '놀이터',
                 })}
             />
-        </PlayTapStack.Navigator>
+        </BlankTapStack.Navigator>
     );
 };
 

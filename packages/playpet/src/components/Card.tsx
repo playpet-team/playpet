@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import styled from '@emotion/native';
 import { Text, Linking } from 'react-native';
 import { Card as E_Card, Button, } from 'react-native-elements';
-import { firebase } from '@react-native-firebase/storage';
 
 export default function Card() {
 
