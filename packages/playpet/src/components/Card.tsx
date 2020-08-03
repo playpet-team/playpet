@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import styled from '@emotion/native';
 import { Text, Linking } from 'react-native';
 import { Card as E_Card, Button, } from 'react-native-elements';
-import storage from '@react-native-firebase/storage';
+import { firebase } from '@react-native-firebase/storage';
 
 export default function Card() {
 
@@ -18,7 +18,7 @@ export default function Card() {
         <CardBlock>
             <E_Card
                 title='크몽'
-                image={require('../../assets/images/kmong.jpg')}
+                image={{ uri: 'https://firebasestorage.googleapis.com/v0/b/playpet-5b432.appspot.com/o/assets%2Fetc%2FiShot2020-08-02PM11.14.18.jpg?alt=media&token=2e61cb6b-855f-41b7-97f9-274cddcae078' }}
             >
                 <Text style={{ marginTop: 8, marginBottom: 16, }}>
                     프리랜서마켓 No.1 크몽 | 디자인, IT·프로그래밍, 마케팅,번역·통역, 경영진단, 법률 및 취업 관련 전문가들을 만나보세요
