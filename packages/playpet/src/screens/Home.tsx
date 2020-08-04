@@ -7,8 +7,7 @@ import auth from '@react-native-firebase/auth';
 import { authActions } from '../store/authReducer';
 import PlaypetDialog from '../components/PlaypetDialog';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { updateUserLastLogin, checkIsExistUser, getUser } from '../utils';
-import { User } from '../models';
+import { updateUserLastLogin, getUser } from '../utils';
 import { RootState } from '../store/rootReducers';
 
 const HomeBlock = styled.View`
@@ -17,7 +16,6 @@ const HomeBlock = styled.View`
 export default function Home() {
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
-    const user = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);

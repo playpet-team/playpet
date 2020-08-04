@@ -2,11 +2,9 @@
 import { signInCredential } from '../utils';
 import auth from '@react-native-firebase/auth';
 import appleAuth, {
-    AppleButton,
     AppleAuthRequestOperation,
     AppleAuthRequestScope,
 } from '@invertase/react-native-apple-authentication';
-// import { createUserCollection, checkIsExistUser } from '../callable';
 
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { signEnum } from '../models';
