@@ -45,6 +45,7 @@
     "expo": "~38.0.1",
     "expo-asset": "~8.1.7",
     "expo-font": "~8.2.1",
+    "expo-linear-gradient": "~8.2.1",
     "expo-notifications": "~0.3.3",
     "expo-permissions": "~9.0.1",
     "expo-splash-screen": "~0.4.0",
