@@ -55,9 +55,11 @@ export const signOut = async (type: signEnum) => {
             case signEnum.GOOGLE:
             default: {
                 await GoogleSignin.signOut();
+                break;
             }
         }
         await auth().signOut();
+        console.log("------------");
         appReload();
     } catch (error) {
         console.error(error);

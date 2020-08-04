@@ -1,8 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/native';
 import { Input, Text, Icon } from 'react-native-elements';
+import FitImage from 'react-native-fit-image';
+import ImagePicker, { ImagePickerResponse } from 'react-native-image-picker';
+import firestore from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/storage';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/rootReducers';
 
+const options = {
+    title: '우리아이 사진을 공유 해보세요',
+    quality: 0.5,
+    mediaType: 'mixed',
+    videoQuality: 'medium',
+    durationLimit: 50,
+    // customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    },
+};
+
+interface postImage {
+    id: string;
+    uri: string;
+    width: number;
+    height: number;
+}
 export default function PostCardFormScreen() {
+    const { uid } = useSelector((state: RootState) => state.auth);
+    // const [postImages, setPostImages] = useState<postImage[]>([]);
+    const [postImages, setPostImages] = useState<postImage[]>([]);
+    const [uploading, setUploading] = useState(false);
+
+    const openPicker = () => ImagePicker.showImagePicker(options, onReadFile);
+
+    const onReadFile = (response: ImagePickerResponse) => {
+        if (response.error) {
+            return alert('업로드중 오류가 발생했습니다. 다시 시도해주세요');
+        }
+        if (!response.didCancel) {
+            startUploadStorage(response);
+        }
+    };
+
+    const startUploadStorage = async (response: ImagePickerResponse) => {
+        setUploading(true);
+        const tempId = `${uid}_${firestore.Timestamp.now().seconds}`;
+        try {
+            // 빠른반응을 위해 업로드전 우선 preview 시켜준다
+            setPostImages([
+                ...postImages,
+                {
+                    id: tempId,
+                    uri: response.uri,
+                    width: response.width,
+                    height: response.height,
+                }
+            ]);
+
+            const reference = firebase.storage().ref(`playground/${uid}_${firestore.Timestamp.now().seconds}`);
+            await reference.putFile(response.uri);
+        } catch (e) {
+            removeUploadImage(tempId);
+            console.error(e);
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    const removeUploadImage = (tempId: string) => {
+        const newPostImages = [...postImages];
+        newPostImages.splice(postImages.findIndex(({ id }) => id === tempId), 1);
+        setPostImages(newPostImages);
+    }
     return (
         <PostCardBlock>
             <Text>Post</Text>
@@ -19,18 +90,31 @@ export default function PostCardFormScreen() {
                 />
             </InputTextGroup>
             <UploadImageBlock>
-                <UploadImage>
-                    <Icon
-                        name="get-app"
-                    />
-                </UploadImage>
+                {!uploading && !postImages.length &&
+                    <UploadImage onPress={openPicker}>
+                        <Icon name="get-app" />
+                    </UploadImage>
+                }
             </UploadImageBlock>
+            {uploading && <Text>uploading...</Text>}
+            <UploadedImageBlock>
+                {postImages.map(post => (
+                    <FitImageBlock
+                        key={post.id}
+                        uploading={uploading}
+                        resizeMode='cover'
+                        source={{ uri: post.uri }}
+                        originalWidth={post.width}
+                        originalHeight={post.height}
+                    />
+                ))}
+            </UploadedImageBlock>
         </PostCardBlock>
     );
 };
 
-const PostCardBlock = styled.View`
-flex: 1;
+const PostCardBlock = styled.ScrollView`
+    flex: 1;
 `;
 
 const InputTextGroup = styled.View`
@@ -40,6 +124,13 @@ const InputTextGroup = styled.View`
 const UploadImageBlock = styled.View`
     align-items: center;
     justify-content: center;
+`;
+
+const FitImageBlock = styled(FitImage)`
+`;
+
+const UploadedImageBlock = styled.View`
+    flex: 1;
 `;
 
 const UploadImage = styled.TouchableOpacity`

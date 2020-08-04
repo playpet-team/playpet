@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import styled from '@emotion/native';
 import { signOut } from '../../utils';
 import { ListItem } from 'react-native-elements';
+import { signEnum } from '../../models';
 
 enum linkType {
     LINK,
@@ -25,7 +26,7 @@ export default function AuthSettings() {
             },
             {
                 text: '로그아웃',
-                onPress: () => signOut,
+                onPress: () => signOut(signEnum.GOOGLE),
             },
         ]);
     };
@@ -45,8 +46,14 @@ export default function AuthSettings() {
         },
         {
             icon: 'exit-to-app',
-            label: '서비스 탈퇴',
+            label: '로그아웃',
             onPress: handleLogout,
+            type: linkType.FUNCTION,
+        },
+        {
+            icon: 'exit-to-app',
+            label: '서비스 탈퇴',
+            onPress: () => { },
             type: linkType.FUNCTION,
         },
     ];
