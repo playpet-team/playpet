@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from '@emotion/native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import { authActions } from '../store/authReducer';
 import PlaypetDialog from '../components/PlaypetDialog';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { updateUserLastLogin, getUser } from '../utils';
-import { RootState } from '../store/rootReducers';
+import usePermission, { permissionType } from '../hooks/usePermission';
 
 const HomeBlock = styled.View`
 `;
@@ -16,7 +16,8 @@ const HomeBlock = styled.View`
 export default function Home() {
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false);
-
+    const [allowPermission] = usePermission({ type: permissionType.NOTIFICATIONS });
+    console.log("allowPermission------", allowPermission);
     useEffect(() => {
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
         return subscriber;
