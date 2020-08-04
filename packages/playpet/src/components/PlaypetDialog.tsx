@@ -1,4 +1,4 @@
-import React, { ReactChildren, ReactNode } from "react";
+import React, { ReactChildren, ReactNode, useMemo } from "react";
 import Modal from "react-native-modal";
 import styled from '@emotion/native';
 import { Text } from "react-native";
@@ -6,11 +6,17 @@ import { Text } from "react-native";
 interface PlaypetDialog {
     modalVisible: boolean;
     setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-    isBackdropPress?: boolean;
     children: ReactNode;
+    isHideCloseButton?: boolean;
+    isBackdropPress?: boolean;
+    containerStyle?: object;
 };
-const PlaypetDialog = ({ modalVisible, setModalVisible, isBackdropPress, children }: PlaypetDialog) => {
+
+const PlaypetDialog = ({
+    modalVisible, setModalVisible, isHideCloseButton, isBackdropPress, containerStyle = {}, children
+}: PlaypetDialog) => {
     const handleCloseModal = () => setModalVisible(false);
+
     return (
         <StyledSafeAreaView>
             <Modal
@@ -19,14 +25,19 @@ const PlaypetDialog = ({ modalVisible, setModalVisible, isBackdropPress, childre
                 hideModalContentWhileAnimating={true}
                 hasBackdrop={isBackdropPress}
                 onBackdropPress={handleCloseModal}
-                style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
             >
-                <Container>
+                <Container style={containerStyle}>
                     <PlaypetDialogHeader>
                         <Text>헤더</Text>
-                        <CloseButton onPress={handleCloseModal}>
-                            <Text>X</Text>
-                        </CloseButton>
+                        {isHideCloseButton &&
+                            <CloseButton onPress={handleCloseModal}>
+                                <Text>X</Text>
+                            </CloseButton>
+                        }
                     </PlaypetDialogHeader>
                     <PlaypetDialogChildren>
                         {children}
