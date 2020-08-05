@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 

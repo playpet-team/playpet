@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 const SplashBlock = styled.View`
     flex: 1;
 `;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert } from 'react-native';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 import { signOut } from '../../utils';
 import { ListItem } from 'react-native-elements';
 import { signEnum } from '../../models';

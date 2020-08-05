@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from 'react-native-elements';
 import SocialSignIn from '../screens/AuthScreen/SocialSignIn';

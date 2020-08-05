@@ -1,6 +1,6 @@
 import React, { ReactChildren, ReactNode, useMemo } from "react";
 import Modal from "react-native-modal";
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 import { Text } from "react-native";
 
 interface PlaypetDialog {

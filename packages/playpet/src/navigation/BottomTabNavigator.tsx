@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 
 import { tintColorLight, tintColorDark, tintColorKey } from '../constants/Colors';
 import Home from '../screens/Home';

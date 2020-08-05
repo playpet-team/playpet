@@ -1,6 +1,6 @@
 import React, { useState, useMemo, Dispatch, SetStateAction } from 'react';
 import { Text } from 'react-native';
-import styled from '@emotion/native';
+import styled from 'styled-components/native';
 import auth from '@react-native-firebase/auth';
 
 import { updateUserTerms } from '../../utils';
