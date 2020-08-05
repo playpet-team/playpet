@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import styled from '@emotion/native';
 import { Input, Text, Icon } from 'react-native-elements';
 import FitImage from 'react-native-fit-image';
-import ImagePicker, { ImagePickerResponse } from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
+// import ImagePicker, { ImagePickerResponse } from 'react-native-image-picker';
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/storage';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
+import Constants from 'expo-constants';
+import { askPermission, permissionType } from '../utils';
 
 const options = {
     title: '우리아이 사진을 공유 해보세요',
@@ -33,19 +36,28 @@ export default function PostCardFormScreen() {
     const [postImages, setPostImages] = useState<postImage[]>([]);
     const [uploading, setUploading] = useState(false);
 
-    const openPicker = () => ImagePicker.showImagePicker(options, onReadFile);
-
-    const onReadFile = (response: ImagePickerResponse) => {
-        if (response.error) {
-            return alert('업로드중 오류가 발생했습니다. 다시 시도해주세요');
-        }
-        if (!response.didCancel) {
-            startUploadStorage(response);
+    const getPermissionAsync = async () => {
+        if (Constants.platform?.ios) {
+            await askPermission(permissionType.CAMERA_ROLL);
         }
     };
 
-    const startUploadStorage = async (response: ImagePickerResponse) => {
+    // const openPicker = () => ImagePicker.showImagePicker(options, onReadFile);
+    const openPicker = async () => {
+        await getPermissionAsync();
+        const response: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            quality: 0.6,
+        });
+        startUploadStorage(response);
+    };
+
+    const startUploadStorage = async (response: ImagePicker.ImagePickerResult) => {
         setUploading(true);
+        if (response.cancelled) {
+            return;
+        }
         const tempId = `${uid}_${firestore.Timestamp.now().seconds}`;
         try {
             // 빠른반응을 위해 업로드전 우선 preview 시켜준다

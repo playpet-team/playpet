@@ -134,6 +134,9 @@ android {
         applicationId "com.playpet.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        // react-native-image-crop-picker
+        vectorDrawables.useSupportLibrary = true
+        // react-native-image-crop-picker
         versionCode 1
         versionName "1.0"
     }
