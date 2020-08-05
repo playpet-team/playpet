@@ -1,9 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import styled from '@emotion/native';
 import { useDispatch } from 'react-redux';
-import { GoogleSigninButton } from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
-
-import { AppleButton } from '@invertase/react-native-apple-authentication';
 
 import { checkIsExistUser, isExistsUserType } from '../../utils';
 import useInitializeSignIn from '../../hooks/useSignIn';
@@ -11,7 +9,7 @@ import { signEnum } from '../../models';
 import { createUserCollection } from '../../callable';
 import { authActions } from '../../store/authReducer';
 
-const currentUser = () => auth().currentUser;
+export const currentUser = () => auth().currentUser;
 
 export default function SocialSignIn({ setModalVisible }: { setModalVisible: Dispatch<SetStateAction<boolean>> }) {
     const { getUidByThirdPartySignIn } = useInitializeSignIn();
@@ -43,22 +41,35 @@ export default function SocialSignIn({ setModalVisible }: { setModalVisible: Dis
     };
 
     return (
-        <>
-            <GoogleSigninButton
-                style={{ width: 192, height: 48 }}
-                size={GoogleSigninButton.Size.Wide}
-                color={GoogleSigninButton.Color.Dark}
+        <SigninButtonGroups>
+            <SigninButton
                 onPress={() => handleSignIn(signEnum.GOOGLE)}
-            />
-            <AppleButton
-                buttonStyle={AppleButton.Style.WHITE}
-                buttonType={AppleButton.Type.SIGN_IN}
-                style={{
-                    width: 192,
-                    height: 48,
-                }}
+            >
+                <SigninText>구글로 시작하기</SigninText>
+            </SigninButton>
+            <SigninButton
                 onPress={() => handleSignIn(signEnum.APPLE)}
-            />
-        </>
+            >
+                <SigninText>애플로 시작하기</SigninText>
+            </SigninButton>
+        </SigninButtonGroups>
     );
 };
+
+const SigninButtonGroups = styled.View`
+    flex: 1;
+    flex-direction: column;
+    width: 100%;
+    padding-horizontal: 16px;
+`;
+const SigninButton = styled.TouchableOpacity`
+    margin-top: 8px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 16px;
+`;
+
+const SigninText = styled.Text`
+    margin-left: 16px;
+    color: #fff;
+`;

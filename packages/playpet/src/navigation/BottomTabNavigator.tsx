@@ -147,7 +147,7 @@ function AuthNavigator() {
                 options={({ navigation, route }) => ({
                     headerTitle: '가족정보',
                     headerRight: () => (
-                        <HeaderButton onPress={() => navigation.push('AuthSettings')}>
+                        <HeaderButton onPress={() => navigation.navigate('AuthSettings')}>
                             <Icon
                                 name="settings"
                             />
