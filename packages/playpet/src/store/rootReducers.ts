@@ -1,12 +1,12 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import auth from './authReducer';
-import cards from './cardsReducer';
+import playground from './playgroundReducer';
 import { useDispatch } from 'react-redux';
 
 const rootReducer = combineReducers({
     auth,
-    cards,
+    playground,
 });
 
 export const store = configureStore({

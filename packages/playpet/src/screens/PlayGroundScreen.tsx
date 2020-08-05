@@ -1,38 +1,43 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import Card from '../components/Card';
 import Carousel from 'react-native-snap-carousel';
-import { deviceSize } from '../utils';
+import { deviceSize, loadPlaygroundCards, CardModel } from '../utils';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CardType } from '../components/Card';
+import { useDispatch, useSelector } from 'react-redux';
+import { playgroundActions } from '../store/playgroundReducer';
+import { RootState } from '../store/rootReducers';
+import { useIsFocused } from '@react-navigation/native';
 export interface CarouselType {
-    item: CardType;
+    item: CardModel;
     index: number;
 }
 
-const carouselHeight = deviceSize().height - 100;
+const carouselHeight = deviceSize().height - 65;
 export default function PlayGroundScreen() {
     const playGroundRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
+    const { cards } = useSelector((state: RootState) => state.playground);
+    const dispatch = useDispatch();
+    const isFocus = useIsFocused();
 
-    const entries = () => {
-        return [
-            {
-                uri: 'https://firebasestorage.googleapis.com/v0/b/playpet-5b432.appspot.com/o/playground%2FO0KOlgCRnLcWsr1uJkBj0TAoa4Q2_1596606722?alt=media&token=ab02c79c-94ca-4340-85a4-c22e94b37125',
-            },
-            {
-                uri: 'https://firebasestorage.googleapis.com/v0/b/playpet-5b432.appspot.com/o/playground%2FO0KOlgCRnLcWsr1uJkBj0TAoa4Q2_1596606722?alt=media&token=ab02c79c-94ca-4340-85a4-c22e94b37125',
-            },
-            {
-                uri: 'https://firebasestorage.googleapis.com/v0/b/playpet-5b432.appspot.com/o/playground%2FO0KOlgCRnLcWsr1uJkBj0TAoa4Q2_1596606722?alt=media&token=ab02c79c-94ca-4340-85a4-c22e94b37125',
-            },
-        ];
-    };
+    useEffect(() => {
+        if (!isFocus) {
+            return;
+        }
+        const loadCards = async () => {
+            const response = await loadPlaygroundCards({});
+            dispatch(playgroundActions.setCards(response));
+        };
+        console.log('-----------');
+        loadCards();
+    }, [isFocus]);
 
     const renderItem = ({ item, index }: CarouselType) => {
         return (
             <Card
-                uri={item.uri}
+                {...item}
                 onPlayActiveRange={index === activeIndex}
             />
         );
@@ -43,19 +48,17 @@ export default function PlayGroundScreen() {
     };
 
     return (
-        <SafeAreaView>
-            <PlayGroundBlock>
-                <Carousel
-                    ref={playGroundRef}
-                    data={entries()}
-                    renderItem={renderItem}
-                    sliderHeight={carouselHeight}
-                    itemHeight={carouselHeight}
-                    vertical={true}
-                    onSnapToItem={snapPlay}
-                />
-            </PlayGroundBlock>
-        </SafeAreaView>
+        <PlayGroundBlock>
+            <Carousel
+                ref={playGroundRef}
+                data={cards}
+                renderItem={renderItem}
+                sliderHeight={carouselHeight}
+                itemHeight={carouselHeight}
+                vertical={true}
+                onSnapToItem={snapPlay}
+            />
+        </PlayGroundBlock>
     );
 };
 
@@ -63,8 +66,4 @@ const PlayGroundBlock = styled.View`
     /* flex: 1; */
     /* align-items: center; */
     /* justify-content: center; */
-`;
-
-const ScrollViewBlock = styled.ScrollView`
-    position: relative;
 `;

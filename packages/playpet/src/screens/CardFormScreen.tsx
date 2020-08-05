@@ -12,7 +12,7 @@ import { firebase } from '@react-native-firebase/storage';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import Constants from 'expo-constants';
-import { askPermission, permissionType, deviceSize, submitCard, cardModel } from '../utils';
+import { askPermission, permissionType, deviceSize, submitCard, CardModel } from '../utils';
 import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -29,7 +29,7 @@ export interface cardImage {
 export default function CardFormScreen() {
     const { uid } = useSelector((state: RootState) => state.auth);
     const [title, setTitle] = useState('');
-    // const [description, setDescription] = useState('');
+    const [description, setDescription] = useState('');
     const [tags, setTags] = useState<string[]>([]);
     const [tagField, setTagField] = useState('');
     const [cardImages, setCardImages] = useState<cardImage[]>([]);
@@ -42,11 +42,12 @@ export default function CardFormScreen() {
                 <SubmitButton
                     title={title}
                     tags={tags}
+                    description={description}
                     cardImages={cardImages}
                     uid={uid}
                 />),
         });
-    }, [title, tags, cardImages, uid]);
+    }, [title, tags, description, cardImages, uid]);
 
     const getPermissionAsync = async () => {
         if (Constants.platform?.ios) {
@@ -60,21 +61,17 @@ export default function CardFormScreen() {
             width: 1080,
             height: 1920,
         });
-        console.log('111');
         addCardImage(response);
     };
 
     const addCardImage = async (response: Image | any) => {
-        console.log('222');
         if (response.cancelled) {
             return;
         }
-        console.log('333');
         setUploading(true);
         const tempId = `${uid}_${firestore.Timestamp.now().seconds}`;
         try {
             // 빠른반응을 위해 업로드전 우선 preview 시켜준다
-            console.log('444');
             setCardImages([
                 ...cardImages,
                 {
@@ -86,7 +83,6 @@ export default function CardFormScreen() {
                     height: response.height,
                 }
             ]);
-            console.log('--------', isVideoType(response.mime));
         } catch (e) {
             removeUploadImage(tempId);
             console.error(e);
@@ -99,10 +95,6 @@ export default function CardFormScreen() {
         const newCardImages = [...cardImages];
         newCardImages.splice(cardImages.findIndex(({ id }) => id === tempId), 1);
         setCardImages(newCardImages);
-    };
-
-    const handleVideoRef = (component: any) => {
-        console.log('component------', component);
     };
 
     return (
@@ -127,7 +119,7 @@ export default function CardFormScreen() {
 
                     }}
                 />
-                {/* <Input
+                <Input
                     placeholder='Description 선택?'
                     multiline
                     value={description}
@@ -135,7 +127,7 @@ export default function CardFormScreen() {
                     inputStyle={{
                         minHeight: 100,
                     }}
-                /> */}
+                />
 
                 <DisplayTags
                     tags={tags}
@@ -179,15 +171,17 @@ interface SubmitType {
     cardImages: cardImage[];
     uid: string;
     title: string;
+    description: string;
     tags: string[];
 }
-function SubmitButton({ cardImages, uid, title, tags }: SubmitType) {
+function SubmitButton({ cardImages, uid, title, description, tags }: SubmitType) {
     const [isSubmitLoading, setSubmitLoading] = useState(false);
     const formSubmit = async () => {
         setSubmitLoading(true);
         const downloadUrls = await startUploadStorage();
-        const formData: cardModel = {
+        const formData: CardModel = {
             title,
+            description,
             tags,
             uid,
             uploadMedia: cardImages.map((image, index) => ({
@@ -199,7 +193,7 @@ function SubmitButton({ cardImages, uid, title, tags }: SubmitType) {
             createdAt: firestore.Timestamp.now(),
             updatedAt: firestore.Timestamp.now(),
         };
-        const response = await submitCard(formData);
+        await submitCard(formData);
         setSubmitLoading(false);
     };
     const startUploadStorage = async () => {

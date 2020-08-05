@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { appReload } from './../system/index';
+import { appReload, firebaseTimeStampToStringStamp } from './../system/index';
 import auth, { FirebaseAuthTypes, firebase } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { signEnum, collections, User } from '../../models';
@@ -22,9 +22,9 @@ export const getUser = async (uid: string): Promise<User | null> => {
     return {
         ...initialState,
         ...user,
-        lastLogin: moment(user.lastLogin.seconds).toString(),
-        createdAt: moment(user.createdAt.seconds).toString(),
-        updatedAt: moment(user.updatedAt.seconds).toString(),
+        lastLogin: firebaseTimeStampToStringStamp(user.lastLogin),
+        createdAt: firebaseTimeStampToStringStamp(user.createdAt),
+        updatedAt: firebaseTimeStampToStringStamp(user.updatedAt),
     };
 };
 
