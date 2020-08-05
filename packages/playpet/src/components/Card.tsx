@@ -31,18 +31,13 @@ function Card({ uri, onPlayActiveRange = false }: CardType) {
                 <SectionBlock
                     showDetail={showDetail}
                 >
-                    <View style={{
-                        flex: 1,
-                        position: 'absolute',
-                        right: 12,
-                        top: -32,
-                    }}>
+                    <FloatingButtonGroup>
                         <Icon
                             name="favorite-border"
                             color="#fff"
                             size={22}
                         />
-                    </View>
+                    </FloatingButtonGroup>
                     <Header>
                         <TitleText header>[속보] (주) 플레이펫 시가 총액 2조 넘어서..</TitleText>
                     </Header>
@@ -66,6 +61,12 @@ const CardBlock = styled.TouchableOpacity`
     flex: 1;
     margin-bottom: 24px;
     
+`;
+
+const FloatingButtonGroup = styled.View`
+    position: absolute;
+    right: 12;
+    top: -32;
 `;
 
 interface ContentBlockProps {

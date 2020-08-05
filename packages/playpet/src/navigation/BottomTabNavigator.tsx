@@ -8,14 +8,14 @@ import styled from 'styled-components/native';
 import { tintColorLight, tintColorDark, tintColorKey } from '../constants/Colors';
 import Home from '../screens/Home';
 import PlayGroundScreen from '../screens/PlayGroundScreen';
-import PostCardFormScreen from '../screens/PostCardFormScreen';
+import CardFormScreen from '../screens/CardFormScreen';
 import AuthScreen from '../screens/AuthScreen';
 import AuthSettings from '../screens/AuthScreen/AuthSettings';
 
 export type BottomTabParamList = {
     Home: undefined;
     Auth: undefined;
-    PostCard: undefined;
+    Card: undefined;
     PlayGround: undefined;
 };
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -38,8 +38,8 @@ export default function BottomTabNavigator() {
                 }}
             />
             <BottomTab.Screen
-                name="PostCard"
-                component={PostCardFormNavigator}
+                name="Card"
+                component={CardFormNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => <Icon
                         name="add"
@@ -96,21 +96,21 @@ function HomeNavigator() {
     );
 }
 
-export type PostCardTapParamList = {
-    PostCardFormScreen: undefined;
+export type CardTapParamList = {
+    CardFormScreen: undefined;
 };
-const PostCardTapStack = createStackNavigator<PostCardTapParamList>();
-function PostCardFormNavigator() {
+const CardTapStack = createStackNavigator<CardTapParamList>();
+function CardFormNavigator() {
     return (
-        <PostCardTapStack.Navigator>
-            <PostCardTapStack.Screen
-                name="PostCardFormScreen"
-                component={PostCardFormScreen}
+        <CardTapStack.Navigator>
+            <CardTapStack.Screen
+                name="CardFormScreen"
+                component={CardFormScreen}
                 options={({ navigation }) => ({
                     headerTitle: '포스트',
                 })}
             />
-        </PostCardTapStack.Navigator>
+        </CardTapStack.Navigator>
     );
 };
 
