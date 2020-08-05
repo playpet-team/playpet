@@ -3,16 +3,16 @@ import styled from '@emotion/native';
 import { Text } from 'react-native';
 import Card from '../components/Card';
 
-export default function BlankScreen() {
+export default function PlayGroundScreen() {
     return (
-        <BlankBlock>
-            <Text>BlankScreen</Text>
+        <PlayGroundBlock>
+            <Text>PlayGroundScreen</Text>
             <Card />
-        </BlankBlock>
+        </PlayGroundBlock>
     );
 };
 
-const BlankBlock = styled.View`
+const PlayGroundBlock = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;

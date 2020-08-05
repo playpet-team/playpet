@@ -7,7 +7,7 @@ import styled from '@emotion/native';
 
 import { tintColorLight, tintColorDark, tintColorKey } from '../constants/Colors';
 import Home from '../screens/Home';
-import BlankScreen from '../screens/BlankScreen';
+import PlayGroundScreen from '../screens/PlayGroundScreen';
 import PostCardFormScreen from '../screens/PostCardFormScreen';
 import AuthScreen from '../screens/AuthScreen';
 import AuthSettings from '../screens/AuthScreen/AuthSettings';
@@ -16,7 +16,7 @@ export type BottomTabParamList = {
     Home: undefined;
     Auth: undefined;
     PostCard: undefined;
-    Blank: undefined;
+    PlayGround: undefined;
 };
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 export default function BottomTabNavigator() {
@@ -48,7 +48,7 @@ export default function BottomTabNavigator() {
                 }}
             />
             <BottomTab.Screen
-                name="Blank"
+                name="PlayGround"
                 component={BlankNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => <Icon
@@ -123,8 +123,9 @@ function BlankNavigator() {
         <BlankTapStack.Navigator>
             <BlankTapStack.Screen
                 name="BlankScreen"
-                component={BlankScreen}
+                component={PlayGroundScreen}
                 options={({ navigation }) => ({
+                    headerShown: false,
                     headerTitle: '놀이터',
                 })}
             />
