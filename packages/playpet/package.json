@@ -44,6 +44,7 @@
     "@types/react-redux": "^7.1.9",
     "expo": "~38.0.1",
     "expo-asset": "~8.1.7",
+    "expo-av": "~8.2.1",
     "expo-constants": "~9.1.1",
     "expo-font": "~8.2.1",
     "expo-image-picker": "~8.3.0",

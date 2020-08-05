@@ -46,18 +46,21 @@ export default function PostCardFormScreen() {
     const openPicker = async () => {
         await getPermissionAsync();
         const response: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
+            videoExportPreset: ImagePicker.VideoExportPreset.MediumQuality,
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             quality: 0.6,
+            exif: true,
         });
+        console.log('response', response);
         startUploadStorage(response);
     };
 
     const startUploadStorage = async (response: ImagePicker.ImagePickerResult) => {
-        setUploading(true);
         if (response.cancelled) {
             return;
         }
+        setUploading(true);
         const tempId = `${uid}_${firestore.Timestamp.now().seconds}`;
         try {
             // 빠른반응을 위해 업로드전 우선 preview 시켜준다
