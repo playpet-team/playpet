@@ -1,37 +1,111 @@
-import React, { useCallback } from 'react';
-import styled from '@emotion/native';
-import { Text, Linking } from 'react-native';
-import { Card as E_Card, Button, } from 'react-native-elements';
+import React, { useCallback, useState, useEffect } from 'react';
+import styled, { css } from 'styled-components/native';
+import { Video } from 'expo-av';
+import { Animated, View, Text } from 'react-native';
+import { Icon } from 'react-native-elements'
 
-export default function Card() {
+export interface CardType {
+    uri: string;
+    onPlayActiveRange?: boolean;
+};
+function Card({ uri, onPlayActiveRange = false }: CardType) {
+    const [showDetail, setShowDetail] = useState(false);
 
-    const handlePress = async (url: string) => {
-        const supported = await Linking.canOpenURL(url);
-        if (supported) {
-            await Linking.openURL(url);
-        }
-    };
+    useEffect(() => {
 
-
+        console.log('showDetail------', showDetail);
+    }, [showDetail]);
     return (
-        <CardBlock>
-            <E_Card
-                title='크몽'
-                image={{ uri: 'https://firebasestorage.googleapis.com/v0/b/playpet-5b432.appspot.com/o/assets%2Fetc%2FiShot2020-08-02PM11.14.18.jpg?alt=media&token=2e61cb6b-855f-41b7-97f9-274cddcae078' }}
-            >
-                <Text style={{ marginTop: 8, marginBottom: 16, }}>
-                    프리랜서마켓 No.1 크몽 | 디자인, IT·프로그래밍, 마케팅,번역·통역, 경영진단, 법률 및 취업 관련 전문가들을 만나보세요
-                </Text>
-                <Button
-                    buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
-                    title='GO'
-                    onPress={() => handlePress('https://kmong.com')}
+        <CardBlock
+            onPress={() => setShowDetail(!showDetail)}
+        >
+            <>
+                <Video
+                    source={{ uri }}
+                    isMuted={true}
+                    isLooping={true}
+                    shouldPlay={onPlayActiveRange}
+                    resizeMode={Video.RESIZE_MODE_COVER}
+                    style={{ width: '100%', height: '100%', position: 'absolute', }}
                 />
-            </E_Card>
+                <SectionBlock
+                    showDetail={showDetail}
+                >
+                    <View style={{
+                        flex: 1,
+                        position: 'absolute',
+                        right: 12,
+                        top: -32,
+                    }}>
+                        <Icon
+                            name="favorite-border"
+                            color="#fff"
+                            size={22}
+                        />
+                    </View>
+                    <Header>
+                        <TitleText header>[속보] (주) 플레이펫 시가 총액 2조 넘어서..</TitleText>
+                    </Header>
+                    <Content>
+                        <Description>
+                            <DescriptionText>
+                                시가총액이 사상최대치를 경신했다.
+                                12일 증권거래소에 따르면 이날 시가총액이 316조6천928억원으로 종전 기록인지
+                                난 9월13일의 313조5천285억원을 넘어섰다.
+                                이는 최근 담배인삼공사 등이 신규상장된데다 주가가 지속적으로 상승한데 따른
+                        </DescriptionText>
+                        </Description>
+                    </Content>
+                </SectionBlock>
+            </>
         </CardBlock>
     );
 };
 
-const CardBlock = styled.View`
-
+const CardBlock = styled.TouchableOpacity`
+    flex: 1;
+    margin-bottom: 24px;
+    
 `;
+
+interface ContentBlockProps {
+    showDetail: boolean;
+}
+const SectionBlock = styled.View<ContentBlockProps>`
+    overflow: visible;
+    padding: 24px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+    ${({ showDetail }) => !showDetail && css`
+        background-color: rgba(0, 0, 0, 0.6);
+    `}
+`;
+
+const Content = styled.View`
+    margin-top: 16px;
+`;
+
+const Description = styled.View``;
+const DescriptionText = styled.Text`
+    color: #fff;
+`;
+
+const Header = styled.View`
+    position: relative;
+`;
+
+interface TitleProps {
+    header?: boolean;
+};
+const TitleText = styled.Text<TitleProps>`
+width: 85%;
+    ${({ header }) => header && css`
+        font-size: 22px;
+        font-weight: 800;
+    `};
+    color: #fff;
+`;
+
+export default Card;

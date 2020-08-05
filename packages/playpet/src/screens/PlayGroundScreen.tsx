@@ -10,7 +10,7 @@ export interface CarouselType {
     index: number;
 }
 
-const carouselHeight = deviceSize().height - 50;
+const carouselHeight = deviceSize().height - 100;
 export default function PlayGroundScreen() {
     const playGroundRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
