@@ -14,6 +14,7 @@ interface SubmitType {
 }
 function SubmitButton({ cardImages, uid, title, description, tags }: SubmitType) {
     const [isSubmitLoading, setSubmitLoading] = useState(false);
+
     const formSubmit = async () => {
         setSubmitLoading(true);
         const downloadUrls = await startUploadStorage();
@@ -34,6 +35,7 @@ function SubmitButton({ cardImages, uid, title, description, tags }: SubmitType)
         await submitCard(formData);
         setSubmitLoading(false);
     };
+
     const startUploadStorage = async () => {
         return await Promise.all(
             cardImages.map(async (image) => {

@@ -13,7 +13,6 @@ const slice = createSlice({
     initialState,
     reducers: {
         setCards(state, { payload }) {
-            console.log('payload-----', payload);
             state.cards = payload;
         },
     },

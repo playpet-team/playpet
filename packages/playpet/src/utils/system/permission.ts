@@ -1,6 +1,6 @@
 import * as Permissions from 'expo-permissions';
 
-export enum permissionType {
+export enum PermissionType {
     NOTIFICATIONS = 'NOTIFICATIONS',
     USER_FACING_NOTIFICATIONS = 'USER_FACING_NOTIFICATIONS',
     LOCATION = 'LOCATION',
@@ -11,7 +11,7 @@ export enum permissionType {
     CALENDAR = 'CALENDAR',
     REMINDERS = 'REMINDERS',
 };
-export const askPermission = async (type: permissionType) => {
+export const askPermission = async (type: PermissionType) => {
     const { status } = await Permissions.askAsync(Permissions[type]);
     return {
         status,

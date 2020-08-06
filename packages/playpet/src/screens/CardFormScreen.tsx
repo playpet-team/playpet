@@ -9,7 +9,7 @@ import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import Constants from 'expo-constants';
-import { askPermission, permissionType, deviceSize, submitCard, CardModel } from '../utils';
+import { askPermission, PermissionType, deviceSize, submitCard, CardModel } from '../utils';
 import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SubmitButton from './CardFormScreen/SubmitButton';
@@ -26,6 +26,7 @@ export interface cardImage {
 }
 export default function CardFormScreen() {
     const { uid } = useSelector((state: RootState) => state.auth);
+
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [tags, setTags] = useState<string[]>([]);
@@ -50,7 +51,7 @@ export default function CardFormScreen() {
 
     const getPermissionAsync = async () => {
         if (Constants.platform?.ios) {
-            await askPermission(permissionType.CAMERA_ROLL);
+            await askPermission(PermissionType.CAMERA_ROLL);
         }
     };
 

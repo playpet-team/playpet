@@ -1,5 +1,5 @@
-import { askPermission, permissionType } from './../utils/system/permission';
-import auth from '@react-native-firebase/auth';
+import { askPermission, PermissionType } from './../utils/system/permission';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { authActions } from '../store/authReducer';
 import { getUser, updateUserLastLogin } from '../utils/auth';
 import { useDispatch } from 'react-redux';
@@ -10,7 +10,7 @@ function useAuthStateChanged() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const onAuthStateChanged = async (user: any) => {
+        const onAuthStateChanged = async (user: FirebaseAuthTypes.User | null) => {
             if (user) {
                 dispatch(authActions.setUser(await getUser(user.uid)));
                 updateUserLastLogin(user.uid);
@@ -26,7 +26,7 @@ function useAuthStateChanged() {
 
     useEffect(() => {
         if (isLogged) {
-            askPermission(permissionType.NOTIFICATIONS);
+            askPermission(PermissionType.NOTIFICATIONS);
         }
     }, [isLogged]);
 

@@ -6,9 +6,9 @@ import { ListItem } from 'react-native-elements';
 import { signEnum } from '../../models';
 
 enum linkType {
-    LINK,
-    NAVIGATE,
-    FUNCTION,
+    Link,
+    Navigate,
+    Function,
 }
 interface listType {
     icon: string;
@@ -16,47 +16,46 @@ interface listType {
     onPress: Function;
     type: linkType;
 }
+const linkProvision = () => { };
+const linkCustomerCenter = () => { };
+const handleLogout = () => {
+    Alert.alert('정말로 로그아웃하시게요?', '', [
+        {
+            text: '취소',
+        },
+        {
+            text: '로그아웃',
+            onPress: () => signOut(signEnum.Google),
+        },
+    ]);
+};
+const list: listType[] = [
+    {
+        icon: 'assignment',
+        label: '서비스 약관',
+        onPress: linkProvision,
+        type: linkType.Link,
+    },
+    {
+        icon: 'contacts',
+        label: '고객센터',
+        onPress: linkCustomerCenter,
+        type: linkType.Link,
+    },
+    {
+        icon: 'exit-to-app',
+        label: '로그아웃',
+        onPress: handleLogout,
+        type: linkType.Function,
+    },
+    {
+        icon: 'exit-to-app',
+        label: '서비스 탈퇴',
+        onPress: () => { },
+        type: linkType.Function,
+    },
+];
 export default function AuthSettings() {
-    const linkProvision = () => { };
-    const linkCustomerCenter = () => { };
-    const handleLogout = () => {
-        Alert.alert('정말로 로그아웃하시게요?', '', [
-            {
-                text: '취소',
-            },
-            {
-                text: '로그아웃',
-                onPress: () => signOut(signEnum.GOOGLE),
-            },
-        ]);
-    };
-
-    const list: listType[] = [
-        {
-            icon: 'assignment',
-            label: '서비스 약관',
-            onPress: linkProvision,
-            type: linkType.LINK,
-        },
-        {
-            icon: 'contacts',
-            label: '고객센터',
-            onPress: linkCustomerCenter,
-            type: linkType.LINK,
-        },
-        {
-            icon: 'exit-to-app',
-            label: '로그아웃',
-            onPress: handleLogout,
-            type: linkType.FUNCTION,
-        },
-        {
-            icon: 'exit-to-app',
-            label: '서비스 탈퇴',
-            onPress: () => { },
-            type: linkType.FUNCTION,
-        },
-    ];
 
     return (
         <AuthSettingsBlock>

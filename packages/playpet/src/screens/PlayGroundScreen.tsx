@@ -7,16 +7,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { playgroundActions } from '../store/playgroundReducer';
 import { RootState } from '../store/rootReducers';
 import { useIsFocused } from '@react-navigation/native';
-export interface CarouselType {
+const BOTTOM_NAV_BAR_HEIGHT = 65;
+const SLIDER_HEIGHT = deviceSize().height - BOTTOM_NAV_BAR_HEIGHT;
+
+export interface RenderItemProps {
     item: CardModel;
     index: number;
 }
-
-const carouselHeight = deviceSize().height - 65;
 export default function PlayGroundScreen() {
-    const playGroundRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const { cards } = useSelector((state: RootState) => state.playground);
+    const playerRef = useRef(null);
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
 
@@ -31,7 +32,7 @@ export default function PlayGroundScreen() {
         loadCards();
     }, [isFocused]);
 
-    const renderItem = ({ item, index }: CarouselType) => {
+    const renderItem = ({ item, index }: RenderItemProps) => {
         return (
             <Card
                 {...item}
@@ -47,11 +48,11 @@ export default function PlayGroundScreen() {
     return (
         <PlayGroundBlock>
             <Carousel
-                ref={playGroundRef}
+                ref={playerRef}
                 data={cards}
                 renderItem={renderItem}
-                sliderHeight={carouselHeight}
-                itemHeight={carouselHeight}
+                sliderHeight={SLIDER_HEIGHT}
+                itemHeight={SLIDER_HEIGHT}
                 vertical={true}
                 onSnapToItem={snapPlay}
             />

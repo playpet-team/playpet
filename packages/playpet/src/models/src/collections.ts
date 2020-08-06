@@ -1,7 +1,7 @@
 export enum collections {
-    users = 'users',
-    authTokens = 'authTokens',
-    playground = 'playground',
-    pushSettings = 'pushSettings',
-    payments = 'payments',
+    Users = 'users',
+    AuthTokens = 'authTokens',
+    Playground = 'playground',
+    PushSettings = 'pushSettings',
+    Payments = 'payments',
 };

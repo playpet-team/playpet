@@ -19,26 +19,27 @@ export interface CardModel {
 }
 
 export const submitCard = async (formData: CardModel) => {
-    return await firestore().collection(collections.playground).add(formData);
+    return await firestore().collection(collections.Playground).add(formData);
 };
 
-export enum sortCards {
-    CREATED_AT,
-    HOT,
-    ADS,
-    COOP,
+export enum SortCards {
+    CreatedAt,
+    Hot,
+    Ads,
+    Coop,
 }
 interface loadType {
-    sortType?: sortCards;
+    sortType?: SortCards;
     startAt?: number;
     limit?: number;
 }
-export const loadPlaygroundCards = async ({ sortType = sortCards.CREATED_AT, startAt = 0, limit = 100 }: loadType) => {
+export const loadPlaygroundCards = async ({ sortType = SortCards.CreatedAt, startAt = 0, limit = 100 }: loadType) => {
     const cardDoc = await firestore()
-        .collection(collections.playground)
+        .collection(collections.Playground)
         .orderBy('createdAt', 'desc')
         .limit(limit)
         .get();
+
     return cardDoc.docs.map(doc => {
         const docData = doc.data();
         return {

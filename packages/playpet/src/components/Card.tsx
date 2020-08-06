@@ -41,9 +41,7 @@ function Card({
                     style={{ flex: 1 }}
                 />
             }
-            <SectionBlock
-                showDetail={showDetail}
-            >
+            <SectionBlock showDetail={showDetail}>
                 <FloatingButtonGroup>
                     <Icon
                         name="favorite-border"

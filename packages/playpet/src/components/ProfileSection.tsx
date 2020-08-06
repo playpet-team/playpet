@@ -4,13 +4,13 @@ import { Avatar } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 
-
 export default function ProfileSection() {
     const {
         profilePhoto,
         username,
         email,
     } = useSelector((state: RootState) => state.auth);
+
     return (
         <ProfileSectionBlock>
             <Avatar
