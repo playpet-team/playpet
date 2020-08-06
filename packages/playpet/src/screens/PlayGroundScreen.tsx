@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components/native';
 import Card from '../components/Card';
 import Carousel from 'react-native-snap-carousel';
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { playgroundActions } from '../store/playgroundReducer';
 import { RootState } from '../store/rootReducers';
 import { useIsFocused } from '@react-navigation/native';
+import useFetch from '../hooks/useFetch';
 const BOTTOM_NAV_BAR_HEIGHT = 65;
 const SLIDER_HEIGHT = deviceSize().height - BOTTOM_NAV_BAR_HEIGHT;
 
@@ -17,7 +18,6 @@ export interface RenderItemProps {
 export default function PlayGroundScreen() {
     const [activeIndex, setActiveIndex] = useState(0);
     const { cards } = useSelector((state: RootState) => state.playground);
-    const playerRef = useRef(null);
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
 
@@ -32,23 +32,20 @@ export default function PlayGroundScreen() {
         loadCards();
     }, [isFocused]);
 
-    const renderItem = ({ item, index }: RenderItemProps) => {
+    const renderItem = useCallback(({ item, index }: RenderItemProps) => {
         return (
             <Card
                 {...item}
                 onPlayActiveRange={index === activeIndex}
             />
         );
-    };
+    }, [activeIndex]);
 
-    const snapPlay = (nextIndex: number) => {
-        setActiveIndex(nextIndex);
-    };
+    const snapPlay = (nextIndex: number) => setActiveIndex(nextIndex);
 
     return (
         <PlayGroundBlock>
             <Carousel
-                ref={playerRef}
                 data={cards}
                 renderItem={renderItem}
                 sliderHeight={SLIDER_HEIGHT}

@@ -28,12 +28,12 @@ export enum SortCards {
     Ads,
     Coop,
 }
-interface loadType {
+interface SortParams {
     sortType?: SortCards;
     startAt?: number;
     limit?: number;
 }
-export const loadPlaygroundCards = async ({ sortType = SortCards.CreatedAt, startAt = 0, limit = 100 }: loadType) => {
+export const loadPlaygroundCards = async ({ sortType = SortCards.CreatedAt, startAt = 0, limit = 100 }: SortParams) => {
     const cardDoc = await firestore()
         .collection(collections.Playground)
         .orderBy('createdAt', 'desc')

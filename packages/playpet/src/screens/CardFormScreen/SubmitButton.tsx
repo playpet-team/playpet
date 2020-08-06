@@ -1,18 +1,18 @@
 import { cardImage } from "../CardFormScreen";
-import { useState } from "react";
+import React, { useState } from "react";
 import { CardModel, submitCard } from "../../utils";
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/storage';
 import { Button } from 'react-native-elements';
 
-interface SubmitType {
+interface Submit {
     cardImages: cardImage[];
     uid: string;
     title: string;
     description: string;
     tags: string[];
 }
-function SubmitButton({ cardImages, uid, title, description, tags }: SubmitType) {
+function SubmitButton({ cardImages, uid, title, description, tags }: Submit) {
     const [isSubmitLoading, setSubmitLoading] = useState(false);
 
     const formSubmit = async () => {

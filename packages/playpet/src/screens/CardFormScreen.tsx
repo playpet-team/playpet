@@ -9,7 +9,7 @@ import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import Constants from 'expo-constants';
-import { askPermission, PermissionType, deviceSize, submitCard, CardModel } from '../utils';
+import { askPermission, PermissionsList, deviceSize, submitCard, CardModel } from '../utils';
 import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SubmitButton from './CardFormScreen/SubmitButton';
@@ -24,6 +24,11 @@ export interface cardImage {
     width: number;
     height: number;
 }
+const getPermissionAsync = async () => {
+    if (Constants.platform?.ios) {
+        await askPermission(PermissionsList.CAMERA_ROLL);
+    }
+};
 export default function CardFormScreen() {
     const { uid } = useSelector((state: RootState) => state.auth);
 
@@ -48,12 +53,6 @@ export default function CardFormScreen() {
             ),
         });
     }, [title, tags, description, cardImages, uid]);
-
-    const getPermissionAsync = async () => {
-        if (Constants.platform?.ios) {
-            await askPermission(PermissionType.CAMERA_ROLL);
-        }
-    };
 
     const openPicker = async () => {
         await getPermissionAsync();
@@ -91,11 +90,7 @@ export default function CardFormScreen() {
         }
     };
 
-    const removeUploadImage = (tempId: string) => {
-        const newCardImages = [...cardImages];
-        newCardImages.splice(cardImages.findIndex(({ id }) => id === tempId), 1);
-        setCardImages(newCardImages);
-    };
+    const removeUploadImage = (tempId: string) => setCardImages(cardImages.filter(({ id }) => id !== tempId));
 
     return (
         <CardBlock>
@@ -104,12 +99,12 @@ export default function CardFormScreen() {
                 <Input
                     placeholder='Title 필수'
                     value={title}
-                    onChangeText={value => setTitle(value)}
+                    onChangeText={(value: string) => setTitle(value)}
                 />
                 <Input
                     placeholder='#댕댕이'
                     value={tagField}
-                    onChangeText={value => {
+                    onChangeText={(value: string) => {
                         if (value.slice(-1) === ' ') {
                             setTagField('');
                             setTags([...tags, tagField]);
@@ -119,14 +114,11 @@ export default function CardFormScreen() {
 
                     }}
                 />
-                <Input
+                <InputDescription
                     placeholder='Description 선택?'
                     multiline
                     value={description}
-                    onChangeText={value => setDescription(value)}
-                    inputStyle={{
-                        minHeight: 100,
-                    }}
+                    onChangeText={(value: string) => setDescription(value)}
                 />
 
                 <DisplayTags tags={tags} />
@@ -177,6 +169,10 @@ function DisplayTags({ tags }: Tags) {
         </DisplayTagsBlock>
     );
 };
+
+const InputDescription = styled(Input)`
+    min-height: 100px;
+`;
 
 const Tag = styled.Text`
     padding: 4px;

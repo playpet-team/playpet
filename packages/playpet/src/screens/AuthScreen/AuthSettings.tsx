@@ -5,16 +5,16 @@ import { signOut } from '../../utils';
 import { ListItem } from 'react-native-elements';
 import { signEnum } from '../../models';
 
-enum linkType {
+enum Handle {
     Link,
     Navigate,
     Function,
 }
-interface listType {
+interface List {
     icon: string;
     label: string;
     onPress: Function;
-    type: linkType;
+    type: Handle;
 }
 const linkProvision = () => { };
 const linkCustomerCenter = () => { };
@@ -29,30 +29,30 @@ const handleLogout = () => {
         },
     ]);
 };
-const list: listType[] = [
+const list: List[] = [
     {
         icon: 'assignment',
         label: '서비스 약관',
         onPress: linkProvision,
-        type: linkType.Link,
+        type: Handle.Link,
     },
     {
         icon: 'contacts',
         label: '고객센터',
         onPress: linkCustomerCenter,
-        type: linkType.Link,
+        type: Handle.Link,
     },
     {
         icon: 'exit-to-app',
         label: '로그아웃',
         onPress: handleLogout,
-        type: linkType.Function,
+        type: Handle.Function,
     },
     {
         icon: 'exit-to-app',
         label: '서비스 탈퇴',
-        onPress: () => { },
-        type: linkType.Function,
+        onPress: handleLeave,
+        type: Handle.Function,
     },
 ];
 export default function AuthSettings() {

@@ -1,4 +1,4 @@
-import { askPermission, PermissionType } from './../utils/system/permission';
+import { askPermission, PermissionsList } from './../utils/system/permission';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { authActions } from '../store/authReducer';
 import { getUser, updateUserLastLogin } from '../utils/auth';
@@ -26,7 +26,7 @@ function useAuthStateChanged() {
 
     useEffect(() => {
         if (isLogged) {
-            askPermission(PermissionType.NOTIFICATIONS);
+            askPermission(PermissionsList.NOTIFICATIONS);
         }
     }, [isLogged]);
 

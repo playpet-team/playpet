@@ -27,15 +27,15 @@ export const getUser = async (uid: string): Promise<User | null> => {
     };
 };
 
-export enum isExistsUserType {
+export enum CheckUser {
     Exists,
     Empty,
 }
-export const checkIsExistUser = (uid: string): Promise<isExistsUserType> => {
+export const checkIsExistUser = (uid: string): Promise<CheckUser> => {
     return new Promise(function(resolve, reject) {
         try {
             firestore().collection(collections.Users).doc(uid).get().then(doc => {
-                resolve(doc.exists ? isExistsUserType.Exists : isExistsUserType.Empty);
+                resolve(doc.exists ? CheckUser.Exists : CheckUser.Empty);
             });
         } catch (e) {
             reject('error');
@@ -64,3 +64,12 @@ export const signOut = async (type: signEnum) => {
         console.error(error);
     }
 };
+
+export const leave = async () => {
+    try {
+        
+        auth().signOut();
+    } catch (error) {
+        console.error(error);
+    }
+}

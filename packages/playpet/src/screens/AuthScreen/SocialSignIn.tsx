@@ -3,10 +3,10 @@ import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 
-import { checkIsExistUser, isExistsUserType } from '../../utils';
+import { checkIsExistUser, CheckUser } from '../../utils';
 import useInitializeSignIn from '../../hooks/useSignIn';
 import { signEnum } from '../../models';
-import { createUserCollection } from '../../callable';
+import { createUserCall } from '../../callable';
 import { authActions } from '../../store/authReducer';
 
 export const currentUser = () => auth().currentUser;
@@ -22,10 +22,10 @@ export default function SocialSignIn({ setModalVisible }: { setModalVisible: Dis
             return;
         }
         const uid = user.uid;
-        const result: isExistsUserType = await checkIsExistUser(uid);
+        const result: CheckUser = await checkIsExistUser(uid);
         switch (result) {
-            case isExistsUserType.empty: {
-                createUserCollection({
+            case CheckUser.Empty: {
+                createUserCall({
                     uid,
                     method,
                 });
@@ -33,7 +33,7 @@ export default function SocialSignIn({ setModalVisible }: { setModalVisible: Dis
                 break;
             }
             default:
-            case isExistsUserType.exists: {
+            case CheckUser.Exists: {
                 dispatch(authActions.signIn());
                 break;
             }
