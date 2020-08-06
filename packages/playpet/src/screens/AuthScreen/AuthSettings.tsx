@@ -32,8 +32,8 @@ export default function AuthSettings() {
                 onPress: async () => {
                     try {
                         setLoading(true);
-                        // await signOut(signEnum.Google);
-                        // appReload();
+                        await signOut(signEnum.Google);
+                        appReload();
                     } catch (e) {
                         alert('로그아웃에 실패하였습니다. 잠시후 다시 시도해 주세요');
                     } finally {
@@ -94,7 +94,6 @@ export default function AuthSettings() {
             },
         ]
     }, []);
-
     return (
         <AuthSettingsBlock>
             {loading && <Indicator />}

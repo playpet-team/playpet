@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components/native';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Modal } from 'react-native';
 
 function useLoadingIndicator() {
     const [loading, setLoading] = useState(false);
@@ -21,19 +21,19 @@ export default useLoadingIndicator;
 
 function Indicator() {
     return (
-        <IndicatorBlock>
-            <ActivityIndicator size="large" />
-        </IndicatorBlock>
+        <Modal
+            transparent={true}
+            visible={true}
+        >
+            <IndicatorBlock>
+                <ActivityIndicator size="large" color="white" />
+            </IndicatorBlock>
+        </Modal>
     );
 };
 
 const IndicatorBlock = styled.View`
     flex: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    align-items: center;
     justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
 `;
