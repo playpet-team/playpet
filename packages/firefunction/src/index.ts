@@ -14,6 +14,10 @@ interface createUserParams {
     method: string;
 }
 
+export {
+    withdraw,
+} from './auth';
+
 export const createUserCollection = functions.https.onCall(async ({ uid, method }: createUserParams) => {
     try {
         const {
