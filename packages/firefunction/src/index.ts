@@ -34,7 +34,7 @@ export const createUserCollection = functions.https.onCall(async ({ uid, method 
             username: displayName,
             email,
             phoneNumber,
-            photo: photoURL,
+            profilePhoto: photoURL,
             leaveAt: '',
             gender: '',
             birthDate: '',

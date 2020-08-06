@@ -1,3 +1,5 @@
+import { withdrawCall } from './../../callable/auth';
+import { withdraw } from './../../../../firefunction/src/auth/index';
 import firestore from '@react-native-firebase/firestore';
 import { appReload, firebaseTimeStampToStringStamp } from './../system/index';
 import auth, { FirebaseAuthTypes, firebase } from '@react-native-firebase/auth';
@@ -44,22 +46,20 @@ export const checkIsExistUser = (uid: string): Promise<CheckUser> => {
     });
 };
 
-export const updateUserTerms = (uid, props) => {
+export const updateUserTerms = (uid: string, props: {}) => {
     firestore().collection(collections.Users).doc(uid).update({ terms: props });
 };
 
 export const signOut = async (type: signEnum) => {
     try {
         switch (type) {
-            case signEnum.GOOGLE:
+            case signEnum.Google:
             default: {
                 await GoogleSignin.signOut();
                 break;
             }
         }
         await auth().signOut();
-        console.log("------------");
-        appReload();
     } catch (error) {
         console.error(error);
     }
@@ -67,7 +67,7 @@ export const signOut = async (type: signEnum) => {
 
 export const leave = async () => {
     try {
-        
+        await withdrawCall();
         auth().signOut();
     } catch (error) {
         console.error(error);

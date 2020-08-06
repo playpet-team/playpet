@@ -43,12 +43,12 @@ export default function SocialSignIn({ setModalVisible }: { setModalVisible: Dis
     return (
         <SigninButtonGroups>
             <SigninButton
-                onPress={() => handleSignIn(signEnum.GOOGLE)}
+                onPress={() => handleSignIn(signEnum.Google)}
             >
                 <SigninText>구글로 시작하기</SigninText>
             </SigninButton>
             <SigninButton
-                onPress={() => handleSignIn(signEnum.APPLE)}
+                onPress={() => handleSignIn(signEnum.Apple)}
             >
                 <SigninText>애플로 시작하기</SigninText>
             </SigninButton>

@@ -7,7 +7,7 @@ interface AuthSettings extends User {
 export const initialState: AuthSettings = {
     isLogged: false,
     uid: '',
-    method: signEnum.NONE,
+    method: signEnum.None,
     email: '',
     isLeave: false,
     leaveAt: '',
