@@ -3,8 +3,6 @@ import styled from 'styled-components/native';
 import Card from '../components/Card';
 import Carousel from 'react-native-snap-carousel';
 import { deviceSize, loadPlaygroundCards, CardModel } from '../utils';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { CardType } from '../components/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { playgroundActions } from '../store/playgroundReducer';
 import { RootState } from '../store/rootReducers';
@@ -20,19 +18,18 @@ export default function PlayGroundScreen() {
     const [activeIndex, setActiveIndex] = useState(0);
     const { cards } = useSelector((state: RootState) => state.playground);
     const dispatch = useDispatch();
-    const isFocus = useIsFocused();
+    const isFocused = useIsFocused();
 
     useEffect(() => {
-        if (!isFocus) {
+        if (!isFocused) {
             return;
         }
         const loadCards = async () => {
             const response = await loadPlaygroundCards({});
             dispatch(playgroundActions.setCards(response));
         };
-        console.log('-----------');
         loadCards();
-    }, [isFocus]);
+    }, [isFocused]);
 
     const renderItem = ({ item, index }: CarouselType) => {
         return (
@@ -62,8 +59,4 @@ export default function PlayGroundScreen() {
     );
 };
 
-const PlayGroundBlock = styled.View`
-    /* flex: 1; */
-    /* align-items: center; */
-    /* justify-content: center; */
-`;
+const PlayGroundBlock = styled.View``;

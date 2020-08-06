@@ -2,19 +2,17 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { Input, Icon, Button } from 'react-native-elements';
 import FitImage from 'react-native-fit-image';
-// import * as ImagePicker from 'expo-image-picker';
-// import ImagePicker, { ImagePickerResponse } from 'react-native-image-picker';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { Video } from 'expo-av'
 import VideoPlayer from 'expo-video-player'
 import firestore from '@react-native-firebase/firestore';
-import { firebase } from '@react-native-firebase/storage';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import Constants from 'expo-constants';
 import { askPermission, permissionType, deviceSize, submitCard, CardModel } from '../utils';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import SubmitButton from './CardFormScreen/SubmitButton';
 
 const isVideoType = (mime: string) => mime.indexOf('video') > -1;
 
@@ -45,7 +43,8 @@ export default function CardFormScreen() {
                     description={description}
                     cardImages={cardImages}
                     uid={uid}
-                />),
+                />
+            ),
         });
     }, [title, tags, description, cardImages, uid]);
 
@@ -129,9 +128,7 @@ export default function CardFormScreen() {
                     }}
                 />
 
-                <DisplayTags
-                    tags={tags}
-                />
+                <DisplayTags tags={tags} />
             </InputTextGroup>
             <UploadImageBlock>
                 {!uploading && !cardImages.length &&
@@ -167,58 +164,10 @@ export default function CardFormScreen() {
     );
 };
 
-interface SubmitType {
-    cardImages: cardImage[];
-    uid: string;
-    title: string;
-    description: string;
-    tags: string[];
-}
-function SubmitButton({ cardImages, uid, title, description, tags }: SubmitType) {
-    const [isSubmitLoading, setSubmitLoading] = useState(false);
-    const formSubmit = async () => {
-        setSubmitLoading(true);
-        const downloadUrls = await startUploadStorage();
-        const formData: CardModel = {
-            title,
-            description,
-            tags,
-            uid,
-            uploadMedia: cardImages.map((image, index) => ({
-                firebaseUrl: downloadUrls[index],
-                isVideo: image.isVideo,
-                width: image.width,
-                height: image.height,
-            })),
-            createdAt: firestore.Timestamp.now(),
-            updatedAt: firestore.Timestamp.now(),
-        };
-        await submitCard(formData);
-        setSubmitLoading(false);
-    };
-    const startUploadStorage = async () => {
-        return await Promise.all(
-            cardImages.map(async (image) => {
-                const reference = firebase.storage().ref(`playground/${uid}_${firestore.Timestamp.now().seconds}`);
-                await reference.putFile(image.uri);
-                return reference.getDownloadURL();
-            })
-        );
-    };
-    return (
-        <Button
-            title="저장"
-            disabled={isSubmitLoading}
-            onPress={formSubmit}
-        />
-    );
-};
-
 interface Tags {
     tags: string[];
 }
 function DisplayTags({ tags }: Tags) {
-    const { length } = tags;
     return (
         <DisplayTagsBlock>
             {tags.map((tag, i) => (
