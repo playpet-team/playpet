@@ -8,6 +8,7 @@ import useInitializeSignIn from '../../hooks/useSignIn';
 import { signEnum } from '../../models';
 import { createUserCall } from '../../callable';
 import { authActions } from '../../store/authReducer';
+import Constants from 'expo-constants';
 
 export const currentUser = () => auth().currentUser;
 
@@ -47,11 +48,13 @@ export default function SocialSignIn({ setModalVisible }: { setModalVisible: Dis
             >
                 <SigninText>구글로 시작하기</SigninText>
             </SigninButton>
-            <SigninButton
-                onPress={() => handleSignIn(signEnum.Apple)}
-            >
-                <SigninText>애플로 시작하기</SigninText>
-            </SigninButton>
+            {Constants.platform?.ios &&
+                <SigninButton
+                    onPress={() => handleSignIn(signEnum.Apple)}
+                >
+                    <SigninText>애플로 시작하기</SigninText>
+                </SigninButton>
+            }
         </SigninButtonGroups>
     );
 };
