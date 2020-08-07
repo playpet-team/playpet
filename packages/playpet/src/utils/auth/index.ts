@@ -4,7 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import { appReload, firebaseTimeStampToStringStamp } from './../system/index';
 import auth, { FirebaseAuthTypes, firebase } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-community/google-signin';
-import { signEnum, collections, User } from '../../models';
+import { SignType, collections, User } from '../../models';
 import { initialState } from '../../store/authReducer';
 
 export const signInWithCustomToken = (customToken: string) => auth().signInWithCustomToken(customToken);
@@ -50,10 +50,10 @@ export const updateUserTerms = (uid: string, props: {}) => {
     firestore().collection(collections.Users).doc(uid).update({ terms: props });
 };
 
-export const signOut = async (type: signEnum) => {
+export const signOut = async (type: SignType) => {
     try {
         switch (type) {
-            case signEnum.Google:
+            case SignType.Google:
             default: {
                 await GoogleSignin.signOut();
                 break;

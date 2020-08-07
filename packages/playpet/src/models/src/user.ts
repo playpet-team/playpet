@@ -1,4 +1,4 @@
-export enum signEnum {
+export enum SignType {
     Google = 'GOOGLE',
     Apple = 'APPLE',
     Facebook = 'FACEBOOK',
@@ -6,7 +6,7 @@ export enum signEnum {
     None = 'NONE',
 };
 export interface User {
-    method: signEnum;
+    method: SignType;
     uid: string;
     email: string;
     isLeave: boolean;

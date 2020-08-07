@@ -8,26 +8,43 @@ import appleAuth, {
 } from '@invertase/react-native-apple-authentication';
 
 import { GoogleSignin } from '@react-native-community/google-signin';
-import { signEnum } from '../models';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import { SignType } from '../models';
 
 const GOOGLE_WEB_CLIENT_ID = '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com';
 GoogleSignin.configure({ webClientId: GOOGLE_WEB_CLIENT_ID });
 
 
 export default function useInitializeSignIn() {
-    const getUidByThirdPartySignIn = useCallback(async (method: signEnum): Promise<string> => {
+    const getUidByThirdPartySignIn = useCallback(async (method: SignType): Promise<string> => {
         try {
             switch (method) {
-                case signEnum.Google: {
+                case SignType.Google: {
                     await GoogleSignin.hasPlayServices();
                     const userInfo = await GoogleSignin.signIn();
-                    const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken);
-                    const { user } = await signInCredential(googleCredential);
-                    console.log('endn------------');
+                    const credential = auth.GoogleAuthProvider.credential(userInfo.idToken);
+                    const { user } = await signInCredential(credential);
                     return user.uid;
                 }
-                case signEnum.Apple: {
+                case SignType.Apple: {
                     const credential = await appleSignIn();
+                    const { user } = await signInCredential(credential);
+                    return user.uid;
+                }
+                case SignType.Facebook: {
+                    // Attempt login with permissions
+                    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+
+                    if (result.isCancelled) {
+                        return 'canceled';
+                    }
+                    const data = await AccessToken.getCurrentAccessToken();
+                    console.log('data------', data);
+                    if (!data) {
+                        throw 'error';
+                    }
+                    const credential = auth.FacebookAuthProvider.credential(data.accessToken);
+
                     const { user } = await signInCredential(credential);
                     return user.uid;
                 }

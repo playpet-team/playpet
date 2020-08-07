@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 import styled from 'styled-components/native';
 import { signOut, leave, appReload } from '../../utils';
 import { ListItem } from 'react-native-elements';
-import { signEnum } from '../../models';
+import { SignType } from '../../models';
 import useLoadingIndicator from '../../hooks/useLoadingIndicator';
 
 enum Handle {
@@ -32,7 +32,7 @@ export default function AuthSettings() {
                 onPress: async () => {
                     try {
                         setLoading(true);
-                        await signOut(signEnum.Google);
+                        await signOut(SignType.Google);
                         appReload();
                     } catch (e) {
                         alert('로그아웃에 실패하였습니다. 잠시후 다시 시도해 주세요');

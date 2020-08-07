@@ -5,7 +5,7 @@ import auth from '@react-native-firebase/auth';
 
 import { checkIsExistUser, CheckUser } from '../../utils';
 import useInitializeSignIn from '../../hooks/useSignIn';
-import { signEnum } from '../../models';
+import { SignType } from '../../models';
 import { createUserCall } from '../../callable';
 import { authActions } from '../../store/authReducer';
 import Constants from 'expo-constants';
@@ -16,7 +16,7 @@ export default function SocialSignIn({ setModalVisible }: { setModalVisible: Dis
     const { getUidByThirdPartySignIn } = useInitializeSignIn();
     const dispatch = useDispatch();
 
-    const handleSignIn = async (method: signEnum) => {
+    const handleSignIn = async (method: SignType) => {
         await getUidByThirdPartySignIn(method);
         const user = currentUser();
         if (!user) {
@@ -43,18 +43,17 @@ export default function SocialSignIn({ setModalVisible }: { setModalVisible: Dis
 
     return (
         <SigninButtonGroups>
-            <SigninButton
-                onPress={() => handleSignIn(signEnum.Google)}
-            >
-                <SigninText>구글로 시작하기</SigninText>
-            </SigninButton>
             {Constants.platform?.ios &&
-                <SigninButton
-                    onPress={() => handleSignIn(signEnum.Apple)}
-                >
+                <SigninButton onPress={() => handleSignIn(SignType.Apple)}>
                     <SigninText>애플로 시작하기</SigninText>
                 </SigninButton>
             }
+            <SigninButton onPress={() => handleSignIn(SignType.Facebook)}>
+                <SigninText>페이스북으로 시작하기</SigninText>
+            </SigninButton>
+            <SigninButton onPress={() => handleSignIn(SignType.Google)}>
+                <SigninText>구글로 시작하기</SigninText>
+            </SigninButton>
         </SigninButtonGroups>
     );
 };
