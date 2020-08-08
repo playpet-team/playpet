@@ -1,17 +1,18 @@
+import { firebaseNow } from './../index';
 import { withdrawCall } from './../../callable/auth';
-import { withdraw } from './../../../../firefunction/src/auth/index';
 import firestore from '@react-native-firebase/firestore';
-import { appReload, firebaseTimeStampToStringStamp } from './../system/index';
+import { firebaseTimeStampToStringStamp } from './../system/index';
 import auth, { FirebaseAuthTypes, firebase } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { signEnum, collections, User } from '../../models';
 import { initialState } from '../../store/authReducer';
 
+export const currentUser = () => auth().currentUser;
 export const signInWithCustomToken = (customToken: string) => auth().signInWithCustomToken(customToken);
 export const signInCredential = async (credential: FirebaseAuthTypes.AuthCredential) => await auth().signInWithCredential(credential);
 export const updateUserLastLogin = async (uid: string) => {
     await firestore().collection(collections.Users).doc(uid).update({
-        lastLogin: firestore.Timestamp.now(),
+        lastLogin: firebaseNow(),
     });
 };
 
@@ -27,6 +28,10 @@ export const getUser = async (uid: string): Promise<User | null> => {
         createdAt: firebaseTimeStampToStringStamp(user.createdAt),
         updatedAt: firebaseTimeStampToStringStamp(user.updatedAt),
     };
+};
+
+export const getUserTerms = async (uid: string) => {
+    return Boolean((await firestore().collection(collections.Terms).doc(uid).get()).exists);
 };
 
 export enum CheckUser {
@@ -47,7 +52,11 @@ export const checkIsExistUser = (uid: string): Promise<CheckUser> => {
 };
 
 export const updateUserTerms = (uid: string, props: {}) => {
-    firestore().collection(collections.Users).doc(uid).update({ terms: props });
+    firestore().collection(collections.Terms).doc(uid).set({
+        terms: props,
+        createdAt: firebaseNow(),
+        updatedAt: firebaseNow(),
+    }, { merge: true });
 };
 
 export const signOut = async (type: signEnum) => {
