@@ -1,6 +1,6 @@
 export enum collections {
     Users = 'users',
-    Terms = 'trems',
+    Terms = 'terms',
     AuthTokens = 'authTokens',
     Playground = 'playground',
     PushSettings = 'pushSettings',

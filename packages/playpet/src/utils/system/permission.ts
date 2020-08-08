@@ -12,9 +12,12 @@ export enum PermissionsList {
     REMINDERS = 'REMINDERS',
 };
 export const askPermission = async (type: PermissionsList) => {
-    const { status } = await Permissions.askAsync(Permissions[type]);
+    console.log('askPermission', type);
+    const response = await Permissions.askAsync(Permissions[type]);
+    // const { status } = await Permissions.askAsync(Permissions[type]);
+    console.log('askPermission status', response);
     return {
-        status,
+        status: response.status,
         type,
     };
 };

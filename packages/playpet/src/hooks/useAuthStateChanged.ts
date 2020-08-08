@@ -24,12 +24,6 @@ function useAuthStateChanged() {
         return subscriber;
     }, []);
 
-    useEffect(() => {
-        if (isLogged) {
-            askPermission(PermissionsList.NOTIFICATIONS);
-        }
-    }, [isLogged]);
-
     return { isLogged };
 }
 

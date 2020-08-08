@@ -4,9 +4,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 import SignUpAgreeTermsModal from './AuthScreen/SignUpAgreeTermsModal';
 import { getUserTerms, currentUser } from '../utils';
+import useFirebaseMessage from '../hooks/useFirebaseMessage';
 
 export default function Home() {
     const [modalVisible, setModalVisible] = useState(false);
+    useFirebaseMessage();
 
     useEffect(() => {
         loadTerms();

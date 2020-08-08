@@ -1,3 +1,4 @@
+import firestore from '@react-native-firebase/firestore';
 import { NativeModules, Dimensions } from 'react-native';
 import moment from 'moment';
 
@@ -17,4 +18,4 @@ export interface FirebaseTimeStamp {
     seconds: number;
 };
 export const firebaseTimeStampToStringStamp = (at: FirebaseTimeStamp) => moment(at.seconds).toString();
-
+export const firebaseNow = () => firestore.Timestamp.now();

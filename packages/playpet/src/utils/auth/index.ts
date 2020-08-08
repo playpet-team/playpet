@@ -1,4 +1,4 @@
-import { firebaseNow } from './../index';
+import { firebaseNow } from '../';
 import { withdrawCall } from './../../callable/auth';
 import firestore from '@react-native-firebase/firestore';
 import { firebaseTimeStampToStringStamp } from './../system/index';
@@ -51,9 +51,25 @@ export const checkIsExistUser = (uid: string): Promise<CheckUser> => {
     });
 };
 
-export const updateUserTerms = (uid: string, props: {}) => {
+export const updateUserTerms = (uid: string, terms: {}) => {
     firestore().collection(collections.Terms).doc(uid).set({
-        terms: props,
+        ...terms,
+        createdAt: firebaseNow(),
+        updatedAt: firebaseNow(),
+    }, { merge: true });
+};
+
+// export const updateAllowPushSettings = (uid: string, fcmToken: string) => {
+//     firestore().collection(collections.PushSettings).doc(uid).set({
+//         fcmToken,
+//         createdAt: firebaseNow(),
+//         updatedAt: firebaseNow(),
+//     }, { merge: true });
+// };
+
+export const updateFcmToken = (uid: string, fcmToken: string) => {
+    firestore().collection(collections.PushSettings).doc(uid).set({
+        fcmToken,
         createdAt: firebaseNow(),
         updatedAt: firebaseNow(),
     }, { merge: true });
