@@ -3,10 +3,8 @@ import { Text } from 'react-native';
 import styled from 'styled-components/native';
 import auth from '@react-native-firebase/auth';
 
-import { updateUserTerms } from '../../utils';
+import { updateUserTerms, currentUser } from '../../utils';
 import PlaypetDialog from '../../components/PlaypetDialog';
-
-const currentUser = () => auth().currentUser;
 
 interface TermsModal {
     modalVisible: boolean;
@@ -50,6 +48,8 @@ export default function SignUpAgreeTermsModal({ modalVisible, setModalVisible }:
         <PlaypetDialog
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
+            isHideCloseButton={true}
+            isBackdropPress={false}
         >
             <Text>회원가입을 추카합니다</Text>
             <AllTermsAgree onPress={handleAllAgree}>

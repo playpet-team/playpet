@@ -21,6 +21,7 @@
     "@firebase/functions-types": "^0.3.17",
     "@invertase/react-native-apple-authentication": "^1.1.2",
     "@playpet/firefunction": "*",
+    "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/cli": "^4.10.1",
     "@react-native-community/google-signin": "^4.0.3",
     "@react-native-community/masked-view": "^0.1.10",

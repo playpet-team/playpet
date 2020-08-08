@@ -4,10 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from 'react-native-elements';
 import SocialSignIn from '../screens/AuthScreen/SocialSignIn';
 import SignUpAgreeTermsModal from '../screens/AuthScreen/SignUpAgreeTermsModal';
-import { CustomStackScreenProp } from '../navigation';
 
-export default function AppLogin({ navigation }: CustomStackScreenProp<'AppLogin'>) {
-    const [modalVisible, setModalVisible] = useState(false);
+export default function AppLogin() {
 
     return (
         <AppLoginBlock>
@@ -24,11 +22,7 @@ export default function AppLogin({ navigation }: CustomStackScreenProp<'AppLogin
                 }}
             />
             <MainTitle><Text style={{ color: '#fff' }}>누구든 반려동물을 사랑할수 있습니다</Text></MainTitle>
-            <SocialSignIn setModalVisible={setModalVisible} />
-            <SignUpAgreeTermsModal
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-            />
+            <SocialSignIn />
         </AppLoginBlock>
     )
 };

@@ -1,6 +1,6 @@
 import { cardImage } from "../CardFormScreen";
 import React, { useState } from "react";
-import { CardModel, submitCard } from "../../utils";
+import { CardModel, submitCard, firebaseNow } from "../../utils";
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/storage';
 import { Button } from 'react-native-elements';
@@ -29,8 +29,8 @@ function SubmitButton({ cardImages, uid, title, description, tags }: Submit) {
                 width: image.width,
                 height: image.height,
             })),
-            createdAt: firestore.Timestamp.now(),
-            updatedAt: firestore.Timestamp.now(),
+            createdAt: firebaseNow(),
+            updatedAt: firebaseNow(),
         };
         await submitCard(formData);
         setSubmitLoading(false);
@@ -39,7 +39,7 @@ function SubmitButton({ cardImages, uid, title, description, tags }: Submit) {
     const startUploadStorage = async () => {
         return await Promise.all(
             cardImages.map(async (image) => {
-                const reference = firebase.storage().ref(`playground/${uid}_${firestore.Timestamp.now().seconds}`);
+                const reference = firebase.storage().ref(`playground/${uid}_${firebaseNow().seconds}`);
                 await reference.putFile(image.uri);
                 return reference.getDownloadURL();
             })

@@ -6,8 +6,8 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
 import AppLogin from '../components/AppLogin';
-import { currentUser } from '../screens/AuthScreen/SocialSignIn';
 import useAuthStateChanged from '../hooks/useAuthStateChanged';
+import { currentUser } from '../utils';
 
 Appearance.getColorScheme();
 

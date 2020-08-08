@@ -3,46 +3,55 @@ import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 
-import { checkIsExistUser, CheckUser } from '../../utils';
+import { checkIsExistUser, CheckUser, currentUser } from '../../utils';
 import useInitializeSignIn from '../../hooks/useSignIn';
 import { SignType } from '../../models';
 import { createUserCall } from '../../callable';
 import { authActions } from '../../store/authReducer';
 import Constants from 'expo-constants';
+import useLoadingIndicator from '../../hooks/useLoadingIndicator';
 
-export const currentUser = () => auth().currentUser;
 
-export default function SocialSignIn({ setModalVisible }: { setModalVisible: Dispatch<SetStateAction<boolean>> }) {
+
+export default function SocialSignIn() {
+    const { loading, setLoading, Indicator } = useLoadingIndicator();
     const { getUidByThirdPartySignIn } = useInitializeSignIn();
     const dispatch = useDispatch();
 
     const handleSignIn = async (method: SignType) => {
-        await getUidByThirdPartySignIn(method);
-        const user = currentUser();
-        if (!user) {
-            return;
-        }
-        const uid = user.uid;
-        const result: CheckUser = await checkIsExistUser(uid);
-        switch (result) {
-            case CheckUser.Empty: {
-                createUserCall({
-                    uid,
-                    method,
-                });
-                setModalVisible(true);
-                break;
+        try {
+            setLoading(true);
+            await getUidByThirdPartySignIn(method);
+            const user = currentUser();
+            if (!user) {
+                return;
             }
-            default:
-            case CheckUser.Exists: {
-                dispatch(authActions.signIn());
-                break;
+            const uid = user.uid;
+            const result: CheckUser = await checkIsExistUser(uid);
+            switch (result) {
+                case CheckUser.Empty: {
+                    createUserCall({
+                        uid,
+                        method,
+                    });
+                    break;
+                }
+                default:
+                case CheckUser.Exists: {
+                    dispatch(authActions.signIn());
+                    break;
+                }
             }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <SigninButtonGroups>
+            {loading && <Indicator />}
             {Constants.platform?.ios &&
                 <SigninButton onPress={() => handleSignIn(SignType.Apple)}>
                     <SigninText>애플로 시작하기</SigninText>
