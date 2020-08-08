@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "386527552204-ouj7aulio17uivh1jfbvbqetpros5n90.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.playpet.android",
+            "certificate_hash": "892b2b46907b26d3e729829afce15446b9947450"
+          }
+        },
+        {
           "client_id": "386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -32,10 +40,11 @@
               "client_type": 3
             },
             {
-              "client_id": "386527552204-ljgbvb6ll42b0atjhgve1f7os95ugdv0.apps.googleusercontent.com",
+              "client_id": "386527552204-dt1dlpoamhhgntobabq7geet48punfjb.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.playpet.ios"
+                "bundle_id": "com.playpet.me",
+                "app_store_id": "1525652429"
               }
             }
           ]

@@ -1,4 +1,4 @@
-import { signEnum } from '../models';
+import { SignType } from '../models';
 import functions from '@react-native-firebase/functions';
 
 enum callable {
@@ -7,7 +7,7 @@ enum callable {
 }
 interface createUserCollectionParams {
     uid: string;
-    method?: signEnum;
+    method?: SignType;
 };
 export const createUserCall = async (params: createUserCollectionParams) => {
     await functions().httpsCallable(callable.CreateUser)(params);

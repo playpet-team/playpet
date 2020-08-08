@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { User, signEnum } from '../models';
+import { User, SignType } from '../models';
 
 interface AuthSettings extends User {
     isLogged: boolean;
@@ -7,7 +7,7 @@ interface AuthSettings extends User {
 export const initialState: AuthSettings = {
     isLogged: false,
     uid: '',
-    method: signEnum.None,
+    method: SignType.None,
     email: '',
     isLeave: false,
     leaveAt: '',

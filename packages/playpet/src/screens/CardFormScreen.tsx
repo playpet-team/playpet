@@ -9,7 +9,7 @@ import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import Constants from 'expo-constants';
-import { askPermission, PermissionsList, deviceSize, submitCard, CardModel } from '../utils';
+import { askPermission, PermissionsList, deviceSize, submitCard, CardModel, firebaseNow } from '../utils';
 import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SubmitButton from './CardFormScreen/SubmitButton';
@@ -68,7 +68,7 @@ export default function CardFormScreen() {
             return;
         }
         setUploading(true);
-        const tempId = `${uid}_${firestore.Timestamp.now().seconds}`;
+        const tempId = `${uid}_${firebaseNow().seconds}`;
         try {
             // 빠른반응을 위해 업로드전 우선 preview 시켜준다
             setCardImages([

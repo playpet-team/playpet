@@ -13,7 +13,12 @@ interface PlaypetDialog {
 };
 
 const PlaypetDialog = ({
-    modalVisible, setModalVisible, isHideCloseButton, isBackdropPress, containerStyle = {}, children
+    modalVisible,
+    setModalVisible,
+    isHideCloseButton = false,
+    isBackdropPress = true,
+    containerStyle = {},
+    children,
 }: PlaypetDialog) => {
     const handleCloseModal = () => setModalVisible(false);
 
@@ -33,7 +38,7 @@ const PlaypetDialog = ({
                 <Container style={containerStyle}>
                     <PlaypetDialogHeader>
                         <Text>헤더</Text>
-                        {isHideCloseButton &&
+                        {!isHideCloseButton &&
                             <CloseButton onPress={handleCloseModal}>
                                 <Text>X</Text>
                             </CloseButton>

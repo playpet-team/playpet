@@ -4,7 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import { firebaseTimeStampToStringStamp } from './../system/index';
 import auth, { FirebaseAuthTypes, firebase } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-community/google-signin';
-import { signEnum, collections, User } from '../../models';
+import { SignType, collections, User } from '../../models';
 import { initialState } from '../../store/authReducer';
 
 export const currentUser = () => auth().currentUser;
@@ -59,10 +59,10 @@ export const updateUserTerms = (uid: string, props: {}) => {
     }, { merge: true });
 };
 
-export const signOut = async (type: signEnum) => {
+export const signOut = async (type: SignType) => {
     try {
         switch (type) {
-            case signEnum.Google:
+            case SignType.Google:
             default: {
                 await GoogleSignin.signOut();
                 break;
