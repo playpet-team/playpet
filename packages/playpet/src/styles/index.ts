@@ -6,7 +6,7 @@ interface DividerProps {
     marginBottom?: number;
     backgroundColor?: number;
 }
-export const DividerBlock = styled(Divider)<DividerProps>`
+export const DividerBlock = styled.View<DividerProps>`
     ${({ marginTop }) => marginTop && css`
         margin-top: ${marginTop}px;
     `}
@@ -17,3 +17,5 @@ export const DividerBlock = styled(Divider)<DividerProps>`
     background-color: ${backgroundColor};
     `}
 `;
+
+// export const 

@@ -51,28 +51,24 @@ export const checkIsExistUser = (uid: string): Promise<CheckUser> => {
     });
 };
 
-export const updateUserTerms = (uid: string, terms: {}) => {
-    firestore().collection(collections.Terms).doc(uid).set({
+export const updateUserTerms = async (uid: string, terms: {}) => {
+    const docRef = firestore().collection(collections.Terms).doc(uid);
+    const setParams = {
         ...terms,
-        createdAt: firebaseNow(),
         updatedAt: firebaseNow(),
-    }, { merge: true });
+        ...((await docRef.get()).exists ? {} : { createdAt: firebaseNow() })
+    }
+    docRef.set(setParams, { merge: true });
 };
 
-// export const updateAllowPushSettings = (uid: string, fcmToken: string) => {
-//     firestore().collection(collections.PushSettings).doc(uid).set({
-//         fcmToken,
-//         createdAt: firebaseNow(),
-//         updatedAt: firebaseNow(),
-//     }, { merge: true });
-// };
-
-export const updateFcmToken = (uid: string, fcmToken: string) => {
-    firestore().collection(collections.PushSettings).doc(uid).set({
+export const updateFcmToken = async (uid: string, fcmToken: string) => {
+    const docRef = firestore().collection(collections.PushSettings).doc(uid);
+    const setParams = {
         fcmToken,
-        createdAt: firebaseNow(),
         updatedAt: firebaseNow(),
-    }, { merge: true });
+        ...((await docRef.get()).exists ? {} : { createdAt: firebaseNow() })
+    };
+    docRef.set(setParams, { merge: true });
 };
 
 export const signOut = async (type: SignType) => {

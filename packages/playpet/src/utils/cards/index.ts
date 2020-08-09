@@ -1,9 +1,11 @@
-import { firebaseTimeStampToStringStamp } from './../system/index';
+import { firebaseTimeStampToStringStamp, firebaseNow } from './../system/index';
 import { collections } from '../../models/src/collections';
 
-import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import firestore, { FirebaseFirestoreTypes, } from '@react-native-firebase/firestore';
+import { manageCardLikes } from '../../callable';
 
 export interface CardModel {
+    id: string;
     title: string;
     description: string;
     tags: string[];
@@ -43,9 +45,36 @@ export const loadPlaygroundCards = async ({ sortType = SortCards.CreatedAt, star
     return cardDoc.docs.map(doc => {
         const docData = doc.data();
         return {
+            id: doc.id,
             ...docData,
             createdAt: firebaseTimeStampToStringStamp(docData.createdAt),
             updatedAt: firebaseTimeStampToStringStamp(docData.updatedAt),
         }
     });
+};
+
+export interface CardLike {
+    uid: string;
+    id: string;
+    methods: 'add' | 'remove';
+}
+export const setCardLike = async ({ uid, id, methods = 'add' }: CardLike) => {
+    const response = await manageCardLikes({ uid, id, methods });
+};
+
+// export interface UserAction {
+//     cardLikes: string[];
+//     createdAt: FirebaseFirestoreTypes.Timestamp;
+//     updatedAt: FirebaseFirestoreTypes.Timestamp;
+// }
+export const getCardLikes = async (uid: string, onSnapCallback: Function) => {
+    const listener = firestore().collection(collections.UserActions).doc(uid).onSnapshot(snapshot => {
+        onSnapCallback(snapshot.data());
+    });
+    return listener;
+    // if (!getDoc.exists) {
+    //     return [];
+    // }
+    // const userActions = getDoc.data();
+    // return userActions?.cardLikes || [];
 };

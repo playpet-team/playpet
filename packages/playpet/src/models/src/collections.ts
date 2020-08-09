@@ -3,6 +3,7 @@ export enum collections {
     Terms = 'terms',
     AuthTokens = 'authTokens',
     Playground = 'playground',
+    UserActions = 'userActions',
     PushSettings = 'pushSettings',
     Payments = 'payments',
 };

@@ -5,7 +5,8 @@ export {
 } from './auth';
 
 export {
-    haha
+    haha,
+    manageCardLikes,
 } from './playground';
 
 // admin gcp 권한 json -> 보관에 주의해야함
@@ -17,7 +18,7 @@ admin.initializeApp({
     })
 });
 
-const getCurrentTime = () => admin.firestore.FieldValue.serverTimestamp();
+export const getCurrentTime = () => admin.firestore.FieldValue.serverTimestamp();
 
 interface createUserParams {
     uid: string;
