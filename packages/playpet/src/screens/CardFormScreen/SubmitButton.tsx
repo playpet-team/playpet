@@ -11,8 +11,9 @@ interface Submit {
     title: string;
     description: string;
     tags: string[];
+    onSubmitCallback: Function;
 }
-function SubmitButton({ cardImages, uid, title, description, tags }: Submit) {
+function SubmitButton({ cardImages, uid, title, description, tags, onSubmitCallback }: Submit) {
     const [isSubmitLoading, setSubmitLoading] = useState(false);
 
     const formSubmit = async () => {
@@ -35,6 +36,7 @@ function SubmitButton({ cardImages, uid, title, description, tags }: Submit) {
         };
         await submitCard(formData);
         setSubmitLoading(false);
+        onSubmitCallback();
     };
 
     const startUploadStorage = async () => {

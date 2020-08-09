@@ -2,169 +2,168 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { Input, Icon } from 'react-native-elements';
 import FitImage from 'react-native-fit-image';
-import ImagePicker, { Image } from 'react-native-image-crop-picker';
-import { Video } from 'expo-av'
-import VideoPlayer from 'expo-video-player'
+import * as ImagePicker from 'expo-image-picker';
 import * as VideoThumbnails from 'expo-video-thumbnails';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import Constants from 'expo-constants';
-import { askPermission, PermissionsList, deviceSize, submitCard, CardModel, firebaseNow } from '../utils';
+import { askPermission, PermissionsList, firebaseNow } from '../utils';
 import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SubmitButton from './CardFormScreen/SubmitButton';
-
-const isVideoType = (mime: string) => mime.indexOf('video') > -1;
-
-export interface cardImage {
-    id: string;
-    uri: string;
-    firebaseUrl: string;
-    videoThumbnails?: string;
-    isVideo: boolean;
-    width: number;
-    height: number;
-}
-const getPermissionAsync = async () => {
-    if (Constants.platform?.ios) {
-        await askPermission(PermissionsList.CAMERA_ROLL);
-    }
-};
+import useLoadingIndicator from '../hooks/useLoadingIndicator';
 
 export default function CardFormScreen() {
+    const { loading, setLoading, Indicator } = useLoadingIndicator();
     const { uid } = useSelector((state: RootState) => state.auth);
-
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [tags, setTags] = useState<string[]>([]);
-    const [tagField, setTagField] = useState('');
-    const [cardImages, setCardImages] = useState<cardImage[]>([]);
-    const [uploading, setUploading] = useState(false);
+    const [form, setForm] = useState<Form>(formReset);
     const navigation = useNavigation();
 
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <SubmitButton
-                    title={title}
-                    tags={tags}
-                    description={description}
-                    cardImages={cardImages}
+                    {...form}
                     uid={uid}
+                    onSubmitCallback={reset}
                 />
             ),
         });
-    }, [title, tags, description, cardImages, uid]);
+    }, [form, uid]);
+
+    const reset = () => setForm(formReset);
 
     const openPicker = async () => {
         await getPermissionAsync();
-        const response: Image | any = await ImagePicker.openPicker({
-            mediaType: 'video',
-            loadingLabelText: '동영상을 업로드 중입니다',
-            // cropping: true,
-            // width: 1080,
-            // height: 1920,
+        const response: any = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+            // videoExportPreset: ImagePicker.VideoExportPreset.MediumQuality,
+            allowsEditing: true,
+            quality: 1,
         });
         addCardImage(response);
     };
 
-    const addCardImage = async (response: Image | any) => {
+    const addCardImage = async (response: any) => {
         if (response.cancelled) {
             return;
         }
-        console.log('response-------', response);
-        setUploading(true);
+        setLoading(true);
         const tempId = `${uid}_${firebaseNow().seconds}`;
         let videoThumbnails = '';
         try {
             // 빠른반응을 위해 업로드전 우선 preview 시켜준다
-            if (isVideoType(response.mime)) {
+            if (isVideoType(response)) {
                 const { uri } = await VideoThumbnails.getThumbnailAsync(
-                    response.path,
+                    response.uri,
                     {
                         time: 1500,
                     }
                 );
                 videoThumbnails = uri;
-                console.log("uri------", uri);
             }
-            setCardImages([
-                ...cardImages,
-                {
-                    id: tempId,
-                    isVideo: isVideoType(response.mime),
-                    firebaseUrl: '',
-                    videoThumbnails,
-                    uri: response.path,
-                    width: response.width,
-                    height: response.height,
-                }
-            ]);
+            setForm({
+                ...form,
+                cardImages: [
+                    ...form.cardImages,
+                    {
+                        id: tempId,
+                        isVideo: isVideoType(response),
+                        firebaseUrl: '',
+                        videoThumbnails,
+                        uri: response.uri,
+                        width: response.width,
+                        height: response.height,
+                    }
+                ],
+            });
+            console.log('videoThumbnails', response, videoThumbnails);
         } catch (e) {
             removeUploadImage(tempId);
             console.error(e);
         } finally {
-            setUploading(false);
+            setLoading(false);
         }
     };
 
-    const removeUploadImage = (tempId: string) => setCardImages(cardImages.filter(({ id }) => id !== tempId));
+    const removeUploadImage = (tempId: string) => {
+        setForm({
+            ...form,
+            cardImages: form.cardImages.filter(({ id }) => id !== tempId),
+        });
+    };
 
     return (
         <CardBlock>
+            {loading && <Indicator />}
             <Text>CardForm</Text>
             <InputTextGroup>
                 <Input
                     placeholder='Title 필수'
-                    value={title}
-                    onChangeText={(value: string) => setTitle(value)}
+                    value={form.title}
+                    onChangeText={(value: string) => setForm({
+                        ...form,
+                        title: value,
+                    })}
                 />
                 <Input
                     placeholder='#댕댕이'
-                    value={tagField}
+                    value={form.tagField}
                     onChangeText={(value: string) => {
                         if (value.slice(-1) === ' ') {
-                            setTagField('');
-                            setTags([...tags, tagField]);
+                            setForm({
+                                ...form,
+                                tags: [...form.tags, form.tagField],
+                                tagField: '',
+                            })
                         } else {
-                            setTagField(value);
+                            setForm({
+                                ...form,
+                                tagField: value,
+                            })
                         }
-
                     }}
                 />
                 <InputDescription
                     placeholder='Description 선택?'
                     multiline
-                    value={description}
-                    onChangeText={(value: string) => setDescription(value)}
+                    value={form.description}
+                    onChangeText={(value: string) => {
+                        setForm({
+                            ...form,
+                            description: value,
+                        });
+                    }}
                 />
-
-                <DisplayTags tags={tags} />
+                <DisplayTags tags={form.tags} />
             </InputTextGroup>
             <UploadImageBlock>
-                {!uploading && !cardImages.length &&
+                {!loading && !form.cardImages.length &&
                     <UploadImage onPress={openPicker}>
                         <Icon name="get-app" />
                     </UploadImage>
                 }
             </UploadImageBlock>
-            {uploading && <Text>uploading...</Text>}
+            {loading && <Text>loading...</Text>}
             <UploadedImageBlock>
-                {cardImages.map(card => {
-                    if (card.isVideo) {
-                        <FitImageBlock
-                            key={card.id}
-                            uploading={uploading}
-                            resizeMode='contain'
-                            source={{ uri: card.videoThumbnails }}
-                            originalWidth={card.width}
-                            originalHeight={card.height}
-                        />
+                {form.cardImages.map(card => {
+                    if (card.isVideo && card.videoThumbnails) {
+                        return (
+                            <FitImageBlock
+                                key={card.id}
+                                resizeMode='contain'
+                                source={{ uri: card.videoThumbnails }}
+                                style={{
+                                    width: '100%',
+                                }}
+                                originalWidth={card.width}
+                                originalHeight={card.height}
+                            />
+                        )
                     }
                     return (
                         <FitImageBlock
                             key={card.id}
-                            uploading={uploading}
                             resizeMode='cover'
                             source={{ uri: card.uri }}
                             originalWidth={card.width}
@@ -176,6 +175,41 @@ export default function CardFormScreen() {
         </CardBlock>
     );
 };
+
+const isVideoType = ({ type }: { type: string }) => type === 'video';
+
+export interface cardImage {
+    id: string;
+    uri: string;
+    firebaseUrl: string;
+    videoThumbnails?: string;
+    isVideo: boolean;
+    width: number;
+    height: number;
+}
+
+interface Form {
+    title: string;
+    description: string;
+    tags: string[];
+    tagField: string;
+    cardImages: cardImage[];
+};
+
+const formReset: Form = {
+    title: '',
+    description: '',
+    tags: [],
+    tagField: '',
+    cardImages: [],
+};
+
+const getPermissionAsync = async () => {
+    if (Constants.platform?.ios) {
+        await askPermission(PermissionsList.CAMERA_ROLL);
+    }
+};
+
 
 interface Tags {
     tags: string[];
