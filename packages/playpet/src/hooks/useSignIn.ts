@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 // import * as React from 'react';
 import { signInCredential } from '../utils';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
@@ -9,13 +9,22 @@ import appleAuth, {
 
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import KakaoLogins from '@react-native-seoul/kakao-login';
 import { SignType } from '../models';
 import AsyncStorage from '@react-native-community/async-storage';
 const GOOGLE_WEB_CLIENT_ID = '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com';
 GoogleSignin.configure({ webClientId: GOOGLE_WEB_CLIENT_ID });
 
+const PROFILE_EMPTY = {
+    id: 'profile has not fetched',
+    email: 'profile has not fetched',
+    profile_image_url: '',
+};
 
 export default function useInitializeSignIn() {
+    const [token, setToken] = useState<null | string>(null);
+    const [profile, setProfile] = useState<any>(PROFILE_EMPTY);
+
     const getUidByThirdPartySignIn = useCallback(async (method: SignType) => {
         let credential: FirebaseAuthTypes.AuthCredential | null = null;
         let email = '';
@@ -30,6 +39,13 @@ export default function useInitializeSignIn() {
                 }
                 case SignType.Apple: {
                     credential = await appleSignIn();
+                    break;
+                }
+                case SignType.Kakao: {
+                    console.log('go- kakao');
+                    kakaoLogin();
+                    // credential = await appleSignIn();
+
                     break;
                 }
                 case SignType.Facebook: {
@@ -124,5 +140,41 @@ export default function useInitializeSignIn() {
         return getProvider(SignType.Apple).credential(identityToken, nonce);
     }, []);
 
-    return { GoogleSignin, appleSignIn, getUidByThirdPartySignIn };
+    const kakaoLogin = async () => {
+        const result = await KakaoLogins.login();
+        console.log('kakaoLogin result', result);
+        setToken(result.accessToken);
+      };
+    
+    const kakaoLogout = async () => {
+        const result = await KakaoLogins.logout();
+        console.log('kakaoLogout result', result);
+        setToken(null);
+        setProfile(PROFILE_EMPTY);
+    };
+    
+    const getProfile = async () => {
+        const result = await KakaoLogins.getProfile();
+        console.log('getProfile result', result);
+        setProfile(result);
+    };
+    
+    const unlinkKakao = async () => {
+        const result = await KakaoLogins.unlink()
+        console.log('unlinkKakao result', result);
+        setToken(null);
+        setProfile(PROFILE_EMPTY);
+    };
+
+    return {
+        GoogleSignin,
+        appleSignIn,
+        kakaoApi: {
+            kakaoLogin,
+            kakaoLogout,
+            getProfile,
+            unlinkKakao,
+        },
+        getUidByThirdPartySignIn,
+    };
 };
