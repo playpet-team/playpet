@@ -13,3 +13,5 @@ export const createUserCall = async (params: createUserCollectionParams) => {
     await functions().httpsCallable(callable.CreateUser)(params);
 };
 export const withdrawCall = async () => await functions().httpsCallable(callable.Withdraw)();
+export const aoeuaoeu = async () => await functions().httpsCallable('aoeuaoeu')();
+export const haha = async (url: string) => await functions().httpsCallable('haha')(url);
