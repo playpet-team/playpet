@@ -43,12 +43,14 @@ export default function useInitializeSignIn() {
                 }
                 case SignType.Kakao: {
                     console.log('go- kakao');
+                    return alert('카카오는 아직 비즈니스 인증을 해야함');
                     kakaoLogin();
                     // credential = await appleSignIn();
 
                     break;
                 }
                 case SignType.Facebook: {
+                    return alert('카카오는 아직 비즈니스 인증을 해야함');
                     const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
                     if (result.isCancelled) {
                         break;
