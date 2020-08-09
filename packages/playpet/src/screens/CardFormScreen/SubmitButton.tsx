@@ -24,7 +24,8 @@ function SubmitButton({ cardImages, uid, title, description, tags }: Submit) {
             tags,
             uid,
             uploadMedia: cardImages.map((image, index) => ({
-                firebaseUrl: downloadUrls[index],
+                firebaseUrl: downloadUrls[index].url,
+                videoThumbnails: downloadUrls[index].thumbnail,
                 isVideo: image.isVideo,
                 width: image.width,
                 height: image.height,
@@ -39,9 +40,19 @@ function SubmitButton({ cardImages, uid, title, description, tags }: Submit) {
     const startUploadStorage = async () => {
         return await Promise.all(
             cardImages.map(async (image) => {
+                const urls = {
+                    url: '',
+                    thumbnail: '',
+                };
                 const reference = firebase.storage().ref(`playground/${uid}_${firebaseNow().seconds}`);
                 await reference.putFile(image.uri);
-                return reference.getDownloadURL();
+                urls.url = await reference.getDownloadURL();
+                if (image.videoThumbnails) {
+                    const reference = firebase.storage().ref(`playground/${uid}_${firebaseNow().seconds}_thumbnail.jpg`);
+                    await reference.putFile(image.videoThumbnails);
+                    urls.thumbnail = await reference.getDownloadURL();
+                }
+                return urls;
             })
         );
     };

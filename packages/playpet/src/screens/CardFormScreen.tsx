@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Input, Icon, Button } from 'react-native-elements';
+import { Input, Icon } from 'react-native-elements';
 import FitImage from 'react-native-fit-image';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { Video } from 'expo-av'
 import VideoPlayer from 'expo-video-player'
-import firestore from '@react-native-firebase/firestore';
+import * as VideoThumbnails from 'expo-video-thumbnails';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import Constants from 'expo-constants';
@@ -20,6 +20,7 @@ export interface cardImage {
     id: string;
     uri: string;
     firebaseUrl: string;
+    videoThumbnails?: string;
     isVideo: boolean;
     width: number;
     height: number;
@@ -29,6 +30,7 @@ const getPermissionAsync = async () => {
         await askPermission(PermissionsList.CAMERA_ROLL);
     }
 };
+
 export default function CardFormScreen() {
     const { uid } = useSelector((state: RootState) => state.auth);
 
@@ -57,8 +59,11 @@ export default function CardFormScreen() {
     const openPicker = async () => {
         await getPermissionAsync();
         const response: Image | any = await ImagePicker.openPicker({
-            width: 1080,
-            height: 1920,
+            mediaType: 'video',
+            loadingLabelText: '동영상을 업로드 중입니다',
+            // cropping: true,
+            // width: 1080,
+            // height: 1920,
         });
         addCardImage(response);
     };
@@ -67,16 +72,29 @@ export default function CardFormScreen() {
         if (response.cancelled) {
             return;
         }
+        console.log('response-------', response);
         setUploading(true);
         const tempId = `${uid}_${firebaseNow().seconds}`;
+        let videoThumbnails = '';
         try {
             // 빠른반응을 위해 업로드전 우선 preview 시켜준다
+            if (isVideoType(response.mime)) {
+                const { uri } = await VideoThumbnails.getThumbnailAsync(
+                    response.path,
+                    {
+                        time: 1500,
+                    }
+                );
+                videoThumbnails = uri;
+                console.log("uri------", uri);
+            }
             setCardImages([
                 ...cardImages,
                 {
                     id: tempId,
                     isVideo: isVideoType(response.mime),
                     firebaseUrl: '',
+                    videoThumbnails,
                     uri: response.path,
                     width: response.width,
                     height: response.height,
@@ -134,11 +152,13 @@ export default function CardFormScreen() {
             <UploadedImageBlock>
                 {cardImages.map(card => {
                     if (card.isVideo) {
-                        <VideoPlayer
-                            videoProps={{
-                                resizeMode: Video.RESIZE_MODE_COVER,
-                                source: { uri: card.uri },
-                            }}
+                        <FitImageBlock
+                            key={card.id}
+                            uploading={uploading}
+                            resizeMode='contain'
+                            source={{ uri: card.videoThumbnails }}
+                            originalWidth={card.width}
+                            originalHeight={card.height}
                         />
                     }
                     return (

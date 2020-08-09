@@ -32,7 +32,7 @@ function Card({
                     isMuted={true}
                     isLooping={true}
                     shouldPlay={onPlayActiveRange}
-                    resizeMode={Video.RESIZE_MODE_COVER}
+                    resizeMode={Video.RESIZE_MODE_CONTAIN}
                     style={{ width: '100%', height: '100%', position: 'absolute', }}
                 />
                 :
@@ -62,6 +62,7 @@ function Card({
 const CardBlock = styled.TouchableOpacity`
     flex: 1;
     margin-bottom: 8px;
+    background-color: #000;
     
 `;
 
