@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { playgroundActions } from '../store/playgroundReducer';
 import { RootState } from '../store/rootReducers';
 import { useIsFocused } from '@react-navigation/native';
-import useFetch from '../hooks/useFetch';
+
 const BOTTOM_NAV_BAR_HEIGHT = 65;
 const SLIDER_HEIGHT = deviceSize().height - BOTTOM_NAV_BAR_HEIGHT;
 

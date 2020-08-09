@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 import SignUpAgreeTermsModal from './AuthScreen/SignUpAgreeTermsModal';
 import { getUserTerms, currentUser } from '../utils';
+import { DividerBlock } from '../styles';
 import useFirebaseMessage from '../hooks/useFirebaseMessage';
+import ButtonGroups from '../components/ButtonGroups';
+import { ScrollView } from 'react-native-gesture-handler';
 // import { haha } from '../callable';
 
 export default function Home() {
@@ -28,16 +30,55 @@ export default function Home() {
     }, []);
 
     return (
-        <SafeAreaView>
+        <SafeAreaViewBlock>
             <HomeBlock>
-                <Text>aoeu홈</Text>
+                <ImageBlock
+                    source={require('../../assets/images/playpet_logo.png')}
+                />
+                <DividerBlock
+                    marginTop={24}
+                />
+                <ButtonGroups
+                    buttons={['인기', '최신']}
+                />
             </HomeBlock>
+            <ScrollView
+                style={{}}
+            >
+                <CardView />
+                <CardView />
+                <CardView />
+                <CardView />
+            </ScrollView>
             <SignUpAgreeTermsModal
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
             />
-        </SafeAreaView>
+        </SafeAreaViewBlock>
     );
 };
 
-const HomeBlock = styled.View``;
+const SafeAreaViewBlock = styled(SafeAreaView)`
+    background-color: #fff;
+    flex: 1;
+`;
+
+const HomeBlock = styled.View`
+    align-items: center;
+`;
+
+const CardView = styled.View`
+flex: 1;
+    margin: 20px;
+    height: 550px;
+    background-color: #e9e9e9;
+    border-radius: 8px;
+    margin-bottom: 16px;
+`;
+
+const ImageBlock = styled.Image`
+    margin-top: 24px;
+    width: 120px;
+    height: 35px;
+    resize-mode: contain;
+`;

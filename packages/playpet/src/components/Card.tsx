@@ -1,8 +1,7 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components/native';
 import { Video } from 'expo-av';
 import FitImage from 'react-native-fit-image';
-import { Animated, View, Text } from 'react-native';
 import { Icon } from 'react-native-elements'
 import { CardModel } from '../utils';
 

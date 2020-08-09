@@ -49,7 +49,7 @@ export default function BottomTabNavigator() {
             />
             <BottomTab.Screen
                 name="PlayGround"
-                component={BlankNavigator}
+                component={PlayGroundNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => <Icon
                         name="check-box-outline-blank"
@@ -90,7 +90,10 @@ function HomeNavigator() {
             <HomeTapStack.Screen
                 name="Home"
                 component={Home}
-                options={{ headerTitle: '홈' }}
+                options={{
+                    headerShown: false,
+                    headerTitle: '홈',
+                }}
             />
         </HomeTapStack.Navigator>
     );
@@ -118,7 +121,7 @@ export type BlankTapParamList = {
     BlankScreen: undefined;
 };
 const BlankTapStack = createStackNavigator<BlankTapParamList>();
-function BlankNavigator() {
+function PlayGroundNavigator() {
     return (
         <BlankTapStack.Navigator>
             <BlankTapStack.Screen
