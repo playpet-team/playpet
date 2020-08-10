@@ -1,3 +1,4 @@
+import { ToastParams } from './../components/Toast';
 import { useCallback, useState } from 'react';
 // import * as React from 'react';
 import { signInCredential } from '../utils';
@@ -26,6 +27,12 @@ export default function useInitializeSignIn() {
     const [profile, setProfile] = useState<any>(PROFILE_EMPTY);
 
     const getUidByThirdPartySignIn = useCallback(async (method: SignType) => {
+        let toastContent: ToastParams = {
+            visible: false,
+            title: '',
+            description: '',
+            image: '',
+        };
         let credential: FirebaseAuthTypes.AuthCredential | null = null;
         let email = '';
         try {
@@ -42,46 +49,64 @@ export default function useInitializeSignIn() {
                     break;
                 }
                 case SignType.Kakao: {
-                    console.log('go- kakao');
-                    return alert('카카오는 아직 비즈니스 인증을 해야함');
-                    kakaoLogin();
-                    // credential = await appleSignIn();
-
+                    toastContent = {
+                        ...toastContent,
+                        visible: true,
+                        title: '카카오는 아직 비즈니스 인증을 해야함',
+                    };
                     break;
+                    // kakaoLogin();
+                    // credential = await appleSignIn();
                 }
                 case SignType.Facebook: {
-                    return alert('카카오는 아직 비즈니스 인증을 해야함');
                     const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
                     if (result.isCancelled) {
                         break;
                     }
                     const data = await AccessToken.getCurrentAccessToken();
                     if (!data) {
-                        throw 'error';
+                        toastContent = {
+                            ...toastContent,
+                            visible: true,
+                            title: '인증 정보를 받아오는 작업을 실패했습니다',
+                        };
+                    } else {
+                        credential = getProvider(SignType.Facebook).credential(data.accessToken);
                     }
-                    credential = getProvider(SignType.Facebook).credential(data.accessToken);
                     break;
                 }
                 default: {
                     break;
                 }
             }
+            console.log('credential-----', credential);
             if (credential !== null) {
                 saveCredential(email, method, credential);
-                let uid = '';
                 try {
-                    const { user } = await signInCredential(credential);
-                    uid = user.uid;
+                    await signInCredential(credential);
                 } catch (error) {
                     if (error.code != "auth/account-exists-with-different-credential") {
-                        throw error;
+                        toastContent = {
+                            ...toastContent,
+                            visible: true,
+                            title: '인증 정보를 받아오는 작업을 실패했습니다',
+                        };
                     }
-                    alert('다른 로그인 방법으로 이미 회원가입을 한적이 있습니다.');
+                    toastContent = {
+                        ...toastContent,
+                        visible: true,
+                        title: '다른 로그인 방법으로 회원가입을 완료한 계정이 있습니다.',
+                    };
                 }
-                return uid;
             }
         } catch (error) {
-            return 'error';
+            toastContent = {
+                ...toastContent,
+                visible: true,
+                title: '인증 정보를 받아오는 작업을 실패했습니다',
+            };
+        } finally {
+            return toastContent;
         }
         
     }, []);

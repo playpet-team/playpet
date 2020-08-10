@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
@@ -10,18 +10,26 @@ import { createUserCall } from '../../callable';
 import { authActions } from '../../store/authReducer';
 import Constants from 'expo-constants';
 import useLoadingIndicator from '../../hooks/useLoadingIndicator';
-
+import Toast, { ToastParams } from '../../components/Toast';
 
 
 export default function SocialSignIn() {
     const { loading, setLoading, Indicator } = useLoadingIndicator();
     const { getUidByThirdPartySignIn } = useInitializeSignIn();
+    const [toastContent, setToastContent] = useState<ToastParams>({
+        visible: false,
+        title: '',
+        description: '',
+        image: '',
+    });
     const dispatch = useDispatch();
 
     const handleSignIn = async (method: SignType) => {
         try {
             setLoading(true);
-            await getUidByThirdPartySignIn(method);
+            const toastParams = await getUidByThirdPartySignIn(method);
+            toastParams.visible && setToastContent(toastParams);
+
             const user = currentUser();
             if (!user) {
                 return;
@@ -52,6 +60,12 @@ export default function SocialSignIn() {
     return (
         <SigninButtonGroups>
             {loading && <Indicator />}
+            {toastContent.visible &&
+                <Toast
+                    title={toastContent.title}
+                    setToastContent={setToastContent}
+                />
+            }
             {Constants.platform?.ios &&
                 <SigninButton onPress={() => handleSignIn(SignType.Apple)}>
                     <SigninText>애플로 시작하기</SigninText>
