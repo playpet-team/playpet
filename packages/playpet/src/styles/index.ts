@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native';
-import { Divider } from 'react-native-elements';
 
 interface DividerProps {
     marginTop?: number;

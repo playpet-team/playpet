@@ -1,4 +1,4 @@
-import { ToastParams } from './../components/Toast';
+import { ToastParams } from '../components/Toast';
 import { useCallback, useState } from 'react';
 // import * as React from 'react';
 import { signInCredential } from '../utils';
@@ -22,17 +22,17 @@ const PROFILE_EMPTY = {
     profile_image_url: '',
 };
 
+const resetToastParams = {
+    visible: false,
+    title: '',
+    description: '',
+    image: '',
+};
 export default function useInitializeSignIn() {
     const [token, setToken] = useState<null | string>(null);
     const [profile, setProfile] = useState<any>(PROFILE_EMPTY);
 
-    const getUidByThirdPartySignIn = useCallback(async (method: SignType) => {
-        let toastContent: ToastParams = {
-            visible: false,
-            title: '',
-            description: '',
-            image: '',
-        };
+    const getUidByThirdPartySignIn = useCallback(async (method: SignType, { toastContent, setToastContent }) => {
         let credential: FirebaseAuthTypes.AuthCredential | null = null;
         let email = '';
         try {
@@ -49,11 +49,11 @@ export default function useInitializeSignIn() {
                     break;
                 }
                 case SignType.Kakao: {
-                    toastContent = {
+                    setToastContent({
                         ...toastContent,
                         visible: true,
                         title: '카카오는 아직 비즈니스 인증을 해야함',
-                    };
+                    })
                     break;
                     // kakaoLogin();
                     // credential = await appleSignIn();
@@ -65,11 +65,11 @@ export default function useInitializeSignIn() {
                     }
                     const data = await AccessToken.getCurrentAccessToken();
                     if (!data) {
-                        toastContent = {
+                        setToastContent({
                             ...toastContent,
                             visible: true,
                             title: '인증 정보를 받아오는 작업을 실패했습니다',
-                        };
+                        });
                     } else {
                         credential = getProvider(SignType.Facebook).credential(data.accessToken);
                     }
@@ -86,25 +86,26 @@ export default function useInitializeSignIn() {
                     await signInCredential(credential);
                 } catch (error) {
                     if (error.code != "auth/account-exists-with-different-credential") {
-                        toastContent = {
+                        setToastContent({
                             ...toastContent,
                             visible: true,
                             title: '인증 정보를 받아오는 작업을 실패했습니다',
-                        };
+                        });
+                    } else {
+                        setToastContent({
+                            ...toastContent,
+                            visible: true,
+                            title: '다른 로그인 방법으로 회원가입을 완료한 계정이 있습니다.',
+                        });
                     }
-                    toastContent = {
-                        ...toastContent,
-                        visible: true,
-                        title: '다른 로그인 방법으로 회원가입을 완료한 계정이 있습니다.',
-                    };
                 }
             }
         } catch (error) {
-            toastContent = {
+            setToastContent({
                 ...toastContent,
                 visible: true,
                 title: '인증 정보를 받아오는 작업을 실패했습니다',
-            };
+            });
         } finally {
             return toastContent;
         }
@@ -196,7 +197,7 @@ export default function useInitializeSignIn() {
     return {
         GoogleSignin,
         appleSignIn,
-        kakaoApi: {
+        kakao: {
             kakaoLogin,
             kakaoLogout,
             getProfile,

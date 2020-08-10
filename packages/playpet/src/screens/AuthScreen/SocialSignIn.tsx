@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 
 import { checkIsExistUser, CheckUser, currentUser } from '../../utils';
-import useInitializeSignIn from '../../hooks/useSignIn';
+import useInitializeSignIn from '../../hooks/useInitializeSignIn';
 import { SignType } from '../../models';
 import { createUserCall } from '../../callable';
 import { authActions } from '../../store/authReducer';
@@ -27,8 +27,10 @@ export default function SocialSignIn() {
     const handleSignIn = async (method: SignType) => {
         try {
             setLoading(true);
-            const toastParams = await getUidByThirdPartySignIn(method);
-            toastParams.visible && setToastContent(toastParams);
+            await getUidByThirdPartySignIn(method, {
+                toastContent,
+                setToastContent
+            });
 
             const user = currentUser();
             if (!user) {
