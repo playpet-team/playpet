@@ -1,4 +1,4 @@
-import { NavigationContainer, DefaultTheme, DarkTheme, Theme, RouteProp } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme, Theme, RouteProp, NavigationContainerRef } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import * as React from 'react';
 import { Appearance, useColorScheme } from 'react-native-appearance';
@@ -8,17 +8,39 @@ import LinkingConfiguration from './LinkingConfiguration';
 import AppLogin from '../components/AppLogin';
 import useAuthStateChanged from '../hooks/useAuthStateChanged';
 import { currentUser } from '../utils';
+import analytics from '@react-native-firebase/analytics';
 
 Appearance.getColorScheme();
 
 export default function Navigation() {
     const colorScheme = useColorScheme();
-    useAuthStateChanged();
+    const routeNameRef = React.useRef<React.RefObject<NavigationContainerRef> | any>(null);
+    const navigationRef = React.useRef<React.RefObject<NavigationContainerRef> | any>(null);
     const user = currentUser();
+
+    useAuthStateChanged();
+
+    const onChangeScreen = () => {
+        try {
+            const previousRouteName = routeNameRef.current;
+            const currentRouteName = navigationRef.current.getCurrentRoute().name;
+
+            if (previousRouteName !== currentRouteName) {
+                analytics().setCurrentScreen(currentRouteName, currentRouteName);
+            }
+            routeNameRef.current = currentRouteName;
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     return (
         <NavigationContainer
             linking={LinkingConfiguration}
             theme={colorScheme === 'dark' ? DefaultTheme : DefaultTheme}
+            ref={navigationRef}
+            onReady={() => routeNameRef.current = navigationRef.current.getCurrentRoute().name}
+            onStateChange={onChangeScreen}
         >
             {user ?
                 <RootNavigator />
