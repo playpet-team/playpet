@@ -3,8 +3,8 @@ import styled from 'styled-components/native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 
-import SignUpAgreeTermsModal from './AuthScreen/SignUpAgreeTermsModal';
-import SocialSignIn from './AuthScreen/SocialSignIn';
+import SignUpAgreeTermsModal from './Home/SignUpAgreeTermsModal';
+import SocialSignIn from './AppLogin/SocialSignIn';
 import ProfileSection from '../components/ProfileSection';
 
 export default function AuthScreen() {
@@ -17,7 +17,7 @@ export default function AuthScreen() {
             {user.isLogged ?
                 <ProfileSection />
                 :
-                <SocialSignIn setModalVisible={setModalVisible} />
+                <SocialSignIn />
             }
 
             <SignUpAgreeTermsModal

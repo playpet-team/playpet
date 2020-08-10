@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
-import SignUpAgreeTermsModal from './AuthScreen/SignUpAgreeTermsModal';
+import SignUpAgreeTermsModal from './Home/SignUpAgreeTermsModal';
 import { getUserTerms, currentUser } from '../utils';
 import { DividerBlock } from '../styles';
 import useFirebaseMessage from '../hooks/useFirebaseMessage';

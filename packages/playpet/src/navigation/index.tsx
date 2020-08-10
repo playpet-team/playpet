@@ -5,7 +5,7 @@ import { Appearance, useColorScheme } from 'react-native-appearance';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
-import AppLogin from '../components/AppLogin';
+import AppLogin from '../screens/AppLogin';
 import useAuthStateChanged from '../hooks/useAuthStateChanged';
 import { currentUser } from '../utils';
 import analytics from '@react-native-firebase/analytics';

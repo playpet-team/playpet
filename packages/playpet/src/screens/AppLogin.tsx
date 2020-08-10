@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from 'react-native-elements';
-import SocialSignIn from '../screens/AuthScreen/SocialSignIn';
-import SignUpAgreeTermsModal from '../screens/AuthScreen/SignUpAgreeTermsModal';
+import SocialSignIn from './AppLogin/SocialSignIn';
+import EmailLogin from './AppLogin/EmailLogin';
 
 export default function AppLogin() {
-
     return (
         <AppLoginBlock>
             <LinearGradient
@@ -22,6 +21,7 @@ export default function AppLogin() {
                 }}
             />
             <MainTitle><Text style={{ color: '#fff' }}>누구든 반려동물을 사랑할수 있습니다</Text></MainTitle>
+            <EmailLogin />
             <SocialSignIn />
         </AppLoginBlock>
     )
