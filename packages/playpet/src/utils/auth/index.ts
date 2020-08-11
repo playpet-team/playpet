@@ -1,4 +1,4 @@
-import { firebaseNow } from '../';
+import { firebaseNow } from '../system';
 import { withdrawCall } from './../../callable/auth';
 import firestore from '@react-native-firebase/firestore';
 import { firebaseTimeStampToStringStamp } from './../system/index';

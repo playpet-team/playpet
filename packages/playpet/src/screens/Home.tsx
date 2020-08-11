@@ -7,6 +7,7 @@ import { DividerBlock } from '../styles';
 import useFirebaseMessage from '../hooks/useFirebaseMessage';
 import ButtonGroups from '../components/ButtonGroups';
 import { ScrollView } from 'react-native-gesture-handler';
+
 // import { haha } from '../callable';
 
 export default function Home() {
