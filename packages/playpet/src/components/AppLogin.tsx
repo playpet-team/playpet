@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from 'react-native-elements';
 import SocialSignIn from '../screens/AuthScreen/SocialSignIn';
-import crashlytics from '@react-native-firebase/crashlytics';
-import { Button } from 'react-native';
-crashlytics().setCrashlyticsCollectionEnabled(true);
+
 export default function AppLogin() {
+
     return (
         <AppLoginBlock>
             <LinearGradientBlock
@@ -16,10 +15,6 @@ export default function AppLogin() {
             />
             <MainTitle><Text style={{ color: '#fff' }}>누구든 반려동물을 사랑할수 있습니다</Text></MainTitle>
             <SocialSignIn />
-            <Button
-                title="oentuh"
-                onPress={() => crashlytics().crash()}
-            />
         </AppLoginBlock>
     )
 };
