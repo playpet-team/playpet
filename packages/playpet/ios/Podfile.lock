@@ -310,6 +310,9 @@ PODS:
     - FirebaseAnalytics (= 6.6.2)
   - Firebase/CoreOnly (6.27.1):
     - FirebaseCore (= 6.8.1)
+  - Firebase/Crashlytics (6.27.1):
+    - Firebase/CoreOnly
+    - FirebaseCrashlytics (~> 4.2.0)
   - Firebase/DynamicLinks (6.27.1):
     - Firebase/CoreOnly
     - FirebaseDynamicLinks (~> 4.1.0)
@@ -357,6 +360,13 @@ PODS:
     - GoogleUtilities/Environment (~> 6.5)
     - GoogleUtilities/Logger (~> 6.5)
     - nanopb (~> 1.30905.0)
+  - FirebaseCrashlytics (4.2.0):
+    - FirebaseCore (~> 6.8)
+    - FirebaseInstallations (~> 1.1)
+    - GoogleDataTransport (~> 6.1)
+    - GoogleDataTransportCCTSupport (~> 3.1)
+    - nanopb (~> 1.30905.0)
+    - PromisesObjC (~> 1.2)
   - FirebaseDynamicLinks (4.1.0):
     - FirebaseCore (~> 6.8)
   - FirebaseFirestore (1.16.3):
@@ -820,6 +830,11 @@ PODS:
     - Firebase/Auth (~> 6.27.0)
     - React
     - RNFBApp
+  - RNFBCrashlytics (8.3.0):
+    - Firebase/Core (~> 6.27.0)
+    - Firebase/Crashlytics (~> 6.27.0)
+    - React
+    - RNFBApp
   - RNFBDynamicLinks (7.3.2):
     - Firebase/Analytics (~> 6.27.0)
     - Firebase/DynamicLinks (~> 6.27.0)
@@ -970,6 +985,7 @@ DEPENDENCIES:
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
+  - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - "RNFBDynamicLinks (from `../node_modules/@react-native-firebase/dynamic-links`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - "RNFBFunctions (from `../node_modules/@react-native-firebase/functions`)"
@@ -1015,6 +1031,7 @@ SPEC REPOS:
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
+    - FirebaseCrashlytics
     - FirebaseDynamicLinks
     - FirebaseFirestore
     - FirebaseFunctions
@@ -1156,6 +1173,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
     :path: "../node_modules/@react-native-firebase/auth"
+  RNFBCrashlytics:
+    :path: "../node_modules/@react-native-firebase/crashlytics"
   RNFBDynamicLinks:
     :path: "../node_modules/@react-native-firebase/dynamic-links"
   RNFBFirestore:
@@ -1247,6 +1266,7 @@ SPEC CHECKSUMS:
   FirebaseAuth: b85c064e0ac60f82486728d50a4803f235687302
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
   FirebaseCoreDiagnostics: 4505e4d4009b1d93f605088ee7d7764d5f0d1c84
+  FirebaseCrashlytics: 7d0fa02ea8842cc4b2ab07b0735edafde1ad77d6
   FirebaseDynamicLinks: 50cff91aff05347770be750dde61d3311ff7ffc8
   FirebaseFirestore: 5ea7b0878363f9ec66bdcee0c29ad875d1b511ac
   FirebaseFunctions: 55c11559aaef04038a066c07a7288094823ad3fb
@@ -1311,6 +1331,7 @@ SPEC CHECKSUMS:
   RNFBAnalytics: dae6d7b280ba61c96e1bbdd34aca3154388f025e
   RNFBApp: 6fd8a7e757135d4168bf033a8812c241af7363a0
   RNFBAuth: 82b94c2f0a851be529a19f5fda2dffb390bfdd7f
+  RNFBCrashlytics: 188f854a9cb483334f0873d512c365361e2179a8
   RNFBDynamicLinks: 83a779e6b955e97514034c61be850f2bd2e9ca5c
   RNFBFirestore: 4004d6576846262c5a04e274c37a865ad59e162a
   RNFBFunctions: 51a40f7f67f5baf9c811c1aba713c530a159b358
