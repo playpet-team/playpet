@@ -1,4 +1,4 @@
-import { firebaseTimeStampToStringStamp, firebaseNow } from './../system/index';
+import { firebaseTimeStampToStringStamp } from './../system/index';
 import { collections } from '../../models/src/collections';
 
 import firestore, { FirebaseFirestoreTypes, } from '@react-native-firebase/firestore';
@@ -10,6 +10,7 @@ export interface CardModel {
     description: string;
     tags: string[];
     uid: string;
+    likes: number;
     uploadMedia: {
         firebaseUrl: string;
         isVideo: boolean;
@@ -29,11 +30,12 @@ export const getMyCards = async (uid: string): Promise<CardModel[]> => {
     return myCards.docs.map((card): CardModel => {
         const cardData = card.data();
         return {
-            id: cardData.id,
+            id: card.id,
             title: cardData.title,
             description: cardData.description,
             tags: cardData.tags,
             uid: cardData.uid,
+            likes: cardData.likes,
             uploadMedia: cardData.uploadMedia,
             createdAt: cardData.createdAt,
             updatedAt: cardData.updatedAt,

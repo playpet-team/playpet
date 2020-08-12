@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import styled, { css } from 'styled-components/native';
 import { Video } from 'expo-av';
 import FitImage from 'react-native-fit-image';
@@ -9,35 +9,40 @@ import { DividerBlock } from '../styles';
 
 const DETAIL_SECTION_HEIGHT = 100;
 export interface CardType extends CardModel {
+    onPlayground?: boolean;
+    containerWidth?: string;
     onPlayActive: boolean;
     renderRange: boolean;
     isLike: boolean;
 };
+
 function Card({
     id,
     title,
     tags,
     uid,
+    likes,
+    onPlayground = false,
+    containerWidth = '100%',
     uploadMedia,
     updatedAt,
     onPlayActive,
     renderRange,
     isLike,
 }: CardType) {
+    console.log("containerWidth----", containerWidth);
     const [showDetail, setShowDetail] = useState(false);
     const [isSoundOn, setIsSoundOn] = useState(false);
     const videoRef = useRef<any>(null);
     const bounceValue = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
-        if (!onPlayActive) {
+        if (!onPlayActive || !onPlayground) {
             return;
         }
         if (showDetail) {
-            console.log("pause");
             videoRef.current?.pauseAsync();
         } else {
-            console.log("play");
             videoRef.current?.playAsync();
         }
         Animated.timing(
@@ -50,7 +55,7 @@ function Card({
         ).start();
     }, [showDetail, onPlayActive]);
 
-    const media = uploadMedia[0];
+    const media = useMemo(() => uploadMedia[0], [uploadMedia]);
 
     const RenderMedia = useCallback(() => {
         return (
@@ -77,21 +82,18 @@ function Card({
     }, [renderRange]);
 
     return (
-        <CardBlock onPress={() => setShowDetail(!showDetail)}>
-            <View style={{ flex: 1, backgroundColor: '#000', }}>
+        <CardTouchable onPress={() => setShowDetail(!showDetail)}>
+            <CardBlock containerWidth={containerWidth}>
                 {renderRange && <RenderMedia />}
-                <AnimatedOverlayBackground
+                {onPlayground && <AnimatedOverlayBackground
                     style={{
                         opacity: bounceValue.interpolate({
                             inputRange: [0, 1],
                             outputRange: [0, 1],
                         }),
                     }}
-                />
-                <SectionBlock
-                    showDetail={showDetail}
-                    style={{}}
-                >
+                />}
+                {onPlayground && <SectionBlock showDetail={showDetail}>
                     <Content>
                         <FloatingButtonGroup>
                             <Icon
@@ -107,22 +109,25 @@ function Card({
                                 color="#fff"
                                 size={22}
                             />
+                            <LikeNumber>{likes}</LikeNumber>
                         </FloatingButtonGroup>
                         <Header>
                             <TitleText header>{title}</TitleText>
                         </Header>
                     </Content>
-                </SectionBlock>
-            </View>
-        </CardBlock >
+                </SectionBlock>}
+            </CardBlock>
+        </CardTouchable>
     );
 };
 
-const CardBlock = styled(TouchableWithoutFeedback)`
-    flex: 1;
+const CardTouchable = styled(TouchableWithoutFeedback)`
     margin-bottom: 8px;
-    
-    
+`;
+
+const CardBlock = styled.View<Pick<CardType, 'containerWidth'>>`
+    background-color: #000;
+    width: ${({ containerWidth }) => containerWidth};
 `;
 
 const FloatingButtonGroup = styled.View`
@@ -155,6 +160,8 @@ const Content = styled.View`
     position: relative;
     margin-top: 16px;
 `;
+
+const LikeNumber = styled.Text``;
 
 const Header = styled.View`
     position: relative;

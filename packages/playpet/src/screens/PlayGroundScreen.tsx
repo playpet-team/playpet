@@ -57,6 +57,7 @@ export default function PlayGroundScreen() {
         return (
             <Card
                 {...item}
+                onPlayground
                 uid={uid}
                 isLike={myLikes.includes(item.id)}
                 renderRange={renderRange(index)}

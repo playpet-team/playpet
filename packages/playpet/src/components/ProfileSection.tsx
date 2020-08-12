@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 import { Avatar } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
-import MyCards from './MyCards';
 
 function ProfileSection() {
     const {
@@ -24,7 +23,6 @@ function ProfileSection() {
                 <Text>{username}</Text>
                 <Text>{email}</Text>
             </ProfileInfo>
-            <MyCards />
         </ProfileSectionBlock>
     );
 };

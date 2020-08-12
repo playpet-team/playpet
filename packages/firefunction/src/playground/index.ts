@@ -12,21 +12,33 @@ import { getCurrentTime } from './../';
 export const manageCardLikes = functions.https.onCall(async ({ uid, id, methods }) => {
     try {
         const docExists = (await admin.firestore().collection('userActions').doc(uid).get()).exists;
+        const promiseArr = [];
         if (docExists) {
-            await admin.firestore().collection('userActions').doc(uid).update({
-                cardLikes: methods === 'add' ?
-                    admin.firestore.FieldValue.arrayUnion(id)
-                    :
-                    admin.firestore.FieldValue.arrayRemove(id),
-                updatedAt: getCurrentTime(),
-            });
+            promiseArr.push(
+                admin.firestore().collection('userActions').doc(uid).update({
+                    cardLikes: methods === 'add' ?
+                        admin.firestore.FieldValue.arrayUnion(id)
+                        :
+                        admin.firestore.FieldValue.arrayRemove(id),
+                    updatedAt: getCurrentTime(),
+                })
+            );
         } else {
-            await admin.firestore().collection('userActions').doc(uid).set({
-                cardLikes: [id],
-                updatedAt: getCurrentTime(),
-                createdAt: getCurrentTime(),
-            });
+            promiseArr.push(
+                admin.firestore().collection('userActions').doc(uid).set({
+                    cardLikes: [id],
+                    updatedAt: getCurrentTime(),
+                    createdAt: getCurrentTime(),
+                })
+            );
         }
+        promiseArr.push(
+            admin.firestore().collection('playground').doc(id).update({
+                likes: admin.firestore.FieldValue.increment(1),
+                updatedAt: getCurrentTime(),
+            })
+        );
+        await Promise.all(promiseArr);
         return true;
     } catch (error) {
         console.error('manageCardLikes-error-', error)
