@@ -60,7 +60,7 @@ export default function Home() {
 };
 
 const SafeAreaViewBlock = styled(SafeAreaView)`
-    background-color: #fff;
+    /* background-color: #fff; */
     flex: 1;
 `;
 

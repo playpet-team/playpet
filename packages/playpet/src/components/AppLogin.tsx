@@ -13,7 +13,7 @@ export default function AppLogin() {
                 start={[0, 0]}
                 end={[1, 1]}
             />
-            <MainTitle><Text style={{ color: '#fff' }}>누구든 반려동물을 사랑할수 있습니다</Text></MainTitle>
+            <MainTitle><Text>누구든 반려동물을 사랑할수 있습니다</Text></MainTitle>
             <SocialSignIn />
         </AppLoginBlock>
     )

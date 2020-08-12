@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonGroup, ElementObject } from 'react-native-elements';
+import { useTheme } from '@react-navigation/native';
 
 interface Groups {
     buttons: string[] | ElementObject[];
@@ -14,6 +15,7 @@ export default function ButtonGroups({
     selectedTextStyle,
 }: Groups) {
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const themes = useTheme();
 
     useEffect(() => {
         // TODO
@@ -25,7 +27,7 @@ export default function ButtonGroups({
             selectedIndex={selectedIndex}
             buttons={buttons}
             textStyle={{
-                color: '#999',
+                color: themes.colors.text,
                 ...textStyle,
             }}
             containerStyle={{
@@ -36,13 +38,13 @@ export default function ButtonGroups({
                 width: 0,
             }}
             selectedButtonStyle={{
-                backgroundColor: '#fff',
+                backgroundColor: themes.colors.background,
                 borderBottomWidth: 2,
-                borderBottomColor: '#000',
+                borderBottomColor: themes.colors.border,
                 ...selectedButtonStyle,
             }}
             selectedTextStyle={{
-                color: '#000',
+                color: themes.colors.primary,
                 ...selectedTextStyle,
             }}
         />

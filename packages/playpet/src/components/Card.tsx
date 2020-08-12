@@ -169,7 +169,6 @@ const TitleText = styled.Text<TitleProps>`
         font-size: 22px;
         font-weight: 800;
     `};
-    color: #fff;
 `;
 
 export default Card;

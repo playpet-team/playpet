@@ -1,7 +1,7 @@
-import { NavigationContainer, DefaultTheme, DarkTheme, Theme, RouteProp, NavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme, Theme, useTheme, RouteProp, NavigationContainerRef } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import * as React from 'react';
-import { Appearance, useColorScheme } from 'react-native-appearance';
+import { AppearanceProvider, Appearance, useColorScheme } from 'react-native-appearance';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -11,6 +11,7 @@ import { currentUser } from '../utils';
 import analytics from '@react-native-firebase/analytics';
 import { ErrorUtils } from 'react-native';
 import { Crash } from '../utils/system/crash';
+import { defaultColorPalette, darkColorPalette } from '../constants/Colors';
 
 Appearance.getColorScheme();
 
@@ -35,24 +36,40 @@ export default function Navigation() {
             console.error(e);
         }
     }, [navigationRef]);
+    const aoeu = useTheme();
+    console.log("aoeu---", aoeu);
 
     return (
-        <NavigationContainer
-            linking={LinkingConfiguration}
-            theme={colorScheme === 'dark' ? DefaultTheme : DefaultTheme}
-            ref={navigationRef}
-            onReady={() => {
-                routeNameRef.current = navigationRef.current.getCurrentRoute().name;
-                analytics().setCurrentScreen(routeNameRef.current, routeNameRef.current);
-            }}
-            onStateChange={onChangeScreen}
-        >
-            {user ?
-                <RootNavigator />
-                :
-                <AppLoginNavigator />
-            }
-        </NavigationContainer>
+        <AppearanceProvider>
+            <NavigationContainer
+                linking={LinkingConfiguration}
+                theme={colorScheme === 'dark' ? {
+                    ...DarkTheme,
+                    colors: {
+                        ...DarkTheme.colors,
+                        ...darkColorPalette,
+                    },
+                } : {
+                        ...DefaultTheme,
+                        colors: {
+                            ...DefaultTheme.colors,
+                            ...defaultColorPalette,
+                        }
+                    }}
+                ref={navigationRef}
+                onReady={() => {
+                    routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+                    analytics().setCurrentScreen(routeNameRef.current, routeNameRef.current);
+                }}
+                onStateChange={onChangeScreen}
+            >
+                {user ?
+                    <RootNavigator />
+                    :
+                    <AppLoginNavigator />
+                }
+            </NavigationContainer>
+        </AppearanceProvider>
     );
 }
 

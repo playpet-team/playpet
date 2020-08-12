@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { Avatar } from 'react-native-elements';
+import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import MyCards from './MyCards';
@@ -43,6 +44,6 @@ const ProfileInfo = styled.View`
     flex-direction: column;
 `;
 
-const Text = styled.Text`
-    font-size: 16px;
-`;
+// const ProfileText = styled(Text)`
+//     font-size: 16px;
+// `;

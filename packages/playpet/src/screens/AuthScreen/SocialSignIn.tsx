@@ -100,5 +100,4 @@ const SigninButton = styled.TouchableOpacity`
 
 const SigninText = styled.Text`
     margin-left: 16px;
-    color: #fff;
 `;
