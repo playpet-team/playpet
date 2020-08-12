@@ -5,6 +5,7 @@ import firestore, { FirebaseFirestoreTypes, } from '@react-native-firebase/fires
 import { manageCardLikes } from '../../callable';
 
 export interface CardModel {
+    status: 'active' | 'deactive';
     id: string;
     title: string;
     description: string;
@@ -27,10 +28,11 @@ export const submitCard = async (formData: CardModel) => {
 
 export const getMyCards = async (uid: string): Promise<CardModel[]> => {
     const myCards = await firestore().collection(collections.Playground).where('uid', '==', uid).get();
-    return myCards.docs.map((card): CardModel => {
+    return myCards.docs.map(card => {
         const cardData = card.data();
         return {
             id: card.id,
+            status: cardData.status,
             title: cardData.title,
             description: cardData.description,
             tags: cardData.tags,

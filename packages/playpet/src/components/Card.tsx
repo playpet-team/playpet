@@ -30,7 +30,6 @@ function Card({
     renderRange,
     isLike,
 }: CardType) {
-    console.log("containerWidth----", containerWidth);
     const [showDetail, setShowDetail] = useState(false);
     const [isSoundOn, setIsSoundOn] = useState(false);
     const videoRef = useRef<any>(null);
@@ -60,7 +59,7 @@ function Card({
     const RenderMedia = useCallback(() => {
         return (
             <>
-                {media.isVideo ?
+                {media.isVideo &&
                     <Video
                         ref={videoRef}
                         source={{ uri: media.firebaseUrl }}
@@ -70,11 +69,11 @@ function Card({
                         resizeMode={Video.RESIZE_MODE_CONTAIN}
                         style={{ width: '100%', height: '100%', position: 'absolute', }}
                     />
-                    :
-                    <FitImage
-                        source={{ uri: media.firebaseUrl }}
-                        style={{ flex: 1 }}
-                    />
+                    // :
+                    // <FitImage
+                    //     source={{ uri: media.firebaseUrl }}
+                    //     style={{ flex: 1 }}
+                    // />
                 }
             </>
         );

@@ -20,6 +20,9 @@ function SubmitButton({ cardImages, uid, title, description, tags, onSubmitCallb
         setSubmitLoading(true);
         const downloadUrls = await startUploadStorage();
         const formData: CardModel = {
+            id: '',
+            likes: 0,
+            status: 'active',
             title,
             description,
             tags,
