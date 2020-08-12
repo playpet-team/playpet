@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import styled, { css } from 'styled-components/native';
 import { Video } from 'expo-av';
-import FitImage from 'react-native-fit-image';
 import { Icon } from 'react-native-elements'
 import { CardModel, setCardLike } from '../utils';
 import { TouchableWithoutFeedback, View, Animated } from 'react-native';
@@ -57,25 +56,19 @@ function Card({
     const media = useMemo(() => uploadMedia[0], [uploadMedia]);
 
     const RenderMedia = useCallback(() => {
+        if (!media.isVideo) {
+            return null;
+        }
         return (
-            <>
-                {media.isVideo &&
-                    <Video
-                        ref={videoRef}
-                        source={{ uri: media.firebaseUrl }}
-                        isMuted={!isSoundOn}
-                        isLooping={true}
-                        shouldPlay={onPlayActive && !showDetail}
-                        resizeMode={Video.RESIZE_MODE_CONTAIN}
-                        style={{ width: '100%', height: '100%', position: 'absolute', }}
-                    />
-                    // :
-                    // <FitImage
-                    //     source={{ uri: media.firebaseUrl }}
-                    //     style={{ flex: 1 }}
-                    // />
-                }
-            </>
+            <Video
+                ref={videoRef}
+                source={{ uri: media.firebaseUrl }}
+                isMuted={!isSoundOn}
+                isLooping={true}
+                shouldPlay={onPlayActive && !showDetail}
+                resizeMode={Video.RESIZE_MODE_CONTAIN}
+                style={{ width: '100%', height: '100%', position: 'absolute', }}
+            />
         );
 
     }, [renderRange]);

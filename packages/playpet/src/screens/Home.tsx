@@ -43,9 +43,7 @@ export default function Home() {
                     buttons={['인기', '최신']}
                 />
             </HomeBlock>
-            <ScrollView
-                style={{}}
-            >
+            <ScrollView>
                 <CardView />
                 <CardView />
                 <CardView />
@@ -60,7 +58,6 @@ export default function Home() {
 };
 
 const SafeAreaViewBlock = styled(SafeAreaView)`
-    /* background-color: #fff; */
     flex: 1;
 `;
 
@@ -69,7 +66,7 @@ const HomeBlock = styled.View`
 `;
 
 const CardView = styled.View`
-flex: 1;
+    flex: 1;
     margin: 20px;
     height: 550px;
     background-color: #e9e9e9;

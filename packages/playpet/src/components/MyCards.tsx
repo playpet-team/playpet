@@ -20,22 +20,26 @@ function MyCards() {
         }
     }, []);
 
-    const renderCards = useCallback(() => {
-        return myCards.map(card => (
-            <Card
-                {...card}
-                key={card.id}
-                onPlayActive={false}
-                renderRange={true}
-                containerWidth='31%'
-                isLike={myLikes.includes(card.id)}
-            />
-        ));
+    const RenderCards = useCallback(() => {
+        return (
+            <>
+                {myCards.map(card => (
+                    <Card
+                        {...card}
+                        key={card.id}
+                        onPlayActive={false}
+                        renderRange={true}
+                        containerWidth='31%'
+                        isLike={myLikes.includes(card.id)}
+                    />
+                ))}
+            </>
+        )
     }, [myCards]);
 
     return (
         <MyCardsBlock>
-            {myCards.length ? renderCards() : <Text>올린 영상이 없습니다.</Text>}
+            {myCards.length ? <RenderCards /> : <Text>올린 영상이 없습니다.</Text>}
         </MyCardsBlock>
     );
 };

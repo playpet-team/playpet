@@ -2,6 +2,7 @@ import React, { ReactChildren, ReactNode, useMemo } from "react";
 import Modal from "react-native-modal";
 import styled from 'styled-components/native';
 import { Text } from "react-native";
+import { useTheme, Theme } from "@react-navigation/native";
 
 interface PlaypetDialog {
     modalVisible: boolean;
@@ -21,7 +22,7 @@ const PlaypetDialog = ({
     children,
 }: PlaypetDialog) => {
     const handleCloseModal = () => setModalVisible(false);
-
+    const themes = useTheme();
     return (
         <StyledSafeAreaView>
             <Modal
@@ -35,7 +36,10 @@ const PlaypetDialog = ({
                     alignItems: 'center',
                 }}
             >
-                <Container style={containerStyle}>
+                <Container
+                    style={containerStyle}
+                    themes={themes}
+                >
                     <PlaypetDialogHeader>
                         <Text>헤더</Text>
                         {!isHideCloseButton &&
@@ -59,11 +63,11 @@ const StyledSafeAreaView = styled.SafeAreaView`
     align-items: center;
 `;
 
-const Container = styled.View`
+const Container = styled.View<Theme>`
     padding: 16px;
     flex-direction: column;
     width: 320px;
-    background-color: #fff;
+    background-color: ${(props) => props.color.background};
     border-radius: 4px;
 `;
 
