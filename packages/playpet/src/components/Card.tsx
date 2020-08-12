@@ -30,9 +30,14 @@ function Card({
     const bounceValue = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
+        if (!onPlayActive) {
+            return;
+        }
         if (showDetail) {
+            console.log("pause");
             videoRef.current?.pauseAsync();
         } else {
+            console.log("play");
             videoRef.current?.playAsync();
         }
         Animated.timing(
@@ -43,7 +48,7 @@ function Card({
                 duration: 250,
             }
         ).start();
-    }, [showDetail]);
+    }, [showDetail, onPlayActive]);
 
     const media = uploadMedia[0];
 
@@ -142,6 +147,7 @@ const SectionBlock = styled(View) <ContentBlockProps>`
     flex: 1;
     justify-content: flex-end;
     padding: 24px;
+    margin-bottom: 24px;
     /* ${({ showDetail }) => showDetail && css``} */
 `;
 

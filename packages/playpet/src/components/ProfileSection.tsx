@@ -3,14 +3,14 @@ import styled from 'styled-components/native';
 import { Avatar } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
+import MyCards from './MyCards';
 
-export default function ProfileSection() {
+function ProfileSection() {
     const {
         profilePhoto,
         username,
         email,
     } = useSelector((state: RootState) => state.auth);
-
     return (
         <ProfileSectionBlock>
             <Avatar
@@ -24,9 +24,12 @@ export default function ProfileSection() {
                 <Text>{username}</Text>
                 <Text>{email}</Text>
             </ProfileInfo>
+            <MyCards />
         </ProfileSectionBlock>
     );
 };
+
+export default ProfileSection;
 
 const ProfileSectionBlock = styled.View`
     padding: 16px;

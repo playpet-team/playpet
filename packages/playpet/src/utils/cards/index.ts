@@ -24,6 +24,23 @@ export const submitCard = async (formData: CardModel) => {
     return await firestore().collection(collections.Playground).add(formData);
 };
 
+export const getMyCards = async (uid: string): Promise<CardModel[]> => {
+    const myCards = await firestore().collection(collections.Playground).where('uid', '==', uid).get();
+    return myCards.docs.map((card): CardModel => {
+        const cardData = card.data();
+        return {
+            id: cardData.id,
+            title: cardData.title,
+            description: cardData.description,
+            tags: cardData.tags,
+            uid: cardData.uid,
+            uploadMedia: cardData.uploadMedia,
+            createdAt: cardData.createdAt,
+            updatedAt: cardData.updatedAt,
+        };
+    })
+};
+
 export enum SortCards {
     CreatedAt,
     Hot,
