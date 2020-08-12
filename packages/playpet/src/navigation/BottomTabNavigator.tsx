@@ -79,41 +79,41 @@ export default function BottomTabNavigator() {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-type HomeTabParamList = {
-    Home: undefined;
+type HomeNavigatorTabParamList = {
+    HomeNavigator: undefined;
 };
-const HomeTapStack = createStackNavigator<HomeTabParamList>();
+const HomeNavigatorTapStack = createStackNavigator<HomeNavigatorTabParamList>();
 
 function HomeNavigator() {
     return (
-        <HomeTapStack.Navigator>
-            <HomeTapStack.Screen
-                name="Home"
+        <HomeNavigatorTapStack.Navigator>
+            <HomeNavigatorTapStack.Screen
+                name="HomeNavigator"
                 component={Home}
                 options={{
                     headerShown: false,
                     headerTitle: '홈',
                 }}
             />
-        </HomeTapStack.Navigator>
+        </HomeNavigatorTapStack.Navigator>
     );
 }
 
-export type CardTapParamList = {
-    CardFormScreen: undefined;
+export type CardFormNavigatorParamList = {
+    CardFormNavigator: undefined;
 };
-const CardTapStack = createStackNavigator<CardTapParamList>();
+const CardFormNavigatorStack = createStackNavigator<CardFormNavigatorParamList>();
 function CardFormNavigator() {
     return (
-        <CardTapStack.Navigator>
-            <CardTapStack.Screen
-                name="CardFormScreen"
+        <CardFormNavigatorStack.Navigator>
+            <CardFormNavigatorStack.Screen
+                name="CardFormNavigator"
                 component={CardFormScreen}
                 options={({ navigation }) => ({
                     headerTitle: '포스트',
                 })}
             />
-        </CardTapStack.Navigator>
+        </CardFormNavigatorStack.Navigator>
     );
 };
 

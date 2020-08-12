@@ -22,7 +22,8 @@ public class BasePackageList {
         new expo.modules.application.ApplicationPackage(),
         new expo.modules.av.AVPackage(),
         new expo.modules.imagepicker.ImagePickerPackage(),
-        new expo.modules.notifications.NotificationsPackage()
+        new expo.modules.notifications.NotificationsPackage(),
+        new expo.modules.videothumbnails.VideoThumbnailsPackage()
     );
   }
 }

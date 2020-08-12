@@ -134,9 +134,6 @@ android {
         applicationId "com.playpet.android"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        // react-native-image-crop-picker
-        vectorDrawables.useSupportLibrary = true
-        // react-native-image-crop-picker
         versionCode 1
         versionName "1.0"
     }
@@ -243,3 +240,4 @@ apply from: file("../../node_modules/@react-native-community/cli-platform-androi
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services' // <- Add this line
+apply plugin: 'com.google.firebase.crashlytics'

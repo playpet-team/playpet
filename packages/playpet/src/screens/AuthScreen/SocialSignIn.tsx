@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
-import auth from '@react-native-firebase/auth';
 
 import { checkIsExistUser, CheckUser, currentUser } from '../../utils';
 import useInitializeSignIn from '../../hooks/useInitializeSignIn';

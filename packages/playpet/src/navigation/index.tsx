@@ -9,6 +9,8 @@ import AppLogin from '../components/AppLogin';
 import useAuthStateChanged from '../hooks/useAuthStateChanged';
 import { currentUser } from '../utils';
 import analytics from '@react-native-firebase/analytics';
+import { ErrorUtils } from 'react-native';
+import { Crash } from '../utils/system/crash';
 
 Appearance.getColorScheme();
 
@@ -20,7 +22,7 @@ export default function Navigation() {
 
     useAuthStateChanged();
 
-    const onChangeScreen = () => {
+    const onChangeScreen = React.useCallback(() => {
         try {
             const previousRouteName = routeNameRef.current;
             const currentRouteName = navigationRef.current.getCurrentRoute().name;
@@ -32,14 +34,17 @@ export default function Navigation() {
         } catch (e) {
             console.error(e);
         }
-    };
+    }, [navigationRef]);
 
     return (
         <NavigationContainer
             linking={LinkingConfiguration}
             theme={colorScheme === 'dark' ? DefaultTheme : DefaultTheme}
             ref={navigationRef}
-            onReady={() => routeNameRef.current = navigationRef.current.getCurrentRoute().name}
+            onReady={() => {
+                routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+                analytics().setCurrentScreen(routeNameRef.current, routeNameRef.current);
+            }}
             onStateChange={onChangeScreen}
         >
             {user ?
@@ -63,7 +68,6 @@ function RootNavigator() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={BottomTabNavigator} />
-            <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         </Stack.Navigator>
     );
 };
@@ -74,6 +78,16 @@ type AppLoginParamList = {
 const AppLoginStack = createStackNavigator<AppLoginParamList>();
 
 function AppLoginNavigator() {
+    React.useEffect(() => {
+        Crash.setCrashlyticsCollectionEnabled(true);
+        const user = currentUser();
+        if (!user) {
+            return;
+        }
+        Crash.setUserId(user.uid);
+        ErrorUtils.setGlobalHandler(Crash.crashError);
+
+    }, []);
     return (
         <AppLoginStack.Navigator>
             <AppLoginStack.Screen
