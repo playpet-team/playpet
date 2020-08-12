@@ -2,7 +2,6 @@ import { NavigationContainer, DefaultTheme, DarkTheme, Theme, useTheme, RoutePro
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import * as React from 'react';
 import { AppearanceProvider, Appearance, useColorScheme } from 'react-native-appearance';
-import NotFoundScreen from '../screens/NotFoundScreen';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
 import AppLogin from '../components/AppLogin';
