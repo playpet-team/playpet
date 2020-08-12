@@ -22,7 +22,7 @@ export default function Navigation() {
 
     useAuthStateChanged();
 
-    const onChangeScreen = () => {
+    const onChangeScreen = React.useCallback(() => {
         try {
             const previousRouteName = routeNameRef.current;
             const currentRouteName = navigationRef.current.getCurrentRoute().name;
@@ -34,7 +34,7 @@ export default function Navigation() {
         } catch (e) {
             console.error(e);
         }
-    };
+    }, [navigationRef]);
 
     return (
         <NavigationContainer
@@ -68,7 +68,6 @@ function RootNavigator() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={BottomTabNavigator} />
-            <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         </Stack.Navigator>
     );
 };

@@ -1,24 +1,18 @@
 // import * as Linking from 'expo-linking';
 
 export default {
-    prefixes: [''],
+    prefixes: ['playpet.page.link'],
     config: {
         screens: {
+            AppLogin: 'login',
             Home: {
                 screens: {
-                    TabOne: {
-                        screens: {
-                        TabOneScreen: 'one',
-                        },
-                    },
-                    TabTwo: {
-                        screens: {
-                        TabTwoScreen: 'two',
-                        },
-                    },
+                    HomeNavigator: 'home',
+                    CardFormNavigator: 'card-form',
+                    PlayGroundNavigator: 'playground',
+                    AuthNavigator: 'auth',
                 },
             },
-            NotFound: '*',
         },
     },
 };
