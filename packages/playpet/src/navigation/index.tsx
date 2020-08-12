@@ -9,6 +9,8 @@ import AppLogin from '../components/AppLogin';
 import useAuthStateChanged from '../hooks/useAuthStateChanged';
 import { currentUser } from '../utils';
 import analytics from '@react-native-firebase/analytics';
+import { ErrorUtils } from 'react-native';
+import { Crash } from '../utils/system/crash';
 
 Appearance.getColorScheme();
 
@@ -39,7 +41,10 @@ export default function Navigation() {
             linking={LinkingConfiguration}
             theme={colorScheme === 'dark' ? DefaultTheme : DefaultTheme}
             ref={navigationRef}
-            onReady={() => routeNameRef.current = navigationRef.current.getCurrentRoute().name}
+            onReady={() => {
+                routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+                analytics().setCurrentScreen(routeNameRef.current, routeNameRef.current);
+            }}
             onStateChange={onChangeScreen}
         >
             {user ?
@@ -74,6 +79,16 @@ type AppLoginParamList = {
 const AppLoginStack = createStackNavigator<AppLoginParamList>();
 
 function AppLoginNavigator() {
+    React.useEffect(() => {
+        Crash.setCrashlyticsCollectionEnabled(true);
+        const user = currentUser();
+        if (!user) {
+            return;
+        }
+        Crash.setUserId(user.uid);
+        ErrorUtils.setGlobalHandler(Crash.crashError);
+
+    }, []);
     return (
         <AppLoginStack.Navigator>
             <AppLoginStack.Screen
