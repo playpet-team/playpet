@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components/native';
-import { Avatar } from 'react-native-elements';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/rootReducers';
+import Card from '../components/Card';
 import { getMyCards, currentUser, CardModel } from '../utils';
+import useCardLikes from '../hooks/useCardLikes';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const user = currentUser();
 function MyCards() {
     const [myCards, setMyCards] = useState<CardModel[]>([]);
+    const { myLikes } = useCardLikes();
     const [maxLength, setMaxLength] = useState(10);
 
     useEffect(() => {
@@ -19,9 +20,22 @@ function MyCards() {
         }
     }, []);
 
+    const renderCards = useCallback(() => {
+        return myCards.map(card => (
+            <Card
+                {...card}
+                key={card.id}
+                onPlayActive={false}
+                renderRange={true}
+                containerWidth='31%'
+                isLike={myLikes.includes(card.id)}
+            />
+        ));
+    }, [myCards]);
+
     return (
         <MyCardsBlock>
-
+            {myCards.length ? renderCards() : <Text>올린 영상이 없습니다.</Text>}
         </MyCardsBlock>
     );
 };
@@ -29,10 +43,15 @@ function MyCards() {
 export default MyCards;
 
 const MyCardsBlock = styled.View`
-    padding: 16px;
+    flex: 1;
     flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
+    flex-wrap: wrap;
+    /* align-content: flex-start; */
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-horizontal: 8px;
+    width: 100%;
+    /* height: 300px; */
 `;
 
 const Text = styled.Text`

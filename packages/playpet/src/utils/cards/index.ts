@@ -1,15 +1,17 @@
-import { firebaseTimeStampToStringStamp, firebaseNow } from './../system/index';
+import { firebaseTimeStampToStringStamp } from './../system/index';
 import { collections } from '../../models/src/collections';
 
 import firestore, { FirebaseFirestoreTypes, } from '@react-native-firebase/firestore';
 import { manageCardLikes } from '../../callable';
 
 export interface CardModel {
+    status: 'active' | 'deactive';
     id: string;
     title: string;
     description: string;
     tags: string[];
     uid: string;
+    likes: number;
     uploadMedia: {
         firebaseUrl: string;
         isVideo: boolean;
@@ -26,14 +28,16 @@ export const submitCard = async (formData: CardModel) => {
 
 export const getMyCards = async (uid: string): Promise<CardModel[]> => {
     const myCards = await firestore().collection(collections.Playground).where('uid', '==', uid).get();
-    return myCards.docs.map((card): CardModel => {
+    return myCards.docs.map(card => {
         const cardData = card.data();
         return {
-            id: cardData.id,
+            id: card.id,
+            status: cardData.status,
             title: cardData.title,
             description: cardData.description,
             tags: cardData.tags,
             uid: cardData.uid,
+            likes: cardData.likes,
             uploadMedia: cardData.uploadMedia,
             createdAt: cardData.createdAt,
             updatedAt: cardData.updatedAt,

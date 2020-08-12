@@ -1,4 +1,3 @@
-import { firebaseNow } from '../system';
 import { withdrawCall } from './../../callable/auth';
 import firestore from '@react-native-firebase/firestore';
 import { firebaseTimeStampToStringStamp } from './../system/index';
@@ -7,6 +6,7 @@ import { GoogleSignin } from '@react-native-community/google-signin';
 import { SignType, collections, User } from '../../models';
 import { initialState } from '../../store/authReducer';
 
+export const firebaseNow = () => firestore.Timestamp.now();
 export const currentUser = () => auth().currentUser;
 export const signInWithCustomToken = (customToken: string) => auth().signInWithCustomToken(customToken);
 export const signInCredential = async (credential: FirebaseAuthTypes.AuthCredential) => await auth().signInWithCredential(credential);
