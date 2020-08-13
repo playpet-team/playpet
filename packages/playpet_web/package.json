@@ -1,9 +1,9 @@
 {
   "name": "@playpet/playpet_web",
   "version": "1.0.0",
-  "description": "> TODO: description",
-  "author": "baekkyoungjung <baekkyoungjung@gmail.com>",
-  "homepage": "https://github.com/playpet-team/playpet#readme",
+  "description": "playpet",
+  "author": "playpet",
+  "homepage": "https://playpet.me",
   "license": "ISC",
   "scripts": {
     "build": "gatsby build",
