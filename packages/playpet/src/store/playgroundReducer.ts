@@ -1,10 +1,10 @@
 import { CardModel } from '../utils/cards/index';
 import { createSlice } from "@reduxjs/toolkit";
 
-export interface S {
+export interface Cards {
     cards: CardModel[],
 };
-export const initialState = {
+export const initialState: Cards = {
     cards: [],
 };
 

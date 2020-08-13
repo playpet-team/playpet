@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState, useCallback } from 'react';
 import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
 
@@ -23,18 +23,20 @@ export default function SocialSignIn() {
     });
     const dispatch = useDispatch();
 
-    const handleSignIn = async (method: SignType) => {
+    const handleSignIn = useCallback(async (method: SignType) => {
         try {
             setLoading(true);
             await getUidByThirdPartySignIn(method, {
                 toastContent,
                 setToastContent
             });
+            console.log('11');
 
             const user = currentUser();
             if (!user) {
                 return;
             }
+            console.log('222');
             const uid = user.uid;
             const result: CheckUser = await checkIsExistUser(uid);
             switch (result) {
@@ -56,7 +58,7 @@ export default function SocialSignIn() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [dispatch]);
 
     return (
         <SigninButtonGroups>
@@ -100,4 +102,5 @@ const SigninButton = styled.TouchableOpacity`
 
 const SigninText = styled.Text`
     margin-left: 16px;
+    color: #fff;
 `;

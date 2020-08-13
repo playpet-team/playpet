@@ -20,26 +20,23 @@ function MyCards() {
         }
     }, []);
 
-    const RenderCards = useCallback(() => {
-        return (
-            <>
-                {myCards.map(card => (
-                    <Card
-                        {...card}
-                        key={card.id}
-                        onPlayActive={false}
-                        renderRange={true}
-                        containerWidth='31%'
-                        isLike={myLikes.includes(card.id)}
-                    />
-                ))}
-            </>
-        )
-    }, [myCards]);
+    const renderCards = useCallback(() => {
+        console.log('myCards------', myCards.length);
+        return myCards.map(card => (
+            <Card
+                {...card}
+                key={card.id}
+                onPlayActive={false}
+                renderRange={true}
+                containerWidth='32%'
+                isLike={myLikes.includes(card.id)}
+            />
+        ));
+    }, [myCards.length]);
 
     return (
         <MyCardsBlock>
-            {myCards.length ? <RenderCards /> : <Text>올린 영상이 없습니다.</Text>}
+            {myCards.length ? renderCards() : <Text>올린 영상이 없습니다.</Text>}
         </MyCardsBlock>
     );
 };
@@ -47,7 +44,7 @@ function MyCards() {
 export default MyCards;
 
 const MyCardsBlock = styled.View`
-    flex: 1;
+    /* flex: 1; */
     flex-direction: row;
     flex-wrap: wrap;
     /* align-content: flex-start; */
@@ -55,6 +52,7 @@ const MyCardsBlock = styled.View`
     justify-content: space-between;
     padding-horizontal: 8px;
     width: 100%;
+    height: 500px;
     /* height: 300px; */
 `;
 

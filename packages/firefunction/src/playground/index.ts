@@ -46,7 +46,7 @@ export const manageCardLikes = functions.https.onCall(async ({ uid, id, methods 
     }
 });
 
-export const haha = functions.https.onCall(({ url, uid, method }) => {
+export const videoTest = functions.https.onCall(({ url, uid, method }) => {
     // client.upload(
     //     url,
     //     function (uri: string) {

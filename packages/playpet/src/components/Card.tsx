@@ -2,11 +2,12 @@ import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import styled, { css } from 'styled-components/native';
 import { Video } from 'expo-av';
 import { Icon } from 'react-native-elements'
-import { CardModel, setCardLike } from '../utils';
+import { deviceSize, CardModel, setCardLike } from '../utils';
 import { TouchableWithoutFeedback, View, Animated } from 'react-native';
 import { DividerBlock } from '../styles';
 
-const DETAIL_SECTION_HEIGHT = 100;
+const DEVICE_WIDTH = deviceSize().width;
+const DEVICE_HEIGHT = deviceSize().height;
 export interface CardType extends CardModel {
     onPlayground?: boolean;
     containerWidth?: string;
@@ -71,20 +72,22 @@ function Card({
             />
         );
 
-    }, [renderRange]);
+    }, [renderRange, media, onPlayActive, isSoundOn, showDetail, videoRef]);
 
     return (
         <CardTouchable onPress={() => setShowDetail(!showDetail)}>
-            <CardBlock containerWidth={containerWidth}>
+            <CardBlock containerWidth={containerWidth} containerHeight={getContainerHeight(DEVICE_WIDTH, containerWidth)}>
                 {renderRange && <RenderMedia />}
-                {onPlayground && <AnimatedOverlayBackground
-                    style={{
-                        opacity: bounceValue.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [0, 1],
-                        }),
-                    }}
-                />}
+                {onPlayground &&
+                    <AnimatedOverlayBackground
+                        style={{
+                            opacity: bounceValue.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [0, 1],
+                            }),
+                        }}
+                    />
+                }
                 {onPlayground && <SectionBlock showDetail={showDetail}>
                     <Content>
                         <FloatingButtonGroup>
@@ -113,13 +116,25 @@ function Card({
     );
 };
 
+const getContainerHeight = (DEVICE_WIDTH: number, containerWidth: string): string => {
+    if (containerWidth === '100%') {
+        return '100%';
+    }
+    return `${DEVICE_WIDTH * (Number(containerWidth.replace(/[^0-9]/g, '')) / 100)}px`;
+};
+
 const CardTouchable = styled(TouchableWithoutFeedback)`
     margin-bottom: 8px;
 `;
 
-const CardBlock = styled.View<Pick<CardType, 'containerWidth'>>`
+interface CardContainer {
+    containerHeight: string;
+    containerWidth: Pick<CardType, 'containerWidth'>;
+}
+const CardBlock = styled.View<CardContainer>`
     background-color: #000;
     width: ${({ containerWidth }) => containerWidth};
+    height: ${({ containerHeight }) => containerHeight};
 `;
 
 const FloatingButtonGroup = styled.View`
