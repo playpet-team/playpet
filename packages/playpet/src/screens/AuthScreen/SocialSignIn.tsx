@@ -1,7 +1,7 @@
-import React, { Dispatch, SetStateAction, useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
-
+import { signInCredential } from '../../utils';
 import { checkIsExistUser, CheckUser, currentUser } from '../../utils';
 import useInitializeSignIn from '../../hooks/useInitializeSignIn';
 import { SignType } from '../../models';
@@ -14,45 +14,83 @@ import Toast, { ToastParams } from '../../components/Toast';
 
 export default function SocialSignIn() {
     const { loading, setLoading, Indicator } = useLoadingIndicator();
-    const { getUidByThirdPartySignIn } = useInitializeSignIn();
+    const [method, setMethod] = useState(SignType.None);
     const [toastContent, setToastContent] = useState<ToastParams>({
         visible: false,
         title: '',
         description: '',
         image: '',
     });
+    const { credential, getUidByThirdPartySignIn } = useInitializeSignIn({ toastContent, setToastContent });
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        signIn();
+        async function signIn() {
+            // saveCredential(email, method, credential);
+            console.log('cre', credential);
+            if (!credential) {
+                return;
+            }
+            try {
+                console.log('bbb');
+                await signInCredential(credential);
+                checkUser();
+                console.log('aaa');
+            } catch (error) {
+                if (error.code != "auth/account-exists-with-different-credential") {
+                    setToastContent({
+                        ...toastContent,
+                        visible: true,
+                        title: '인증 정보를 받아오는 작업을 실패했습니다',
+                    });
+                } else {
+                    setToastContent({
+                        ...toastContent,
+                        visible: true,
+                        title: '다른 로그인 방법으로 회원가입을 완료한 계정이 있습니다.',
+                    });
+                }
+            }
+        }
+
+    }, [credential]);
+
+    const checkUser = async () => {
+        const user = currentUser();
+        if (!user) {
+            setToastContent({
+                ...toastContent,
+                visible: true,
+                title: '인증 정보를 받아오는 작업을 실패했습니다',
+            });
+            return;
+        }
+        console.log('222');
+        const uid = user.uid;
+        const result: CheckUser = await checkIsExistUser(uid);
+        switch (result) {
+            case CheckUser.Empty: {
+                createUserCall({
+                    uid,
+                    method,
+                });
+                break;
+            }
+            default:
+            case CheckUser.Exists: {
+                dispatch(authActions.signIn());
+                break;
+            }
+        }
+    };
 
     const handleSignIn = useCallback(async (method: SignType) => {
         try {
             setLoading(true);
-            await getUidByThirdPartySignIn(method, {
-                toastContent,
-                setToastContent
-            });
+            setMethod(method);
+            await getUidByThirdPartySignIn(method);
             console.log('11');
-
-            const user = currentUser();
-            if (!user) {
-                return;
-            }
-            console.log('222');
-            const uid = user.uid;
-            const result: CheckUser = await checkIsExistUser(uid);
-            switch (result) {
-                case CheckUser.Empty: {
-                    createUserCall({
-                        uid,
-                        method,
-                    });
-                    break;
-                }
-                default:
-                case CheckUser.Exists: {
-                    dispatch(authActions.signIn());
-                    break;
-                }
-            }
         } catch (e) {
             console.error(e);
         } finally {

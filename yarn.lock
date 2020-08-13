@@ -7930,14 +7930,6 @@ expo-updates@~0.2.8:
     fbemitter "^2.1.1"
     uuid "^3.4.0"
 
-expo-video-player@^1.5.8:
-  version "1.5.8"
-  resolved "https://registry.yarnpkg.com/expo-video-player/-/expo-video-player-1.5.8.tgz#857d8d3f625af4ca474d35bfa8b21467fdce5f5e"
-  integrity sha512-K08ImHnFxuMEyzNmfPuY3a36DFQnwWg6QEKg4MLRyQzB1KVbgGSLg6XQGhl3AjQnbws35Xd6WkdDVUUeSC8qzQ==
-  dependencies:
-    tslib "^1.11.2"
-    with-default-props "^0.2.1"
-
 expo-video-thumbnails@~4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/expo-video-thumbnails/-/expo-video-thumbnails-4.2.1.tgz#8867ecf143acbca6425da05d97beaa0cd31b2bc2"
@@ -9229,7 +9221,7 @@ global-prefix@^1.0.1:
     is-windows "^1.0.1"
     which "^1.2.14"
 
-global@^4.3.0, global@^4.4.0:
+global@^4.3.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/global/-/global-4.4.0.tgz#3e7b105179006a323ed71aafca3e9c57a5cc6406"
   integrity sha512-wv/LAoHdRE3BeTGz53FAamhGlPLhlssK45usmGFThIi4XqnBmjKQ16u+RNbP7WvigRZDxUsM0J3gcQ5yicaL0w==
@@ -15269,13 +15261,6 @@ react-native-fbsdk@^2.0.0:
   resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-2.0.0.tgz#eb041bdb8f9b9180a1696d3bd7d7accee6554262"
   integrity sha512-CyPKoBVt9Y+KznALcnN4lkh6dUNqZjyFS6GbkXXTFf72wR9Dl8bXF2dDj56w/o5/TFoCnNCmQlZgh7P/NiElZQ==
 
-react-native-fit-image@^1.5.5:
-  version "1.5.5"
-  resolved "https://registry.yarnpkg.com/react-native-fit-image/-/react-native-fit-image-1.5.5.tgz#c660d1ad74b9dcaa1cba27a0d9c23837e000226c"
-  integrity sha512-Wl3Vq2DQzxgsWKuW4USfck9zS7YzhvLNPpkwUUCF90bL32e1a0zOVQ3WsJILJOwzmPdHfzZmWasiiAUNBkhNkg==
-  dependencies:
-    prop-types "^15.5.10"
-
 react-native-gesture-handler@~1.6.0:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.6.1.tgz#678e2dce250ed66e93af409759be22cd6375dd17"
@@ -17856,7 +17841,7 @@ tsconfig-paths@^3.9.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@^1.10.0, tslib@^1.11.1, tslib@^1.11.2, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.11.1, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
   integrity sha512-i/6DQjL8Xf3be4K/E6Wgpekn5Qasl1usyw++dAA35Ue5orEn65VIxOA+YvNNl9HV3qv70T7CNwjODHZrLwvd1Q==
@@ -18918,11 +18903,6 @@ windows-release@^3.1.0:
   integrity sha512-Pngk/RDCaI/DkuHPlGTdIkDiTAnAkyMjoQMZqRsxydNl1qGXNIoZrB7RK8g53F2tEgQBMqQJHQdYZuQEEAu54A==
   dependencies:
     execa "^1.0.0"
-
-with-default-props@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/with-default-props/-/with-default-props-0.2.1.tgz#41470545d2fa945308993c86a81c7481c298cb95"
-  integrity sha512-yTrBg7EGzFwpZLCN5M4ropSbZ/V+scx5DXBE6HZhKCevsRaYCRBBf/69UvfaWxu/zRaWX5j9Y/F4YFs1Q1yg4w==
 
 wonka@^4.0.14:
   version "4.0.14"

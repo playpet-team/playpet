@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components/native';
-import { Input, Icon } from 'react-native-elements';
-import FitImage from 'react-native-fit-image';
+import { Input, Icon, Image } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import { Text } from 'react-native';
@@ -37,18 +36,15 @@ export default function CardFormScreen() {
     }, [form, uid]);
 
     const uploadedImage = useCallback(() => {
+        console.log("form.cardImages--------", form.cardImages);
         return form.cardImages.map(card => (
-            <FitImageBlock
+            <Image
                 key={card.id}
-                resizeMode='contain'
+                resizeMode='cover'
                 source={{ uri: card.videoThumbnails }}
-                style={{
-                    width: '100%',
-                }}
-                originalWidth={card.width}
-                originalHeight={card.height}
+                style={{ width: 200, height: 200 }}
             />
-        ))
+        ));
     }, [form]);
 
     return (
@@ -176,8 +172,8 @@ const UploadImageBlock = styled.View`
     justify-content: center;
 `;
 
-const FitImageBlock = styled(FitImage)`
-`;
+// const FitImageBlock = styled(FitImage)`
+// `;
 
 const UploadedImageBlock = styled.View`
     flex: 1;

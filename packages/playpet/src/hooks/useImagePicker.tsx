@@ -29,7 +29,7 @@ function useImagePicker({ setLoading, setForm, form, uid }: {
 }) {
     const openPicker = useCallback(async () => {
         await getPermissionAsync();
-        const response: any = await ImagePicker.launchImageLibraryAsync({
+        const response: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Videos,
             // videoExportPreset: ImagePicker.VideoExportPreset.MediumQuality,
             allowsEditing: true,
@@ -38,16 +38,20 @@ function useImagePicker({ setLoading, setForm, form, uid }: {
         addCardImage(response);
     }, []);
 
-    const addCardImage = useCallback(async (response: any) => {
-        if (response.cancelled) {
+    const addCardImage = async (response: any) => {
+        if (response.cancelled === true) {
             return;
         }
+
         setLoading(true);
         const tempId = `${uid}_${firebaseNow().seconds}`;
         let videoThumbnails = '';
         try {
             // 빠른반응을 위해 업로드전 우선 preview 시켜준다
-            if (isVideoType(response)) {
+            if (isVideoType(response.type)) {
+                if (!response.uri) {
+                    return;
+                }
                 const { uri } = await VideoThumbnails.getThumbnailAsync(
                     response.uri,
                     {
@@ -62,7 +66,7 @@ function useImagePicker({ setLoading, setForm, form, uid }: {
                     ...form.cardImages,
                     {
                         id: tempId,
-                        isVideo: isVideoType(response),
+                        isVideo: isVideoType(response.type),
                         firebaseUrl: '',
                         videoThumbnails,
                         uri: response.uri,
@@ -78,7 +82,7 @@ function useImagePicker({ setLoading, setForm, form, uid }: {
         } finally {
             setLoading(false);
         }
-    }, [uid]);
+    };
 
     const removeUploadImage = (tempId: string) => {
         setForm({
@@ -101,4 +105,4 @@ const getPermissionAsync = async () => {
     }
 };
 
-const isVideoType = ({ type }: { type: string }) => type === 'video';
+const isVideoType = (type: string) => type === 'video';

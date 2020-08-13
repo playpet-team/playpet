@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>KAKAO_APP_KEY</key>
-	<string>094f951fd9631043a18f5b644f030810</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>ko_KR</string>
 	<key>CFBundleDisplayName</key>
@@ -22,10 +20,6 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
-	<true/>
-	<key>FirebaseCrashlyticsCollectionEnabled</key>
-	<true/>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -63,15 +57,21 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
+	<true/>
 	<key>FacebookAppID</key>
 	<string>526260221420236</string>
 	<key>FacebookDisplayName</key>
 	<string>playpet</string>
+	<key>FirebaseCrashlyticsCollectionEnabled</key>
+	<true/>
 	<key>FirebaseDynamicLinksCustomDomains</key>
 	<array>
 		<string>https://custom.domain.io/bla</string>
 		<string>https://custom.domain.io/bla2</string>
 	</array>
+	<key>KAKAO_APP_KEY</key>
+	<string>094f951fd9631043a18f5b644f030810</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -131,8 +131,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
