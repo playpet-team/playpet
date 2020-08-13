@@ -2,10 +2,17 @@ import React from "react"
 import styled from "@emotion/styled"
 import { Global, jsx, css } from '@emotion/core';
 import baseCSS from '../styles/baseCSS';
+import useSiteMetadata from "../hooks/useSiteMetadata";
+import SEO from "../components/SEO";
 
 export default function Home() {
+    const { siteUrl } = useSiteMetadata();
     return (
         <HomeBlock>
+            <SEO
+                description="플레이펫 - 반려동물이 더 나은 세상을 위해 노력합니다"
+                siteURL={siteUrl}
+            />
             <Global styles={baseCSS} />
             <BackgroundSection data-source="https://www.pxfuel.com/en/free-photo-qanng" />
         </HomeBlock>
