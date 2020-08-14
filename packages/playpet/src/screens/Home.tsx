@@ -7,6 +7,7 @@ import { DividerBlock } from '../styles';
 import useFirebaseMessage from '../hooks/useFirebaseMessage';
 import ButtonGroups from '../components/ButtonGroups';
 import { ScrollView } from 'react-native-gesture-handler';
+import Logo from '../components/Logo';
 // import { videoTest } from '../callable';
 
 export default function Home() {
@@ -32,15 +33,15 @@ export default function Home() {
     return (
         <SafeAreaViewBlock>
             <HomeBlock>
-                <ImageBlock source={require('../../assets/images/playpet_logo.png')} />
+                <Logo />
                 <DividerBlock marginTop={24} />
                 <ButtonGroups buttons={['인기', '최신']} />
             </HomeBlock>
             <ScrollView>
-                <CardView />
-                <CardView />
-                <CardView />
-                <CardView />
+                <DummyCardView />
+                <DummyCardView />
+                <DummyCardView />
+                <DummyCardView />
             </ScrollView>
             <SignUpAgreeTermsModal
                 modalVisible={modalVisible}
@@ -58,18 +59,11 @@ const HomeBlock = styled.View`
     align-items: center;
 `;
 
-const CardView = styled.View`
+const DummyCardView = styled.View`
     flex: 1;
     margin: 20px;
     height: 550px;
     background-color: #e9e9e9;
     border-radius: 8px;
     margin-bottom: 16px;
-`;
-
-const ImageBlock = styled.Image`
-    margin-top: 24px;
-    width: 120px;
-    height: 35px;
-    resize-mode: contain;
 `;
