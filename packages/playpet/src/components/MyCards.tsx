@@ -1,38 +1,29 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components/native';
 import Card from '../components/Card';
-import { getMyCards, currentUser, CardModel } from '../utils';
+import { currentUser } from '../utils';
 import useCardLikes from '../hooks/useCardLikes';
-import { ScrollView } from 'react-native-gesture-handler';
+import useLoadMyCards from '../hooks/useLoadMyCards';
 
-const user = currentUser();
 function MyCards() {
-    const [myCards, setMyCards] = useState<CardModel[]>([]);
-    const { myLikes } = useCardLikes();
-    const [maxLength, setMaxLength] = useState(10);
 
-    useEffect(() => {
-        async function loadMyCards(uid: string) {
-            setMyCards(await getMyCards(uid));
-        }
-        if (user) {
-            loadMyCards(user.uid);
-        }
-    }, []);
+    const { myLikes } = useCardLikes();
+    const { myCards } = useLoadMyCards({});
 
     const renderCards = useCallback(() => {
-        console.log('myCards------', myCards.length);
-        return myCards.map(card => (
-            <Card
-                {...card}
-                key={card.id}
-                onPlayActive={false}
-                renderRange={true}
-                containerWidth='32%'
-                isLike={myLikes.includes(card.id)}
-            />
-        ));
-    }, [myCards.length]);
+        return myCards.map(card => {
+            return (
+                <Card
+                    {...card}
+                    key={card.id}
+                    onPlayActive={false}
+                    renderRange={true}
+                    containerWidth='32%'
+                    isLike={myLikes.includes(card.id)}
+                />
+            )
+        });
+    }, [myCards, myLikes]);
 
     return (
         <MyCardsBlock>
@@ -44,16 +35,12 @@ function MyCards() {
 export default MyCards;
 
 const MyCardsBlock = styled.View`
-    /* flex: 1; */
     flex-direction: row;
     flex-wrap: wrap;
-    /* align-content: flex-start; */
     align-items: flex-start;
     justify-content: space-between;
     padding-horizontal: 8px;
     width: 100%;
-    height: 500px;
-    /* height: 300px; */
 `;
 
 const Text = styled.Text`

@@ -26,8 +26,11 @@ export const submitCard = async (formData: CardModel) => {
     return await firestore().collection(collections.Playground).add(formData);
 };
 
-export const getMyCards = async (uid: string): Promise<CardModel[]> => {
-    const myCards = await firestore().collection(collections.Playground).where('uid', '==', uid).get();
+export const getMyCards = async (uid: string, sort?: string): Promise<CardModel[]> => {
+    const myCards = await firestore()
+        .collection(collections.Playground)
+        .where('uid', '==', uid)
+        .get();
     return myCards.docs.map(card => {
         const cardData = card.data();
         return {

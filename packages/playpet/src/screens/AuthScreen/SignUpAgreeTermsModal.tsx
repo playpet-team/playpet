@@ -1,4 +1,4 @@
-import React, { useState, useMemo, Dispatch, SetStateAction } from 'react';
+import React, { useState, useMemo, Dispatch, SetStateAction, useCallback } from 'react';
 import { Text } from 'react-native';
 import styled from 'styled-components/native';
 import auth from '@react-native-firebase/auth';
@@ -17,17 +17,14 @@ export default function SignUpAgreeTermsModal({ modalVisible, setModalVisible }:
     const [personalCollectAgree, setPersonalCollectAgree] = useState(false);
     const [marketingAgree, setMarketingAgree] = useState(false);
 
-    const handleAllAgree = () => {
+    const handleAllAgree = useCallback(() => {
         setOverAgeAgree(true);
         setTermsOfUseAgree(true);
         setPersonalCollectAgree(true);
         setMarketingAgree(true);
-    };
+    }, []);
 
-    const allAgreeTarms = useMemo(() => {
-        return overAgeAgree && termsOfUseAgree && personalCollectAgree;
-    }, [overAgeAgree, termsOfUseAgree, personalCollectAgree]);
-
+    const isAllAgreeTarms = () => overAgeAgree && termsOfUseAgree && personalCollectAgree;
 
     const hanbleSubmitAgreeTerms = async () => {
         const user = currentUser();
@@ -67,7 +64,7 @@ export default function SignUpAgreeTermsModal({ modalVisible, setModalVisible }:
             <TermsAgree onPress={() => setMarketingAgree(!marketingAgree)}>
                 <Text>{marketingAgree ? 'checked' : 'none'}</Text><Text>홍보 및 마케팅 이용에 동의</Text>
             </TermsAgree>
-            <SubmitSignIn onPress={() => hanbleSubmitAgreeTerms()} disabled={!allAgreeTarms}>
+            <SubmitSignIn onPress={() => hanbleSubmitAgreeTerms()} disabled={!isAllAgreeTarms}>
                 <Text>확인</Text>
             </SubmitSignIn>
         </PlaypetDialog>
