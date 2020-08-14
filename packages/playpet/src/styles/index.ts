@@ -17,4 +17,13 @@ export const DividerBlock = styled.View<DividerProps>`
     `}
 `;
 
-// export const 
+interface layoutProps {
+    alignItems?: string;
+    justifyContent?: string;
+    padding?: number;
+}
+export const Layout = styled.View<layoutProps>`
+    padding: ${({ padding = 0 }) => padding}px;
+    align-items: ${({ alignItems = 'flex-start' }) => alignItems};
+    justify-content: ${({ justifyContent = 'flex-start' }) => justifyContent};
+`;

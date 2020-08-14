@@ -5,13 +5,16 @@ import SignUpAgreeTermsModal from './AuthScreen/SignUpAgreeTermsModal';
 import { getUserTerms, currentUser } from '../utils';
 import { DividerBlock } from '../styles';
 import useFirebaseMessage from '../hooks/useFirebaseMessage';
+import useRollingBanner from '../hooks/useRollingBanner';
 import ButtonGroups from '../components/ButtonGroups';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Layout } from '../styles';
 import Logo from '../components/Logo';
 // import { videoTest } from '../callable';
 
 export default function Home() {
     const [modalVisible, setModalVisible] = useState(false);
+    const { RenderBanner } = useRollingBanner();
     useFirebaseMessage();
 
     useEffect(() => {
@@ -35,9 +38,12 @@ export default function Home() {
             <HomeBlock>
                 <Logo />
                 <DividerBlock marginTop={24} />
-                <ButtonGroups buttons={['인기', '최신']} />
+                {RenderBanner && RenderBanner}
             </HomeBlock>
             <ScrollView>
+                <Layout alignItems='center'>
+                    <ButtonGroups buttons={['인기', '최신']} />
+                </Layout>
                 <DummyCardView />
                 <DummyCardView />
                 <DummyCardView />

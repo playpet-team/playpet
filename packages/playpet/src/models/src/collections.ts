@@ -6,4 +6,5 @@ export enum collections {
     UserActions = 'userActions',
     PushSettings = 'pushSettings',
     Payments = 'payments',
+    Banners = 'banners',
 };
