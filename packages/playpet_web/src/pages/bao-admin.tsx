@@ -15,7 +15,12 @@ export default function BaoAdmin() {
         }
     });
 
-    const login = async () => await firebase.auth().signInWithPopup(provider);
+    const login = async () => {
+        const { credential }: any = await firebase.auth().signInWithPopup(provider);
+        if (credential) {
+            localStorage.setItem('gToken', JSON.stringify(credential));
+        }
+    };
     const logout = async () => await firebase.auth().signOut();
 
     return (

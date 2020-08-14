@@ -2,18 +2,16 @@ import React, { useEffect } from "react"
 import styled from "@emotion/styled"
 import firebase from "gatsby-plugin-firebase";
 import { navigate, Link } from "gatsby";
+import useAuth from "../hooks/useAuth";
 
 export default function Bao() {
-    if (!firebase.auth().currentUser) {
-        navigate('/');
-    }
-    const [user, setUser] = React.useState<firebase.User | null>(firebase.auth().currentUser ? firebase.auth().currentUser : null);
+    useAuth();
 
     return (
         <BaoBlock>
             나는 바오
-            <Link to="/bao/users">유저님들</Link>
-            <Link to="/bao/banners">배너관리</Link>
+            <Link to="users">유저님 관리</Link>
+            <Link to="banners">배너들 관리</Link>
         </BaoBlock>
     )
 };

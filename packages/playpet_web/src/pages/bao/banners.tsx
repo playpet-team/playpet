@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react"
 import styled from "@emotion/styled"
 import firebase from "gatsby-plugin-firebase";
+import useAuth from "../../hooks/useAuth";
 
 export default function Banners() {
+    useAuth();
     const [banners, setbanners] = useState([]);
 
     useEffect(() => {
