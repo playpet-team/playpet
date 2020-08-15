@@ -21,22 +21,9 @@ export default function CardFormScreen() {
         uid,
     });
 
-    useEffect(() => {
-        const reset = () => setForm(formReset);
-        navigation.setOptions({
-            headerRight: () => (
-                <SubmitButton
-                    {...form}
-                    uid={uid}
-                    onSubmitCallback={reset}
-                />
-            ),
-        });
-
-    }, [form, uid]);
+    const onReset = useCallback(() => setForm(formReset), []);
 
     const uploadedImage = useCallback(() => {
-        console.log("form.cardImages--------", form.cardImages);
         return form.cardImages.map(card => (
             <Image
                 key={card.id}
@@ -50,17 +37,29 @@ export default function CardFormScreen() {
     return (
         <CardBlock>
             {loading && <Indicator />}
-            <Text>CardForm</Text>
             <InputTextGroup>
                 <Input
-                    placeholder='Title 필수'
+                    containerStyle={{
+                        flex: 1.5,
+                    }}
+                    inputContainerStyle={{
+                        borderBottomWidth: 0,
+                    }}
+                    placeholder='오늘은 어떤 일이 있었나요?'
                     value={form.title}
                     onChangeText={(value: string) => setForm({
                         ...form,
                         title: value,
                     })}
                 />
-                <Input
+                <UploadImageBlock>
+                    {!loading && !form.cardImages.length &&
+                        <UploadImage onPress={openPicker}>
+                            <Icon name="get-app" />
+                        </UploadImage>
+                    }
+                </UploadImageBlock>
+                {/* <Input
                     placeholder='#댕댕이'
                     value={form.tagField}
                     onChangeText={(value: string) => {
@@ -77,8 +76,8 @@ export default function CardFormScreen() {
                             })
                         }
                     }}
-                />
-                <InputDescription
+                /> */}
+                {/* <InputDescription
                     placeholder='Description 선택?'
                     multiline
                     value={form.description}
@@ -88,20 +87,20 @@ export default function CardFormScreen() {
                             description: value,
                         });
                     }}
-                />
-                <DisplayTags tags={form.tags} />
+                /> */}
+                {/* <DisplayTags tags={form.tags} /> */}
             </InputTextGroup>
-            <UploadImageBlock>
-                {!loading && !form.cardImages.length &&
-                    <UploadImage onPress={openPicker}>
-                        <Icon name="get-app" />
-                    </UploadImage>
-                }
-            </UploadImageBlock>
             {loading && <Text>loading...</Text>}
             <UploadedImageBlock>
                 {uploadedImage()}
             </UploadedImageBlock>
+            {/* <SubmitBlock> */}
+            <SubmitButton
+                {...form}
+                uid={uid}
+                onSubmitCallback={onReset}
+            />
+            {/* </SubmitBlock> */}
         </CardBlock>
     );
 };
@@ -149,6 +148,10 @@ const InputDescription = styled(Input)`
     min-height: 100px;
 `;
 
+const FormBlock = styled.View`
+    flex: 1;
+`;
+
 const Tag = styled.Text`
     padding: 4px;
     color: blue;
@@ -159,32 +162,39 @@ const DisplayTagsBlock = styled.View`
     flex-wrap: wrap;
 `;
 
-const CardBlock = styled.ScrollView`
+const CardBlock = styled.View`
     flex: 1;
+    height: 100%;
+    padding: 16px;
 `;
 
 const InputTextGroup = styled.View`
-    flex-direction: column;
+    flex-direction: row;
+    /* flex: 1; */
+    height: 200px;
 `;
 
 const UploadImageBlock = styled.View`
-    align-items: center;
-    justify-content: center;
+    flex: 1;
+    background-color: #efefef;
 `;
 
-// const FitImageBlock = styled(FitImage)`
-// `;
-
 const UploadedImageBlock = styled.View`
+    
     flex: 1;
 `;
 
 const UploadImage = styled.TouchableOpacity`
-    border-width: 1px;
-    border-style: solid;
-    border-color: #999;
+    /* border-width: 1px; */
+    /* border-style: solid; */
+    /* border-color: #999; */
     align-items: center;
     justify-content: center;
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 100%;
+`;
+
+const SubmitBlock = styled.View`
+    /* flex: 1; */
+    /* justify-content: flex-end; */
 `;

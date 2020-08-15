@@ -1,47 +1,46 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
 import Card from '../components/Card';
-import { currentUser } from '../utils';
+import { currentUser, deviceSize } from '../utils';
 import useCardLikes from '../hooks/useCardLikes';
 import useLoadMyCards from '../hooks/useLoadMyCards';
+import { ListBlock } from '../styles';
+import { Image } from 'react-native';
+import { ItemList } from '../screens/AuthScreen';
 
-function MyCards() {
-
-    const { myLikes } = useCardLikes();
+function MyCards({ listType }: { listType: ItemList; }) {
     const { myCards } = useLoadMyCards({});
 
     const renderCards = useCallback(() => {
-        return myCards.map(card => {
-            return (
-                <Card
-                    {...card}
-                    key={card.id}
-                    onPlayActive={false}
-                    renderRange={true}
-                    containerWidth='32%'
-                    isLike={myLikes.includes(card.id)}
-                />
-            )
-        });
-    }, [myCards, myLikes]);
+        if (listType === ItemList.MEDIA) {
+            return myCards.map(card => {
+                return (
+                    <Image
+                        key={card.id}
+                        source={{
+                            uri: card.uploadMedia[0].videoThumbnails,
+                        }}
+                        resizeMode="cover"
+                        style={{
+                            width: deviceSize().width / 2,
+                            height: 100,
+                        }}
+                    />
+                )
+            });
+        } else if (listType === ItemList.ITEM) {
+            return <Text>올린 영상이 없습니다.</Text>;
+        }
+    }, [myCards, listType]);
 
     return (
-        <MyCardsBlock>
-            {myCards.length ? renderCards() : <Text>올린 영상이 없습니다.</Text>}
-        </MyCardsBlock>
+        <ListBlock>
+            {renderCards()}
+        </ListBlock>
     );
 };
 
 export default MyCards;
-
-const MyCardsBlock = styled.View`
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding-horizontal: 8px;
-    width: 100%;
-`;
 
 const Text = styled.Text`
     font-size: 16px;

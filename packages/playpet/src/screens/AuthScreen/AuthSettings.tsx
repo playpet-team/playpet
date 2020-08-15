@@ -5,7 +5,7 @@ import { signOut, leave, appReload } from '../../utils';
 import { ListItem } from 'react-native-elements';
 import { SignType } from '../../models';
 import useLoadingIndicator from '../../hooks/useLoadingIndicator';
-
+import { DividerBlock } from '../../styles';
 enum Handle {
     Link,
     Navigate,
@@ -27,10 +27,16 @@ export default function AuthSettings() {
                 <ListItem
                     key={item.label}
                     title={item.label}
-                    leftIcon={{ name: item.icon }}
                     onPress={() => item.onPress()}
                 />
             ))}
+            <DividerBlock
+                backgroundColor="#ccc"
+                marginTop="16"
+                marginBottom="16"
+                height="1"
+            />
+            <DangerText>플레이펫은 상품에 직접 관여하지 않으며 상품 주문, 배송 및 환불의 의무와 책임은 각 판매업체에 있습니다.</DangerText>
         </AuthSettingsBlock>
     );
 };
@@ -39,8 +45,19 @@ const linkProvision = () => { };
 const linkCustomerCenter = () => { };
 
 const getList = (setLoading: React.Dispatch<React.SetStateAction<boolean>>): List[] => {
-    console.log('1111');
     return [
+        {
+            icon: 'assignment',
+            label: '공지사항',
+            onPress: linkProvision,
+            type: Handle.Link,
+        },
+        {
+            icon: 'assignment',
+            label: '자주묻는 질문',
+            onPress: linkProvision,
+            type: Handle.Link,
+        },
         {
             icon: 'assignment',
             label: '서비스 약관',
@@ -113,4 +130,10 @@ const handleLeave = (setLoading: React.Dispatch<React.SetStateAction<boolean>>) 
 };
 
 const AuthSettingsBlock = styled.View`
+    padding-horizontal: 16px;
+`;
+
+const DangerText = styled.Text`
+    font-size: 12px;
+    padding: 8px;
 `;

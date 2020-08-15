@@ -12,8 +12,19 @@ interface Submit {
     description: string;
     tags: string[];
     onSubmitCallback: Function;
+    containerStyle?: object;
+    buttonStyle?: object;
 }
-function SubmitButton({ cardImages, uid, title, description, tags, onSubmitCallback }: Submit) {
+function SubmitButton({
+    cardImages,
+    uid,
+    title,
+    description,
+    tags,
+    onSubmitCallback,
+    containerStyle = {},
+    buttonStyle = {}
+}: Submit) {
     const [isSubmitLoading, setSubmitLoading] = useState(false);
 
     const formSubmit = async () => {
@@ -61,11 +72,27 @@ function SubmitButton({ cardImages, uid, title, description, tags, onSubmitCallb
             })
         );
     };
+
     return (
         <Button
-            title="저장"
+            title="자랑하기"
             disabled={isSubmitLoading}
             onPress={formSubmit}
+            style={{
+                // position: 'absolute',
+                // bottom: 0,
+                // height: 320,
+
+            }}
+            containerStyle={{
+                // flex: 1,
+            }}
+            buttonStyle={{
+                padding: 16,
+            }}
+            titleStyle={{
+                fontWeight: '800',
+            }}
         />
     );
 };

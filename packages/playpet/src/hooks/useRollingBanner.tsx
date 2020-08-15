@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import Carousel from 'react-native-snap-carousel';
 import { deviceSize } from '../utils';
 import { BannerProp, loadBanner } from '../utils/banner';
-import { Text } from 'react-native';
+import { Text, Image } from 'react-native';
 
 
 const BANNER_WIDTH = deviceSize().width * 0.9;
@@ -12,14 +12,8 @@ export interface RenderItemProps {
     item: BannerProp;
     index: number;
 }
-function CarouselBanner() {
+function useRollingBanner() {
     const [banner, setBanner] = useState<BannerProp[]>([]);
-
-    if (!banner.length) {
-        return {
-            RenderBanner: null,
-        };
-    }
 
     useEffect(() => {
         async function getBanner() {
@@ -29,33 +23,51 @@ function CarouselBanner() {
         getBanner();
     }, []);
 
-    const renderItem = useCallback(({ item }: RenderItemProps) => {
+    // if (!banner) {
+    //     return {
+    //         RenderBanner: null,
+    //     };
+    // }
+
+    const renderItem = ({ item }: RenderItemProps) => {
         return (
             <Banner
                 {...item}
             />
         );
-    }, []);
+    };
 
-    return {
-        RenderBanner: (
+    const renderBanner = () => {
+        return (
             <Carousel
                 data={banner}
                 renderItem={renderItem}
                 sliderWidth={BANNER_WIDTH}
-                itemHeight={300}
+                itemWidth={BANNER_WIDTH}
             />
-        ),
+        )
+    };
+
+    return {
+        renderBanner,
     }
 };
 
 const Banner = (banner: BannerProp) => {
     return (
-        <BannerBlock><Text>배너배너</Text></BannerBlock>
+        <Image
+            source={{ uri: banner.image }}
+            resizeMode="cover"
+            style={{
+                width: '100%',
+                height: 140,
+                borderRadius: 8,
+            }}
+        />
     );
 };
 
 // onSnapToItem={useCallback((slideIndex: number) => setActiveIndex(slideIndex), [])}
-export default CarouselBanner;
+export default useRollingBanner;
 
 const BannerBlock = styled.View``;

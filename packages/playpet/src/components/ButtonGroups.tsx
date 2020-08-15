@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonGroup, ElementObject } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
+import { ItemList } from '../screens/AuthScreen';
 
 interface Groups {
     buttons: string[] | ElementObject[];
     textStyle?: object;
+    containerStyle?: object;
     selectedButtonStyle?: object;
     selectedTextStyle?: object;
+    onSelect?: React.Dispatch<React.SetStateAction<any>>;
 }
 export default function ButtonGroups({
     buttons,
     textStyle,
+    containerStyle,
     selectedButtonStyle,
     selectedTextStyle,
+    onSelect,
 }: Groups) {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const themes = useTheme();
@@ -23,7 +28,10 @@ export default function ButtonGroups({
 
     return (
         <ButtonGroup
-            onPress={index => setSelectedIndex(index)}
+            onPress={index => {
+                setSelectedIndex(index);
+                onSelect!(index);
+            }}
             selectedIndex={selectedIndex}
             buttons={buttons}
             textStyle={{
@@ -33,6 +41,7 @@ export default function ButtonGroups({
             containerStyle={{
                 width: 130,
                 borderWidth: 0,
+                ...containerStyle,
             }}
             innerBorderStyle={{
                 width: 0,

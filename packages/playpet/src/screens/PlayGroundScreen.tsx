@@ -39,7 +39,6 @@ export default function PlayGroundScreen() {
         return (
             <Card
                 {...item}
-                onPlayground
                 uid={uid}
                 isLike={myLikes.includes(item.id)}
                 renderRange={renderRange(activeIndex, index)}
@@ -80,4 +79,5 @@ const renderRange = (activeIndex: number, index: number) => {
 
 const PlayGroundBlock = styled.View`
     flex: 1;
+    background-color: #000;
 `;

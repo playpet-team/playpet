@@ -153,7 +153,7 @@ function AuthNavigator() {
                     headerRight: () => (
                         <HeaderButton onPress={() => navigation.navigate('AuthSettings')}>
                             <Icon
-                                name="settings"
+                                name="menu"
                             />
                         </HeaderButton>
                     ),

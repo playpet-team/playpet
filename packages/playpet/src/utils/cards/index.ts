@@ -14,6 +14,7 @@ export interface CardModel {
     likes: number;
     uploadMedia: {
         firebaseUrl: string;
+        videoThumbnails: string;
         isVideo: boolean;
         width: number;
         height: number;
