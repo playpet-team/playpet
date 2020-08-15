@@ -35,18 +35,18 @@ export default function Navigation() {
             console.error(e);
         }
     }, [navigationRef]);
-    const aoeu = useTheme();
-    console.log("aoeu---", aoeu);
+    // const aoeu = useTheme();
+    // console.log("aoeu---", aoeu);
 
     return (
         <AppearanceProvider>
             <NavigationContainer
                 linking={LinkingConfiguration}
                 theme={colorScheme === 'dark' ? {
-                    ...DarkTheme,
+                    ...DefaultTheme,
                     colors: {
-                        ...DarkTheme.colors,
-                        ...darkColorPalette,
+                        ...DefaultTheme.colors,
+                        ...defaultColorPalette,
                     },
                 } : {
                         ...DefaultTheme,

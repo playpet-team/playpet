@@ -21,7 +21,7 @@ export default function App() {
                         :
                         <>
                             <Navigation />
-                            <StatusBar />
+                            <StatusBar style="dark" />
                         </>
                     }
                 </AppearanceProvider>
