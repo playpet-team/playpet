@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://playpet-5b432.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">386527552204</string>
+    <string name="google_api_key" translatable="false">AIzaSyADbmJfcse2AwMKLe-iOEJbGABGmdrWioY</string>
+    <string name="google_app_id" translatable="false">1:386527552204:android:96d15ba29259a2bd82d869</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyADbmJfcse2AwMKLe-iOEJbGABGmdrWioY</string>
+    <string name="google_storage_bucket" translatable="false">playpet-5b432.appspot.com</string>
+    <string name="project_id" translatable="false">playpet-5b432</string>
+</resources>

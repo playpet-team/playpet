@@ -1,9 +1,5 @@
 {
-  "functions": {
-    "source": "packages/firefunction",
-    "predeploy": [
-      "npm --prefix \"$RESOURCE_DIR\" run lint",
-      "npm --prefix \"$RESOURCE_DIR\" run build"
-    ]
-  }
+    "react-native": {
+      "crashlytics_debug_enabled": true
+    }
 }
