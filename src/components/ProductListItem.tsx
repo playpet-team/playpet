@@ -1,20 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components/native';
+import { WebView } from 'react-native-webview';
+import { useNavigation } from '@react-navigation/native';
 
 export interface ProductItem {
     image: string;
     title: string;
     description: string;
-    price: string;
+    price: number;
+    url: string;
 }
 function ProductListItem({
     image,
     title,
     description,
     price,
+    url,
 }: ProductItem) {
+    const navigation = useNavigation();
+
+    const handleProduct = async () => {
+        navigation.navigate('ProductWebView', {
+            url,
+            title,
+        });
+    }
+
     return (
-        <ProductListItemBlock>
+        <ProductListItemBlock onPress={handleProduct}>
             <Image
                 source={{ uri: image }}
                 resizeMode="cover"
@@ -31,7 +44,7 @@ function ProductListItem({
 
 export default ProductListItem;
 
-const ProductListItemBlock = styled.View`
+const ProductListItemBlock = styled.TouchableOpacity`
     margin-bottom: 16px;
     width: 50%;
     padding-horizontal: 16px;
@@ -39,7 +52,7 @@ const ProductListItemBlock = styled.View`
 `;
 
 interface TextProps {
-    type: 'title' | 'description' | 'price';
+    type?: 'title' | 'description' | 'price';
 }
 const Texts = styled.Text<TextProps>`
     ${({ type }) => {
@@ -63,7 +76,7 @@ const Texts = styled.Text<TextProps>`
                 `;
             }
         }
-        return
+        return;
     }}
 `;
 

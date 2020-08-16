@@ -12,6 +12,8 @@ import { Layout } from '../styles';
 import Logo from '../components/Logo';
 import { View, Image, Text } from 'react-native';
 import ProductListItem from '../components/ProductListItem';
+import ProductList from '../components/ProductList';
+
 
 export default function Home() {
     const [modalVisible, setModalVisible] = useState(false);
@@ -38,44 +40,9 @@ export default function Home() {
             <ScrollView>
                 <Layout alignItems='center'>
                     {renderBanner && renderBanner()}
-                    {/* <ButtonGroups buttons={['인기', '최신']} /> */}
                 </Layout>
                 <DividerBlock marginTop={24} />
-                <ListBlock>
-                    <ProductListItem
-                        image="https://harimpetfood.com/web/product/medium/20200504/1507940a7e353e62dd418c12f6b70313.jpg"
-                        title="#하림푸드"
-                        description="개진지 [08/24생산] 가장맛있는시간30일 그레인프리 오븐베이크드 소고기 어덜트 500g"
-                        price="17,000원"
-                    />
-                    <ProductListItem
-                        image="https://harimpetfood.com/web/product/medium/20200504/1507940a7e353e62dd418c12f6b70313.jpg"
-                        title="#몰리스펫샵"
-                        description="노브랜드 강아지사료 15kg"
-                        price="12,000원"
-                    />
-                    <ProductListItem
-                        image="https://harimpetfood.com/web/product/medium/20200504/1507940a7e353e62dd418c12f6b70313.jpg"
-                        title="#몰리스펫샵"
-                        description="노브랜드 강아지사료 15kg"
-                        price="12,000원"
-                    />
-                    <ProductListItem
-                        image="https://harimpetfood.com/web/product/medium/20200504/1507940a7e353e62dd418c12f6b70313.jpg"
-                        title="#몰리스펫샵"
-                        description="노브랜드 강아지사료 15kg"
-                        price="12,000원"
-                    />
-                    <ProductListItem
-                        image="https://harimpetfood.com/web/product/medium/20200504/1507940a7e353e62dd418c12f6b70313.jpg"
-                        title="#몰리스펫샵"
-                        description="노브랜드 강아지사료 15kg"
-                        price="12,000원"
-                    />
-                </ListBlock>
-
-                <DummyCardView />
-                <DummyCardView />
+                <ProductList />
                 <DummyCardView />
             </ScrollView>
             <SignUpAgreeTermsModal

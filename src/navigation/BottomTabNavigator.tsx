@@ -5,8 +5,9 @@ import * as React from 'react';
 
 import styled from 'styled-components/native';
 
-import { tintColorLight, tintColorDark, tintColorKey } from '../constants/Colors';
+import { defaultColorPalette } from '../constants/Colors';
 import Home from '../screens/Home';
+import ProductWebView from '../components/ProductWebView';
 import PlayGroundScreen from '../screens/PlayGroundScreen';
 import CardFormScreen from '../screens/CardFormScreen';
 import AuthScreen from '../screens/AuthScreen';
@@ -24,7 +25,7 @@ export default function BottomTabNavigator() {
         <BottomTab.Navigator
             initialRouteName="Home"
             tabBarOptions={{
-                activeTintColor: tintColorLight,
+                activeTintColor: defaultColorPalette.primary,
                 showLabel: false,
             }}>
             <BottomTab.Screen
@@ -33,7 +34,7 @@ export default function BottomTabNavigator() {
                 options={{
                     tabBarIcon: ({ focused }) => <Icon
                         name="pets"
-                        color={focused ? tintColorKey : tintColorDark}
+                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
                     />,
                 }}
             />
@@ -43,7 +44,7 @@ export default function BottomTabNavigator() {
                 options={{
                     tabBarIcon: ({ focused }) => <Icon
                         name="add"
-                        color={focused ? tintColorKey : tintColorDark}
+                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
                     />,
                 }}
             />
@@ -53,7 +54,7 @@ export default function BottomTabNavigator() {
                 options={{
                     tabBarIcon: ({ focused }) => <Icon
                         name="check-box-outline-blank"
-                        color={focused ? tintColorKey : tintColorDark}
+                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
                     />,
                 }}
             />
@@ -63,7 +64,7 @@ export default function BottomTabNavigator() {
                 options={{
                     tabBarIcon: ({ focused }) => <Icon
                         name="person"
-                        color={focused ? tintColorKey : tintColorDark}
+                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
                     />,
                 }}
             />
@@ -79,8 +80,12 @@ export default function BottomTabNavigator() {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-type HomeNavigatorTabParamList = {
+export type HomeNavigatorTabParamList = {
     HomeNavigator: undefined;
+    ProductWebView: {
+        url: string;
+        title: string;
+    };
 };
 const HomeNavigatorTapStack = createStackNavigator<HomeNavigatorTabParamList>();
 
@@ -94,6 +99,11 @@ function HomeNavigator() {
                     headerShown: false,
                     headerTitle: '홈',
                 }}
+            />
+            <HomeNavigatorTapStack.Screen
+                name="ProductWebView"
+                component={ProductWebView}
+                options={({ route }) => ({ title: route.params.title })}
             />
         </HomeNavigatorTapStack.Navigator>
     );
