@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 
 let snapshotListener: any;
 function useCardLikes() {
-    
     const [myLikes, setMyLikes] = useState<string[]>([]);
     const { uid } = useSelector((state: RootState) => state.auth);
 

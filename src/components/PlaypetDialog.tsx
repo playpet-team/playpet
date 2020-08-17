@@ -38,7 +38,7 @@ const PlaypetDialog = ({
             >
                 <Container
                     style={containerStyle}
-                    themes={themes}
+                    colors={themes.colors}
                 >
                     <PlaypetDialogHeader>
                         <Text>헤더</Text>
@@ -63,11 +63,11 @@ const StyledSafeAreaView = styled.SafeAreaView`
     align-items: center;
 `;
 
-const Container = styled.View<Theme>`
+const Container = styled.View<Pick<Theme, 'colors'>>`
     padding: 16px;
     flex-direction: column;
     width: 320px;
-    background-color: ${(props) => props.color.background};
+    background-color: ${(props) => props.colors.background};
     border-radius: 4px;
 `;
 

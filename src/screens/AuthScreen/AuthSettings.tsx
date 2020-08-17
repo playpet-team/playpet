@@ -32,9 +32,9 @@ export default function AuthSettings() {
             ))}
             <DividerBlock
                 backgroundColor="#ccc"
-                marginTop="16"
-                marginBottom="16"
-                height="1"
+                marginTop={16}
+                marginBottom={16}
+                height={1}
             />
             <DangerText>플레이펫은 상품에 직접 관여하지 않으며 상품 주문, 배송 및 환불의 의무와 책임은 각 판매업체에 있습니다.</DangerText>
         </AuthSettingsBlock>

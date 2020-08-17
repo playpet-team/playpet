@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components/native';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/rootReducers';
 
 export interface ProductItem {
     image: string;
@@ -18,13 +20,19 @@ function ProductListItem({
     url,
 }: ProductItem) {
     const navigation = useNavigation();
+    // const { isLogged } = useSelector((state: RootState) => state.auth);
 
     const handleProduct = async () => {
+        // if (!isLogged) {
+        //     alert('로그인이 필요합니다');
+        // }
         navigation.navigate('ProductWebView', {
             url,
             title,
         });
-    }
+    };
+
+    console.log('image--', image);
 
     return (
         <ProductListItemBlock onPress={handleProduct}>

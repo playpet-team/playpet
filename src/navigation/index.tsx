@@ -10,7 +10,7 @@ import { currentUser } from '../utils';
 import analytics from '@react-native-firebase/analytics';
 import { ErrorUtils } from 'react-native';
 import { Crash } from '../utils/system/crash';
-import { defaultColorPalette, darkColorPalette } from '../constants/Colors';
+import { defaultColorPalette, } from '../constants/Colors';
 
 Appearance.getColorScheme();
 
@@ -62,11 +62,11 @@ export default function Navigation() {
                 }}
                 onStateChange={onChangeScreen}
             >
-                {user ?
-                    <RootNavigator />
+                {/* {user ?
                     :
-                    <AppLoginNavigator />
-                }
+                } */}
+                <RootNavigator />
+                {/* <AppLoginNavigator /> */}
             </NavigationContainer>
         </AppearanceProvider>
     );
@@ -78,13 +78,28 @@ export type RootStackParamList = {
     NotFound: undefined;
 };
 
-const Stack = createStackNavigator<RootStackParamList>();
+const RootStack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+    React.useEffect(() => {
+        Crash.setCrashlyticsCollectionEnabled(true);
+        // ErrorUtils.setGlobalHandler(Crash.crashError);
+        const user = currentUser();
+        if (!user) {
+            return;
+        }
+        Crash.setUserId(user.uid);
+
+    }, []);
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Home" component={BottomTabNavigator} />
-        </Stack.Navigator>
+        <RootStack.Navigator screenOptions={{ headerShown: false }}>
+            <RootStack.Screen name="Home" component={BottomTabNavigator} />
+            <RootStack.Screen
+                name="AppLogin"
+                component={AppLogin}
+                options={{ headerShown: false }}
+            />
+        </RootStack.Navigator>
     );
 };
 
@@ -94,16 +109,6 @@ type AppLoginParamList = {
 const AppLoginStack = createStackNavigator<AppLoginParamList>();
 
 function AppLoginNavigator() {
-    React.useEffect(() => {
-        Crash.setCrashlyticsCollectionEnabled(true);
-        const user = currentUser();
-        if (!user) {
-            return;
-        }
-        Crash.setUserId(user.uid);
-        ErrorUtils.setGlobalHandler(Crash.crashError);
-
-    }, []);
     return (
         <AppLoginStack.Navigator>
             <AppLoginStack.Screen

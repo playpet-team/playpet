@@ -10,6 +10,7 @@ import { authActions } from '../../store/authReducer';
 import Constants from 'expo-constants';
 import useLoadingIndicator from '../../hooks/useLoadingIndicator';
 import Toast, { ToastParams } from '../../components/Toast';
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function SocialSignIn() {
@@ -23,20 +24,18 @@ export default function SocialSignIn() {
     });
     const { credential, getUidByThirdPartySignIn } = useInitializeSignIn({ toastContent, setToastContent });
     const dispatch = useDispatch();
+    const navigation = useNavigation();
 
     useEffect(() => {
         signIn();
         async function signIn() {
-            // saveCredential(email, method, credential);
-            console.log('cre', credential);
             if (!credential) {
                 return;
             }
             try {
-                console.log('bbb');
                 await signInCredential(credential);
-                checkUser();
-                console.log('aaa');
+                await checkUser();
+                return navigation.navigate('Home');
             } catch (error) {
                 if (error.code != "auth/account-exists-with-different-credential") {
                     setToastContent({
@@ -66,7 +65,6 @@ export default function SocialSignIn() {
             });
             return;
         }
-        console.log('222');
         const uid = user.uid;
         const result: CheckUser = await checkIsExistUser(uid);
         switch (result) {
@@ -90,7 +88,6 @@ export default function SocialSignIn() {
             setLoading(true);
             setMethod(method);
             await getUidByThirdPartySignIn(method);
-            console.log('11');
         } catch (e) {
             console.error(e);
         } finally {
@@ -126,7 +123,6 @@ export default function SocialSignIn() {
 };
 
 const SigninButtonGroups = styled.View`
-    flex: 1;
     flex-direction: column;
     width: 100%;
     padding-horizontal: 16px;

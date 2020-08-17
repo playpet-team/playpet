@@ -103,7 +103,10 @@ function HomeNavigator() {
             <HomeNavigatorTapStack.Screen
                 name="ProductWebView"
                 component={ProductWebView}
-                options={({ route }) => ({ title: route.params.title })}
+                options={({ route }) => ({
+                    title: route.params.title,
+                    gestureEnabled: false,
+                })}
             />
         </HomeNavigatorTapStack.Navigator>
     );

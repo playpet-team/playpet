@@ -1,11 +1,32 @@
 import styled, { css } from 'styled-components/native';
+export interface TextProps {
+    padding?: string;
+    bold?: boolean;
+    size?: number;
+}
+export const Text = styled.Text<TextProps>`
+    ${({ bold }) => bold && css`
+        font-weight: 800;
+    `}
+    ${({ padding }) => padding && css`
+        padding: ${padding};
+    `}
+    ${({ size }) => size && css`
+        font-size: ${size}px;
+    `}
 
+`;
 interface DividerProps {
+    padding?: string;
     marginTop?: number;
     marginBottom?: number;
-    backgroundColor?: number;
+    backgroundColor?: string;
+    height?: number;
 }
 export const DividerBlock = styled.View<DividerProps>`
+    ${({ padding }) => padding && css`
+        padding: ${padding};
+    `}
     ${({ marginTop }) => marginTop && css`
         margin-top: ${marginTop}px;
     `}

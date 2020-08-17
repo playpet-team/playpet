@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Text } from 'react-native-elements';
+import { Text, Button } from 'react-native-elements';
 import SocialSignIn from '../screens/AuthScreen/SocialSignIn';
+import { View, } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AppLogin() {
+    const navigation = useNavigation();
 
     return (
         <AppLoginBlock>
@@ -13,8 +16,24 @@ export default function AppLogin() {
                 start={[0, 0]}
                 end={[1, 1]}
             />
-            <MainTitle><Text>누구든 반려동물을 사랑할수 있습니다</Text></MainTitle>
-            <SocialSignIn />
+            <MainTitleBlock><Text>누구든 반려동물을 사랑할수 있습니다</Text></MainTitleBlock>
+            <SigninBlock>
+                <SocialSignIn />
+                <LookAround>
+                    <Button
+                        title="둘러보기"
+                        onPress={() => navigation.navigate('Home')}
+                        buttonStyle={{
+                            backgroundColor: 'transparent',
+                            justifyContent: 'flex-end',
+                        }}
+                        titleStyle={{
+                            color: '#fff',
+                            fontSize: 15,
+                        }}
+                    />
+                </LookAround>
+            </SigninBlock>
         </AppLoginBlock>
     )
 };
@@ -31,8 +50,17 @@ const LinearGradientBlock = styled(LinearGradient)`
     height: 100%;
 `;
 
-const MainTitle = styled.View`
+const MainTitleBlock = styled.View`
     align-items: center;
     justify-content: center;
     flex: 1.2;
+`;
+
+const SigninBlock = styled.View`
+    flex: 1;
+`;
+
+const LookAround = styled.View`
+    padding: 16px;
+    margin: 16px;
 `;
