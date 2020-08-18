@@ -12,6 +12,7 @@ import PlayGroundScreen from '../screens/PlayGroundScreen';
 import CardFormScreen from '../screens/CardFormScreen';
 import AuthScreen from '../screens/AuthScreen';
 import AuthSettings from '../screens/AuthScreen/AuthSettings';
+import PushSettings from '../screens/AuthScreen/PushSettings';
 
 export type BottomTabParamList = {
     Home: undefined;
@@ -151,6 +152,7 @@ function PlayGroundNavigator() {
 
 export type AuthTapParamList = {
     AuthScreen: undefined;
+    PushSettings: undefined;
     AuthSettings: undefined;
 };
 const AuthTapStack = createStackNavigator<AuthTapParamList>();
@@ -171,6 +173,11 @@ function AuthNavigator() {
                         </HeaderButton>
                     ),
                 })}
+            />
+            <AuthTapStack.Screen
+                name="PushSettings"
+                component={PushSettings}
+                options={{ headerTitle: '회원정보' }}
             />
             <AuthTapStack.Screen
                 name="AuthSettings"

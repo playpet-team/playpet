@@ -1,4 +1,4 @@
-import { ToastParams } from '../components/Toast';
+import { ToastParams } from '../../components/Toast';
 import { useCallback, useState, useEffect } from 'react';
 // import * as React from 'react';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
@@ -10,12 +10,12 @@ import appleAuth, {
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import KakaoLogins, { IProfile } from '@react-native-seoul/kakao-login';
-import { SignType } from '../models';
+import { SignType } from '../../models';
 import AsyncStorage from '@react-native-community/async-storage';
 const GOOGLE_WEB_CLIENT_ID = '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com';
 GoogleSignin.configure({ webClientId: GOOGLE_WEB_CLIENT_ID });
 
-export default function useInitializeSignIn({ toastContent, setToastContent }: {
+export default function initializeSignIn({ toastContent, setToastContent }: {
     toastContent: ToastParams;
     setToastContent: React.Dispatch<React.SetStateAction<ToastParams>>;
 }) {

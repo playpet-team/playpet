@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { useDispatch } from 'react-redux';
 import { signInCredential } from '../../utils';
 import { checkIsExistUser, CheckUser, currentUser } from '../../utils';
-import useInitializeSignIn from '../../hooks/useInitializeSignIn';
+import initializeSignIn from '../../utils/auth/initializeSignIn';
 import { SignType } from '../../models';
 import { createUserCall } from '../../callable';
 import { authActions } from '../../store/authReducer';
@@ -12,22 +12,27 @@ import useLoadingIndicator from '../../hooks/useLoadingIndicator';
 import Toast, { ToastParams } from '../../components/Toast';
 import { useNavigation } from '@react-navigation/native';
 
-
 export default function SocialSignIn() {
     const { loading, setLoading, Indicator } = useLoadingIndicator();
     const [method, setMethod] = useState(SignType.None);
+    const [signInSuccess, setSignInSuccess] = useState(false);
     const [toastContent, setToastContent] = useState<ToastParams>({
         visible: false,
         title: '',
         description: '',
         image: '',
     });
-    const { credential, getUidByThirdPartySignIn } = useInitializeSignIn({ toastContent, setToastContent });
+    const { credential, getUidByThirdPartySignIn } = initializeSignIn({ toastContent, setToastContent });
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
     useEffect(() => {
-        signIn();
+        if (signInSuccess) {
+            navigation.navigate('AppLoginAgreeTerms');
+        }
+    }, [signInSuccess]);
+
+    useEffect(() => {
         async function signIn() {
             if (!credential) {
                 return;
@@ -35,7 +40,8 @@ export default function SocialSignIn() {
             try {
                 await signInCredential(credential);
                 await checkUser();
-                return navigation.navigate('Home');
+                setSignInSuccess(true);
+
             } catch (error) {
                 if (error.code != "auth/account-exists-with-different-credential") {
                     setToastContent({
@@ -52,7 +58,7 @@ export default function SocialSignIn() {
                 }
             }
         }
-
+        signIn();
     }, [credential]);
 
     const checkUser = async () => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Text, Button } from 'react-native-elements';
-import SocialSignIn from '../screens/AuthScreen/SocialSignIn';
+import SocialSignIn from './AuthScreen/SocialSignIn';
 import { View, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -21,8 +21,8 @@ export default function AppLogin() {
                 <SocialSignIn />
                 <LookAround>
                     <Button
-                        title="둘러보기"
-                        onPress={() => navigation.navigate('Home')}
+                        title="돌아가기"
+                        onPress={() => navigation.goBack()}
                         buttonStyle={{
                             backgroundColor: 'transparent',
                             justifyContent: 'flex-end',

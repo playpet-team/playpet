@@ -4,7 +4,8 @@ import * as React from 'react';
 import { AppearanceProvider, Appearance, useColorScheme } from 'react-native-appearance';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
-import AppLogin from '../components/AppLogin';
+import AppLogin from '../screens/AppLogin';
+import AppLoginAgreeTerms from '../screens/AppLogin/AppLoginAgreeTerms';
 import useAuthStateChanged from '../hooks/useAuthStateChanged';
 import { currentUser } from '../utils';
 import analytics from '@react-native-firebase/analytics';
@@ -94,17 +95,14 @@ function RootNavigator() {
     return (
         <RootStack.Navigator screenOptions={{ headerShown: false }}>
             <RootStack.Screen name="Home" component={BottomTabNavigator} />
-            <RootStack.Screen
-                name="AppLogin"
-                component={AppLogin}
-                options={{ headerShown: false }}
-            />
+            <RootStack.Screen name="AppLogin" component={AppLoginNavigator} />
         </RootStack.Navigator>
     );
 };
 
 type AppLoginParamList = {
     AppLogin: undefined;
+    AppLoginAgreeTerms: undefined;
 };
 const AppLoginStack = createStackNavigator<AppLoginParamList>();
 
@@ -114,6 +112,11 @@ function AppLoginNavigator() {
             <AppLoginStack.Screen
                 name="AppLogin"
                 component={AppLogin}
+                options={{ headerShown: false }}
+            />
+            <AppLoginStack.Screen
+                name="AppLoginAgreeTerms"
+                component={AppLoginAgreeTerms}
                 options={{ headerShown: false }}
             />
         </AppLoginStack.Navigator>

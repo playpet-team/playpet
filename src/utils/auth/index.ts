@@ -12,6 +12,7 @@ export const signInWithCustomToken = (customToken: string) => auth().signInWithC
 export const signInCredential = async (credential: FirebaseAuthTypes.AuthCredential) => await auth().signInWithCredential(credential);
 export const updateUserLastLogin = async (uid: string) => {
     await firestore().collection(collections.Users).doc(uid).update({
+        updatedAt: firebaseNow(),
         lastLogin: firebaseNow(),
     });
 };
