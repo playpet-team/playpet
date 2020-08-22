@@ -1,6 +1,6 @@
 {
   "name": "RNFBRemoteConfig",
-  "version": "8.0.0",
+  "version": "8.1.3",
   "description": "React Native Firebase - React Native Firebase provides native integration with Remote Config, allowing you to change the appearance and/or functionality of your app without requiring an app update.",
   "summary": "A well tested feature rich Firebase implementation for React Native, supporting iOS & Android.",
   "homepage": "http://invertase.io/oss/react-native-firebase",
@@ -8,7 +8,7 @@
   "authors": "Invertase Limited",
   "source": {
     "git": "https://github.com/invertase/react-native-firebase.git",
-    "tag": "v8.0.0"
+    "tag": "v8.1.3"
   },
   "social_media_url": "http://twitter.com/invertaseio",
   "platforms": {
@@ -23,10 +23,10 @@
 
     ],
     "Firebase/Analytics": [
-      "~> 6.27.0"
+      "~> 6.28.1"
     ],
     "Firebase/RemoteConfig": [
-      "~> 6.27.0"
+      "~> 6.28.1"
     ]
   },
   "static_framework": false

@@ -1,6 +1,6 @@
 {
   "name": "kakao-login",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "summary": "Kakao Login Module for React Native (iOS and Android)",
   "authors": {
     "author": "dooboolab@gmail.com"
@@ -12,7 +12,7 @@
   },
   "source": {
     "git": "https://github.com/react-native-seoul/kakao-login.git",
-    "tag": "2.9.0"
+    "tag": "2.10.0"
   },
   "source_files": "ios/**/*.{h,m}",
   "static_framework": true,
