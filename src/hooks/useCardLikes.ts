@@ -13,8 +13,8 @@ function useCardLikes() {
         async function loadLikes() {
             try {
                 snapshotListener = await getCardLikes(uid, (data: any) => {
-                    if (myLikes.length !== data.cardLikes.length) {
-                        setMyLikes(data.cardLikes || []);
+                    if (myLikes.length !== (data?.cardLikes || []).length) {
+                        setMyLikes(data?.cardLikes || []);
                     }
                 });
             } catch (e) {

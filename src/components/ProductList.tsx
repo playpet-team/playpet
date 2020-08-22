@@ -15,6 +15,7 @@ function ProductList() {
         <ListBlock>
             {list.map(product => (
                 <ProductListItem
+                    key={product.id}
                     {...product}
                 />
             ))}

@@ -15,6 +15,7 @@ import ButtonGroups from '../components/ButtonGroups';
 import { Layout, Text, DividerBlock } from '../styles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
+import i18n from 'i18n-js';
 
 export enum ItemList {
     MEDIA,
@@ -34,7 +35,7 @@ export default function AuthScreen() {
                         bold
                         size={20}
                     >
-                        로그인 및 회원가입
+                        {i18n.t('common.loginWithSignUp')}
                     </Text>
                     <Icon
                         name="keyboard-arrow-right"
@@ -44,7 +45,7 @@ export default function AuthScreen() {
                     <Text
                         size={18}
                     >
-                        최근 본 상품
+                        {i18n.t('product.recentViewed')}
                     </Text>
                     <Icon
                         name="keyboard-arrow-right"
