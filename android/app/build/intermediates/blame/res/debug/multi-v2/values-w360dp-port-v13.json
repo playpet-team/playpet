@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/jungbaeki/playpet/packages/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-w360dp-port-v13/values-w360dp-port-v13.xml",
+            "outputFile": "/Users/jungbaeki/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-w360dp-port-v13/values-w360dp-port-v13.xml",
             "map": [
                 {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/482c9f27363ebdfbd0aa27fd4a4dc05d/material-1.1.0/res/values-w360dp-port-v13/values-w360dp-port-v13.xml",

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/jungbaeki/playpet/packages/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
+            "outputFile": "/Users/jungbaeki/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
             "map": [
                 {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/5c05b21c78d8b897586f8a85cced20fe/appcompat-1.1.0/res/values-night-v8/values-night-v8.xml",
@@ -38,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "/Users/jungbaeki/playpet/packages/playpet/android/app/src/main/res/values-night/colors.xml",
+                    "source": "/Users/jungbaeki/playpet/android/app/src/main/res/values-night/colors.xml",
                     "from": {
                         "startLines": "3",
                         "startColumns": "2",

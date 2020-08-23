@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/jungbaeki/playpet/packages/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-id/values-id.xml",
+            "outputFile": "/Users/jungbaeki/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-id/values-id.xml",
             "map": [
                 {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/2cc1e96eb6e192ac7af7b09e8bb68b5d/jetified-facebook-common-7.1.0/res/values-id/values-id.xml",

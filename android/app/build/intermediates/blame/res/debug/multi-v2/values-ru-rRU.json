@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/jungbaeki/playpet/packages/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ru-rRU/values-ru-rRU.xml",
+            "outputFile": "/Users/jungbaeki/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ru-rRU/values-ru-rRU.xml",
             "map": [
                 {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/acad977de928c5b3538072b2abc8cdbd/jetified-android-image-cropper-2.7.0/res/values-ru-rRU/values-ru-rRU.xml",

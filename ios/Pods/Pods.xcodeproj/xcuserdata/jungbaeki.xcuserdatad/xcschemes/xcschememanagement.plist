@@ -454,6 +454,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>RNNaverLogin.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>RNReanimated.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -680,6 +685,11 @@
 			<false/>
 		</dict>
 		<key>nanopb.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>naveridlogin-sdk-ios.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

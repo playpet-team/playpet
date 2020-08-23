@@ -1,8 +1,25 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/jungbaeki/playpet/packages/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ru/values-ru.xml",
+            "outputFile": "/Users/jungbaeki/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-ru/values-ru.xml",
             "map": [
+                {
+                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/6d09ea602af51a0a531503dd1d1edff7/core-1.5.0-alpha02/res/values-ru/values-ru.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "104",
+                        "startColumns": "4",
+                        "startOffsets": "10525",
+                        "endColumns": "100",
+                        "endOffsets": "10621"
+                    }
+                },
                 {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/dc2f88de019937443fee29f85ff8527c/jetified-firebase-messaging-20.2.1/res/values-ru/values.xml",
                     "from": {
@@ -52,23 +69,6 @@
                         "startOffsets": "2822,2979,3113,3260,3373,3458,3547,3623,3712,3800,3913,4020,4109,4198,4297,4419,4504,4591,4788,4883,4980,5095,5201",
                         "endColumns": "156,133,146,112,84,88,75,88,87,112,106,88,88,98,121,84,86,196,94,96,114,105,159",
                         "endOffsets": "2974,3108,3255,3368,3453,3542,3618,3707,3795,3908,4015,4104,4193,4292,4414,4499,4586,4783,4878,4975,5090,5196,5356"
-                    }
-                },
-                {
-                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/36598ab40b015ef53239651926404755/core-1.5.0-alpha01/res/values-ru/values-ru.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "104",
-                        "startColumns": "4",
-                        "startOffsets": "10525",
-                        "endColumns": "100",
-                        "endOffsets": "10621"
                     }
                 },
                 {

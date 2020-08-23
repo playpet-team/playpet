@@ -1,25 +1,8 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/jungbaeki/playpet/packages/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rIN/values-en-rIN.xml",
+            "outputFile": "/Users/jungbaeki/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rIN/values-en-rIN.xml",
             "map": [
-                {
-                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/36598ab40b015ef53239651926404755/core-1.5.0-alpha01/res/values-en-rIN/values-en-rIN.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "62",
-                        "startColumns": "4",
-                        "startOffsets": "4961",
-                        "endColumns": "100",
-                        "endOffsets": "5057"
-                    }
-                },
                 {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/68ce3cf72d7c96de71f12edac0766ac8/jetified-exoplayer-ui-2.9.2/res/values-en-rIN/values-en-rIN.xml",
                     "from": {
@@ -35,6 +18,23 @@
                         "startOffsets": "2762,2840,2921,2990,3055,3118,3195,3270,3346,3421,3488,3557,3620,3690,3752,3817,3881,3958,4027,4080,4138,4186,4247,4305,4363,4429,4493,4559,4611,4673,4749,4825",
                         "endColumns": "77,80,68,64,62,76,74,75,74,66,68,62,69,61,64,63,76,68,52,57,47,60,57,57,65,63,65,51,61,75,75,53",
                         "endOffsets": "2835,2916,2985,3050,3113,3190,3265,3341,3416,3483,3552,3615,3685,3747,3812,3876,3953,4022,4075,4133,4181,4242,4300,4358,4424,4488,4554,4606,4668,4744,4820,4874"
+                    }
+                },
+                {
+                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/6d09ea602af51a0a531503dd1d1edff7/core-1.5.0-alpha02/res/values-en-rIN/values-en-rIN.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "62",
+                        "startColumns": "4",
+                        "startOffsets": "4961",
+                        "endColumns": "100",
+                        "endOffsets": "5057"
                     }
                 },
                 {

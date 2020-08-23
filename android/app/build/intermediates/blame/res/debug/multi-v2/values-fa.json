@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/jungbaeki/playpet/packages/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-fa/values-fa.xml",
+            "outputFile": "/Users/jungbaeki/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-fa/values-fa.xml",
             "map": [
                 {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/555df2bb8e50562f87a6cbf1195398cf/jetified-play-services-base-17.1.0/res/values-fa/values.xml",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/36598ab40b015ef53239651926404755/core-1.5.0-alpha01/res/values-fa/values-fa.xml",
+                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/6d09ea602af51a0a531503dd1d1edff7/core-1.5.0-alpha02/res/values-fa/values-fa.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

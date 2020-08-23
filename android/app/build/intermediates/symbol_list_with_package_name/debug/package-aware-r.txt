@@ -110,7 +110,9 @@ attr animationMode
 attr appBarLayoutStyle
 attr arrowHeadLength
 attr arrowShaftLength
+attr aspectRatio
 attr autoCompleteTextViewStyle
+attr autoFocus
 attr autoSizeMaxTextSize
 attr autoSizeMinTextSize
 attr autoSizePresetSizes
@@ -398,6 +400,7 @@ attr fabCradleRoundedCornerRadius
 attr fabCradleVerticalOffset
 attr fabCustomSize
 attr fabSize
+attr facing
 attr fadeDuration
 attr failureImage
 attr failureImageScaleType
@@ -408,6 +411,7 @@ attr fastScrollVerticalThumbDrawable
 attr fastScrollVerticalTrackDrawable
 attr fastforward_increment
 attr firstBaselineToTopHeight
+attr flash
 attr floatingActionButtonStyle
 attr font
 attr fontFamily
@@ -1679,6 +1683,7 @@ drawable abc_vector_test
 drawable account
 drawable avd_hide_password
 drawable avd_show_password
+drawable bottom_background_img
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
@@ -1689,6 +1694,8 @@ drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
 drawable btn_x
+drawable close_btn_img
+drawable close_btn_img_black
 drawable collapse
 drawable com_facebook_auth_dialog_background
 drawable com_facebook_auth_dialog_cancel_background
@@ -1798,6 +1805,7 @@ drawable kakao_profile_boxbg
 drawable kakaoaccount_icon
 drawable kakaostory_icon
 drawable kakaotalk_icon
+drawable login_btn_img
 drawable messenger_bubble_large_blue
 drawable messenger_bubble_large_white
 drawable messenger_bubble_small_blue
@@ -1816,6 +1824,7 @@ drawable mtrl_ic_error
 drawable mtrl_popupmenu_background
 drawable mtrl_popupmenu_background_dark
 drawable mtrl_tabs_default_indicator
+drawable naver_icon
 drawable navigation_empty_icon
 drawable notification_action_background
 drawable notification_bg
@@ -1917,9 +1926,11 @@ id adjust_width
 id alertTitle
 id all
 id always
+id app_download_banner
 id async
 id auto
 id automatic
+id back
 id banner_body
 id banner_content_root
 id banner_image
@@ -2058,6 +2069,7 @@ id focusCrop
 id forever
 id fps_text
 id fragment_container_view_tag
+id front
 id fullscreen_mode_button
 id ghost_view
 id ghost_view_holder
@@ -2156,6 +2168,9 @@ id one
 id open_graph
 id outline
 id oval
+id package_icon
+id package_list
+id package_name
 id packed
 id page
 id parallax
@@ -2168,12 +2183,14 @@ id percent
 id pin
 id play_button
 id primary_button
+id progressBar
 id progress_bar
 id progress_circular
 id progress_horizontal
 id radio
 id react_test_id
 id rectangle
+id redEye
 id rewind_button
 id right
 id rightBottom
@@ -2277,6 +2294,7 @@ id titleDividerNoCustom
 id title_template
 id top
 id topPanel
+id torch
 id touch_outside
 id transition_current_scene
 id transition_layout_save
@@ -2294,8 +2312,12 @@ id view_tag_instance_handle
 id view_tag_native_id
 id visible
 id visible_removing_fragment_view_tag
+id webView
 id webview
+id webviewEndKey
+id webviewNaviBar
 id when_playing
+id wholeView
 id wide
 id withText
 id wrap
@@ -2403,6 +2425,7 @@ layout exo_simple_player_view
 layout exo_track_selection_dialog
 layout expo_media_controller
 layout fps_view
+layout fragment_custom_tab_dialog
 layout image
 layout kakao_login_layout
 layout layout_login_dialog
@@ -2443,6 +2466,7 @@ layout mtrl_picker_header_title_text
 layout mtrl_picker_header_toggle
 layout mtrl_picker_text_input_date
 layout mtrl_picker_text_input_date_range
+layout nlogin_browser_view
 layout notification_action
 layout notification_action_tombstone
 layout notification_media_action
@@ -2458,6 +2482,7 @@ layout notification_template_media
 layout notification_template_media_custom
 layout notification_template_part_chronometer
 layout notification_template_part_time
+layout package_list_item
 layout redbox_item_frame
 layout redbox_item_title
 layout redbox_view
@@ -2465,6 +2490,7 @@ layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
+layout surface_view
 layout test_action_chip
 layout test_design_checkbox
 layout test_reflow_chipgroup
@@ -2477,6 +2503,7 @@ layout text_view_with_line_height_from_layout
 layout text_view_with_line_height_from_style
 layout text_view_with_theme_line_height
 layout text_view_without_line_height
+layout texture_view
 menu crop_image_menu
 mipmap ic_foreground
 mipmap ic_launcher
@@ -2724,6 +2751,13 @@ string mtrl_picker_toggle_to_calendar_input_mode
 string mtrl_picker_toggle_to_day_selection
 string mtrl_picker_toggle_to_text_input_mode
 string mtrl_picker_toggle_to_year_selection
+string naveroauthlogin_string_getting_token
+string naveroauthlogin_string_group_id_not_available
+string naveroauthlogin_string_msg_naverapp_download_desc
+string naveroauthlogin_string_msg_naverapp_download_link
+string naveroauthlogin_string_network_state_not_available
+string naveroauthlogin_string_token_invalid
+string naveroauthlogin_string_update_naverapp
 string password_toggle_content_description
 string path_password_eye
 string path_password_eye_mask_strike_through
@@ -2733,6 +2767,7 @@ string pick_image_intent_chooser_title
 string progressbar_description
 string project_id
 string radiogroup_description
+string retry
 string rn_tab_description
 string scrollbar_description
 string search_description
@@ -2750,6 +2785,7 @@ string tablist_description
 string timer_description
 string title_for_ssl_warning
 string toolbar_description
+string use_application
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog
@@ -3381,6 +3417,7 @@ style Widget_AppCompat_TextView
 style Widget_AppCompat_TextView_SpinnerItem
 style Widget_AppCompat_Toolbar
 style Widget_AppCompat_Toolbar_Button_Navigation
+style Widget_CameraView
 style Widget_Compat_NotificationActionContainer
 style Widget_Compat_NotificationActionText
 style Widget_Design_AppBarLayout
@@ -3520,6 +3557,7 @@ styleable BottomAppBar backgroundTint elevation fabAlignmentMode fabAnimationMod
 styleable BottomNavigationView backgroundTint elevation itemBackground itemHorizontalTranslationEnabled itemIconSize itemIconTint itemRippleColor itemTextAppearanceActive itemTextAppearanceInactive itemTextColor labelVisibilityMode menu
 styleable BottomSheetBehavior_Layout android_elevation backgroundTint behavior_expandedOffset behavior_fitToContents behavior_halfExpandedRatio behavior_hideable behavior_peekHeight behavior_saveFlags behavior_skipCollapsed shapeAppearance shapeAppearanceOverlay
 styleable ButtonBarLayout allowStacking
+styleable CameraView android_adjustViewBounds aspectRatio autoFocus facing flash
 styleable CardView android_minWidth android_minHeight cardBackgroundColor cardCornerRadius cardElevation cardMaxElevation cardPreventCornerOverlap cardUseCompatPadding contentPadding contentPaddingBottom contentPaddingLeft contentPaddingRight contentPaddingTop
 styleable Chip android_textAppearance android_textColor android_ellipsize android_maxWidth android_text android_checkable checkedIcon checkedIconEnabled checkedIconVisible chipBackgroundColor chipCornerRadius chipEndPadding chipIcon chipIconEnabled chipIconSize chipIconTint chipIconVisible chipMinHeight chipMinTouchTargetSize chipStartPadding chipStrokeColor chipStrokeWidth chipSurfaceColor closeIcon closeIconEnabled closeIconEndPadding closeIconSize closeIconStartPadding closeIconTint closeIconVisible ensureMinTouchTargetSize hideMotionSpec iconEndPadding iconStartPadding rippleColor shapeAppearance shapeAppearanceOverlay showMotionSpec textEndPadding textStartPadding
 styleable ChipGroup checkedChip chipSpacing chipSpacingHorizontal chipSpacingVertical singleLine singleSelection
@@ -3603,9 +3641,11 @@ styleable com_facebook_like_view com_facebook_auxiliary_view_position com_facebo
 styleable com_facebook_login_view com_facebook_confirm_logout com_facebook_login_text com_facebook_logout_text com_facebook_tooltip_mode
 styleable com_facebook_profile_picture_view com_facebook_is_cropped com_facebook_preset_size
 styleable scaleStyle scalableType
+xml file_provider_paths
 xml file_system_provider_paths
 xml image_picker_provider_paths
 xml rn_dev_preferences
+xml sharing_provider_paths
 xml standalone_badge
 xml standalone_badge_gravity_bottom_end
 xml standalone_badge_gravity_bottom_start

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/jungbaeki/playpet/packages/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-pt-rPT/values-pt-rPT.xml",
+            "outputFile": "/Users/jungbaeki/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-pt-rPT/values-pt-rPT.xml",
             "map": [
                 {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/5ea339816301c03880b94fdf6ba4bd07/jetified-facebook-login-7.1.0/res/values-pt-rPT/values-pt-rPT.xml",
@@ -18,23 +18,6 @@
                         "startOffsets": "2848,3009,3150,3297,3408,3493,3579,3657,3748,3845,3961,4078,4179,4280,4391,4519,4601,4687,4873,4967,5068,5183,5299",
                         "endColumns": "160,140,146,110,84,85,77,90,96,115,116,100,100,110,127,81,85,185,93,100,114,115,147",
                         "endOffsets": "3004,3145,3292,3403,3488,3574,3652,3743,3840,3956,4073,4174,4275,4386,4514,4596,4682,4868,4962,5063,5178,5294,5442"
-                    }
-                },
-                {
-                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/36598ab40b015ef53239651926404755/core-1.5.0-alpha01/res/values-pt-rPT/values-pt-rPT.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "104",
-                        "startColumns": "4",
-                        "startOffsets": "10668",
-                        "endColumns": "100",
-                        "endOffsets": "10764"
                     }
                 },
                 {
@@ -103,6 +86,23 @@
                         "startOffsets": "8270,8343,8428,8501,8577,8646,8723,8800,8883,8958,9025,9112,9176,9251,9315,9382,9453,9535,9614,9667,9725,9773,9834,9898,9959,10025,10090,10156,10209,10269,10343,10417",
                         "endColumns": "72,84,72,75,68,76,76,82,74,66,86,63,74,63,66,70,81,78,52,57,47,60,63,60,65,64,65,52,59,73,73,58",
                         "endOffsets": "8338,8423,8496,8572,8641,8718,8795,8878,8953,9020,9107,9171,9246,9310,9377,9448,9530,9609,9662,9720,9768,9829,9893,9954,10020,10085,10151,10204,10264,10338,10412,10471"
+                    }
+                },
+                {
+                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/6d09ea602af51a0a531503dd1d1edff7/core-1.5.0-alpha02/res/values-pt-rPT/values-pt-rPT.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "104",
+                        "startColumns": "4",
+                        "startOffsets": "10668",
+                        "endColumns": "100",
+                        "endOffsets": "10764"
                     }
                 },
                 {

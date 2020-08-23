@@ -3,6 +3,7 @@ export enum SignType {
     Apple = 'APPLE',
     Facebook = 'FACEBOOK',
     Kakao = 'KAKAO',
+    Naver = 'NAVER',
     None = 'NONE',
 };
 export interface User {

@@ -141,6 +141,7 @@
 				B3BF51825B89F5579F6C4913 /* [CP] Copy Pods Resources */,
 				5B01BDD49CC42653AC59C64D /* [CP-User] [RNFB] Core Configuration */,
 				9F29C7B75DFA71942741738B /* [CP-User] [RNFB] Crashlytics Configuration */,
+				BD1C696C9A89424C98546724 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -313,6 +314,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-playpet/Pods-playpet-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BD1C696C9A89424C98546724 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-playpet/Pods-playpet-frameworks.sh",
+				"${PODS_ROOT}/naveridlogin-sdk-ios/NaverThirdPartyLogin.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NaverThirdPartyLogin.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-playpet/Pods-playpet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {

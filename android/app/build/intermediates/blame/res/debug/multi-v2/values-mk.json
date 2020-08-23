@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/jungbaeki/playpet/packages/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-mk/values-mk.xml",
+            "outputFile": "/Users/jungbaeki/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-mk/values-mk.xml",
             "map": [
                 {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/4e6f369d074897bf456f86d9d0c57159/jetified-play-services-basement-17.2.1/res/values-mk/values.xml",
@@ -55,23 +55,6 @@
                     }
                 },
                 {
-                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/36598ab40b015ef53239651926404755/core-1.5.0-alpha01/res/values-mk/values-mk.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "81",
-                        "startColumns": "4",
-                        "startOffsets": "7925",
-                        "endColumns": "100",
-                        "endOffsets": "8021"
-                    }
-                },
-                {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/68ce3cf72d7c96de71f12edac0766ac8/jetified-exoplayer-ui-2.9.2/res/values-mk/values-mk.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33",
@@ -103,6 +86,23 @@
                         "startOffsets": "7737",
                         "endColumns": "103",
                         "endOffsets": "7836"
+                    }
+                },
+                {
+                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/6d09ea602af51a0a531503dd1d1edff7/core-1.5.0-alpha02/res/values-mk/values-mk.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "81",
+                        "startColumns": "4",
+                        "startOffsets": "7925",
+                        "endColumns": "100",
+                        "endOffsets": "8021"
                     }
                 }
             ]

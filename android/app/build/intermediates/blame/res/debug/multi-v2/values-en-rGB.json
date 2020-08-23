@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/jungbaeki/playpet/packages/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rGB/values-en-rGB.xml",
+            "outputFile": "/Users/jungbaeki/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rGB/values-en-rGB.xml",
             "map": [
                 {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/5c05b21c78d8b897586f8a85cced20fe/appcompat-1.1.0/res/values-en-rGB/values-en-rGB.xml",
@@ -18,23 +18,6 @@
                         "startOffsets": "105,209,309,417,501,601,716,794,870,961,1053,1148,1242,1343,1436,1531,1625,1716,1807,1888,1991,2094,2193,2298,2402,2506,2662,8142",
                         "endColumns": "103,99,107,83,99,114,77,75,90,91,94,93,100,92,94,93,90,90,80,102,102,98,104,103,103,155,99,81",
                         "endOffsets": "204,304,412,496,596,711,789,865,956,1048,1143,1237,1338,1431,1526,1620,1711,1802,1883,1986,2089,2188,2293,2397,2501,2657,2757,8219"
-                    }
-                },
-                {
-                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/36598ab40b015ef53239651926404755/core-1.5.0-alpha01/res/values-en-rGB/values-en-rGB.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "85",
-                        "startColumns": "4",
-                        "startOffsets": "8224",
-                        "endColumns": "100",
-                        "endOffsets": "8320"
                     }
                 },
                 {
@@ -103,6 +86,23 @@
                         "startOffsets": "5913,5991,6072,6141,6206,6269,6346,6421,6497,6572,6639,6708,6771,6841,6903,6968,7032,7109,7178,7231,7289,7337,7398,7456,7514,7580,7644,7710,7762,7824,7900,7976",
                         "endColumns": "77,80,68,64,62,76,74,75,74,66,68,62,69,61,64,63,76,68,52,57,47,60,57,57,65,63,65,51,61,75,75,53",
                         "endOffsets": "5986,6067,6136,6201,6264,6341,6416,6492,6567,6634,6703,6766,6836,6898,6963,7027,7104,7173,7226,7284,7332,7393,7451,7509,7575,7639,7705,7757,7819,7895,7971,8025"
+                    }
+                },
+                {
+                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/6d09ea602af51a0a531503dd1d1edff7/core-1.5.0-alpha02/res/values-en-rGB/values-en-rGB.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "85",
+                        "startColumns": "4",
+                        "startOffsets": "8224",
+                        "endColumns": "100",
+                        "endOffsets": "8320"
                     }
                 },
                 {

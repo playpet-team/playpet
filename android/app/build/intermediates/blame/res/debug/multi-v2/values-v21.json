@@ -1,8 +1,27 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/jungbaeki/playpet/packages/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v21/values-v21.xml",
+            "outputFile": "/Users/jungbaeki/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v21/values-v21.xml",
             "map": [
+                {
+                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/6d09ea602af51a0a531503dd1d1edff7/core-1.5.0-alpha02/res/values-v21/values-v21.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,173,237,304,368,484,610,736,864,1036",
+                        "endLines": "2,3,4,5,6,7,8,9,12,17",
+                        "endColumns": "117,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "168,232,299,363,479,605,731,859,1031,1383"
+                    },
+                    "to": {
+                        "startLines": "2,13,14,15,317,318,325,329,373,376",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,1020,1084,1151,23086,23202,23659,23953,26909,27081",
+                        "endLines": "2,13,14,15,317,318,325,329,375,380",
+                        "endColumns": "117,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "168,1079,1146,1210,23197,23323,23780,24076,27076,27428"
+                    }
+                },
                 {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/5c05b21c78d8b897586f8a85cced20fe/appcompat-1.1.0/res/values-v21/values-v21.xml",
                     "from": {
@@ -39,25 +58,6 @@
                         "endLines": "3,4,5,6,7,8,9,10,11,12,79,239,242,247,272,278,338,344,350,356,360,363,366,369,372,384,388",
                         "endColumns": "67,78,87,87,87,87,86,86,86,86,10,115,10,12,10,10,10,10,10,10,10,10,10,10,10,10,10",
                         "endOffsets": "236,315,403,491,579,667,754,841,928,1015,6893,18106,18276,18597,20275,20732,24585,24929,25279,25629,26022,26240,26462,26688,26904,27669,27928"
-                    }
-                },
-                {
-                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/36598ab40b015ef53239651926404755/core-1.5.0-alpha01/res/values-v21/values-v21.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9,10,13",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,173,237,304,368,484,610,736,864,1036",
-                        "endLines": "2,3,4,5,6,7,8,9,12,17",
-                        "endColumns": "117,63,66,63,115,125,125,127,12,12",
-                        "endOffsets": "168,232,299,363,479,605,731,859,1031,1383"
-                    },
-                    "to": {
-                        "startLines": "2,13,14,15,317,318,325,329,373,376",
-                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,1020,1084,1151,23086,23202,23659,23953,26909,27081",
-                        "endLines": "2,13,14,15,317,318,325,329,375,380",
-                        "endColumns": "117,63,66,63,115,125,125,127,12,12",
-                        "endOffsets": "168,1079,1146,1210,23197,23323,23780,24076,27076,27428"
                     }
                 },
                 {

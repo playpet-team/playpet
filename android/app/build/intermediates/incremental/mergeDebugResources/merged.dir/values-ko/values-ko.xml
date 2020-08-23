@@ -143,8 +143,18 @@
     <string name="log_in_text">로그인</string>
     <string name="login_method">로그인 방법</string>
     <string name="message_for_ssl_warning">사이트의 보안 인증서에 문제가 있습니다.</string>
+    <string name="naveroauthlogin_string_getting_token">네이버 아이디로 로그인 중입니다.</string>
+    <string name="naveroauthlogin_string_group_id_not_available">단체아이디는 네이버 아이디로 로그인이 지원되지 않습니다. 개인아이디로 로그인 해 주세요.</string>
+    <string name="naveroauthlogin_string_msg_naverapp_download_desc">네이버 앱으로 더욱 간편하게 로그인!</string>
+    <string name="naveroauthlogin_string_msg_naverapp_download_link">앱 다운로드</string>
+    <string name="naveroauthlogin_string_network_state_not_available">네트워크에 접속할 수 없습니다. 네트워크 연결상태를 확인해 주세요.</string>
+    <string name="naveroauthlogin_string_token_invalid">간편로그인이 해제되어 재로그인이 필요합니다.</string>
+    <string name="naveroauthlogin_string_update_naverapp">네이버 앱 업데이트 후
+이용할 수 있는 서비스입니다.</string>
     <string name="pick_image_intent_chooser_title">이미지 선택</string>
+    <string name="retry">재시도</string>
     <string msgid="730395136688082741" name="search_menu_title">"검색"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
     <string name="title_for_ssl_warning">보안 경고</string>
+    <string name="use_application">사용할 어플리케이션</string>
 </resources>

@@ -1290,6 +1290,13 @@
     <string description="a11y string to indicate this button switches the user to choosing a day [CHAR_LIMIT=NONE]" name="mtrl_picker_toggle_to_day_selection">Tap to switch to selecting a day</string>
     <string description="a11y string to indicate this button changes the input mode to a text field [CHAR_LIMIT=NONE]" name="mtrl_picker_toggle_to_text_input_mode">Switch to text input mode</string>
     <string description="a11y string to indicate this button switches the user to choosing a year [CHAR_LIMIT=NONE]" name="mtrl_picker_toggle_to_year_selection">Tap to switch to selecting a year</string>
+    <string name="naveroauthlogin_string_getting_token">Sign in with NAVER</string>
+    <string name="naveroauthlogin_string_group_id_not_available">Group ID can\'t be used to \'Sign in with NAVER\'. Please sign in as a normal account.</string>
+    <string name="naveroauthlogin_string_msg_naverapp_download_desc">Get NAVER App and sign in faster</string>
+    <string name="naveroauthlogin_string_msg_naverapp_download_link">Download App</string>
+    <string name="naveroauthlogin_string_network_state_not_available">Network is not available. Please check your network connection and try again.</string>
+    <string name="naveroauthlogin_string_token_invalid">Quick Sign-in account has been expired.</string>
+    <string name="naveroauthlogin_string_update_naverapp">Please update your Naver app to use this service.</string>
     <string name="password_toggle_content_description">Show password</string>
     <string name="path_password_eye" translatable="false">M12,4.5C7,4.5 2.73,7.61 1,12c1.73,4.39 6,7.5 11,7.5s9.27,-3.11 11,-7.5c-1.73,-4.39 -6,-7.5 -11,-7.5zM12,17c-2.76,0 -5,-2.24 -5,-5s2.24,-5 5,-5 5,2.24 5,5 -2.24,5 -5,5zM12,9c-1.66,0 -3,1.34 -3,3s1.34,3 3,3 3,-1.34 3,-3 -1.34,-3 -3,-3z</string>
     <string name="path_password_eye_mask_strike_through" translatable="false">M2,4.27 L19.73,22 L22.27,19.46 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
@@ -1299,6 +1306,7 @@
     <string name="progressbar_description" translatable="false">Progress Bar</string>
     <string name="project_id" translatable="false">playpet-5b432</string>
     <string name="radiogroup_description" translatable="false">Radio Group</string>
+    <string name="retry">Retry</string>
     <string name="rn_tab_description" translatable="false">Tab</string>
     <string name="scrollbar_description" translatable="false">Scroll Bar</string>
     <string name="search_description" translatable="false">Search Field</string>
@@ -1316,6 +1324,7 @@
     <string name="timer_description" translatable="false">Timer</string>
     <string name="title_for_ssl_warning">Security Warning</string>
     <string name="toolbar_description" translatable="false">Tool Bar</string>
+    <string name="use_application">Open with</string>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>
     <style name="Animation.AppCompat.Dialog" parent="Base.Animation.AppCompat.Dialog"/>
@@ -4005,6 +4014,7 @@
     <style name="Theme.Catalyst"/>
     <style name="Theme.Catalyst.LogBox">
     <item name="android:windowTranslucentStatus">true</item>
+    <item name="android:windowTranslucentNavigation">false</item>
     <item name="android:windowBackground">@android:color/transparent</item>
     <item name="android:windowAnimationStyle">@style/Animation.Catalyst.LogBox</item>
     <item name="android:inAnimation">@android:anim/fade_in</item>
@@ -4416,6 +4426,13 @@
     <style name="Widget.AppCompat.TextView.SpinnerItem" parent="Base.Widget.AppCompat.TextView.SpinnerItem"/>
     <style name="Widget.AppCompat.Toolbar" parent="Base.Widget.AppCompat.Toolbar"/>
     <style name="Widget.AppCompat.Toolbar.Button.Navigation" parent="Base.Widget.AppCompat.Toolbar.Button.Navigation"/>
+    <style name="Widget.CameraView" parent="android:Widget">
+        <item name="android:adjustViewBounds">false</item>
+        <item name="facing">back</item>
+        <item name="aspectRatio">4:3</item>
+        <item name="autoFocus">true</item>
+        <item name="flash">auto</item>
+    </style>
     <style name="Widget.Compat.NotificationActionContainer" parent=""/>
     <style name="Widget.Compat.NotificationActionText" parent=""/>
     <style name="Widget.Design.AppBarLayout" parent="android:Widget">
@@ -6089,6 +6106,23 @@
              enough space to lay them out side-by-side. -->
         <attr format="boolean" name="allowStacking"/>
     </declare-styleable>
+    <declare-styleable name="CameraView"><attr name="android:adjustViewBounds"/><attr format="enum" name="facing">
+            
+            <enum name="back" value="0"/>
+            
+            <enum name="front" value="1"/>
+        </attr><attr format="string" name="aspectRatio"/><attr format="boolean" name="autoFocus"/><attr format="enum" name="flash">
+            
+            <enum name="off" value="0"/>
+            
+            <enum name="on" value="1"/>
+            
+            <enum name="torch" value="2"/>
+            
+            <enum name="auto" value="3"/>
+            
+            <enum name="redEye" value="4"/>
+        </attr></declare-styleable>
     <declare-styleable name="CardView">
         <!-- Background color for CardView. -->
         <attr format="color" name="cardBackgroundColor"/>
@@ -8161,9 +8195,7 @@
             <enum name="add" value="16"/>
         </attr>
     </declare-styleable>
-    <declare-styleable name="ViewPager2">
-        <attr name="android:orientation"/>
-    </declare-styleable>
+    <declare-styleable name="ViewPager2"><attr name="android:orientation"/></declare-styleable>
     <declare-styleable name="ViewStubCompat">
         <!-- Supply an identifier for the layout resource to inflate when the ViewStub
              becomes visible or when forced to do so. The layout resource must be a

@@ -1,8 +1,25 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/jungbaeki/playpet/packages/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh-rHK/values-zh-rHK.xml",
+            "outputFile": "/Users/jungbaeki/playpet/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh-rHK/values-zh-rHK.xml",
             "map": [
+                {
+                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/6d09ea602af51a0a531503dd1d1edff7/core-1.5.0-alpha02/res/values-zh-rHK/values-zh-rHK.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "104",
+                        "startColumns": "4",
+                        "startOffsets": "9334",
+                        "endColumns": "100",
+                        "endOffsets": "9430"
+                    }
+                },
                 {
                     "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/5c05b21c78d8b897586f8a85cced20fe/appcompat-1.1.0/res/values-zh-rHK/values-zh-rHK.xml",
                     "from": {
@@ -103,23 +120,6 @@
                         "startOffsets": "2666,2802,2905,3016,3125,3205,3288,3364,3449,3534,3642,3744,3830,3916,4007,4116,4194,4273,4396,4489,4585,4691,4785",
                         "endColumns": "135,102,110,108,79,82,75,84,84,107,101,85,85,90,108,77,78,122,92,95,105,93,99",
                         "endOffsets": "2797,2900,3011,3120,3200,3283,3359,3444,3529,3637,3739,3825,3911,4002,4111,4189,4268,4391,4484,4580,4686,4780,4880"
-                    }
-                },
-                {
-                    "source": "/Users/jungbaeki/.gradle/caches/transforms-2/files-2.1/36598ab40b015ef53239651926404755/core-1.5.0-alpha01/res/values-zh-rHK/values-zh-rHK.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "104",
-                        "startColumns": "4",
-                        "startOffsets": "9334",
-                        "endColumns": "100",
-                        "endOffsets": "9430"
                     }
                 }
             ]
