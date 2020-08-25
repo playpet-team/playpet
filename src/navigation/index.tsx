@@ -36,8 +36,6 @@ export default function Navigation() {
             console.error(e)
         }
     }, [navigationRef])
-    // const aoeu = useTheme()
-    // console.log("aoeu---", aoeu)
 
     return (
         <AppearanceProvider>

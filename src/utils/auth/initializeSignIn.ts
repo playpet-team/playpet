@@ -28,14 +28,22 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     const [signInSuccess, setSignInSuccess] = useState(false)
     const [credential, setCredential] = useState<FirebaseAuthTypes.AuthCredential | null>(null)
     const [method, setMethod] = useState<SignType>(SignType.None)
-    const [token, setToken] = useState<null | string>(null)
-    const [profile, setProfile] = useState<any>(null)
+    const [token, setToken] = useState<any>(null)
+    const [profile, setProfile] = useState<{
+        username: string
+        email: string
+        photo: string
+    }>({
+        username: '',
+        email: '',
+        photo: '',
+    })
     const navigation = useNavigation()
 
     useEffect(() => {
         if (signInSuccess) {
             navigation.navigate('AppLoginAgreeTerms', {
-                email: profile.email,
+                profile,
             })
         }
     }, [signInSuccess])
@@ -44,55 +52,56 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         getCredential()
         async function getCredential() {
             if (token && profile && method) {
-                const formData = {
-                    email: profile.email,
-                    username: profile.nickname || profile.name,
-                    photoURL: profile.profile_image_url || profile.profile_image,
-                    method,
-                }
-                const response = await createUser(formData)
-                console.log('data-------', response);
-                if (!response.data) {
-                    return
-                }
-                
                 try {
-                    console.log("credential-----", credential);
-                    if ([SignType.Apple, SignType.Google, SignType.Facebook].includes(method) && credential) {
-                        await signInCredential(credential)
-                    } else {
-                        await signInWithCustomToken(response.data)
-                    }
-                    const success = checkUser()
-                    saveCredential(
-                        formData.email,
+                    const { data } = await createUser({
+                        ...profile,
                         method,
-                        credential,
-                    )
-                    if (success) {
-                        setSignInSuccess(true)
+                    })
+                    const customToken = data.token;
+                    if (!customToken) {
+                        return
                     }
-    
-                } catch (error) {
-                    console.error("getCredential-------", error)
-                    if (error.code != "auth/account-exists-with-different-credential") {
-                        setToastContent({
-                            ...toastContent,
-                            visible: true,
-                            title: '인증 정보를 받아오는 작업을 실패했습니다',
-                        })
-                    } else {
-                        setToastContent({
-                            ...toastContent,
-                            visible: true,
-                            title: '다른 로그인 방법으로 회원가입을 완료한 계정이 있습니다.',
-                        })
+                    
+                    try {
+                        // if ([SignType.Apple, SignType.Google, SignType.Facebook].includes(method) && credential) {
+                        //     console.log('1');
+                        //     await signInCredential(credential)
+                        // } else {
+                        console.log('2');
+                        await signInWithCustomToken(customToken)
+                        // }
+                        const success = checkUser()
+                        saveCustomToken(
+                            profile.email,
+                            method,
+                            customToken,
+                        )
+                        if (success) {
+                            setSignInSuccess(true)
+                        }
+        
+                    } catch (error) {
+                        console.error("getCredential-------", error)
+                        if (error.code != "auth/account-exists-with-different-credential") {
+                            setToastContent({
+                                ...toastContent,
+                                visible: true,
+                                title: '인증 정보를 받아오는 작업을 실패했습니다',
+                            })
+                        } else {
+                            setToastContent({
+                                ...toastContent,
+                                visible: true,
+                                title: '다른 로그인 방법으로 회원가입을 완료한 계정이 있습니다.',
+                            })
+                        }
                     }
+                } catch (e) {
+                    console.error('getCredential----', e)
                 }
             }
-            // auth.
         }
-    }, [credential, token, profile, method])
+    }, [token, profile, method])
 
     const getUidByThirdPartySignIn = useCallback(async (method: SignType) => {
         setMethod(method)
@@ -101,8 +110,12 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                 case SignType.Google: {
                     await GoogleSignin.hasPlayServices()
                     const userInfo = await GoogleSignin.signIn()
-                    setProfile(userInfo.user)
-                    setCredential(getProvider(SignType.Google).credential(userInfo.idToken))
+                    setProfile({
+                        username: userInfo.user.familyName || '' + userInfo.user.givenName || '',
+                        email: userInfo.user.email,
+                        photo: userInfo.user.photo || '',
+                    })
+                    setToken(getProvider(SignType.Google).credential(userInfo.idToken))
                     break
                 }
                 case SignType.Facebook: {
@@ -118,13 +131,13 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                             title: '인증 정보를 받아오는 작업을 실패했습니다',
                         })
                     } else {
-                        setCredential(getProvider(SignType.Facebook).credential(data.accessToken))
+                        setToken(getProvider(SignType.Facebook).credential(data.accessToken))
                     }
                     break
                 }
                 case SignType.Apple: {
                     const credential = await appleSignIn(setProfile)
-                    credential && setCredential(credential)
+                    credential && setToken(credential)
                     break
                 }
                 case SignType.Kakao: {
@@ -153,17 +166,17 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         
     }, [])
 
-    const saveCredential = useCallback(async (email: string, provider: string, credential: any) => {
+    const saveCustomToken = useCallback(async (email: string, provider: string, customToken: any) => {
         try {
-            const saveData = JSON.stringify([credential, email, provider])
+            const saveData = JSON.stringify([customToken, email, provider])
             await AsyncStorage.setItem(
-                'credential',
+                'customToken',
                 saveData
             )
         } catch (error) {
             throw error
         }
-    }, [credential])
+    }, [token])
 
     const checkUser = () => {
         const user = currentUser()
@@ -202,7 +215,11 @@ const appleSignIn = async (setProfile: React.Dispatch<any>) => {
             requestedOperation: AppleAuthRequestOperation.LOGIN,
             requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
         })
-        setProfile(appleAuthRequestResponse)
+        setProfile({
+            username: appleAuthRequestResponse.fullName,
+            email: appleAuthRequestResponse.email,
+            photo: '',
+        })
         // Ensure Apple returned a user identityToken
         if (!appleAuthRequestResponse.identityToken) {
             throw 'Apple Sign-In failed - no identify token returned'
@@ -250,7 +267,11 @@ const getNaverProfile = async (token: string | null, setProfile: React.Dispatch<
       return
     }
     
-    setProfile(profileResult.response)
+    setProfile({
+        username: profileResult.response.name,
+        email: profileResult.response.email,
+        photo: profileResult.response.profile_image,
+    })
 }
 
 const kakaoLogin = async (setToken: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -260,7 +281,11 @@ const kakaoLogin = async (setToken: React.Dispatch<React.SetStateAction<string |
 
 const getKakaoProfile = async (setProfile: React.Dispatch<any>) => {
     const result = await KakaoLogins.getProfile()
-    setProfile(result)
+    setProfile({
+        username: result.nickname,
+        email: result.email,
+        photo: result.profile_image_url || '',
+    })
 }
 
 const getProvider = (providerId: string) => {
