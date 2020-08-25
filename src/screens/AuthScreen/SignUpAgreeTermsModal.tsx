@@ -1,53 +1,40 @@
-import React, { useState, useMemo, Dispatch, SetStateAction, useCallback } from 'react';
-import { Text } from 'react-native';
-import styled from 'styled-components/native';
-import auth from '@react-native-firebase/auth';
+import React, { useState, useCallback } from 'react'
+import styled from 'styled-components/native'
+import { Text } from '../../styles'
 
-import { updateUserTerms, currentUser } from '../../utils';
-import PlaypetDialog from '../../components/PlaypetDialog';
+import { updateUserTerms, currentUser } from '../../utils'
 
-interface TermsModal {
-    modalVisible: boolean;
-    setModalVisible: Dispatch<SetStateAction<boolean>>;
-};
-
-export default function SignUpAgreeTermsModal({ modalVisible, setModalVisible }: TermsModal) {
-    const [overAgeAgree, setOverAgeAgree] = useState(false);
-    const [termsOfUseAgree, setTermsOfUseAgree] = useState(false);
-    const [personalCollectAgree, setPersonalCollectAgree] = useState(false);
-    const [marketingAgree, setMarketingAgree] = useState(false);
+export default function SignUpAgreeTermsModal() {
+    const [overAgeAgree, setOverAgeAgree] = useState(false)
+    const [termsOfUseAgree, setTermsOfUseAgree] = useState(false)
+    const [personalCollectAgree, setPersonalCollectAgree] = useState(false)
+    const [marketingAgree, setMarketingAgree] = useState(false)
 
     const handleAllAgree = useCallback(() => {
-        setOverAgeAgree(true);
-        setTermsOfUseAgree(true);
-        setPersonalCollectAgree(true);
-        setMarketingAgree(true);
-    }, []);
+        setOverAgeAgree(true)
+        setTermsOfUseAgree(true)
+        setPersonalCollectAgree(true)
+        setMarketingAgree(true)
+    }, [])
 
-    const isAllAgreeTarms = () => overAgeAgree && termsOfUseAgree && personalCollectAgree;
+    const isAllAgreeTarms = () => overAgeAgree && termsOfUseAgree && personalCollectAgree
 
     const hanbleSubmitAgreeTerms = async () => {
-        const user = currentUser();
+        const user = currentUser()
         if (!user) {
-            return;
+            return
         }
-        const uid = user.uid;
+        const uid = user.uid
         updateUserTerms(uid, {
             overAgeAgree,
             termsOfUseAgree,
             personalCollectAgree,
             marketingAgree,
-        });
-        setModalVisible(false);
-    };
+        })
+    }
 
     return (
-        <PlaypetDialog
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            isHideCloseButton={true}
-            isBackdropPress={false}
-        >
+        <>
             <Text>회원가입을 추카합니다</Text>
             <AllTermsAgree onPress={handleAllAgree}>
                 <Text>{}</Text><Text>약관에 모두 동의</Text>
@@ -67,12 +54,12 @@ export default function SignUpAgreeTermsModal({ modalVisible, setModalVisible }:
             <SubmitSignIn onPress={() => hanbleSubmitAgreeTerms()} disabled={!isAllAgreeTarms}>
                 <Text>확인</Text>
             </SubmitSignIn>
-        </PlaypetDialog>
-    );
-};
+        </>
+    )
+}
 
-const AllTermsAgree = styled.TouchableOpacity``;
-const TermsAgree = styled.TouchableOpacity``;
+const AllTermsAgree = styled.TouchableOpacity``
+const TermsAgree = styled.TouchableOpacity``
 const SubmitSignIn = styled.TouchableOpacity`
     background-color: blue;
-`;
+`

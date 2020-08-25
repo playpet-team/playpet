@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-// import { useSelector } from 'react-redux';
-// import { RootState } from '../store/rootReducers';
-
-import SignUpAgreeTermsModal from './AuthScreen/SignUpAgreeTermsModal';
-// import SocialSignIn from './AuthScreen/SocialSignIn';
 import ProfileSection from '../components/ProfileSection';
 import MyCards from '../components/MyCards';
 import ListItem from '../components/ListItem';
@@ -22,7 +17,6 @@ export enum ItemList {
     ITEM,
 }
 export default function AuthScreen() {
-    const [modalVisible, setModalVisible] = useState(false);
     const [listType, setListType] = useState(ItemList.MEDIA);
     const { isLogged } = useSelector((state: RootState) => state.auth);
     const navigation = useNavigation();
@@ -107,10 +101,6 @@ export default function AuthScreen() {
             </Layout>
             <MyCards
                 listType={listType}
-            />
-            <SignUpAgreeTermsModal
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
             />
         </ScrollView>
     );

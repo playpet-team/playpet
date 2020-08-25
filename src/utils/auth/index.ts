@@ -8,7 +8,7 @@ import { initialState } from '../../store/authReducer';
 
 export const firebaseNow = () => firestore.Timestamp.now();
 export const currentUser = () => auth().currentUser;
-export const signInWithCustomToken = (customToken: string) => auth().signInWithCustomToken(customToken);
+export const signInWithCustomToken = async (customToken: string) => await auth().signInWithCustomToken(customToken);
 export const signInCredential = async (credential: FirebaseAuthTypes.AuthCredential) => await auth().signInWithCredential(credential);
 export const updateUserLastLogin = async (uid: string) => {
     await firestore().collection(collections.Users).doc(uid).update({

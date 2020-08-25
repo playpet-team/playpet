@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
-import SignUpAgreeTermsModal from './AuthScreen/SignUpAgreeTermsModal';
-import { getUserTerms, currentUser } from '../utils';
 import { DividerBlock } from '../styles';
 import useFirebaseMessage from '../hooks/useFirebaseMessage';
 import useRollingBanner from '../hooks/useRollingBanner';
@@ -14,19 +12,8 @@ import useLanguage from '../hooks/useLanguage';
 
 export default function Home() {
     useLanguage();
-    const [modalVisible, setModalVisible] = useState(false);
     const { renderBanner } = useRollingBanner();
     useFirebaseMessage();
-
-    useEffect(() => {
-        loadTerms();
-        async function loadTerms() {
-            const user = currentUser();
-            if (user && user.uid) {
-                setModalVisible(!await getUserTerms(user.uid));
-            }
-        }
-    }, []);
 
     return (
         <SafeAreaViewBlock>
@@ -42,10 +29,6 @@ export default function Home() {
                 <ProductList />
                 <DummyCardView />
             </ScrollView>
-            <SignUpAgreeTermsModal
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-            />
         </SafeAreaViewBlock>
     );
 };

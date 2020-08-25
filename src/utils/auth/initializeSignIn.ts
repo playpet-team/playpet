@@ -1,19 +1,23 @@
+import { useNavigation } from '@react-navigation/native'
+import { createUser } from './../../callable/auth'
+import { signInWithCustomToken, signInCredential, currentUser } from '.'
 import { ToastParams } from '../../components/Toast'
 import { useCallback, useState, useEffect } from 'react'
-// import * as React from 'react'
+
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
 import appleAuth, {
     AppleAuthRequestOperation,
     AppleAuthRequestScope,
 } from '@invertase/react-native-apple-authentication'
-
 import { GoogleSignin } from '@react-native-community/google-signin'
 import { LoginManager, AccessToken } from 'react-native-fbsdk'
 import KakaoLogins, { IProfile } from '@react-native-seoul/kakao-login'
 import { NaverLogin, getProfile, GetProfileResponse } from '@react-native-seoul/naver-login'
+
 import { SignType } from '../../models'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Platform } from 'react-native'
+
 const GOOGLE_WEB_CLIENT_ID = '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com'
 GoogleSignin.configure({ webClientId: GOOGLE_WEB_CLIENT_ID })
 
@@ -21,42 +25,84 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     toastContent: ToastParams
     setToastContent: React.Dispatch<React.SetStateAction<ToastParams>>
 }) {
+    const [signInSuccess, setSignInSuccess] = useState(false)
     const [credential, setCredential] = useState<FirebaseAuthTypes.AuthCredential | null>(null)
+    const [method, setMethod] = useState<SignType>(SignType.None)
     const [token, setToken] = useState<null | string>(null)
-    const [email, setEmail] = useState<string>('')
-    const [profile, setProfile] = useState<IProfile | GetProfileResponse | null>(null)
-    const [naverToken, setNaverToken] = useState(null)
+    const [profile, setProfile] = useState<any>(null)
+    const navigation = useNavigation()
+
+    useEffect(() => {
+        if (signInSuccess) {
+            navigation.navigate('AppLoginAgreeTerms', {
+                email: profile.email,
+            })
+        }
+    }, [signInSuccess])
+
+    useEffect(() => {
+        getCredential()
+        async function getCredential() {
+            if (token && profile && method) {
+                const formData = {
+                    email: profile.email,
+                    username: profile.nickname || profile.name,
+                    photoURL: profile.profile_image_url || profile.profile_image,
+                    method,
+                }
+                const response = await createUser(formData)
+                console.log('data-------', response);
+                if (!response.data) {
+                    return
+                }
+                
+                try {
+                    console.log("credential-----", credential);
+                    if ([SignType.Apple, SignType.Google, SignType.Facebook].includes(method) && credential) {
+                        await signInCredential(credential)
+                    } else {
+                        await signInWithCustomToken(response.data)
+                    }
+                    const success = checkUser()
+                    saveCredential(
+                        formData.email,
+                        method,
+                        credential,
+                    )
+                    if (success) {
+                        setSignInSuccess(true)
+                    }
+    
+                } catch (error) {
+                    console.error("getCredential-------", error)
+                    if (error.code != "auth/account-exists-with-different-credential") {
+                        setToastContent({
+                            ...toastContent,
+                            visible: true,
+                            title: '인증 정보를 받아오는 작업을 실패했습니다',
+                        })
+                    } else {
+                        setToastContent({
+                            ...toastContent,
+                            visible: true,
+                            title: '다른 로그인 방법으로 회원가입을 완료한 계정이 있습니다.',
+                        })
+                    }
+                }
+            }
+            // auth.
+        }
+    }, [credential, token, profile, method])
 
     const getUidByThirdPartySignIn = useCallback(async (method: SignType) => {
+        setMethod(method)
         try {
             switch (method) {
                 case SignType.Google: {
                     await GoogleSignin.hasPlayServices()
                     const userInfo = await GoogleSignin.signIn()
-                    setEmail(userInfo.user.email)
-                    const response = getProvider(SignType.Google).credential(userInfo.idToken)
-                    console.log('response', response)
+                    setProfile(userInfo.user)
                     setCredential(getProvider(SignType.Google).credential(userInfo.idToken))
-                    console.log("gogogo")
-                    break
-                }
-                case SignType.Apple: {
-                    setCredential(await appleSignIn())
-                    break
-                }
-                case SignType.Kakao: {
-                    setToastContent({
-                        ...toastContent,
-                        visible: true,
-                        title: '카카오는 아직 비즈니스 인증을 해야함',
-                    })
-                    await kakaoLogin(setToken)
-                    await getKakaoProfile(setProfile)
-                    break
-                }
-                case SignType.Naver: {
-                    await naverLogin(setToken)
-                    await getNaverProfile(token, setProfile)
                     break
                 }
                 case SignType.Facebook: {
@@ -76,6 +122,21 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                     }
                     break
                 }
+                case SignType.Apple: {
+                    const credential = await appleSignIn(setProfile)
+                    credential && setCredential(credential)
+                    break
+                }
+                case SignType.Kakao: {
+                    await kakaoLogin(setToken)
+                    await getKakaoProfile(setProfile)
+                    break
+                }
+                case SignType.Naver: {
+                    await naverLogin(setToken)
+                    await getNaverProfile(token, setProfile)
+                    break
+                }
                 default: {
                     break
                 }
@@ -92,17 +153,30 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         
     }, [])
 
-    const saveCredential = useCallback(async (email: string, provider: string, credential: { token: string, secret: string }) => {
+    const saveCredential = useCallback(async (email: string, provider: string, credential: any) => {
         try {
-            const saveData = JSON.stringify([credential.token, credential.secret, email])
+            const saveData = JSON.stringify([credential, email, provider])
             await AsyncStorage.setItem(
-                provider,
+                'credential',
                 saveData
             )
         } catch (error) {
             throw error
         }
-    }, [])
+    }, [credential])
+
+    const checkUser = () => {
+        const user = currentUser()
+        if (!user) {
+            setToastContent({
+                ...toastContent,
+                visible: true,
+                title: '인증 정보를 받아오는 작업을 실패했습니다',
+            })
+            return
+        }
+        return true
+    }
 
     // 아직은 쓸일은 없지만 언젠간 쓰이게 될것
     // const getCredential = async (provider: string) => {
@@ -118,24 +192,28 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     //     }
     // }
 
-    return { getUidByThirdPartySignIn, credential }
+    return { getUidByThirdPartySignIn }
 }
 
-const appleSignIn = async () => {
+const appleSignIn = async (setProfile: React.Dispatch<any>) => {
     // Start the sign-in request
-    const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: AppleAuthRequestOperation.LOGIN,
-        requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
-    })
-
-    // Ensure Apple returned a user identityToken
-    if (!appleAuthRequestResponse.identityToken) {
-        throw 'Apple Sign-In failed - no identify token returned'
+    try {
+        const appleAuthRequestResponse = await appleAuth.performRequest({
+            requestedOperation: AppleAuthRequestOperation.LOGIN,
+            requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+        })
+        setProfile(appleAuthRequestResponse)
+        // Ensure Apple returned a user identityToken
+        if (!appleAuthRequestResponse.identityToken) {
+            throw 'Apple Sign-In failed - no identify token returned'
+        }
+    
+        // Create a Firebase credential from the response
+        const { identityToken, nonce } = appleAuthRequestResponse
+        return getProvider(SignType.Apple).credential(identityToken, nonce)
+    } catch (e) {
+        console.error('apple reror', e)
     }
-
-    // Create a Firebase credential from the response
-    const { identityToken, nonce } = appleAuthRequestResponse
-    return getProvider(SignType.Apple).credential(identityToken, nonce)
 }
 
 const naverLogin = async (setToken: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -151,30 +229,28 @@ const naverLogin = async (setToken: React.Dispatch<React.SetStateAction<string |
         kConsumerSecret: 'B8zVzYH9zZ',
         kServiceAppName: 'playpet',
     }
-    console.log('----11----');
     NaverLogin.login(Platform.OS === 'ios' ? ioskeys : androidkeys, (err, token) => {
-        console.log(`\n\n  Token is fetched  :: ${token} \n\n`)
         // setNaverToken(token)
         if (token) {
-            setToken(token.accessToken)
+            setToken(token.refreshToken)
         }
     })
 }
 
-const getNaverProfile = async (token: string | null, setProfile: React.Dispatch<React.SetStateAction<IProfile | GetProfileResponse | null>>) => {
+const getNaverProfile = async (token: string | null, setProfile: React.Dispatch<any>) => {
     if (!token) {
-        return;
+        return
     }
-    const profileResult = await getProfile(token);
+    const profileResult = await getProfile(token)
     if (!profileResult) {
-        return;
+        return
     }
     if (profileResult.resultcode === "024") {
-      alert("로그인 실패");
-      return;
+      alert("로그인 실패")
+      return
     }
-    console.log("profileResult", profileResult);
-    setProfile(profileResult)
+    
+    setProfile(profileResult.response)
 }
 
 const kakaoLogin = async (setToken: React.Dispatch<React.SetStateAction<string | null>>) => {
@@ -182,7 +258,7 @@ const kakaoLogin = async (setToken: React.Dispatch<React.SetStateAction<string |
     setToken(result.accessToken)
 }
 
-const getKakaoProfile = async (setProfile: React.Dispatch<React.SetStateAction<IProfile | GetProfileResponse | null>>) => {
+const getKakaoProfile = async (setProfile: React.Dispatch<any>) => {
     const result = await KakaoLogins.getProfile()
     setProfile(result)
 }

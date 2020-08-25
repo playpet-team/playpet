@@ -2,7 +2,8 @@ import { SignType } from '../models';
 import functions from '@react-native-firebase/functions';
 
 enum callable {
-    CreateUser = 'createUserCollection',
+    CreateUser = 'createUser',
+    CreateUserCollection = 'createUserCollection',
     Withdraw = 'withdraw',
 }
 interface createUserCollectionParams {
@@ -10,8 +11,8 @@ interface createUserCollectionParams {
     method?: SignType;
 };
 export const createUserCall = async (params: createUserCollectionParams) => {
-    await functions().httpsCallable(callable.CreateUser)(params);
+    await functions().httpsCallable(callable.CreateUserCollection)(params);
 };
 export const withdrawCall = async () => await functions().httpsCallable(callable.Withdraw)();
-export const aoeuaoeu = async () => await functions().httpsCallable('aoeuaoeu')();
+export const createUser = async (form: { email: string, username: string }) => await functions().httpsCallable(callable.CreateUser)(form);
 export const videoTest = async (url: string) => await functions().httpsCallable('haha')(url);
