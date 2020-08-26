@@ -6,6 +6,7 @@ import { ListItem } from 'react-native-elements';
 import { SignType } from '../../models';
 import useLoadingIndicator from '../../hooks/useLoadingIndicator';
 import { DividerBlock } from '../../styles';
+import AsyncStorage from '@react-native-community/async-storage';
 enum Handle {
     Link,
     Navigate,
@@ -95,6 +96,7 @@ const handleLogout = (setLoading: React.Dispatch<React.SetStateAction<boolean>>)
             onPress: async () => {
                 try {
                     setLoading(true);
+                    AsyncStorage.clear()
                     await signOut(SignType.Google);
                     appReload();
                 } catch (e) {

@@ -11,7 +11,7 @@ import appleAuth, {
 } from '@invertase/react-native-apple-authentication'
 import { GoogleSignin } from '@react-native-community/google-signin'
 import { LoginManager, AccessToken } from 'react-native-fbsdk'
-import KakaoLogins, { IProfile } from '@react-native-seoul/kakao-login'
+import KakaoLogins, { IProfile, KAKAO_AUTH_TYPES } from '@react-native-seoul/kakao-login'
 import { NaverLogin, getProfile, GetProfileResponse } from '@react-native-seoul/naver-login'
 
 import { SignType } from '../../models'
@@ -42,9 +42,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
 
     useEffect(() => {
         if (signInSuccess) {
-            navigation.navigate('AppLoginAgreeTerms', {
-                profile,
-            })
+            navigation.navigate('AppLoginAgreeTerms')
         }
     }, [signInSuccess])
 
@@ -70,12 +68,12 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                         console.log('2');
                         await signInWithCustomToken(customToken)
                         // }
-                        const success = checkUser()
-                        saveCustomToken(
-                            profile.email,
-                            method,
+                        saveCustomToken({
                             customToken,
-                        )
+                            email: profile.email,
+                            provider: method,
+                        })
+                        const success = checkUser()
                         if (success) {
                             setSignInSuccess(true)
                         }
@@ -166,9 +164,10 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         
     }, [])
 
-    const saveCustomToken = useCallback(async (email: string, provider: string, customToken: any) => {
+    
+    const saveCustomToken = useCallback(async (putData: AsyncStorageCustomToken) => {
         try {
-            const saveData = JSON.stringify([customToken, email, provider])
+            const saveData = JSON.stringify(putData)
             await AsyncStorage.setItem(
                 'customToken',
                 saveData
@@ -275,7 +274,7 @@ const getNaverProfile = async (token: string | null, setProfile: React.Dispatch<
 }
 
 const kakaoLogin = async (setToken: React.Dispatch<React.SetStateAction<string | null>>) => {
-    const result = await KakaoLogins.login()
+    const result = await KakaoLogins.login([KAKAO_AUTH_TYPES.Talk])
     setToken(result.accessToken)
 }
 
@@ -299,4 +298,10 @@ const getProvider = (providerId: string) => {
         default:
             throw new Error(`No provider implemented for ${providerId}`)
     }
+}
+
+export interface AsyncStorageCustomToken {
+    customToken: string;
+    email: string;
+    provider: SignType;       
 }

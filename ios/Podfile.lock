@@ -772,7 +772,7 @@ PODS:
     - React
   - react-native-netinfo (5.9.6):
     - React
-  - react-native-safe-area-context (3.1.6):
+  - react-native-safe-area-context (3.1.7):
     - React
   - react-native-viewpager (4.1.6):
     - React
@@ -859,13 +859,11 @@ PODS:
     - Firebase/Auth (~> 6.28.1)
     - React
     - RNFBApp
-  - RNFBCrashlytics (8.3.2):
-    - Firebase/Core (~> 6.28.1)
+  - RNFBCrashlytics (8.3.4):
     - Firebase/Crashlytics (~> 6.28.1)
     - React
     - RNFBApp
-  - RNFBDynamicLinks (7.4.2):
-    - Firebase/Analytics (~> 6.28.1)
+  - RNFBDynamicLinks (7.4.3):
     - Firebase/DynamicLinks (~> 6.28.1)
     - React
     - RNFBApp
@@ -877,18 +875,15 @@ PODS:
     - Firebase/Functions (~> 6.28.1)
     - React
     - RNFBApp
-  - RNFBInAppMessaging (7.3.2):
-    - Firebase/Analytics (~> 6.28.1)
+  - RNFBInAppMessaging (7.3.3):
     - Firebase/InAppMessaging (~> 6.28.1)
     - React
     - RNFBApp
-  - RNFBMessaging (7.7.2):
-    - Firebase/Analytics (~> 6.28.1)
+  - RNFBMessaging (7.7.3):
     - Firebase/Messaging (~> 6.28.1)
     - React
     - RNFBApp
-  - RNFBRemoteConfig (8.1.3):
-    - Firebase/Analytics (~> 6.28.1)
+  - RNFBRemoteConfig (8.1.4):
     - Firebase/RemoteConfig (~> 6.28.1)
     - React
     - RNFBApp
@@ -1374,7 +1369,7 @@ SPEC CHECKSUMS:
   react-native-appearance: 0f0e5fc2fcef70e03d48c8fe6b00b9158c2ba8aa
   react-native-fbsdk: 00c15d138bba6d4efa628670886fc58cec858c19
   react-native-netinfo: 38a1e0b3e89b48e4b5833ed475d8df5f049f6f90
-  react-native-safe-area-context: 4fb3cdeb4a405ec19f18aca80ef2144381ffc761
+  react-native-safe-area-context: 955ecfce672683b495d9294d2f154a9ad1d9796b
   react-native-viewpager: f44c9e21c37d4cb76d38841c8a450e3891923461
   react-native-webview: 6edf4d6f71b9161fc3e96083726a538ee395304d
   React-RCTActionSheet: 910163b6b09685a35c4ebbc52b66d1bfbbe39fc5
@@ -1395,13 +1390,13 @@ SPEC CHECKSUMS:
   RNFBAnalytics: 715279002cf21b600aec33bc2e315c4cdf5d05e6
   RNFBApp: abbab9c96e6d2f1cada6401c9138d3f8cb2ae930
   RNFBAuth: 310c2e57dd86cdf50eccb6ac83ba0212115ac919
-  RNFBCrashlytics: 66045514b40740f8839830cf6aaa90ea2ddce8a5
-  RNFBDynamicLinks: 25fd455b8f47be4fc7e92bd80db17d448196e9ba
+  RNFBCrashlytics: f2ea7eeeb19ee564db3d37c28bf54206f6937e5d
+  RNFBDynamicLinks: 02e721af131e59eacdfd37180c0949ba2a175970
   RNFBFirestore: e6de55217697a483c9dd54c2676fd82967b19349
   RNFBFunctions: 19b97cc11343a4bb6a15b9deabeae66f40e07829
-  RNFBInAppMessaging: 486f88c2542bc732882c5a66997bfed39ffc2cca
-  RNFBMessaging: 8656a64ae9d18319a152d35c17852c90e35a037c
-  RNFBRemoteConfig: 581877b9fb16f54296ada6f30624734eb2f9fc4d
+  RNFBInAppMessaging: 6bfd9e7a020b856f26cb2fcc52e42c6af85510b5
+  RNFBMessaging: e6d1e29d9f63607ef8f4d5ec9d5214215413cacf
+  RNFBRemoteConfig: f1e6581068522138597273086bb9d09df6de1272
   RNFBStorage: ef83d95cf7470b2b6ce73428ab0b334fb19a6161
   RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
   RNGoogleSignin: ccf71ee4b6cfd324fd788a41e457e2043838c0d9

@@ -1,19 +1,31 @@
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useEffect } from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 import { useRoute, RouteProp } from '@react-navigation/native'
 import SignUpAgreeTermsModal from '../AuthScreen/SignUpAgreeTermsModal'
 import { AppLoginParamList } from '../../navigation'
-import { Text } from '../../styles'
+import { Text, DividerBlock } from '../../styles'
+import { currentUser } from '../../utils'
 
 export default function AppLoginAgreeTerms() {
+    const user = currentUser()
+    console.log("user--------", user);
+    // useEffect(() => {
+    //     if (user?.uid) {
+    //         user.email
+    //     }
+    // }, [user])
+
     // const navigation = useNavigation()
-    const { params } = useRoute<RouteProp<AppLoginParamList, 'AppLoginAgreeTerms'>>()
-    console.log("params", params);
+    // const { params } = useRoute<RouteProp<AppLoginParamList, 'AppLoginAgreeTerms'>>()
+    // console.log("params", params)
 
     return (
         <AppLoginAgreeTermsBlock>
-            <Text>email: {params.email} 맞습니까?</Text>
+            <Text size={18} bold>회원가입을 추카합니다</Text>
+            <DividerBlock marginBottom={4} />
+            <Text size={16}>{user?.email}</Text>
+            <DividerBlock marginBottom={16} />
             <SignUpAgreeTermsModal />
         </AppLoginAgreeTermsBlock>
     )
@@ -21,4 +33,5 @@ export default function AppLoginAgreeTerms() {
 
 const AppLoginAgreeTermsBlock = styled(SafeAreaView)`
     flex: 1;
+    padding: 24px;
 `

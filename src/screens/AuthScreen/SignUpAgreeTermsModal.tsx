@@ -35,9 +35,8 @@ export default function SignUpAgreeTermsModal() {
 
     return (
         <>
-            <Text>회원가입을 추카합니다</Text>
             <AllTermsAgree onPress={handleAllAgree}>
-                <Text>{}</Text><Text>약관에 모두 동의</Text>
+                <Text>약관에 모두 동의</Text>
             </AllTermsAgree>
             <TermsAgree onPress={() => setOverAgeAgree(!overAgeAgree)}>
                 <Text>{overAgeAgree ? 'checked' : 'none'}</Text><Text>만 14세 이상입니다</Text>

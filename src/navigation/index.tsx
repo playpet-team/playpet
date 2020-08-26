@@ -61,11 +61,7 @@ export default function Navigation() {
                 }}
                 onStateChange={onChangeScreen}
             >
-                {/* {user ?
-                    :
-                } */}
                 <RootNavigator />
-                {/* <AppLoginNavigator /> */}
             </NavigationContainer>
         </AppearanceProvider>
     )
@@ -90,6 +86,7 @@ function RootNavigator() {
         Crash.setUserId(user.uid)
 
     }, [])
+
     return (
         <RootStack.Navigator screenOptions={{ headerShown: false }}>
             <RootStack.Screen name="Home" component={BottomTabNavigator} />
@@ -100,9 +97,7 @@ function RootNavigator() {
 
 export type AppLoginParamList = {
     AppLogin: undefined
-    AppLoginAgreeTerms: {
-        email: string
-    }
+    AppLoginAgreeTerms: undefined
 }
 const AppLoginStack = createStackNavigator<AppLoginParamList>()
 
