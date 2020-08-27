@@ -16,6 +16,7 @@ function useFirebaseMessage() {
                 console.log('@@@@@@@@@-----status, type-------', status, type);
                 _checkFirebasePermission();
             } catch (e) {
+              _registerToken()
                 console.log('useFirebaseMessage-error-', e);
             }
         }
@@ -51,7 +52,7 @@ function useFirebaseMessage() {
           });
     };
 
-    const _registerToken = async (fcmToken: string): Promise<void> => {
+    const _registerToken = async (fcmToken: string = ''): Promise<void> => {
         console.log(fcmToken);
         try {
             const user = currentUser();
@@ -78,6 +79,8 @@ function useFirebaseMessage() {
                     await updateTokenToServer();
                     _registerTokenRefreshListener();
                     _onReactNotification();
+                } else {
+                  _registerToken()
                 }
             }
         } catch (error) {
