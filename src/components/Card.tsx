@@ -22,7 +22,7 @@ function Card({
     uid,
     likes,
     containerWidth = '100%',
-    uploadMedia,
+    contents,
     updatedAt,
     onPlayActive,
     renderRange,
@@ -52,7 +52,7 @@ function Card({
         ).start();
     }, [showDetail, onPlayActive]);
 
-    const media = uploadMedia[0];
+    const media = contents[0];
 
     const RenderMedia = useCallback(() => {
         if (!media || !media.isVideo) {

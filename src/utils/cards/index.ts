@@ -12,7 +12,7 @@ export interface CardModel {
     tags: string[];
     uid: string;
     likes: number;
-    uploadMedia: {
+    contents: {
         url: string;
         videoThumbnails: string;
         isVideo: boolean;
@@ -42,7 +42,7 @@ export const getMyCards = async (uid: string, sort?: string): Promise<CardModel[
             tags: cardData.tags,
             uid: cardData.uid,
             likes: cardData.likes,
-            uploadMedia: cardData.uploadMedia,
+            contents: cardData.contents,
             createdAt: cardData.createdAt,
             updatedAt: cardData.updatedAt,
         };

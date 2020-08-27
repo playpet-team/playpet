@@ -38,7 +38,7 @@ function SubmitButton({
             description,
             tags,
             uid,
-            uploadMedia: cardImages.map((image, index) => ({
+            contents: cardImages.map((image, index) => ({
                 url: downloadUrls[index].url,
                 videoThumbnails: downloadUrls[index].thumbnail,
                 isVideo: image.isVideo,

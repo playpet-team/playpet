@@ -18,7 +18,7 @@ function MyCards({ listType }: { listType: ItemList; }) {
                     <Image
                         key={card.id}
                         source={{
-                            uri: card.uploadMedia[0].videoThumbnails,
+                            uri: card.contents[0].videoThumbnails,
                         }}
                         resizeMode="cover"
                         style={{
