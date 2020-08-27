@@ -108,7 +108,7 @@ export default function CardFormScreen() {
 export interface cardImage {
     id: string;
     uri: string;
-    firebaseUrl: string;
+    url: string;
     videoThumbnails?: string;
     isVideo: boolean;
     width: number;

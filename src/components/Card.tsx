@@ -61,7 +61,7 @@ function Card({
         return (
             <Video
                 ref={videoRef}
-                source={{ uri: media.firebaseUrl }}
+                source={{ uri: media.url }}
                 isMuted={!isSoundOn}
                 isLooping={true}
                 shouldPlay={!showDetail}

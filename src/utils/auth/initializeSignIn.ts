@@ -51,23 +51,20 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         async function getCredential() {
             if (token && profile && method) {
                 try {
+                    console.log('data', profile, method);
                     const { data } = await createUser({
                         ...profile,
                         method,
                     })
+                    console.log('data', data);
                     const customToken = data.token;
                     if (!customToken) {
                         return
                     }
                     
                     try {
-                        // if ([SignType.Apple, SignType.Google, SignType.Facebook].includes(method) && credential) {
-                        //     console.log('1');
-                        //     await signInCredential(credential)
-                        // } else {
                         console.log('2');
                         await signInWithCustomToken(customToken)
-                        // }
                         saveCustomToken({
                             customToken,
                             email: profile.email,
@@ -102,12 +99,16 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     }, [token, profile, method])
 
     const getUidByThirdPartySignIn = useCallback(async (method: SignType) => {
+        console.log('0')
         setMethod(method)
         try {
             switch (method) {
                 case SignType.Google: {
+                    console.log('1')
                     await GoogleSignin.hasPlayServices()
+                    console.log('2')
                     const userInfo = await GoogleSignin.signIn()
+                    console.log('3', userInfo)
                     setProfile({
                         username: userInfo.user.familyName || '' + userInfo.user.givenName || '',
                         email: userInfo.user.email,
@@ -189,20 +190,6 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         }
         return true
     }
-
-    // 아직은 쓸일은 없지만 언젠간 쓰이게 될것
-    // const getCredential = async (provider: string) => {
-    //     try {
-    //         const value = await AsyncStorage.getItem(provider)
-    //         if (value !== null) {
-    //             const [token, secret, email] = JSON.parse(value)
-    //             return  { token, secret, email }
-    //             // return getProvider(provider).credential(token, secret)
-    //         }
-    //     } catch (error) {
-    //         throw error
-    //     }
-    // }
 
     return { getUidByThirdPartySignIn }
 }

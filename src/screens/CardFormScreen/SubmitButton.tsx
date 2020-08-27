@@ -39,7 +39,7 @@ function SubmitButton({
             tags,
             uid,
             uploadMedia: cardImages.map((image, index) => ({
-                firebaseUrl: downloadUrls[index].url,
+                url: downloadUrls[index].url,
                 videoThumbnails: downloadUrls[index].thumbnail,
                 isVideo: image.isVideo,
                 width: image.width,

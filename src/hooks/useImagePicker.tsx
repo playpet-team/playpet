@@ -67,7 +67,7 @@ function useImagePicker({ setLoading, setForm, form, uid }: {
                     {
                         id: tempId,
                         isVideo: isVideoType(response.type),
-                        firebaseUrl: '',
+                        url: '',
                         videoThumbnails,
                         uri: response.uri,
                         width: response.width,
