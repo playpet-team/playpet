@@ -1,25 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components/native';
-import ProfileSection from '../components/ProfileSection';
-import MyCards from '../components/MyCards';
-import ListItem from '../components/ListItem';
-import { ScrollView } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
-import { Icon } from 'react-native-elements';
-import ButtonGroups from '../components/ButtonGroups';
-import { Layout, Text, DividerBlock } from '../styles';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/rootReducers';
-import i18n from 'i18n-js';
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components/native'
+import ProfileSection from '../components/ProfileSection'
+import MyCards from '../components/MyCards'
+import ListItem from '../components/ListItem'
+import { ScrollView } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/native'
+import { Icon } from 'react-native-elements'
+import ButtonGroups from '../components/ButtonGroups'
+import { Layout, Text, DividerBlock } from '../styles'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store/rootReducers'
+import i18n from 'i18n-js'
+import { ItemList } from '../models'
 
-export enum ItemList {
-    MEDIA,
-    ITEM,
-}
 export default function AuthScreen() {
-    const [listType, setListType] = useState(ItemList.MEDIA);
-    const { isLogged } = useSelector((state: RootState) => state.auth);
-    const navigation = useNavigation();
+    const [listType, setListType] = useState(ItemList.MEDIA)
+    const { isLogged } = useSelector((state: RootState) => state.auth)
+    const navigation = useNavigation()
 
     if (!isLogged) {
         return (
@@ -104,23 +101,20 @@ export default function AuthScreen() {
                 listType={listType}
             />
         </ScrollView>
-    );
-};
-
-const AuthBlock = styled.View`
-`;
+    )
+}
 
 const Section = styled.View`
     margin-top: 16px;
     /* padding-horizontal: 16px; */
-`;
+`
 
 const Hamburger = styled(Icon)`
     padding: 8px;
-`;
+`
 
 const SignInButton = styled.TouchableOpacity`
     padding: 16px;
     flex-direction: row;
     justify-content: space-between;
-`;
+`

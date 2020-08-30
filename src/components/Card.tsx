@@ -4,8 +4,6 @@ import { Video } from 'expo-av'
 import { Icon } from 'react-native-elements'
 import { deviceSize, CardModel, setCardLike } from '../utils'
 import { TouchableWithoutFeedback, View, Animated, Image } from 'react-native'
-// import { DividerBlock } from '../styles'
-// import usePlayOptions from '../hooks/usePlayOptions'
 
 const DEVICE_WIDTH = deviceSize().width
 const DEVICE_HEIGHT = deviceSize().height
@@ -29,6 +27,7 @@ function Card({
     renderRange, // Carousel 에 렌더까지 된 대기중인 카드인지 여부
     isLike,
 }: CardType) {
+    console.log('onPlayActive', onPlayActive, id)
     const [showDetail, setShowDetail] = useState(false)
     // const { isPlaySound, toggleIsPlaySound } = usePlayOptions()
     const videoRef = useRef<any>(null)
@@ -36,12 +35,13 @@ function Card({
 
     useEffect(() => {
         if (!onPlayActive) {
-            videoRef.current?.pauseAsync()
+            videoRef.current?.stopAsync()
             return
         }
         if (showDetail) {
             videoRef.current?.pauseAsync()
         } else {
+            console.log("play-----")
             videoRef.current?.playAsync()
         }
         Animated.timing(
@@ -56,30 +56,21 @@ function Card({
 
     const media = contents[0]
 
-    const RenderMedia = useCallback(() => {
-        if (!media || !media.isVideo) {
-            return null
-        }
-        return (
-            <Video
-                ref={videoRef}
-                source={{ uri: media.url }}
-                // isMuted={!isPlaySound}
-                isLooping={true}
-                shouldPlay={!showDetail}
-                resizeMode={Video.RESIZE_MODE_COVER}
-                style={{ width: '100%', height: '100%', position: 'absolute', }}
-            />
-        )
-
-    }, [renderRange, videoRef])
-
     return (
         <CardTouchable onPress={() => setShowDetail(!showDetail)}>
             <CardBlock
                 containerHeight={getContainerHeight(DEVICE_WIDTH)}
             >
-                {renderRange && <RenderMedia />}
+                {renderRange && <Video
+                    ref={videoRef}
+                    // isMuted={!isPlaySound}
+                    source={{ uri: media.url }}
+                    onLoadStart={() => console.log('onLoadStart')}
+                    isLooping={true}
+                    shouldPlay={onPlayActive && !showDetail}
+                    resizeMode={Video.RESIZE_MODE_COVER}
+                    style={{ width: '100%', height: '100%', position: 'absolute', }}
+                />}
                 <AnimatedOverlayBackground
                     style={{
                         opacity: bounceValue.interpolate({
@@ -92,7 +83,7 @@ function Card({
                     style={{
                         height: bounceValue.interpolate({
                             inputRange: [0, 1],
-                            outputRange: [150, 500],
+                            outputRange: [150, DEVICE_HEIGHT / 2],
                         })
                     }}
                 >

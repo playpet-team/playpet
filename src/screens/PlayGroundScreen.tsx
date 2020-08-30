@@ -31,6 +31,7 @@ export default function PlayGroundScreen() {
         }
         const loadCards = async () => {
             const response = await loadPlaygroundCards({});
+            console.log("response---------", response)
             dispatch(playgroundActions.setCards(response));
         };
         loadCards();

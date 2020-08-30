@@ -3,8 +3,10 @@ import styled from 'styled-components/native'
 import { Text } from '../../styles'
 
 import { updateUserTerms, currentUser } from '../../utils'
+import { useNavigation } from '@react-navigation/native';
 
 export default function SignUpAgreeTermsModal() {
+    const navigation = useNavigation();
     const [agreementList, setAgreementList] = useState({
         overAgeAgree: false,
         termsOfUseAgree: false,
@@ -42,6 +44,7 @@ export default function SignUpAgreeTermsModal() {
             personalCollectAgree,
             marketingAgree,
         })
+        navigation.navigate('Home');
     }
 
     return (

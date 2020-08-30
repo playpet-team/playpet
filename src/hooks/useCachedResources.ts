@@ -3,27 +3,25 @@ import { signInWithCustomToken, signOut } from './../utils/auth/index';
 import AsyncStorage from '@react-native-community/async-storage'
 import { Ionicons } from '@expo/vector-icons'
 import * as Font from 'expo-font'
-import * as SplashScreen from 'expo-splash-screen'
-import * as React from 'react'
+import { useState, useEffect } from 'react';
+// import * as SplashScreen from 'expo-splash-screen'
 
 export default function useCachedResources() {
-    const [isLoadingComplete, setLoadingComplete] = React.useState(false)
+    const [isLoadingComplete, setLoadingComplete] = useState(false)
 
     // Load any resources or data that we need prior to rendering the app
     
-    React.useEffect(() => {
+    useEffect(() => {
         if (isLoadingComplete) {
             return
         }
         const loadResourcesAndDataAsync = async () => {
             try {
-                SplashScreen.preventAutoHideAsync()
+                // SplashScreen.preventAutoHideAsync()
                 const response = await AsyncStorage.getItem('customToken')
                 if (response) {
                     const getStorage: AsyncStorageCustomToken = JSON.parse(response);
-                    console.log("getStorage--------", getStorage)
-                    const aoeu = await signInWithCustomToken(getStorage.customToken)
-                    console.log("response------", aoeu);
+                    await signInWithCustomToken(getStorage.customToken)
                 }
 
                 // Load fonts
@@ -31,13 +29,11 @@ export default function useCachedResources() {
                     ...Ionicons.font,
                 })
             } catch (e) {
-                console.log('oererrerr')
+                AsyncStorage.removeItem('customToken')
                 await signOut()
-                console.warn(e)
             } finally {
-                console.log('-------------------------');
                 setLoadingComplete(true)
-                SplashScreen.hideAsync()
+                // SplashScreen.hideAsync()
             }
         }
 

@@ -31,7 +31,6 @@ function SubmitButton({
         setSubmitLoading(true);
         const downloadUrls = await startUploadStorage();
         const formData: CardModel = {
-            id: '',
             likes: 0,
             status: 'active',
             title,

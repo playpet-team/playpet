@@ -3,16 +3,16 @@ import styled from 'styled-components/native';
 import { Input, Icon, Image } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
-import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SubmitButton from './CardFormScreen/SubmitButton';
 import useLoadingIndicator from '../hooks/useLoadingIndicator';
 import useImagePicker from '../hooks/useImagePicker';
 import { placeholderColor, tintColorBackground } from '../constants/Colors';
+import { Text } from '../styles';
 
 export default function CardFormScreen() {
     const { loading, setLoading, Indicator } = useLoadingIndicator();
-    const { uid } = useSelector((state: RootState) => state.auth);
+    const { uid, isLogged } = useSelector((state: RootState) => state.auth);
     const [form, setForm] = useState<Form>(initialForm);
     const { openPicker } = useImagePicker({
         setLoading,
@@ -41,6 +41,10 @@ export default function CardFormScreen() {
             ...form,
             cardImages: [],
         })
+    }
+
+    if (!isLogged) {
+        return (<Text>로그인 하셈</Text>)
     }
 
     return (

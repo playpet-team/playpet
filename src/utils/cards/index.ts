@@ -24,7 +24,11 @@ export interface CardModel {
 }
 
 export const submitCard = async (formData: CardModel) => {
-    return await firestore().collection(collections.Playground).add(formData);
+    const { id } = firestore().collection(collections.Playground).doc();
+    return await firestore().collection(collections.Playground).doc(id).set({
+        ...formData,
+        id,
+    });
 };
 
 export const getMyCards = async (uid: string, sort?: string): Promise<CardModel[]> => {
