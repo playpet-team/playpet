@@ -31,6 +31,7 @@ function SubmitButton({
         setSubmitLoading(true);
         const downloadUrls = await startUploadStorage();
         const formData: CardModel = {
+            id: '',
             likes: 0,
             status: 'active',
             title,
@@ -39,7 +40,7 @@ function SubmitButton({
             uid,
             contents: cardImages.map((image, index) => ({
                 url: downloadUrls[index].url,
-                videoThumbnails: downloadUrls[index].thumbnail,
+                videoThumbnail: downloadUrls[index].thumbnail,
                 isVideo: image.isVideo,
                 width: image.width,
                 height: image.height,
@@ -62,9 +63,9 @@ function SubmitButton({
                 const reference = firebase.storage().ref(`playground/${uid}_${firebaseNow().seconds}`);
                 await reference.putFile(image.uri);
                 urls.url = await reference.getDownloadURL();
-                if (image.videoThumbnails) {
+                if (image.videoThumbnail) {
                     const reference = firebase.storage().ref(`playground/${uid}_${firebaseNow().seconds}_thumbnail.jpg`);
-                    await reference.putFile(image.videoThumbnails);
+                    await reference.putFile(image.videoThumbnail);
                     urls.thumbnail = await reference.getDownloadURL();
                 }
                 return urls;

@@ -14,7 +14,7 @@ export interface CardModel {
     likes: number;
     contents: {
         url: string;
-        videoThumbnails: string;
+        videoThumbnail: string;
         isVideo: boolean;
         width: number;
         height: number;

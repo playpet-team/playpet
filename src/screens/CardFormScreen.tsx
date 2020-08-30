@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 import { Input, Icon, Image } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
-import { useNavigation } from '@react-navigation/native';
 import SubmitButton from './CardFormScreen/SubmitButton';
 import useLoadingIndicator from '../hooks/useLoadingIndicator';
 import useImagePicker from '../hooks/useImagePicker';
@@ -28,7 +27,7 @@ export default function CardFormScreen() {
             <Image
                 key={card.id}
                 resizeMode='cover'
-                source={{ uri: card.videoThumbnails }}
+                source={{ uri: card.videoThumbnail }}
                 style={{ width: '100%', height: '100%' }}
             />
         ));
@@ -105,7 +104,7 @@ export interface cardImage {
     id: string;
     uri: string;
     url: string;
-    videoThumbnails?: string;
+    videoThumbnail?: string;
     isVideo: boolean;
     width: number;
     height: number;
