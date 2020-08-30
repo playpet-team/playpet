@@ -79,14 +79,8 @@ function SubmitButton({
             disabled={isSubmitLoading}
             onPress={formSubmit}
             style={{
-                // position: 'absolute',
-                // bottom: 0,
-                // height: 320,
-
             }}
-            containerStyle={{
-                // flex: 1,
-            }}
+            containerStyle={containerStyle}
             buttonStyle={{
                 padding: 16,
             }}

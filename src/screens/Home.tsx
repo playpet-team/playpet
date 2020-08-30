@@ -11,25 +11,20 @@ import Logo from '../components/Logo'
 import ProductList from '../components/ProductList'
 import useLanguage from '../hooks/useLanguage'
 import { useNavigation } from '@react-navigation/native'
+import useTerms from '../hooks/useTerms'
 
 export default function Home() {
-    const navigation = useNavigation()
     useLanguage()
-    const { renderBanner } = useRollingBanner()
     useFirebaseMessage()
+    const navigation = useNavigation()
+    const { renderBanner } = useRollingBanner()
+    const { existDoc } = useTerms()
 
     useEffect(() => {
-        loadTerms()
-        async function loadTerms() {
-            const user = currentUser()
-            if (user && user.uid) {
-                const hasTerms = await getUserTerms(user.uid)
-                if (hasTerms) {
-                    navigation.navigate('AppLoginAgreeTerms')
-                }
-            }
+        if (!existDoc) {
+            navigation.navigate('AppLoginAgreeTerms')
         }
-    }, [])
+    }, [existDoc])
 
     return (
         <SafeAreaViewBlock>

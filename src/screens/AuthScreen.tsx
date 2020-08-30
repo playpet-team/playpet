@@ -99,6 +99,7 @@ export default function AuthScreen() {
                     }}
                 />
             </Layout>
+            <DividerBlock height={4} />
             <MyCards
                 listType={listType}
             />

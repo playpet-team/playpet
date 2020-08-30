@@ -8,6 +8,7 @@ import { playgroundActions } from '../store/playgroundReducer';
 import { RootState } from '../store/rootReducers';
 import { useIsFocused } from '@react-navigation/native';
 import useCardLikes from '../hooks/useCardLikes';
+// import usePlayOptions from '../hooks/usePlayOptions';
 
 const BOTTOM_NAV_BAR_HEIGHT = 65;
 const SLIDER_HEIGHT = deviceSize().height - BOTTOM_NAV_BAR_HEIGHT;
@@ -22,6 +23,7 @@ export default function PlayGroundScreen() {
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
     const { myLikes } = useCardLikes();
+    // const { isPlaySound, toggleIsPlaySound } = usePlayOptions()
 
     useEffect(() => {
         if (!isFocused) {

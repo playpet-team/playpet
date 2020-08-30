@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import styled from 'styled-components/native';
 import { Input, Icon, Image } from 'react-native-elements';
 import { useSelector } from 'react-redux';
@@ -8,12 +8,12 @@ import { useNavigation } from '@react-navigation/native';
 import SubmitButton from './CardFormScreen/SubmitButton';
 import useLoadingIndicator from '../hooks/useLoadingIndicator';
 import useImagePicker from '../hooks/useImagePicker';
+import { placeholderColor, tintColorBackground } from '../constants/Colors';
 
 export default function CardFormScreen() {
     const { loading, setLoading, Indicator } = useLoadingIndicator();
     const { uid } = useSelector((state: RootState) => state.auth);
-    const [form, setForm] = useState<Form>(formReset);
-    const navigation = useNavigation();
+    const [form, setForm] = useState<Form>(initialForm);
     const { openPicker } = useImagePicker({
         setLoading,
         form,
@@ -21,7 +21,7 @@ export default function CardFormScreen() {
         uid,
     });
 
-    const onReset = useCallback(() => setForm(formReset), []);
+    const onReset = useCallback(() => setForm(initialForm), []);
 
     const uploadedImage = useCallback(() => {
         return form.cardImages.map(card => (
@@ -29,79 +29,71 @@ export default function CardFormScreen() {
                 key={card.id}
                 resizeMode='cover'
                 source={{ uri: card.videoThumbnails }}
-                style={{ width: 200, height: 200 }}
+                style={{ width: '100%', height: '100%' }}
             />
         ));
     }, [form]);
 
+    const completeUpload = useMemo(() => !loading && !form.cardImages.length, [loading, form])
+
+    const removeUpload = () => {
+        setForm({
+            ...form,
+            cardImages: [],
+        })
+    }
+
     return (
-        <CardBlock>
-            {loading && <Indicator />}
-            <InputTextGroup>
-                <Input
-                    containerStyle={{
-                        flex: 1.5,
-                    }}
-                    inputContainerStyle={{
-                        borderBottomWidth: 0,
-                    }}
-                    placeholder='오늘은 어떤 일이 있었나요?'
-                    value={form.title}
-                    onChangeText={(value: string) => setForm({
-                        ...form,
-                        title: value,
-                    })}
-                />
-                <UploadImageBlock>
-                    {!loading && !form.cardImages.length &&
-                        <UploadImage onPress={openPicker}>
-                            <Icon name="get-app" />
-                        </UploadImage>
-                    }
-                </UploadImageBlock>
-                {/* <Input
-                    placeholder='#댕댕이'
-                    value={form.tagField}
-                    onChangeText={(value: string) => {
-                        if (value.slice(-1) === ' ') {
-                            setForm({
-                                ...form,
-                                tags: [...form.tags, form.tagField],
-                                tagField: '',
-                            })
-                        } else {
-                            setForm({
-                                ...form,
-                                tagField: value,
-                            })
-                        }
-                    }}
-                /> */}
-                {/* <InputDescription
-                    placeholder='Description 선택?'
-                    multiline
-                    value={form.description}
-                    onChangeText={(value: string) => {
-                        setForm({
+        <>
+
+            <CardBlock>
+                {loading && <Indicator />}
+                <InputTextGroup>
+                    <Input
+                        containerStyle={{
+                            // flex: 1.5,
+                        }}
+                        placeholderTextColor={placeholderColor}
+                        inputContainerStyle={{
+                            borderBottomWidth: 0,
+                        }}
+                        placeholder='오늘은 어떤 일이 있었나요?'
+                        value={form.title}
+                        onChangeText={(value: string) => setForm({
                             ...form,
-                            description: value,
-                        });
-                    }}
-                /> */}
-                {/* <DisplayTags tags={form.tags} /> */}
-            </InputTextGroup>
-            {loading && <Text>loading...</Text>}
-            <UploadedImageBlock>
-                {uploadedImage()}
-            </UploadedImageBlock>
-            {/* <SubmitBlock> */}
+                            title: value,
+                        })}
+                    />
+                    <UploadImageBlock>
+                        {completeUpload ?
+                            <UploadImage onPress={openPicker}>
+                                <Icon name="get-app" />
+                            </UploadImage>
+                            : uploadedImage()}
+                        {!completeUpload &&
+                            <Icon
+                                name="close"
+                                containerStyle={{
+                                    backgroundColor: tintColorBackground,
+                                    borderRadius: 16,
+                                    padding: 2,
+                                    position: 'absolute',
+                                    right: 6,
+                                    top: 6,
+                                }}
+                                onPress={removeUpload}
+                            />
+                        }
+                    </UploadImageBlock>
+                </InputTextGroup>
+                {loading && <Text>loading...</Text>}
+            </CardBlock>
             <SubmitButton
                 {...form}
                 uid={uid}
                 onSubmitCallback={onReset}
             />
-            {/* </SubmitBlock> */}
-        </CardBlock>
+        </>
     );
 };
 
@@ -123,7 +115,7 @@ interface Form {
     cardImages: cardImage[];
 };
 
-const formReset: Form = {
+const initialForm: Form = {
     title: '',
     description: '',
     tags: [],
@@ -131,47 +123,20 @@ const formReset: Form = {
     cardImages: [],
 };
 
-interface Tags {
-    tags: string[];
-}
-function DisplayTags({ tags }: Tags) {
-    return (
-        <DisplayTagsBlock>
-            {tags.map((tag, i) => (
-                <Tag key={i}>#{tag}</Tag>
-            ))}
-        </DisplayTagsBlock>
-    );
-};
-
-const InputDescription = styled(Input)`
-    min-height: 100px;
-`;
-
-const FormBlock = styled.View`
-    flex: 1;
-`;
-
-const Tag = styled.Text`
-    padding: 4px;
-    color: blue;
-`;
-
 const DisplayTagsBlock = styled.View`
     flex-direction: row;
     flex-wrap: wrap;
 `;
 
-const CardBlock = styled.View`
+const CardBlock = styled.ScrollView`
     flex: 1;
-    height: 100%;
     padding: 16px;
 `;
 
 const InputTextGroup = styled.View`
-    flex-direction: row;
-    /* flex: 1; */
-    height: 200px;
+    flex-direction: column;
+    flex: 1;
+    height: 400px;
 `;
 
 const UploadImageBlock = styled.View`
@@ -179,22 +144,9 @@ const UploadImageBlock = styled.View`
     background-color: #efefef;
 `;
 
-const UploadedImageBlock = styled.View`
-    
-    flex: 1;
-`;
-
 const UploadImage = styled.TouchableOpacity`
-    /* border-width: 1px; */
-    /* border-style: solid; */
-    /* border-color: #999; */
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
-`;
-
-const SubmitBlock = styled.View`
-    /* flex: 1; */
-    /* justify-content: flex-end; */
 `;

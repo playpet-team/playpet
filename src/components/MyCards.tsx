@@ -1,10 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, } from 'react';
 import styled from 'styled-components/native';
-import Card from '../components/Card';
-import { currentUser, deviceSize } from '../utils';
-import useCardLikes from '../hooks/useCardLikes';
+import { deviceSize } from '../utils';
 import useLoadMyCards from '../hooks/useLoadMyCards';
-import { ListBlock } from '../styles';
+import { ListBlock, Text } from '../styles';
 import { Image } from 'react-native';
 import { ItemList } from '../screens/AuthScreen';
 
@@ -22,8 +20,8 @@ function MyCards({ listType }: { listType: ItemList; }) {
                         }}
                         resizeMode="cover"
                         style={{
-                            width: deviceSize().width / 2,
-                            height: 100,
+                            width: '49%',
+                            height: 200,
                         }}
                     />
                 )
@@ -41,7 +39,3 @@ function MyCards({ listType }: { listType: ItemList; }) {
 };
 
 export default MyCards;
-
-const Text = styled.Text`
-    font-size: 16px;
-`;

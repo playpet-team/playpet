@@ -49,6 +49,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     useEffect(() => {
         getCredential()
         async function getCredential() {
+            console.log('????????????????????')
             if (token && profile && method) {
                 try {
                     console.log('data', profile, method);
@@ -63,7 +64,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                     }
                     
                     try {
-                        console.log('2');
+                        console.log('2', customToken);
                         await signInWithCustomToken(customToken)
                         saveCustomToken({
                             customToken,

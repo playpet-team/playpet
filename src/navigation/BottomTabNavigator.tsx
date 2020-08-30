@@ -13,6 +13,7 @@ import CardFormScreen from '../screens/CardFormScreen';
 import AuthScreen from '../screens/AuthScreen';
 import AuthSettings from '../screens/AuthScreen/AuthSettings';
 import PushSettings from '../screens/AuthScreen/PushSettings';
+import AppLoginAgreeTerms from '../screens/AppLogin/AppLoginAgreeTerms';
 
 export type BottomTabParamList = {
     Home: undefined;
@@ -28,7 +29,8 @@ export default function BottomTabNavigator() {
             tabBarOptions={{
                 activeTintColor: defaultColorPalette.primary,
                 showLabel: false,
-            }}>
+            }}
+        >
             <BottomTab.Screen
                 name="Home"
                 component={HomeNavigator}
@@ -82,6 +84,7 @@ export default function BottomTabNavigator() {
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 export type HomeNavigatorTabParamList = {
+    AppLoginAgreeTerms: undefined;
     HomeNavigator: undefined;
     ProductWebView: {
         url: string;
@@ -108,6 +111,11 @@ function HomeNavigator() {
                     title: route.params.title,
                     gestureEnabled: false,
                 })}
+            />
+            <HomeNavigatorTapStack.Screen
+                name="AppLoginAgreeTerms"
+                component={AppLoginAgreeTerms}
+                options={{ headerShown: false }}
             />
         </HomeNavigatorTapStack.Navigator>
     );

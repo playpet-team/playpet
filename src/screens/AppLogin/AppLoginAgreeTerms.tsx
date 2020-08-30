@@ -10,15 +10,6 @@ import { currentUser } from '../../utils'
 export default function AppLoginAgreeTerms() {
     const user = currentUser()
     console.log("user--------", user);
-    // useEffect(() => {
-    //     if (user?.uid) {
-    //         user.email
-    //     }
-    // }, [user])
-
-    // const navigation = useNavigation()
-    // const { params } = useRoute<RouteProp<AppLoginParamList, 'AppLoginAgreeTerms'>>()
-    // console.log("params", params)
 
     return (
         <AppLoginAgreeTermsBlock>

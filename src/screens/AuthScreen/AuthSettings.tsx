@@ -1,26 +1,29 @@
-import React, { useMemo } from 'react';
-import { Alert } from 'react-native';
-import styled from 'styled-components/native';
-import { signOut, leave, appReload } from '../../utils';
-import { ListItem } from 'react-native-elements';
-import { SignType } from '../../models';
-import useLoadingIndicator from '../../hooks/useLoadingIndicator';
-import { DividerBlock } from '../../styles';
-import AsyncStorage from '@react-native-community/async-storage';
+import React, { useMemo } from 'react'
+import { Alert, Switch } from 'react-native'
+import styled from 'styled-components/native'
+import { signOut, leave, appReload } from '../../utils'
+import { SignType } from '../../models'
+import useLoadingIndicator from '../../hooks/useLoadingIndicator'
+import { DividerBlock, Text } from '../../styles'
+import AsyncStorage from '@react-native-community/async-storage'
+import ListItem from '../../components/ListItem'
+import usePlayOptions from '../../hooks/usePlayOptions'
 enum Handle {
     Link,
     Navigate,
     Function,
 }
 interface List {
-    icon: string;
-    label: string;
-    onPress: Function;
-    type: Handle;
+    icon: string
+    label: string
+    onPress: Function
+    type: Handle
 }
 export default function AuthSettings() {
-    const { loading, setLoading, Indicator } = useLoadingIndicator();
-    const list = getList(setLoading);
+    const { loading, setLoading, Indicator } = useLoadingIndicator()
+    // const { isPlaySound, isAutoPlay, toggleIsAutoPlay, toggleIsPlaySound } = usePlayOptions()
+    const list = getList(setLoading)
+
     return (
         <AuthSettingsBlock>
             {loading && <Indicator />}
@@ -31,6 +34,15 @@ export default function AuthSettings() {
                     onPress={() => item.onPress()}
                 />
             ))}
+            {/* <ListItem
+                title='동영상 자동재생'
+                onPress={toggleIsPlaySound}
+                rightIcon={<Switch
+                    onValueChange={toggleIsPlaySound}
+                    value={isAutoPlay}
+                />}
+            /> */}
+
             <DividerBlock
                 backgroundColor="#ccc"
                 marginTop={16}
@@ -39,11 +51,11 @@ export default function AuthSettings() {
             />
             <DangerText>플레이펫은 상품에 직접 관여하지 않으며 상품 주문, 배송 및 환불의 의무와 책임은 각 판매업체에 있습니다.</DangerText>
         </AuthSettingsBlock>
-    );
-};
+    )
+}
 
-const linkProvision = () => { };
-const linkCustomerCenter = () => { };
+const linkProvision = () => { }
+const linkCustomerCenter = () => { }
 
 const getList = (setLoading: React.Dispatch<React.SetStateAction<boolean>>): List[] => {
     return [
@@ -84,7 +96,7 @@ const getList = (setLoading: React.Dispatch<React.SetStateAction<boolean>>): Lis
             type: Handle.Function,
         },
     ]
-};
+}
 
 const handleLogout = (setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
     Alert.alert('정말로 로그아웃하시게요?', '', [
@@ -95,19 +107,19 @@ const handleLogout = (setLoading: React.Dispatch<React.SetStateAction<boolean>>)
             text: '로그아웃',
             onPress: async () => {
                 try {
-                    setLoading(true);
+                    setLoading(true)
                     AsyncStorage.clear()
-                    await signOut(SignType.Google);
-                    appReload();
+                    await signOut(SignType.Google)
+                    appReload()
                 } catch (e) {
-                    alert('로그아웃에 실패하였습니다. 잠시후 다시 시도해 주세요');
+                    alert('로그아웃에 실패하였습니다. 잠시후 다시 시도해 주세요')
                 } finally {
-                    // setLoading(false);
+                    // setLoading(false)
                 }
             },
         },
-    ]);
-};
+    ])
+}
 
 const handleLeave = (setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
     Alert.alert('정말로 탈퇴하시게요?', '', [
@@ -118,24 +130,24 @@ const handleLeave = (setLoading: React.Dispatch<React.SetStateAction<boolean>>) 
             text: '탈퇴하기',
             onPress: async () => {
                 try {
-                    setLoading(true);
-                    await leave();
-                    appReload();
+                    setLoading(true)
+                    await leave()
+                    appReload()
                 } catch (e) {
-                    alert('회원탈퇴에 실패하였습니다. 잠시후 다시 시도해 주세요');
+                    alert('회원탈퇴에 실패하였습니다. 잠시후 다시 시도해 주세요')
                 } finally {
-                    setLoading(false);
+                    setLoading(false)
                 }
             },
         },
-    ]);
-};
+    ])
+}
 
 const AuthSettingsBlock = styled.View`
     padding-horizontal: 16px;
-`;
+`
 
 const DangerText = styled.Text`
     font-size: 12px;
     padding: 8px;
-`;
+`

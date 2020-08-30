@@ -5,19 +5,30 @@ import { Text } from '../../styles'
 import { updateUserTerms, currentUser } from '../../utils'
 
 export default function SignUpAgreeTermsModal() {
-    const [overAgeAgree, setOverAgeAgree] = useState(false)
-    const [termsOfUseAgree, setTermsOfUseAgree] = useState(false)
-    const [personalCollectAgree, setPersonalCollectAgree] = useState(false)
-    const [marketingAgree, setMarketingAgree] = useState(false)
+    const [agreementList, setAgreementList] = useState({
+        overAgeAgree: false,
+        termsOfUseAgree: false,
+        personalCollectAgree: false,
+        marketingAgree: false,
+    })
+    const { overAgeAgree, termsOfUseAgree, personalCollectAgree, marketingAgree } = agreementList
+
+    const handleSingleTerm = (k: string, v: boolean) => setAgreementList({
+        ...agreementList,
+        [k]: v,
+    })
 
     const handleAllAgree = useCallback(() => {
-        setOverAgeAgree(true)
-        setTermsOfUseAgree(true)
-        setPersonalCollectAgree(true)
-        setMarketingAgree(true)
+        const isAllTerms = overAgeAgree && termsOfUseAgree && personalCollectAgree && marketingAgree
+        setAgreementList({
+            overAgeAgree: !isAllTerms,
+            termsOfUseAgree: !isAllTerms,
+            personalCollectAgree: !isAllTerms,
+            marketingAgree: !isAllTerms,
+        })
     }, [])
 
-    const isAllAgreeTarms = () => overAgeAgree && termsOfUseAgree && personalCollectAgree
+    const isAllRequiredAgreeTerms = () => overAgeAgree && termsOfUseAgree && personalCollectAgree
 
     const hanbleSubmitAgreeTerms = async () => {
         const user = currentUser()
@@ -38,19 +49,19 @@ export default function SignUpAgreeTermsModal() {
             <AllTermsAgree onPress={handleAllAgree}>
                 <Text>약관에 모두 동의</Text>
             </AllTermsAgree>
-            <TermsAgree onPress={() => setOverAgeAgree(!overAgeAgree)}>
+            <TermsAgree onPress={() => handleSingleTerm('overAgeAgree', !overAgeAgree)}>
                 <Text>{overAgeAgree ? 'checked' : 'none'}</Text><Text>만 14세 이상입니다</Text>
             </TermsAgree>
-            <TermsAgree onPress={() => setTermsOfUseAgree(!termsOfUseAgree)}>
+            <TermsAgree onPress={() => handleSingleTerm('termsOfUseAgree', !termsOfUseAgree)}>
                 <Text>{termsOfUseAgree ? 'checked' : 'none'}</Text><Text>서비스 이용약관에 동의</Text>
             </TermsAgree>
-            <TermsAgree onPress={() => setPersonalCollectAgree(!personalCollectAgree)}>
+            <TermsAgree onPress={() => handleSingleTerm('personalCollectAgree', !personalCollectAgree)}>
                 <Text>{personalCollectAgree ? 'checked' : 'none'}</Text><Text>개인정보 수집 이용에 동의</Text>
             </TermsAgree>
-            <TermsAgree onPress={() => setMarketingAgree(!marketingAgree)}>
+            <TermsAgree onPress={() => handleSingleTerm('marketingAgree', !marketingAgree)}>
                 <Text>{marketingAgree ? 'checked' : 'none'}</Text><Text>홍보 및 마케팅 이용에 동의</Text>
             </TermsAgree>
-            <SubmitSignIn onPress={() => hanbleSubmitAgreeTerms()} disabled={!isAllAgreeTarms}>
+            <SubmitSignIn onPress={() => hanbleSubmitAgreeTerms()} disabled={!isAllRequiredAgreeTerms}>
                 <Text>확인</Text>
             </SubmitSignIn>
         </>

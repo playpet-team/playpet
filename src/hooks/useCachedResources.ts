@@ -1,5 +1,5 @@
 import { AsyncStorageCustomToken } from './../utils/auth/initializeSignIn';
-import { signInWithCustomToken } from './../utils/auth/index';
+import { signInWithCustomToken, signOut } from './../utils/auth/index';
 import AsyncStorage from '@react-native-community/async-storage'
 import { Ionicons } from '@expo/vector-icons'
 import * as Font from 'expo-font'
@@ -21,8 +21,9 @@ export default function useCachedResources() {
                 const response = await AsyncStorage.getItem('customToken')
                 if (response) {
                     const getStorage: AsyncStorageCustomToken = JSON.parse(response);
-                    await signInWithCustomToken(getStorage.customToken)
-                    // console.log("response------", JSON.parse(response));
+                    console.log("getStorage--------", getStorage)
+                    const aoeu = await signInWithCustomToken(getStorage.customToken)
+                    console.log("response------", aoeu);
                 }
 
                 // Load fonts
@@ -30,7 +31,8 @@ export default function useCachedResources() {
                     ...Ionicons.font,
                 })
             } catch (e) {
-                // We might want to provide this error information to an error reporting service
+                console.log('oererrerr')
+                await signOut()
                 console.warn(e)
             } finally {
                 console.log('-------------------------');
