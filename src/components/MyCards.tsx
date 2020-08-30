@@ -1,13 +1,11 @@
-import React, { useCallback, } from 'react';
-import styled from 'styled-components/native';
-import { deviceSize } from '../utils';
-import useLoadMyCards from '../hooks/useLoadMyCards';
-import { ListBlock, Text } from '../styles';
-import { Image } from 'react-native';
-import { ItemList } from '../screens/AuthScreen';
+import React, { useCallback, } from 'react'
+import useLoadMyCards from '../hooks/useLoadMyCards'
+import { ListBlock, Text } from '../styles'
+import { Image } from 'react-native'
+import { ItemList } from '../models'
 
-function MyCards({ listType }: { listType: ItemList; }) {
-    const { myCards } = useLoadMyCards({});
+function MyCards({ listType }: { listType: ItemList }) {
+    const { myCards } = useLoadMyCards({})
 
     const renderCards = useCallback(() => {
         if (listType === ItemList.MEDIA) {
@@ -25,17 +23,17 @@ function MyCards({ listType }: { listType: ItemList; }) {
                         }}
                     />
                 )
-            });
+            })
         } else if (listType === ItemList.ITEM) {
-            return <Text>올린 영상이 없습니다.</Text>;
+            return <Text>올린 영상이 없습니다.</Text>
         }
-    }, [myCards, listType]);
+    }, [myCards, listType])
 
     return (
         <ListBlock>
             {renderCards()}
         </ListBlock>
-    );
-};
+    )
+}
 
-export default MyCards;
+export default MyCards
