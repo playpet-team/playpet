@@ -97,7 +97,7 @@ static void InitializeFlipper(UIApplication *application) {
   if ([KOSession isKakaoAccountLoginCallback:url]) {
     return [KOSession handleOpenURL:url];
   }
-  if ([url.scheme isEqualToString:@"com.playpet.me"]) {
+  if ([url.scheme isEqualToString:@"com.playpet.android"]) {
     return [[NaverThirdPartyLoginConnection getSharedInstance] application:application openURL:url options:options];
   }
   return [RCTLinkingManager application:application openURL:url options:options];

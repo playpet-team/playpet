@@ -296,7 +296,7 @@ PODS:
   - EXUpdates (0.2.14):
     - React
     - UMCore
-  - EXVideoThumbnails (4.2.1):
+  - EXVideoThumbnails (4.3.0):
     - UMCore
     - UMFileSystemInterface
   - EXWebBrowser (8.3.1):
@@ -1313,7 +1313,7 @@ SPEC CHECKSUMS:
   EXSQLite: 64611c1b369c0f1e9cae4e551d0aa4478a58cadf
   EXStoreReview: b74c5e58e7ab74f28eaaefb1dfd4659e80a22c91
   EXUpdates: f3c4943abb6ab28cc55cbeac4ff4612701f82725
-  EXVideoThumbnails: f70bdc5511749f3181028f5000bcb7be203c631d
+  EXVideoThumbnails: 14e86a99ba80dff030a77a0a720f494ac6c1cf84
   EXWebBrowser: d37a5ffdea1b65947352bc001dd9f732463725d4
   FBLazyVector: 3ef4a7f62e7db01092f9d517d2ebc0d0677c4a37
   FBReactNativeSpec: dc7fa9088f0f2a998503a352b0554d69a4391c5a
