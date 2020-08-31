@@ -70,13 +70,14 @@ const renderRange = (activeIndex: number, index: number) => {
     // activeIndex : 8
     // range 는 +-2 총 5카드
     // 총 7카드만이 component가 load 된다
-    return (
-        activeIndex === (index - 2)
-        || activeIndex === (index - 1)
-        || activeIndex === index
-        || activeIndex === (index + 1)
-        || activeIndex === (index + 2)
-    );
+    return true
+    // return (
+    //     activeIndex === (index - 2)
+    //     || activeIndex === (index - 1)
+    //     || activeIndex === index
+    //     || activeIndex === (index + 1)
+    //     || activeIndex === (index + 2)
+    // );
     // index activeIndex
 };
 

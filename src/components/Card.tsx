@@ -27,7 +27,6 @@ function Card({
     renderRange, // Carousel 에 렌더까지 된 대기중인 카드인지 여부
     isLike,
 }: CardType) {
-    console.log('onPlayActive', onPlayActive, id)
     const [showDetail, setShowDetail] = useState(false)
     // const { isPlaySound, toggleIsPlaySound } = usePlayOptions()
     const videoRef = useRef<any>(null)
@@ -41,7 +40,6 @@ function Card({
         if (showDetail) {
             videoRef.current?.pauseAsync()
         } else {
-            console.log("play-----")
             videoRef.current?.playAsync()
         }
         Animated.timing(
@@ -53,7 +51,9 @@ function Card({
             }
         ).start()
     }, [showDetail, onPlayActive])
-
+    if (!contents.length) {
+        return null
+    }
     const media = contents[0]
 
     return (
@@ -61,16 +61,17 @@ function Card({
             <CardBlock
                 containerHeight={getContainerHeight(DEVICE_WIDTH)}
             >
-                {renderRange && <Video
-                    ref={videoRef}
-                    // isMuted={!isPlaySound}
-                    source={{ uri: media.url }}
-                    onLoadStart={() => console.log('onLoadStart')}
-                    isLooping={true}
-                    shouldPlay={onPlayActive && !showDetail}
-                    resizeMode={Video.RESIZE_MODE_COVER}
-                    style={{ width: '100%', height: '100%', position: 'absolute', }}
-                />}
+                {renderRange &&
+                    <Video
+                        ref={videoRef}
+                        // isMuted={!isPlaySound}
+                        source={{ uri: media.url }}
+                        isLooping={true}
+                        shouldPlay={onPlayActive && !showDetail}
+                        resizeMode={Video.RESIZE_MODE_COVER}
+                        style={{ width: '100%', height: '100%', position: 'absolute', }}
+                    />
+                }
                 <AnimatedOverlayBackground
                     style={{
                         opacity: bounceValue.interpolate({
