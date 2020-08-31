@@ -59,6 +59,7 @@
             <option value="$PROJECT_DIR$/../node_modules/react-native-appearance/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-fbsdk/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-gesture-handler/android" />
+            <option value="$PROJECT_DIR$/../node_modules/react-native-image-picker/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-reanimated/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-safe-area-context/android" />
             <option value="$PROJECT_DIR$/../node_modules/react-native-screens/android" />

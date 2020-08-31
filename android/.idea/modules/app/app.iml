@@ -120,10 +120,12 @@
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:disklrucache:4.9.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:annotations:4.9.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.auto.value:auto-value-annotations:1.6.6@jar" level="project" />
+    <orderEntry type="library" name="Gradle: ./../node_modules/hermes-engine/android/hermes-debug.aar" level="project" />
     <orderEntry type="library" name="Gradle: com.facebook.flipper:flipper:0.33.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.facebook.react:react-native:0.63.2@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.facebook.soloader:soloader:0.8.2@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.facebook.soloader:annotation:0.8.2@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android:cameraview:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.theartofdev.edmodo:android-image-cropper:2.7.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.facebook.android:facebook-android-sdk:4.42.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.facebook.android:facebook-login:7.1.0@aar" level="project" />
@@ -211,7 +213,6 @@
     <orderEntry type="library" name="Gradle: io.nlopez.smartlocation:library:3.2.11@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.datatransport:transport-api:2.2.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: me.leolin:ShortcutBadger:1.1.22@aar" level="project" />
-    <orderEntry type="library" name="Gradle: org.webkit:android-jsc:r245459@aar" level="project" />
     <orderEntry type="module" module-name="react-native-seoul-naver-login" />
     <orderEntry type="module" module-name="react-native-community_picker" />
     <orderEntry type="module" module-name="react-native-community_viewpager" />
@@ -228,7 +229,9 @@
     <orderEntry type="module" module-name="react-native-firebase_app" />
     <orderEntry type="module" module-name="react-native-seoul_kakao-login" />
     <orderEntry type="module" module-name="react-native-seoul_naver-login" />
+    <orderEntry type="module" module-name="react-native-image-picker" />
     <orderEntry type="module" module-name="expo-permissions" />
+    <orderEntry type="module" module-name="expo-camera" />
     <orderEntry type="module" module-name="expo-image-picker" />
     <orderEntry type="module" module-name="expo-av" />
     <orderEntry type="module" module-name="expo-constants" />
@@ -237,7 +240,6 @@
     <orderEntry type="module" module-name="expo-file-system" />
     <orderEntry type="module" module-name="expo-sharing" />
     <orderEntry type="module" module-name="expo-web-browser" />
-    <orderEntry type="module" module-name="expo-camera" />
     <orderEntry type="module" module-name="expo-media-library" />
     <orderEntry type="module" module-name="expo-notifications" />
     <orderEntry type="module" module-name="expo-image-loader" />
