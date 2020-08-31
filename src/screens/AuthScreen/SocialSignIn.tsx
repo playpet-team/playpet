@@ -19,6 +19,7 @@ export default function SocialSignIn() {
     const dispatch = useDispatch()
 
     const handleSignIn = useCallback(async (method: SignType) => {
+        console.log('-1')
         try {
             setLoading(true)
             await getUidByThirdPartySignIn(method)

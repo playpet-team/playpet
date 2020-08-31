@@ -12,11 +12,13 @@ function useAuthStateChanged() {
     useEffect(() => {
         const onAuthStateChanged = async (user: FirebaseAuthTypes.User | null) => {
             if (user) {
+                console.log('user------', user)
                 dispatch(authActions.setUser(await getUser(user.uid)));
                 updateUserLastLogin(user.uid);
                 dispatch(authActions.signIn());
                 setIsLogged(true);
             } else {
+                console.log('signout---------')
                 dispatch(authActions.signOut());
             }
         }

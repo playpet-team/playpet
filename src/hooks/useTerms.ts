@@ -1,27 +1,34 @@
+import { authActions, initialState } from './../store/authReducer';
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { currentUser, getUserTerms } from '../utils';
 
 function useTerms() {
+    const dispatch = useDispatch()
     const [existDoc, setExistDoc] = useState(true)
-    const [terms, setTerms] = useState<any>(null)
+    // const [terms, setTerms] = useState<any>(null)
 
     useEffect(() => {
         loadTerms()
         async function loadTerms() {
             const user = currentUser()
             if (user && user.uid) {
-                console.log('user-----', user)
-                const termsDoc = await getUserTerms(user.uid)
-                if (!termsDoc.exists) {
-                    setExistDoc(true)
+                const termsData = await getUserTerms(user.uid)
+                if (!termsData) {
+                    setExistDoc(false)
+                    dispatch(authActions.setTerms(initialState.terms))
                 } else {
-                    setTerms(termsDoc.data())
+                    const { overAgeAgree, termsOfUseAgree, personalCollectAgree, marketingAgree }: any = termsData
+                    dispatch(authActions.setTerms({
+                        existDoc: true,
+                        ...termsData,
+                    }))
                 }
             }
         }
     }, [])
 
-    return { existDoc, terms }
+    return { existDoc }
 }
 
 export default useTerms

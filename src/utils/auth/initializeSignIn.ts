@@ -52,19 +52,19 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
             console.log('????????????????????')
             if (token && profile && method) {
                 try {
-                    console.log('data', profile, method);
+                    console.log('data', profile, method)
                     const { data } = await createUser({
                         ...profile,
                         method,
                     })
-                    console.log('data', data);
-                    const customToken = data.token;
+                    console.log('data', data)
+                    const customToken = data.token
                     if (!customToken) {
                         return
                     }
                     
                     try {
-                        console.log('2', customToken);
+                        console.log('2', customToken)
                         await signInWithCustomToken(customToken)
                         saveCustomToken({
                             customToken,
@@ -107,7 +107,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                 case SignType.Google: {
                     console.log('1')
                     await GoogleSignin.hasPlayServices()
-                    console.log('2')
+                    console.log('2', GoogleSignin)
                     const userInfo = await GoogleSignin.signIn()
                     console.log('3', userInfo)
                     setProfile({
@@ -155,6 +155,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                 }
             }
         } catch (error) {
+            console.log("error-----", JSON.stringify(error))
             setToastContent({
                 ...toastContent,
                 visible: true,

@@ -25,6 +25,7 @@ export const getUser = async (uid: string): Promise<User | null> => {
     if (!user) {
         return null
     }
+    console.log('user------------------@@@@@@@@@@@i n auth-------', user)
     return {
         ...initialState,
         ...user,
@@ -35,7 +36,15 @@ export const getUser = async (uid: string): Promise<User | null> => {
 }
 
 export const getUserTerms = async (uid: string) => {
-    return (await firestore().collection(collections.Terms).doc(uid).get())
+    const termsData = (await firestore().collection(collections.Terms).doc(uid).get()).data()
+    if (termsData) {
+        return {
+            ...termsData,
+            createdAt: firebaseTimeStampToStringStamp(termsData.createdAt),
+            updatedAt: firebaseTimeStampToStringStamp(termsData.updatedAt),
+        }
+    }
+    return termsData
 }
 
 export enum CheckUser {

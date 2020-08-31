@@ -4,30 +4,34 @@ import { Text } from '../../styles'
 
 import { updateUserTerms, currentUser } from '../../utils'
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { authActions } from '../../store/authReducer';
+import { RootState } from '../../store/rootReducers';
 
 export default function SignUpAgreeTermsModal() {
     const navigation = useNavigation();
-    const [agreementList, setAgreementList] = useState({
-        overAgeAgree: false,
-        termsOfUseAgree: false,
-        personalCollectAgree: false,
-        marketingAgree: false,
-    })
-    const { overAgeAgree, termsOfUseAgree, personalCollectAgree, marketingAgree } = agreementList
+    const dispatch = useDispatch()
+    const { terms } = useSelector((state: RootState) => state.auth)
+    // const [agreementList, setAgreementList] = useState({
+    //     overAgeAgree: false,
+    //     termsOfUseAgree: false,
+    //     personalCollectAgree: false,
+    //     marketingAgree: false,
+    // })
+    const { overAgeAgree, termsOfUseAgree, personalCollectAgree, marketingAgree } = terms
 
-    const handleSingleTerm = (k: string, v: boolean) => setAgreementList({
-        ...agreementList,
+    const handleSingleTerm = (k: string, v: boolean) => dispatch(authActions.setTerms({
         [k]: v,
-    })
+    }))
 
     const handleAllAgree = useCallback(() => {
         const isAllTerms = overAgeAgree && termsOfUseAgree && personalCollectAgree && marketingAgree
-        setAgreementList({
+        dispatch(authActions.setTerms({
             overAgeAgree: !isAllTerms,
             termsOfUseAgree: !isAllTerms,
             personalCollectAgree: !isAllTerms,
             marketingAgree: !isAllTerms,
-        })
+        }))
     }, [])
 
     const isAllRequiredAgreeTerms = () => overAgeAgree && termsOfUseAgree && personalCollectAgree

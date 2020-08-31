@@ -11,7 +11,7 @@ const ImageBlock = styled.Image`
 export default function Splash() {
     return (
         <SplashBlock>
-            <ImageBlock source={require('../../assets/splash/splash.png')} />
+            {/* <ImageBlock source={require('../../assets/splash/splash.png')} /> */}
         </SplashBlock>
     );
 };
