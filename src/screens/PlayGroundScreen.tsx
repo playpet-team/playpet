@@ -11,7 +11,7 @@ import useCardLikes from '../hooks/useCardLikes';
 // import usePlayOptions from '../hooks/usePlayOptions';
 
 const BOTTOM_NAV_BAR_HEIGHT = 65;
-const SLIDER_HEIGHT = deviceSize().height - BOTTOM_NAV_BAR_HEIGHT;
+const SLIDER_HEIGHT = deviceSize().height;
 export interface RenderItemProps {
     item: CardModel;
     index: number;

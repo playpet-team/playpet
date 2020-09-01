@@ -69,7 +69,7 @@ function Card({
                         isLooping={true}
                         shouldPlay={onPlayActive && !showDetail}
                         resizeMode={Video.RESIZE_MODE_COVER}
-                        style={{ width: '100%', height: '100%', position: 'absolute', }}
+                        style={{ width: DEVICE_WIDTH, height: '100%', position: 'absolute', }}
                     />
                 }
                 <AnimatedOverlayBackground
