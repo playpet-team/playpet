@@ -14,8 +14,8 @@ export const Text = styled.Text<TextProps>`
     ${({ size }) => size && css`
         font-size: ${size}px;
     `}
+`
 
-`;
 interface DividerProps {
     padding?: string;
     marginTop?: number;
