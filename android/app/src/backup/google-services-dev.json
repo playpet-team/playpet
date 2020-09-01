@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "386527552204",
+    "firebase_url": "https://playpet-5b432.firebaseio.com",
+    "project_id": "playpet-5b432",
+    "storage_bucket": "playpet-5b432.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386527552204:android:96d15ba29259a2bd82d869",
+        "android_client_info": {
+          "package_name": "com.playpet.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386527552204-ouj7aulio17uivh1jfbvbqetpros5n90.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.playpet.android",
+            "certificate_hash": "99affd52d42e72f68aab4e2c01b31cd340721ed9"
+          }
+        },
+        {
+          "client_id": "386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADbmJfcse2AwMKLe-iOEJbGABGmdrWioY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "386527552204-dt1dlpoamhhgntobabq7geet48punfjb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.playpet.me",
+                "app_store_id": "1525652429"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

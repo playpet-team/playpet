@@ -15,6 +15,7 @@
 		96905EF65AED1B983A6B3ABC /* libPods-playpet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-playpet.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F5097E1E24D2B59B00807583 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F5097E1D24D2B59B00807583 /* GoogleService-Info.plist */; };
+		F53A337424FDCDCA007CF5F4 /* GoogleService-Info-prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = F53A337324FDCDCA007CF5F4 /* GoogleService-Info-prod.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F5097E1D24D2B59B00807583 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F50F35EA24D44C3C007AE894 /* playpet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = playpet.entitlements; path = playpet/playpet.entitlements; sourceTree = "<group>"; };
+		F53A337324FDCDCA007CF5F4 /* GoogleService-Info-prod.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-prod.plist"; sourceTree = "<group>"; };
 		F58B382824DA5807008D470F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,6 +55,7 @@
 		13B07FAE1A68108700A75B9A /* playpet */ = {
 			isa = PBXGroup;
 			children = (
+				F53A337324FDCDCA007CF5F4 /* GoogleService-Info-prod.plist */,
 				F50F35EA24D44C3C007AE894 /* playpet.entitlements */,
 				F5097E1D24D2B59B00807583 /* GoogleService-Info.plist */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
@@ -142,6 +145,8 @@
 				5B01BDD49CC42653AC59C64D /* [CP-User] [RNFB] Core Configuration */,
 				9F29C7B75DFA71942741738B /* [CP-User] [RNFB] Crashlytics Configuration */,
 				BD1C696C9A89424C98546724 /* [CP] Embed Pods Frameworks */,
+				F53A337524FDCDF1007CF5F4 /* Firebase Environment */,
+				F53A337624FDCEB2007CF5F4 /* Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -191,6 +196,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F53A337424FDCDCA007CF5F4 /* GoogleService-Info-prod.plist in Resources */,
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				F5097E1E24D2B59B00807583 /* GoogleService-Info.plist in Resources */,
@@ -333,6 +339,42 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-playpet/Pods-playpet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		F53A337524FDCDF1007CF5F4 /* Firebase Environment */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Firebase Environment";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "case \"${CONFIGURATION}\" in\n  \"Debug\" )\ncp -r \"$SRCROOT/GoogleService-Info-prod.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n  \"Release\" )\ncp -r \"$SRCROOT/GoogleService-Info-prod.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n*)\n;;\nesac\n";
+		};
+		F53A337624FDCEB2007CF5F4 /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Crashlytics;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
