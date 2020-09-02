@@ -25,8 +25,8 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     toastContent: ToastParams
     setToastContent: React.Dispatch<React.SetStateAction<ToastParams>>
 }) {
-    const [signInSuccess, setSignInSuccess] = useState(false)
-    const [credential, setCredential] = useState<FirebaseAuthTypes.AuthCredential | null>(null)
+    const [isSignUp, setIsSignUp] = useState<boolean | null>(null)
+    // const [credential, setCredential] = useState<FirebaseAuthTypes.AuthCredential | null>(null)
     const [method, setMethod] = useState<SignType>(SignType.None)
     const [token, setToken] = useState<any>(null)
     const [profile, setProfile] = useState<{
@@ -41,10 +41,10 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     const navigation = useNavigation()
 
     useEffect(() => {
-        if (signInSuccess) {
+        if (isSignUp) {
             navigation.navigate('AppLoginAgreeTerms')
         }
-    }, [signInSuccess])
+    }, [isSignUp])
 
     useEffect(() => {
         getCredential()
@@ -73,7 +73,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                         })
                         const success = checkUser()
                         if (success) {
-                            setSignInSuccess(true)
+                            setIsSignUp(true)
                         }
         
                     } catch (error) {

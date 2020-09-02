@@ -7,10 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { playgroundActions } from '../store/playgroundReducer';
 import { RootState } from '../store/rootReducers';
 import { useIsFocused } from '@react-navigation/native';
-import useCardLikes from '../hooks/useCardLikes';
+import useCardAdditionalInformation from '../hooks/useCardAdditionalInformation';
 // import usePlayOptions from '../hooks/usePlayOptions';
 
-const BOTTOM_NAV_BAR_HEIGHT = 65;
+// const BOTTOM_NAV_BAR_HEIGHT = 65;
 const SLIDER_HEIGHT = deviceSize().height;
 export interface RenderItemProps {
     item: CardModel;
@@ -22,7 +22,7 @@ export default function PlayGroundScreen() {
     const { uid } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
-    const { myLikes } = useCardLikes();
+    const { myLikes } = useCardAdditionalInformation();
     // const { isPlaySound, toggleIsPlaySound } = usePlayOptions()
 
     useEffect(() => {
@@ -31,7 +31,6 @@ export default function PlayGroundScreen() {
         }
         const loadCards = async () => {
             const response = await loadPlaygroundCards({});
-            console.log("response---------", response)
             dispatch(playgroundActions.setCards(response));
         };
         loadCards();
@@ -39,6 +38,9 @@ export default function PlayGroundScreen() {
     }, [isFocused]);
 
     const renderItem = useCallback(({ item, index }: RenderItemProps) => {
+        if (!item.contents.length) {
+            return null
+        }
         return (
             <Card
                 {...item}

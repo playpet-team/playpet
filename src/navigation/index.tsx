@@ -11,7 +11,7 @@ import { currentUser } from '../utils'
 import analytics from '@react-native-firebase/analytics'
 import { ErrorUtils } from 'react-native'
 import { Crash } from '../utils/system/crash'
-import { defaultColorPalette, } from '../constants/Colors'
+import { defaultColorPalette, } from '../styles/colors'
 
 Appearance.getColorScheme()
 

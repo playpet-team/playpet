@@ -1,11 +1,7 @@
 import { SignType } from '../models';
 import functions from '@react-native-firebase/functions';
+import { callable } from './callableList';
 
-enum callable {
-    CreateUser = 'createUser',
-    CreateUserCollection = 'createUserCollection',
-    Withdraw = 'withdraw',
-}
 interface createUserCollectionParams {
     uid: string;
     method?: SignType;

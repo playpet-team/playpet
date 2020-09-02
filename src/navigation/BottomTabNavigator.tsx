@@ -5,7 +5,7 @@ import * as React from 'react';
 
 import styled from 'styled-components/native';
 
-import { defaultColorPalette } from '../constants/Colors';
+import { defaultColorPalette } from '../styles/colors';
 import Home from '../screens/Home';
 import ProductWebView from '../components/ProductWebView';
 import PlayGroundScreen from '../screens/PlayGroundScreen';

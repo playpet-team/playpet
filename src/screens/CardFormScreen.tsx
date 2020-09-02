@@ -6,7 +6,7 @@ import { RootState } from '../store/rootReducers';
 import SubmitButton from './CardFormScreen/SubmitButton';
 import useLoadingIndicator from '../hooks/useLoadingIndicator';
 import useImagePicker from '../hooks/useImagePicker';
-import { placeholderColor, tintColorBackground } from '../constants/Colors';
+import { placeholderColor, tintColorBackground } from '../styles/colors';
 import { Text } from '../styles';
 
 export default function CardFormScreen() {

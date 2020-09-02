@@ -4,7 +4,7 @@ export const tintColorText = '#333';
 export const placeholderColor = '#666';
 export const tintColorDarkText = '#fff';
 export const tintColorBorder = '#999';
-export const tintColorKey = '#fd2b51';
+export const tintColorKey = '#0558d1';
 export const mainBgColor = '#fcfaf7';
 
 export const defaultColorPalette = {

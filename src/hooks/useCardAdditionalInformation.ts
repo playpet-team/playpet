@@ -1,10 +1,10 @@
-import { RootState } from './../store/rootReducers';
+import { RootState } from '../store/rootReducers';
 import { useSelector } from 'react-redux';
-import { getCardLikes } from './../utils/cards';
+import { getCardLikes } from '../utils/cards';
 import { useState, useEffect } from 'react';
 
 let snapshotListener: any;
-function useCardLikes() {
+function useCardAdditionalInformation() {
     const [myLikes, setMyLikes] = useState<string[]>([]);
     const { uid } = useSelector((state: RootState) => state.auth);
 
@@ -25,9 +25,9 @@ function useCardLikes() {
             return snapshotListener;
         }
         
-    }, [myLikes]);
+    }, []);
 
     return { myLikes };
 }
 
-export default useCardLikes;
+export default useCardAdditionalInformation;

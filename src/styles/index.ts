@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+
 export interface TextProps {
     padding?: string;
     bold?: boolean;
