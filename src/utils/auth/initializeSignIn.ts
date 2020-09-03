@@ -72,7 +72,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                             provider: method,
                         })
                         const success = checkUser()
-                        if (success) {
+                        if (success && data.newUser) {
                             setIsSignUp(true)
                         }
         

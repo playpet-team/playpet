@@ -65,6 +65,7 @@ function useImagePicker({ setLoading, setForm, form, uid }: {
             const { uri, width, height } = await VideoThumbnails.getThumbnailAsync(
                 uploadedPath,
                 {
+                    quality: 0.5,
                     time: 1000,
                     headers: {
                         'Content-Type': 'multipart/form-data',

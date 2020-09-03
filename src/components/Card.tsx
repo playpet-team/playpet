@@ -34,14 +34,20 @@ function Card({
     const [getReadyPlay, setGetReadyPlay] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
     // const { isPlaySound, toggleIsPlaySound } = usePlayOptions()
-    const videoRef = useRef<any>(null)
+    const videoRef = useRef<null | Video>(null)
     const bounceValue = useRef(new Animated.Value(0)).current
     const { popupShare } = useShare({ id, title, })
     const isFocus = useIsFocused()
     const themes = useTheme()
     const { bottom } = useSafeAreaInsets();
 
-    const trackingVideoStatus = async (aoeu: AVPlaybackStatus) => setGetReadyPlay(aoeu.isLoaded)
+    // useEffect(() => {
+    //     if (getReadyPlay) {
+
+    //     }
+    // }, [getReadyPlay])
+
+    const trackingVideoStatus = (status: AVPlaybackStatus) => setGetReadyPlay(status.isLoaded)
     // 재생 조건
     useEffect(() => {
         videoRef.current?.setOnPlaybackStatusUpdate(trackingVideoStatus)
@@ -84,18 +90,27 @@ function Card({
         alert('상품클릭')
     }
 
-    const media = contents[0]
+    const content = contents[0]
+
+    const shouldPlay = useMemo(() => getReadyPlay && onPlayActive && !showDetail, [getReadyPlay && onPlayActive && !showDetail])
 
     return (
         <CardTouchable onPress={() => setShowDetail(!showDetail)}>
             <CardBlock containerHeight={getContainerHeight(DEVICE_WIDTH)}>
+                {!getReadyPlay &&
+                    <Image
+                        source={{ uri: content.videoThumbnail }}
+                        width={DEVICE_WIDTH}
+                        resizeMode="cover"
+                    />
+                }
                 {renderRange &&
                     <Video
                         ref={videoRef}
                         // isMuted={!isPlaySound}
-                        source={{ uri: media.url }}
+                        source={{ uri: content.url }}
                         isLooping={true}
-                        shouldPlay={onPlayActive && !showDetail}
+                        shouldPlay={shouldPlay}
                         resizeMode={Video.RESIZE_MODE_COVER}
                         style={{ width: DEVICE_WIDTH, height: DEVICE_HEIGHT }}
                     />
