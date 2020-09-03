@@ -8,9 +8,11 @@ import Splash from './components/Splash';
 import Navigation from './navigation';
 import { Provider } from 'react-redux';
 import { store } from './store/rootReducers';
+import useUpdater from './hooks/useUpdater';
 
 export default function App() {
     const isLoadingComplete = useCachedResources();
+    useUpdater()
 
     return (
         <Provider store={store}>
