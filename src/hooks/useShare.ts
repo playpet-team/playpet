@@ -27,7 +27,7 @@ async function buildLink(id: string, title: string) {
     return await dynamicLinks().buildLink({
         link,
         // domainUriPrefix is created in your Firebase console
-        domainUriPrefix: `https://playpet${ __DEV__ ? '' : 'app'}.page.link`,
+        domainUriPrefix: `https://playpetme.page.link`,
         // optional set up which updates Firebase analytics campaign
         // "banner". This also needs setting up before hand
         analytics: {
@@ -40,6 +40,10 @@ async function buildLink(id: string, title: string) {
         ios: {
             bundleId: 'comp.playpet.me',
             fallbackUrl: link,
+        },
+        social: {
+            title: '재미가 가득한 반려동물 영상 쇼핑몰 플레이펫',
+            descriptionText: title,
         }
     })
 }

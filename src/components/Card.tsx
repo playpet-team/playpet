@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import styled, { css } from 'styled-components/native'
-import { Video } from 'expo-av'
+import { Video, AVPlaybackStatus } from 'expo-av'
 import { Icon, Button, Image } from 'react-native-elements'
 import { deviceSize, CardModel, setCardLike } from '../utils'
 import { TouchableWithoutFeedback, View, Animated, } from 'react-native'
 import useShare from '../hooks/useShare'
 import { useIsFocused, useTheme } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const DEVICE_WIDTH = deviceSize().width
 const DEVICE_HEIGHT = deviceSize().height
@@ -30,6 +31,7 @@ function Card({
     renderRange, // Carousel 에 렌더까지 된 대기중인 카드인지 여부
     isLike,
 }: CardType) {
+    const [getReadyPlay, setGetReadyPlay] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
     // const { isPlaySound, toggleIsPlaySound } = usePlayOptions()
     const videoRef = useRef<any>(null)
@@ -37,21 +39,26 @@ function Card({
     const { popupShare } = useShare({ id, title, })
     const isFocus = useIsFocused()
     const themes = useTheme()
+    const { bottom } = useSafeAreaInsets();
 
+    const trackingVideoStatus = async (aoeu: AVPlaybackStatus) => setGetReadyPlay(aoeu.isLoaded)
+    // 재생 조건
     useEffect(() => {
+        videoRef.current?.setOnPlaybackStatusUpdate(trackingVideoStatus)
+
         if (!isFocus) {
-            videoRef.current?.pauseAsync()
+            videoRef.current?.stopAsync()
             return
         }
 
         if (!onPlayActive) {
-            console.log('onPlayActive')
             videoRef.current?.pauseAsync()
             return
         }
 
     }, [isFocus, onPlayActive])
 
+    // detail 열렸을때 액션
     useEffect(() => {
         if (!onPlayActive) {
             return
@@ -88,10 +95,9 @@ function Card({
                         // isMuted={!isPlaySound}
                         source={{ uri: media.url }}
                         isLooping={true}
-                        // shouldPlay={onPlayActive && !showDetail}
-                        shouldPlay={false}
+                        shouldPlay={onPlayActive && !showDetail}
                         resizeMode={Video.RESIZE_MODE_COVER}
-                        style={{ width: DEVICE_WIDTH, height: '100%', position: 'absolute', }}
+                        style={{ width: DEVICE_WIDTH, height: DEVICE_HEIGHT }}
                     />
                 }
                 <AnimatedOverlayBackground
@@ -103,6 +109,7 @@ function Card({
                     }}
                 />
                 <SectionBlock
+                    bottom={bottom}
                     style={{
                         height: bounceValue.interpolate({
                             inputRange: [0, 1],
@@ -204,12 +211,12 @@ const AnimatedOverlayBackground = styled(Animated.View)`
     background-color: rgba(0, 0, 0, 0.6);
 `
 
-const SectionBlock = styled(Animated.View)`
+const SectionBlock = styled(Animated.View) <{ bottom: number }>`
     overflow: visible;
     position: absolute;
     flex-direction: column;
     min-height: 180px;
-    bottom: 8px;
+    bottom: ${({ bottom }) => bottom + 8}px;
     width: 100%;
     padding: 16px;
     background-color: rgba(0, 0, 0, 0.05);

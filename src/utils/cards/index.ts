@@ -103,7 +103,9 @@ export const setCardLike = async ({ uid, id, methods = 'add' }: CardLike) => {
 // }
 export const getCardLikes = async (uid: string, onSnapCallback: Function) => {
     const listener = firestore().collection(collections.UserActions).doc(uid).onSnapshot(snapshot => {
-        onSnapCallback(snapshot.data());
+        if (snapshot) {
+            onSnapCallback(snapshot.data());
+        }
     });
     return listener;
     // if (!getDoc.exists) {

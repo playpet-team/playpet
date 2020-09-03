@@ -8,6 +8,9 @@ import { DividerBlock, Text } from '../../styles'
 import AsyncStorage from '@react-native-community/async-storage'
 import ListItem from '../../components/ListItem'
 import usePlayOptions from '../../hooks/usePlayOptions'
+import { manifest } from 'expo-updates'
+import Constants from 'expo-constants';
+
 enum Handle {
     Link,
     Navigate,
@@ -20,6 +23,7 @@ interface List {
     type: Handle
 }
 export default function AuthSettings() {
+    console.log('manifest', manifest, Constants)
     const { loading, setLoading, Indicator } = useLoadingIndicator()
     // const { isPlaySound, isAutoPlay, toggleIsAutoPlay, toggleIsPlaySound } = usePlayOptions()
     const list = getList(setLoading)
@@ -50,6 +54,7 @@ export default function AuthSettings() {
                 height={1}
             />
             <DangerText>플레이펫은 상품에 직접 관여하지 않으며 상품 주문, 배송 및 환불의 의무와 책임은 각 판매업체에 있습니다.</DangerText>
+            <Text>앱버전 {}</Text>
         </AuthSettingsBlock>
     )
 }

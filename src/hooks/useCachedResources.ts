@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { Ionicons } from '@expo/vector-icons'
 import * as Font from 'expo-font'
 import { useState, useEffect } from 'react';
-// import * as SplashScreen from 'expo-splash-screen'
+import * as SplashScreen from 'expo-splash-screen'
 
 export default function useCachedResources() {
     const [isLoadingComplete, setLoadingComplete] = useState(false)
@@ -17,7 +17,7 @@ export default function useCachedResources() {
         }
         const loadResourcesAndDataAsync = async () => {
             try {
-                // SplashScreen.preventAutoHideAsync()
+                SplashScreen.preventAutoHideAsync()
                 const response = await AsyncStorage.getItem('customToken')
                 if (response) {
                     const getStorage: AsyncStorageCustomToken = JSON.parse(response);
@@ -32,8 +32,8 @@ export default function useCachedResources() {
                 AsyncStorage.removeItem('customToken')
                 await signOut()
             } finally {
+                SplashScreen.hideAsync()
                 setLoadingComplete(true)
-                // SplashScreen.hideAsync()
             }
         }
 
