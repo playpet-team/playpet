@@ -60,7 +60,8 @@ export default function PlayGroundScreen() {
                 sliderHeight={SLIDER_HEIGHT}
                 itemHeight={SLIDER_HEIGHT}
                 vertical={true}
-                onSnapToItem={useCallback((slideIndex: number) => setActiveIndex(slideIndex), [])}
+                // 4 버전이 베타라서 onScrollIndexChanged type이 아직 들어오지 않았음
+                onScrollIndexChanged={useCallback((slideIndex: number) => setActiveIndex(slideIndex), [])}
             />
         </PlayGroundBlock>
     );

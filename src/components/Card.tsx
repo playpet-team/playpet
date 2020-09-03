@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import styled, { css } from 'styled-components/native'
 import { Video, AVPlaybackStatus } from 'expo-av'
-import { Icon, Button, Image } from 'react-native-elements'
+import { Icon, Button, Image, colors } from 'react-native-elements'
 import { deviceSize, CardModel, setCardLike } from '../utils'
-import { TouchableWithoutFeedback, View, Animated, } from 'react-native'
+import { TouchableWithoutFeedback, View, Animated, ActivityIndicator, } from 'react-native'
 import useShare from '../hooks/useShare'
 import { useIsFocused, useTheme } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -98,11 +98,22 @@ function Card({
         <CardTouchable onPress={() => setShowDetail(!showDetail)}>
             <CardBlock containerHeight={getContainerHeight(DEVICE_WIDTH)}>
                 {!getReadyPlay &&
-                    <Image
-                        source={{ uri: content.videoThumbnail }}
-                        width={DEVICE_WIDTH}
-                        resizeMode="cover"
-                    />
+                    <View style={{ zIndex: 2, }}>
+                        <Image
+                            source={{ uri: content.videoThumbnail }}
+                            style={{ width: DEVICE_WIDTH, height: DEVICE_HEIGHT }}
+                            resizeMode='cover'
+                        />
+                        <ActivityIndicator
+                            size='large'
+                            color='#fff'
+                            style={{
+                                position: 'absolute',
+                                left: '47%',
+                                top: '47%',
+                            }}
+                        />
+                    </View>
                 }
                 {renderRange &&
                     <Video
@@ -112,7 +123,12 @@ function Card({
                         isLooping={true}
                         shouldPlay={shouldPlay}
                         resizeMode={Video.RESIZE_MODE_COVER}
-                        style={{ width: DEVICE_WIDTH, height: DEVICE_HEIGHT }}
+                        style={{
+                            width: DEVICE_WIDTH,
+                            height: DEVICE_HEIGHT,
+                            display: getReadyPlay && onPlayActive ? 'flex' : 'none',
+                            zIndex: 1,
+                        }}
                     />
                 }
                 <AnimatedOverlayBackground
@@ -212,6 +228,7 @@ interface CardContainer {
 const CardBlock = styled.View<CardContainer>`
     width: ${containerWidth};
     height: ${({ containerHeight }) => containerHeight};
+    position: relative;
 `
 
 const FloatingButtonGroup = styled.View`
@@ -221,6 +238,7 @@ const FloatingButtonGroup = styled.View`
 const AnimatedOverlayBackground = styled(Animated.View)`
     position: absolute;
     top: 0;
+    z-index: 2;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
@@ -229,6 +247,7 @@ const AnimatedOverlayBackground = styled(Animated.View)`
 const SectionBlock = styled(Animated.View) <{ bottom: number }>`
     overflow: visible;
     position: absolute;
+    z-index: 3;
     flex-direction: column;
     min-height: 180px;
     bottom: ${({ bottom }) => bottom + 8}px;
