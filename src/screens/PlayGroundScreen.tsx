@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components/native'
 import Card from '../components/Card'
 import Carousel from 'react-native-snap-carousel'

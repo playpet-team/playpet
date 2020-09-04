@@ -5,4 +5,5 @@ export const Crash = {
     crashError: (error: Error) => crashlytics().recordError(error),
     setCrashlyticsCollectionEnabled: (enable: boolean) => crashlytics().setCrashlyticsCollectionEnabled(enable),
     setUserId: (id: string) => crashlytics().setUserId(id),
+    setAttribute: (key: string, value: string) => crashlytics().setAttribute(key, value),
 };

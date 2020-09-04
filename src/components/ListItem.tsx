@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { ListItem as List } from 'react-native-elements';
+import { ListItem as List, Icon } from 'react-native-elements';
+import styled, { css } from 'styled-components/native';
 
 export default function ListItem({ title, onPress, titleStyle, containerStyle, rightIcon }: {
     title: string;
@@ -10,17 +11,19 @@ export default function ListItem({ title, onPress, titleStyle, containerStyle, r
 }) {
     return (
         <List
-            title={title}
             onPress={onPress}
-            titleStyle={{
-                fontSize: 16,
-                ...titleStyle,
-            }}
-            containerStyle={{
-                padding: 16,
+            style={{
+                // padding: 16,
                 ...containerStyle
             }}
-            rightIcon={rightIcon && rightIcon}
-        />
+        >
+            <List.Content>
+                <List.Title style={{
+                    fontSize: 16,
+                    ...titleStyle,
+                }}>{title}</List.Title>
+            </List.Content>
+            {rightIcon && rightIcon}
+        </List>
     );
 };

@@ -11,13 +11,12 @@ import { Text } from '../styles';
 
 export default function CardFormScreen() {
     const { loading, setLoading, Indicator } = useLoadingIndicator();
-    const { uid, isLogged } = useSelector((state: RootState) => state.auth);
+    const { isLogged } = useSelector((state: RootState) => state.auth);
     const [form, setForm] = useState<Form>(initialForm);
     const { openPicker } = useImagePicker({
         setLoading,
         form,
         setForm,
-        uid,
     });
 
     const onReset = useCallback(() => setForm(initialForm), []);
@@ -48,7 +47,6 @@ export default function CardFormScreen() {
 
     return (
         <>
-
             <CardBlock>
                 {loading && <Indicator />}
                 <InputTextGroup>
@@ -93,8 +91,9 @@ export default function CardFormScreen() {
             </CardBlock>
             <SubmitButton
                 {...form}
-                uid={uid}
                 onSubmitCallback={onReset}
+                loading={loading}
+                setLoading={setLoading}
             />
         </>
     );

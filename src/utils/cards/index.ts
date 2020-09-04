@@ -7,6 +7,7 @@ import { manageCardLikes } from '../../callable';
 export interface CardModel {
     status: 'active' | 'deactive';
     id: string;
+    username: string;
     title: string;
     description: string;
     tags: string[];

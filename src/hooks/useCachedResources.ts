@@ -32,7 +32,7 @@ export default function useCachedResources() {
                 AsyncStorage.removeItem('customToken')
                 await signOut()
             } finally {
-                SplashScreen.hideAsync()
+                // SplashScreen.hideAsync()
                 setLoadingComplete(true)
             }
         }

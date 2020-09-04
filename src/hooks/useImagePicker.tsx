@@ -7,6 +7,8 @@ import * as VideoThumbnails from 'expo-video-thumbnails'
 import React, { useCallback } from 'react'
 import Constants from 'expo-constants'
 import { askPermission, firebaseNow, PermissionsList } from '../utils'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store/rootReducers'
 
 export interface Form {
     title: string
@@ -24,13 +26,14 @@ export const formReset: Form = {
     cardImages: [],
 }
 
-function useImagePicker({ setLoading, setForm, form, uid }: {
+function useImagePicker({ setLoading, setForm, form }: {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
     setForm: React.Dispatch<React.SetStateAction<Form>>
     form: Form
-    uid: string
 }) {
     // react-native-image-picker
+    const { uid } = useSelector((state: RootState) => state.auth);
+
     const openPicker = useCallback(async () => {
         await getPermissionAsync()
         await ImagePicker.launchImageLibrary({

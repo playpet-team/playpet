@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react'
-import styled, { css } from 'styled-components/native'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
+import styled from 'styled-components/native'
 import { Video, AVPlaybackStatus } from 'expo-av'
 import Animated, { Value, interpolate, Easing } from 'react-native-reanimated'
-import useShare from '../hooks/useShare'
 import { useIsFocused } from '@react-navigation/native'
 import CardCoveredImage from './Card/CardCoveredImage'
 import { deviceSize, CardModel } from '../utils'
@@ -14,7 +13,6 @@ const DEVICE_HEIGHT = deviceSize().height
 export interface CardType extends CardModel {
     onPlayActive: boolean
     renderRange: boolean
-    // isLike: boolean
 }
 
 const containerWidth: string = '100%'
@@ -22,11 +20,7 @@ const containerWidth: string = '100%'
 function Card({
     id,
     title,
-    tags,
-    // uid,
-    likes,
     contents,
-    updatedAt,
     onPlayActive, // 현재 액티브 된 카드인지 여부
     renderRange, // Carousel 에 렌더까지 된 대기중인 카드인지 여부
     // isLike,

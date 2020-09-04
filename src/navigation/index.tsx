@@ -9,7 +9,6 @@ import AppLoginAgreeTerms from '../screens/AppLogin/AppLoginAgreeTerms'
 import useAuthStateChanged from '../hooks/useAuthStateChanged'
 import { currentUser } from '../utils'
 import analytics from '@react-native-firebase/analytics'
-import { ErrorUtils } from 'react-native'
 import { Crash } from '../utils/system/crash'
 import { defaultColorPalette, } from '../styles/colors'
 
@@ -78,7 +77,7 @@ const RootStack = createStackNavigator<RootStackParamList>()
 function RootNavigator() {
     React.useEffect(() => {
         Crash.setCrashlyticsCollectionEnabled(true)
-        // ErrorUtils.setGlobalHandler(Crash.crashError)
+        ErrorUtils.setGlobalHandler(Crash.crashError)
         const user = currentUser()
         if (!user) {
             return

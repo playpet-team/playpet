@@ -1,82 +1,102 @@
-import { cardImage } from "../CardFormScreen";
-import React, { useState } from "react";
-import { CardModel, submitCard, firebaseNow } from "../../utils";
-import firestore from '@react-native-firebase/firestore';
-import { firebase } from '@react-native-firebase/storage';
-import { Button } from 'react-native-elements';
+import { cardImage } from "../CardFormScreen"
+import React, { useState } from "react"
+import { CardModel, submitCard, firebaseNow } from "../../utils"
+import { firebase } from '@react-native-firebase/storage'
+import { Button } from 'react-native-elements'
+import { RootState } from "../../store/rootReducers"
+import { useSelector } from "react-redux"
+import { Alert } from "react-native"
 
 interface Submit {
-    cardImages: cardImage[];
-    uid: string;
-    title: string;
-    description: string;
-    tags: string[];
-    onSubmitCallback: Function;
-    containerStyle?: object;
-    buttonStyle?: object;
+    cardImages: cardImage[]
+    title: string
+    description: string
+    tags: string[]
+    onSubmitCallback: Function
+    containerStyle?: object
+    buttonStyle?: object
+    loading: boolean
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 function SubmitButton({
     cardImages,
-    uid,
     title,
     description,
     tags,
-    onSubmitCallback,
     containerStyle = {},
-    buttonStyle = {}
+    buttonStyle = {},
+    onSubmitCallback,
+    loading,
+    setLoading,
+
 }: Submit) {
-    const [isSubmitLoading, setSubmitLoading] = useState(false);
+    const { uid, username } = useSelector((state: RootState) => state.auth)
 
     const formSubmit = async () => {
-        setSubmitLoading(true);
-        const downloadUrls = await startUploadStorage();
-        const formData: CardModel = {
-            id: '',
-            likes: 0,
-            status: 'active',
-            title,
-            description,
-            tags,
-            uid,
-            contents: cardImages.map((image, index) => ({
-                url: downloadUrls[index].url,
-                videoThumbnail: downloadUrls[index].thumbnail,
-                isVideo: image.isVideo,
-                width: image.width,
-                height: image.height,
-            })),
-            createdAt: firebaseNow(),
-            updatedAt: firebaseNow(),
-        };
-        await submitCard(formData);
-        setSubmitLoading(false);
-        onSubmitCallback();
-    };
+        setLoading(true)
+        const downloadUrls = await startUploadStorage()
+        if (!downloadUrls) {
+            setLoading(false)
+            Alert.alert('포스팅에 실패했습니다. 잠시 후 다시 시도해주세요')
+            return
+        }
+        try {
+            const formData: CardModel = {
+                id: '',
+                likes: 0,
+                status: 'active',
+                title,
+                description,
+                tags,
+                uid,
+                username,
+                contents: cardImages.map((image, index) => ({
+                    url: downloadUrls[index].url,
+                    videoThumbnail: downloadUrls[index].thumbnail,
+                    isVideo: image.isVideo,
+                    width: image.width,
+                    height: image.height,
+                })),
+                createdAt: firebaseNow(),
+                updatedAt: firebaseNow(),
+            }
+            await submitCard(formData)
+        } catch (e) {
+            console.error(e)
+        } finally {
+            setLoading(false)
+        }
+        onSubmitCallback()
+    }
 
     const startUploadStorage = async () => {
-        return await Promise.all(
-            cardImages.map(async (image) => {
-                const urls = {
-                    url: '',
-                    thumbnail: '',
-                };
-                const reference = firebase.storage().ref(`playground/${uid}_${firebaseNow().seconds}`);
-                await reference.putFile(image.uri);
-                urls.url = await reference.getDownloadURL();
-                if (image.videoThumbnail) {
-                    const reference = firebase.storage().ref(`playground/${uid}_${firebaseNow().seconds}_thumbnail.jpg`);
-                    await reference.putFile(image.videoThumbnail);
-                    urls.thumbnail = await reference.getDownloadURL();
-                }
-                return urls;
-            })
-        );
-    };
+        try {
+            return await Promise.all(
+                cardImages.map(async (image) => {
+                    const urls = {
+                        url: '',
+                        thumbnail: '',
+                    }
+                    const reference = firebase.storage().ref(`playground/${uid}_${firebaseNow().seconds}`)
+                    await reference.putFile(image.uri)
+                    urls.url = await reference.getDownloadURL()
+                    if (image.videoThumbnail) {
+                        const reference = firebase.storage().ref(`playground/${uid}_${firebaseNow().seconds}_thumbnail.jpg`)
+                        await reference.putFile(image.videoThumbnail)
+                        urls.thumbnail = await reference.getDownloadURL()
+                    }
+                    return urls
+                })
+            )
+        } catch (e) {
+            console.error(e)
+        }
+    }
 
     return (
         <Button
             title="자랑하기"
-            disabled={isSubmitLoading}
+            disabled={loading}
             onPress={formSubmit}
             style={{
             }}
@@ -88,7 +108,7 @@ function SubmitButton({
                 fontWeight: '800',
             }}
         />
-    );
-};
+    )
+}
 
-export default SubmitButton;
+export default SubmitButton

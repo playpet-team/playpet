@@ -71,7 +71,7 @@
     "react": "~16.13.1",
     "react-native": "~0.63.2",
     "react-native-appearance": "^0.3.4",
-    "react-native-elements": "^2.1.0",
+    "react-native-elements": "^2.3.2",
     "react-native-fbsdk": "^2.0.0",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-image-picker": "^2.3.3",
