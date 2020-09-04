@@ -1,10 +1,10 @@
 import { useNavigation } from '@react-navigation/native'
 import { createUser } from './../../callable/auth'
-import { signInWithCustomToken, signInCredential, currentUser } from '.'
+import { signInWithCustomToken, currentUser } from '.'
 import { ToastParams } from '../../components/Toast'
 import { useCallback, useState, useEffect } from 'react'
 
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import auth from '@react-native-firebase/auth'
 import appleAuth, {
     AppleAuthRequestOperation,
     AppleAuthRequestScope,
@@ -12,11 +12,10 @@ import appleAuth, {
 import { GoogleSignin } from '@react-native-community/google-signin'
 import { LoginManager, AccessToken } from 'react-native-fbsdk'
 import KakaoLogins, { IProfile, KAKAO_AUTH_TYPES } from '@react-native-seoul/kakao-login'
-// import { NaverLogin, getProfile, GetProfileResponse } from '@react-native-seoul/naver-login'
 
 import { SignType } from '../../models'
 import AsyncStorage from '@react-native-community/async-storage'
-import { Platform } from 'react-native'
+import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 
 const GOOGLE_WEB_CLIENT_ID = '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com'
 GoogleSignin.configure({ webClientId: GOOGLE_WEB_CLIENT_ID })
@@ -25,6 +24,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     toastContent: ToastParams
     setToastContent: React.Dispatch<React.SetStateAction<ToastParams>>
 }) {
+    const { loading, setLoading, Indicator } = useLoadingIndicator()
     const [isSignUp, setIsSignUp] = useState<boolean | null>(null)
     // const [credential, setCredential] = useState<FirebaseAuthTypes.AuthCredential | null>(null)
     const [method, setMethod] = useState<SignType>(SignType.None)
@@ -41,9 +41,10 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     const navigation = useNavigation()
 
     useEffect(() => {
-        if (isSignUp) {
-            navigation.navigate('AppLoginAgreeTerms')
+        if (isSignUp === null) {
+            return
         }
+        isSignUp ? navigation.navigate('AppLoginAgreeTerms') : navigation.goBack()
     }, [isSignUp])
 
     useEffect(() => {
@@ -52,6 +53,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
             console.log('????????????????????')
             if (token && profile && method) {
                 try {
+                    setLoading(true)
                     console.log('data', profile, method)
                     const { data } = await createUser({
                         ...profile,
@@ -60,6 +62,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                     console.log('data', data)
                     const customToken = data.token
                     if (!customToken) {
+                        setLoading(false)
                         return
                     }
                     
@@ -72,8 +75,8 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                             provider: method,
                         })
                         const success = checkUser()
-                        if (success && data.newUser) {
-                            setIsSignUp(true)
+                        if (success) {
+                            setIsSignUp(data.newUser)
                         }
         
                     } catch (error) {
@@ -91,9 +94,13 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                                 title: '다른 로그인 방법으로 회원가입을 완료한 계정이 있습니다.',
                             })
                         }
+                    } finally {
+                        setLoading(false)
                     }
                 } catch (e) {
                     console.error('getCredential----', e)
+                } finally {
+                    setLoading(false)
                 }
             }
         }
@@ -101,6 +108,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
 
     const getUidByThirdPartySignIn = useCallback(async (method: SignType) => {
         console.log('0')
+        setLoading(true)
         setMethod(method)
         try {
             switch (method) {
@@ -156,6 +164,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
             }
         } catch (error) {
             console.log("error-----", JSON.stringify(error))
+            setLoading(false)
             setToastContent({
                 ...toastContent,
                 visible: true,
@@ -193,7 +202,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         return true
     }
 
-    return { getUidByThirdPartySignIn }
+    return { getUidByThirdPartySignIn, loading, Indicator }
 }
 
 const appleSignIn = async (setProfile: React.Dispatch<any>) => {
@@ -242,25 +251,25 @@ const appleSignIn = async (setProfile: React.Dispatch<any>) => {
 //     })
 // }
 
-const getNaverProfile = async (token: string | null, setProfile: React.Dispatch<any>) => {
-    if (!token) {
-        return
-    }
-    const profileResult = await getProfile(token)
-    if (!profileResult) {
-        return
-    }
-    if (profileResult.resultcode === "024") {
-      alert("로그인 실패")
-      return
-    }
+// const getNaverProfile = async (token: string | null, setProfile: React.Dispatch<any>) => {
+//     if (!token) {
+//         return
+//     }
+//     const profileResult = await getProfile(token)
+//     if (!profileResult) {
+//         return
+//     }
+//     if (profileResult.resultcode === "024") {
+//       alert("로그인 실패")
+//       return
+//     }
     
-    setProfile({
-        username: profileResult.response.name,
-        email: profileResult.response.email,
-        photo: profileResult.response.profile_image,
-    })
-}
+//     setProfile({
+//         username: profileResult.response.name,
+//         email: profileResult.response.email,
+//         photo: profileResult.response.profile_image,
+//     })
+// }
 
 const kakaoLogin = async (setToken: React.Dispatch<React.SetStateAction<string | null>>) => {
     const result = await KakaoLogins.login([KAKAO_AUTH_TYPES.Talk])

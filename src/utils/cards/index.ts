@@ -41,6 +41,7 @@ export const getMyCards = async (uid: string, sort?: string): Promise<CardModel[
         const cardData = card.data();
         return {
             id: card.id,
+            username: cardData.username,
             status: cardData.status,
             title: cardData.title,
             description: cardData.description,
