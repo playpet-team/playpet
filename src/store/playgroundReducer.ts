@@ -2,10 +2,12 @@ import { CardModel } from '../utils/cards/index';
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface Cards {
-    cards: CardModel[],
+    cards: CardModel[]
+    myLikes: string[]
 };
 export const initialState: Cards = {
     cards: [],
+    myLikes: [],
 };
 
 const slice = createSlice({
@@ -15,6 +17,9 @@ const slice = createSlice({
         setCards(state, { payload }) {
             state.cards = payload;
         },
+        setMyLikes(state, { payload }) {
+            state.myLikes = payload;
+        }
     },
 });
 
