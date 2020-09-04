@@ -144,7 +144,6 @@
 				B3BF51825B89F5579F6C4913 /* [CP] Copy Pods Resources */,
 				5B01BDD49CC42653AC59C64D /* [CP-User] [RNFB] Core Configuration */,
 				9F29C7B75DFA71942741738B /* [CP-User] [RNFB] Crashlytics Configuration */,
-				BD1C696C9A89424C98546724 /* [CP] Embed Pods Frameworks */,
 				F53A337524FDCDF1007CF5F4 /* Firebase Environment */,
 				F53A337624FDCEB2007CF5F4 /* Crashlytics */,
 			);
@@ -322,24 +321,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-playpet/Pods-playpet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BD1C696C9A89424C98546724 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-playpet/Pods-playpet-frameworks.sh",
-				"${PODS_ROOT}/naveridlogin-sdk-ios/NaverThirdPartyLogin.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NaverThirdPartyLogin.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-playpet/Pods-playpet-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		F53A337524FDCDF1007CF5F4 /* Firebase Environment */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -432,7 +413,7 @@
 				CODE_SIGN_ENTITLEMENTS = playpet/playpet.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = TWXF97YP3A;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -452,7 +433,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -466,7 +447,7 @@
 				CODE_SIGN_ENTITLEMENTS = playpet/playpet.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = TWXF97YP3A;
 				INFOPLIST_FILE = playpet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -480,7 +461,7 @@
 				PRODUCT_NAME = playpet;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
