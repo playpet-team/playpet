@@ -204,8 +204,6 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
-    implementation project(':react-native-seoul-naver-login')
-
 
     // playpet
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"

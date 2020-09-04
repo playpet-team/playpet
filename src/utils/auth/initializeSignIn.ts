@@ -12,7 +12,7 @@ import appleAuth, {
 import { GoogleSignin } from '@react-native-community/google-signin'
 import { LoginManager, AccessToken } from 'react-native-fbsdk'
 import KakaoLogins, { IProfile, KAKAO_AUTH_TYPES } from '@react-native-seoul/kakao-login'
-import { NaverLogin, getProfile, GetProfileResponse } from '@react-native-seoul/naver-login'
+// import { NaverLogin, getProfile, GetProfileResponse } from '@react-native-seoul/naver-login'
 
 import { SignType } from '../../models'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -146,8 +146,8 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                     break
                 }
                 case SignType.Naver: {
-                    await naverLogin(setToken)
-                    await getNaverProfile(token, setProfile)
+                    // await naverLogin(setToken)
+                    // await getNaverProfile(token, setProfile)
                     break
                 }
                 default: {
@@ -221,26 +221,26 @@ const appleSignIn = async (setProfile: React.Dispatch<any>) => {
     }
 }
 
-const naverLogin = async (setToken: React.Dispatch<React.SetStateAction<string | null>>) => {
-    const ioskeys = {
-        kConsumerKey: 'qWhQYE6faHywP_zqIz05',
-        kConsumerSecret: 'B8zVzYH9zZ',
-        kServiceAppName: 'playpet',
-        kServiceAppUrlScheme: 'com.playpet.me',
-    }
+// const naverLogin = async (setToken: React.Dispatch<React.SetStateAction<string | null>>) => {
+//     const ioskeys = {
+//         kConsumerKey: 'qWhQYE6faHywP_zqIz05',
+//         kConsumerSecret: 'B8zVzYH9zZ',
+//         kServiceAppName: 'playpet',
+//         kServiceAppUrlScheme: 'com.playpet.me',
+//     }
       
-    const androidkeys = {
-        kConsumerKey: 'qWhQYE6faHywP_zqIz05',
-        kConsumerSecret: 'B8zVzYH9zZ',
-        kServiceAppName: 'playpet',
-    }
-    NaverLogin.login(Platform.OS === 'ios' ? ioskeys : androidkeys, (err, token) => {
-        // setNaverToken(token)
-        if (token) {
-            setToken(token.refreshToken)
-        }
-    })
-}
+//     const androidkeys = {
+//         kConsumerKey: 'qWhQYE6faHywP_zqIz05',
+//         kConsumerSecret: 'B8zVzYH9zZ',
+//         kServiceAppName: 'playpet',
+//     }
+//     NaverLogin.login(Platform.OS === 'ios' ? ioskeys : androidkeys, (err, token) => {
+//         // setNaverToken(token)
+//         if (token) {
+//             setToken(token.refreshToken)
+//         }
+//     })
+// }
 
 const getNaverProfile = async (token: string | null, setProfile: React.Dispatch<any>) => {
     if (!token) {

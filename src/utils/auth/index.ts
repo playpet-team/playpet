@@ -7,7 +7,7 @@ import { SignType, collections, User } from '../../models'
 import { initialState } from '../../store/authReducer'
 import { LoginManager } from 'react-native-fbsdk'
 import KakaoLogins from '@react-native-seoul/kakao-login'
-import { NaverLogin } from '@react-native-seoul/naver-login'
+// import { NaverLogin } from '@react-native-seoul/naver-login'
 
 export const firebaseNow = () => firestore.Timestamp.now()
 export const currentUser = () => auth().currentUser
@@ -103,7 +103,7 @@ export const signOut = async (type: SignType = SignType.None) => {
                 break
             }
             case SignType.Naver: {
-                NaverLogin.logout()
+                // NaverLogin.logout()
                 break;
             }
         }

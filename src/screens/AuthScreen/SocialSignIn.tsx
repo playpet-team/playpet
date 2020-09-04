@@ -47,9 +47,9 @@ export default function SocialSignIn() {
             <SigninButton onPress={() => handleSignIn(SignType.Facebook)}>
                 <SigninText>페이스북으로 시작하기</SigninText>
             </SigninButton>
-            <SigninButton onPress={() => handleSignIn(SignType.Naver)}>
+            {/* <SigninButton onPress={() => handleSignIn(SignType.Naver)}>
                 <SigninText>네이버로 시작하기</SigninText>
-            </SigninButton>
+            </SigninButton> */}
             <SigninButton onPress={() => handleSignIn(SignType.Kakao)}>
                 <SigninText>카카오로 시작하기</SigninText>
             </SigninButton>

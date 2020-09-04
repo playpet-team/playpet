@@ -6,7 +6,6 @@
 #import <React/RCTRootView.h>
 #import <React/RCTLinkingManager.h>
 #import <KakaoOpenSDK/KakaoOpenSDK.h>
-#import <NaverThirdPartyLogin/NaverThirdPartyLoginConnection.h>
 
 #import <UMCore/UMModuleRegistry.h>
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
@@ -66,7 +65,6 @@ static void InitializeFlipper(UIApplication *application) {
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   [KOSession sharedSession].automaticPeriodicRefresh = YES;
-  [[NaverThirdPartyLoginConnection getSharedInstance] setIsNaverAppOauthEnable:YES];
 
   return YES;
 }
@@ -98,7 +96,6 @@ static void InitializeFlipper(UIApplication *application) {
     return [KOSession handleOpenURL:url];
   }
   if ([url.scheme isEqualToString:@"com.playpet.android"]) {
-    return [[NaverThirdPartyLoginConnection getSharedInstance] application:application openURL:url options:options];
   }
   return [RCTLinkingManager application:application openURL:url options:options];
 }
