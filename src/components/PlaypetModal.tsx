@@ -1,8 +1,8 @@
-import React, { ReactChildren, ReactNode, useMemo } from "react"
+import React, { ReactNode } from "react"
 import Modal from "react-native-modal"
 import styled from 'styled-components/native'
-import { Text } from "react-native"
 import { useTheme, Theme } from "@react-navigation/native"
+import { Icon } from "react-native-elements"
 
 interface ModalProps {
     modalVisible: boolean
@@ -10,7 +10,10 @@ interface ModalProps {
     children: ReactNode
     isHideCloseButton?: boolean
     isBackdropPress?: boolean
-    containerStyle?: object
+    containerStyle?: {
+        width?: number
+        padding?: string
+    }
     header?: boolean
 }
 
@@ -39,15 +42,14 @@ const PlaypetModal = ({
                 }}
             >
                 <Container
-                    style={containerStyle}
                     colors={themes.colors}
+                    containerStyle={containerStyle}
                 >
                     {header &&
                         <PlaypetDialogHeader>
-                            <Text>헤더</Text>
                             {!isHideCloseButton &&
                                 <CloseButton onPress={handleCloseModal}>
-                                    <Text>X</Text>
+                                    <Icon name='close' />
                                 </CloseButton>
                             }
                         </PlaypetDialogHeader>
@@ -67,15 +69,16 @@ const StyledSafeAreaView = styled.SafeAreaView`
     align-items: center;
 `
 
-const Container = styled.View<Pick<Theme, 'colors'>>`
-    padding: 16px;
+const Container = styled.View<Pick<Theme, 'colors'> & Pick<ModalProps, 'containerStyle'>>`
     flex-direction: column;
-    width: 320px;
-    background-color: ${(props) => props.colors.background};
+    width: ${({ containerStyle }) => containerStyle?.width ? containerStyle.width : 320}px;
+    padding: ${({ containerStyle }) => containerStyle?.padding ? containerStyle.padding : 16}px;
+    background-color: ${({ colors }) => colors.background};
     border-radius: 4px;
 `
 
 const PlaypetDialogHeader = styled.View`
+
     justify-content: center;
     flex-direction: row;
     width: 100%;

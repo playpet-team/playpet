@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/native'
-
-import { ScrollView } from 'react-native-gesture-handler'
 import { Icon, Input, Avatar } from 'react-native-elements'
 import { Layout, Text, DividerBlock } from '../../styles'
-import ListItem from '../../components/ListItem'
-import i18n from 'i18n-js'
-import { Alert } from 'react-native'
-import { leave, appReload, signOut, firebaseNow, updateUserProfilePhoto, currentUser } from '../../utils'
+import { firebaseNow, updateUserProfilePhoto, updateUsername, currentUser } from '../../utils'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
-import AsyncStorage from '@react-native-community/async-storage'
-import { SignType } from '../../models'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../store/rootReducers'
 import useImagePicker from '../../hooks/useImagePicker'
 import { useUploadFirestore } from '../CardFormScreen/useUploadFirestore'
 import { authActions } from '../../store/authReducer'
+import Toast, { ToastParams } from '../../components/Toast'
 
 // isLogged: false,
 // uid: '',
@@ -38,6 +32,9 @@ import { authActions } from '../../store/authReducer'
 //     personalCollectAgree: false,
 //     marketingAgree: false,
 // }
+const MAX_USERNAME_LENGTH = 12
+const MIN_USERNAME_LENGTH = 4
+
 export default function ProfileSetting() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
     const {
@@ -48,12 +45,19 @@ export default function ProfileSetting() {
         uid,
     } = useSelector((state: RootState) => state.auth)
     const [form, setForm] = useState<ProfileForm>({ uri: '' });
+    const [newUsername, setNewUsername] = useState(username)
+    const [editUsername, setEditUsername] = useState(false)
     const uploadCallback = (form: ProfileForm) => setForm(form)
+    const [toastContent, setToastContent] = useState<ToastParams>({
+        visible: false,
+        title: '',
+        description: '',
+        image: '',
+    })
     const { upload } = useUploadFirestore()
     const dispatch = useDispatch()
 
     useEffect(() => {
-
         if (!form.uri) {
             return
         }
@@ -66,6 +70,7 @@ export default function ProfileSetting() {
                     path: `profile/${uid}_${firebaseNow().seconds}`
                 })
                 await updateUserProfilePhoto(uid, downloadUrl)
+                updateUserProfile('photoURL', downloadUrl)
                 dispatch(authActions.setUserProfilePhoto(downloadUrl))
             } catch (e) {
                 console.error(e)
@@ -76,6 +81,16 @@ export default function ProfileSetting() {
 
     }, [form])
 
+    const updateUserProfile = (key: 'displayName' | 'photoURL', value: string) => {
+        const user = currentUser()
+        if (!user) {
+            return
+        }
+        user.updateProfile({
+            [key]: value
+        })
+    }
+
     const { openPicker } = useImagePicker({
         updateType: 'photo',
         setLoading,
@@ -83,22 +98,45 @@ export default function ProfileSetting() {
         uploadCallback,
     })
 
+    const handleEditUsername = () => {
+        if (!editUsername) {
+            return setEditUsername(true)
+        }
+        const isOK = validator(newUsername, 'username')
+        if (!isOK) {
+            return setToastContent({
+                title: '닉네임은 4자이상 12자 이하여야 합니다',
+                visible: true
+            })
+        }
+        updateUsername(uid, newUsername)
+        updateUserProfile('displayName', newUsername)
+        setEditUsername(false)
+        return setToastContent({
+            title: '닉네임 변경 완료!',
+            visible: true
+        })
+    }
+
     return (
         <ProfileSettingBlock>
             {loading && <Indicator />}
-            <Layout
-                marginBottom={16}
-                alignItems="center"
-            >
+            {toastContent.visible &&
+                <Toast
+                    title={toastContent.title}
+                    setToastContent={setToastContent}
+                />
+            }
+            <ChangePhotoProfileArea onPress={openPicker}>
                 <Avatar
-                    onPress={openPicker}
                     size="large"
                     rounded
                     source={{
                         uri: profilePhoto,
                     }}
                 />
-            </Layout>
+                <Text padding="8px 0">프로필 사진 변경</Text>
+            </ChangePhotoProfileArea>
             <Layout>
                 <Input
                     label="이메일"
@@ -109,7 +147,13 @@ export default function ProfileSetting() {
             <Layout>
                 <Input
                     label="닉네임"
-                    value={username}
+                    value={newUsername}
+                    onChangeText={(text: string) => setNewUsername(text)}
+                    disabled={!editUsername}
+                    rightIcon={<Icon
+                        name={editUsername ? 'check' : 'edit'}
+                        onPress={handleEditUsername}
+                    />}
                 />
             </Layout>
             <Layout>
@@ -123,9 +167,30 @@ export default function ProfileSetting() {
     )
 }
 
+const validator = (value: string, type: 'username') => {
+    console.log('value', value, type)
+    let isOK = false
+    switch (type) {
+        case 'username': {
+            isOK = MAX_USERNAME_LENGTH > value.length && MIN_USERNAME_LENGTH < value.length
+            break
+        }
+            defalut: {
+
+            }
+    }
+    return isOK
+}
+
 export interface ProfileForm {
     uri: string
 }
 const ProfileSettingBlock = styled.ScrollView`
     padding: 16px;
+`
+
+const ChangePhotoProfileArea = styled.TouchableOpacity`
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 16px;
 `

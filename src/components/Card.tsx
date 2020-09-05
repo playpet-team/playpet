@@ -11,8 +11,9 @@ import CardContentSection from './Card/CardContentSection'
 const DEVICE_WIDTH = deviceSize().width
 const DEVICE_HEIGHT = deviceSize().height
 export interface CardType extends CardModel {
-    onPlayActive: boolean
-    renderRange: boolean
+    onPlayActive?: boolean
+    renderRange?: boolean
+    myCards?: boolean
 }
 
 const containerWidth: string = '100%'
@@ -21,8 +22,9 @@ function Card({
     id,
     title,
     contents,
-    onPlayActive, // 현재 액티브 된 카드인지 여부
-    renderRange, // Carousel 에 렌더까지 된 대기중인 카드인지 여부
+    onPlayActive = true, // 현재 액티브 된 카드인지 여부
+    renderRange = true, // Carousel 에 렌더까지 된 대기중인 카드인지 여부
+    myCards = false,
     // isLike,
 }: CardType) {
     const [getReadyPlay, setGetReadyPlay] = useState(false)
@@ -103,6 +105,7 @@ function Card({
                     }}
                 />
                 <CardContentSection
+                    myCards={myCards}
                     bounceValue={bounceValue}
                     id={id}
                     title={title}

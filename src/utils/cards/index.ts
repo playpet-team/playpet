@@ -36,7 +36,9 @@ export const getMyCards = async (uid: string, sort?: string): Promise<CardModel[
     const myCards = await firestore()
         .collection(collections.Playground)
         .where('uid', '==', uid)
+        .where('status', '==', 'active')
         .get();
+    console.log('myCards.docs---', myCards.docs.length, uid)
     return myCards.docs.map(card => {
         const cardData = card.data();
         return {

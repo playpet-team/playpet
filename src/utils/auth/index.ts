@@ -19,9 +19,17 @@ export const updateUserLastLogin = async (uid: string) => {
         lastLogin: firebaseNow(),
     })
 }
+
 export const updateUserProfilePhoto = async (uid: string, profilePhoto: string) => {
     await firestore().collection(collections.Users).doc(uid).update({
         profilePhoto,
+        updatedAt: firebaseNow(),
+    })
+}
+
+export const updateUsername = async (uid: string, username: string) => {
+    await firestore().collection(collections.Users).doc(uid).update({
+        username,
         updatedAt: firebaseNow(),
     })
 }

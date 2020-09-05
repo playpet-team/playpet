@@ -15,11 +15,13 @@ interface Section {
     bounceValue: Value<0>
     id: string
     title: string
+    myCards: boolean
 }
 export default function CardContentSection({
     bounceValue,
     id,
-    title
+    title,
+    myCards,
 }: Section) {
     const { uid } = useSelector((state: RootState) => state.auth);
     const { myLikes } = useSelector((state: RootState) => state.playground);
@@ -32,10 +34,11 @@ export default function CardContentSection({
     const handleProduct = () => {
         alert('상품클릭')
     }
+    console.log("myCards", myCards);
 
     return (
         <CardSectionBlock
-            bottom={bottom}
+            bottom={myCards ? 0 : bottom}
             style={{
                 height: interpolate(bounceValue, {
                     inputRange: [0, 1],
@@ -75,17 +78,19 @@ export default function CardContentSection({
                 <BodySection>
                     <Header>
                         <TitleText header>바우와우</TitleText>
-                        <Button
-                            title="+팔로우"
-                            titleStyle={{
-                                color: themes.colors.primary,
-                                fontSize: 12,
-                            }}
-                            buttonStyle={{
-                                backgroundColor: themes.colors.background,
-                                padding: 4,
-                            }}
-                        />
+                        {!myCards &&
+                            <Button
+                                title="+팔로우"
+                                titleStyle={{
+                                    color: themes.colors.primary,
+                                    fontSize: 12,
+                                }}
+                                buttonStyle={{
+                                    backgroundColor: themes.colors.background,
+                                    padding: 4,
+                                }}
+                            />
+                        }
                     </Header>
                     <Main>
                         <TitleText>{title}</TitleText>
