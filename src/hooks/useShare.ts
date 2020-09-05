@@ -8,7 +8,6 @@ function useShare({ id, title }: {
 }) {
     const popupShare = async () => {
         const link = await buildLink(id, title)
-        console.log("link---", link)
         if (link) {
             const result = await Share.share({
                 title: 'link',
@@ -23,7 +22,6 @@ export default useShare
 
 async function buildLink(id: string, title: string) {
     const link = `https://playpet.me/playground/${id}`
-    console.log("FirebaseDynamicLinksTypes.ShortLinkType.DEFAULT", FirebaseDynamicLinksTypes)
     return await dynamicLinks().buildLink({
         link,
         // domainUriPrefix is created in your Firebase console

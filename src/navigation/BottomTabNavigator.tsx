@@ -14,6 +14,7 @@ import AuthScreen from '../screens/AuthScreen';
 import AppSettings from '../screens/AuthScreen/AppSettings';
 import AppLoginAgreeTerms from '../screens/AppLogin/AppLoginAgreeTerms';
 import AppLogin from '../screens/AppLogin';
+import ProfileSetting from '../screens/AuthScreen/ProfileSetting';
 
 export type BottomTabParamList = {
     Home: undefined;
@@ -161,6 +162,7 @@ function PlayGroundNavigator() {
 export type AuthTapParamList = {
     AuthScreen: undefined;
     AppSettings: undefined;
+    ProfileSetting: undefined;
     AppLogin: undefined;
 };
 const AuthTapStack = createStackNavigator<AuthTapParamList>();
@@ -172,13 +174,18 @@ function AuthNavigator() {
                 name="AuthScreen"
                 component={AuthScreen}
                 options={({ navigation, route }) => ({
-                    headerTitle: '회원정보',
+                    headerTitle: '마이페이지',
                 })}
             />
             <AuthTapStack.Screen
                 name="AppSettings"
                 component={AppSettings}
                 options={{ headerTitle: '앱 세팅' }}
+            />
+            <AuthTapStack.Screen
+                name="ProfileSetting"
+                component={ProfileSetting}
+                options={{ headerTitle: '회원정보' }}
             />
             <AuthTapStack.Screen
                 name="AppLogin"

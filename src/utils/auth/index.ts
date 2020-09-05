@@ -19,13 +19,18 @@ export const updateUserLastLogin = async (uid: string) => {
         lastLogin: firebaseNow(),
     })
 }
+export const updateUserProfilePhoto = async (uid: string, profilePhoto: string) => {
+    await firestore().collection(collections.Users).doc(uid).update({
+        profilePhoto,
+        updatedAt: firebaseNow(),
+    })
+}
 
 export const getUser = async (uid: string): Promise<User | null> => {
     const user = (await firestore().collection(collections.Users).doc(uid).get()).data()
     if (!user) {
         return null
     }
-    console.log('user------------------@@@@@@@@@@@i n auth-------', user)
     return {
         ...initialState,
         ...user,

@@ -9,7 +9,6 @@ import { currentUser } from '../../utils'
 
 export default function AppLoginAgreeTerms() {
     const user = currentUser()
-    console.log("user--------", user);
 
     return (
         <AppLoginAgreeTermsBlock>

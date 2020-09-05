@@ -16,9 +16,9 @@ function ProfileSection() {
         email,
         isLogged,
     } = useSelector((state: RootState) => state.auth)
-    console.log('isLogged---------', isLogged)
+
+    const navigation = useNavigation()
     if (!isLogged) {
-        const navigation = useNavigation()
         return (
             <AppLoginSection onPress={() => navigation.navigate('AppLogin')}>
                 <Text
@@ -56,7 +56,7 @@ function ProfileSection() {
                     <Text>{username}</Text>
                     <Text>{email}</Text>
                 </ProfileName>
-                <Button onPress={() => { }} title="프로필 설정" />
+                <Button onPress={() => navigation.navigate('ProfileSetting')} title="프로필 설정" />
             </ProfileInfoBlock>
         </ProfileSectionBlock>
     )

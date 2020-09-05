@@ -12,12 +12,21 @@ import { Text } from '../styles';
 export default function CardFormScreen() {
     const { loading, setLoading, Indicator } = useLoadingIndicator();
     const { isLogged } = useSelector((state: RootState) => state.auth);
-    const [form, setForm] = useState<Form>(initialForm);
+    const [form, setForm] = useState<CardForm>(initialForm);
+
+    const uploadCallback = (newForm: CardImage) => setForm({
+        ...form,
+        cardImages: [
+            ...form.cardImages,
+            newForm,
+        ],
+    })
     const { openPicker } = useImagePicker({
         setLoading,
         form,
-        setForm,
+        uploadCallback,
     });
+
 
     const onReset = useCallback(() => setForm(initialForm), []);
 
@@ -99,7 +108,7 @@ export default function CardFormScreen() {
     );
 };
 
-export interface cardImage {
+export interface CardImage {
     id: string;
     uri: string;
     url: string;
@@ -109,15 +118,15 @@ export interface cardImage {
     height: number;
 }
 
-interface Form {
+export interface CardForm {
     title: string;
     description: string;
     tags: string[];
     tagField: string;
-    cardImages: cardImage[];
+    cardImages: CardImage[];
 };
 
-const initialForm: Form = {
+const initialForm: CardForm = {
     title: '',
     description: '',
     tags: [],

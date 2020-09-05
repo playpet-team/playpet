@@ -50,16 +50,13 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     useEffect(() => {
         getCredential()
         async function getCredential() {
-            console.log('????????????????????')
             if (token && profile && method) {
                 try {
                     setLoading(true)
-                    console.log('data', profile, method)
                     const { data } = await createUser({
                         ...profile,
                         method,
                     })
-                    console.log('data', data)
                     const customToken = data.token
                     if (!customToken) {
                         setLoading(false)
@@ -67,7 +64,6 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                     }
                     
                     try {
-                        console.log('2', customToken)
                         await signInWithCustomToken(customToken)
                         saveCustomToken({
                             customToken,
@@ -107,17 +103,13 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     }, [token, profile, method])
 
     const getUidByThirdPartySignIn = useCallback(async (method: SignType) => {
-        console.log('0')
         setLoading(true)
         setMethod(method)
         try {
             switch (method) {
                 case SignType.Google: {
-                    console.log('1')
                     await GoogleSignin.hasPlayServices()
-                    console.log('2', GoogleSignin)
                     const userInfo = await GoogleSignin.signIn()
-                    console.log('3', userInfo)
                     setProfile({
                         username: userInfo.user.familyName || '' + userInfo.user.givenName || '',
                         email: userInfo.user.email,
@@ -163,7 +155,6 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                 }
             }
         } catch (error) {
-            console.log("error-----", JSON.stringify(error))
             setLoading(false)
             setToastContent({
                 ...toastContent,

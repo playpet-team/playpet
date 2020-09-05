@@ -94,7 +94,6 @@ export const setCardLike = async ({ uid, id, methods = 'add' }: CardLike) => {
         alert('회원가입이 필요합니다')
         return
     }
-    console.log('hahaha', uid, id, methods)
     await manageCardLikes({ uid, id, methods });
 };
 

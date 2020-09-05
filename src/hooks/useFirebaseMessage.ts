@@ -13,11 +13,9 @@ function useFirebaseMessage() {
         async function init() {
             try {
                 const { status, type } = await askPermission(PermissionsList.USER_FACING_NOTIFICATIONS);
-                console.log('@@@@@@@@@-----status, type-------', status, type);
                 _checkFirebasePermission();
             } catch (e) {
               _registerToken()
-                console.log('useFirebaseMessage-error-', e);
             }
         }
         return () => {
@@ -44,7 +42,6 @@ function useFirebaseMessage() {
 
     const _onReactNotification = () => {
         _notificationListener = messaging().onNotificationOpenedApp((notification) => {
-            console.log('notification------', notification);
             // Process your notification as required
             // notification.android.setPriority(firebase.notifications.Android.Priority.Max);
             // notification.android.setChannelId(CHANNEL_ID);
@@ -53,7 +50,6 @@ function useFirebaseMessage() {
     };
 
     const _registerToken = async (fcmToken: string = ''): Promise<void> => {
-        console.log(fcmToken);
         try {
             const user = currentUser();
             if (user?.uid) {
@@ -84,8 +80,6 @@ function useFirebaseMessage() {
                 }
             }
         } catch (error) {
-          console.log('ERROR: _checkFirebasePermission', error);
-          console.log(error);
         }
     };
     
@@ -94,8 +88,6 @@ function useFirebaseMessage() {
           const fcmToken = await messaging().getToken();
           _registerToken(fcmToken);
         } catch (error) {
-          console.log('ERROR: updateTokenToServer');
-          console.log(error);
         }
       };
     
@@ -115,7 +107,6 @@ function useFirebaseMessage() {
         try {
           // User has authorised
             const authStatus = await messaging().requestPermission();
-            console.log("authStatus----", authStatus);
             return (
                 authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
                 authStatus === messaging.AuthorizationStatus.PROVISIONAL

@@ -40,11 +40,13 @@ const slice = createSlice({
         },
         setUser(state, { payload }) {
             state = Object.assign(state, payload)
-            console.log('set payload rudecer', state)
             // return {
             //     ...state,
             //     ...payload,
             // }
+        },
+        setUserProfilePhoto(state, { payload }) {
+            state.profilePhoto = payload
         },
         setTerms(state, { payload }) {
             state.terms = Object.assign(state.terms, payload)

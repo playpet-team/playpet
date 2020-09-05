@@ -1,4 +1,4 @@
-import { cardImage } from "../CardFormScreen"
+import { CardImage } from "../CardFormScreen"
 import React, { useState } from "react"
 import { CardModel, submitCard, firebaseNow } from "../../utils"
 import { firebase } from '@react-native-firebase/storage'
@@ -8,7 +8,7 @@ import { useSelector } from "react-redux"
 import { Alert } from "react-native"
 
 interface Submit {
-    cardImages: cardImage[]
+    cardImages: CardImage[]
     title: string
     description: string
     tags: string[]

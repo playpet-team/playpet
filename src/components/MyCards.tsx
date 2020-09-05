@@ -33,7 +33,7 @@ function MyCards({ listType }: { listType: ItemList }) {
     }, [myCards, listType])
 
     return (
-        <ListBlock>
+        <ListBlock paddingHorizontal={16}>
             {renderCards()}
         </ListBlock>
     )

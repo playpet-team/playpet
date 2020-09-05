@@ -23,58 +23,50 @@ export default function AuthScreen() {
     return (
         <ScrollView>
             <ProfileSection />
-            <ListItem
-                title='영상 더보기'
-                titleStyle={{
-                    fontSize: 18,
-                    fontWeight: 'bold'
-                }}
-                onPress={() => navigation.navigate('AppSettings')}
-                rightIcon={<Icon name="keyboard-arrow-right" />}
-            />
-            <DividerBlock height={4} />
-            <MyCards
-                listType={listType}
-            />
-            <SignInButton onPress={() => { }}>
-                <Text
-                    size={18}
-                >
-                    {i18n.t('product.recentViewed')}
-                </Text>
-                <Icon
-                    name="keyboard-arrow-right"
+            {isLogged &&
+                <>
+                    <ListItem
+                        title='영상'
+                        titleStyle={{
+                            fontSize: 18,
+                            fontWeight: 'bold'
+                        }}
+                        onPress={() => navigation.navigate('AppSettings')}
+                    />
+                    <MyCards listType={listType} />
+                </>
+            }
+            <Section>
+                <ListItem
+                    title={i18n.t('product.recentViewed')}
+                    titleStyle={{
+                    }}
+                    onPress={() => { }}
                 />
-            </SignInButton>
+            </Section>
             <DividerBlock
-                backgroundColor="#e9e9e9"
+                marginHorizontal={16}
+                backgroundColor="#999"
                 marginTop={16}
-                marginBottom={16}
                 height={1}
             />
             <Section>
                 <ListItem
                     title='앱 설정'
                     titleStyle={{
-                        fontSize: 18,
-                        fontWeight: 'bold'
                     }}
                     onPress={() => navigation.navigate('AppSettings')}
-                    rightIcon={<Icon name="keyboard-arrow-right" />}
+                // rightIcon={<Icon name="keyboard-arrow-right" />}
                 />
-            </Section>
-            <Section>
                 <ListItem
                     title='공지사항'
                     onPress={() => { }}
-                    rightIcon={<Icon name="keyboard-arrow-right" />}
+                // rightIcon={<Icon name="keyboard-arrow-right" />}
                 />
                 <ListItem
                     title='불편사항 접수'
                     onPress={() => { }}
                 />
-            </Section>
-            <Section>
                 <ListItem
                     title='고객센터'
                     titleStyle={{
@@ -100,11 +92,11 @@ const Section = styled.View`
     /* padding-horizontal: 16px; */
 `
 
-const SignInButton = styled.TouchableOpacity`
-    padding: 16px;
-    flex-direction: row;
-    justify-content: space-between;
-`
+// const SignInButton = styled.TouchableOpacity`
+//     padding: 16px;
+//     flex-direction: row;
+//     justify-content: space-between;
+// `
 
 const KakaoChannelButton = styled.TouchableOpacity`
     flex-direction: row;

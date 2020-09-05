@@ -19,6 +19,7 @@ export const Text = styled.Text<TextProps>`
 
 interface DividerProps {
     padding?: string;
+    marginHorizontal?: number
     marginTop?: number;
     marginBottom?: number;
     backgroundColor?: string;
@@ -27,6 +28,9 @@ interface DividerProps {
 export const DividerBlock = styled.View<DividerProps>`
     ${({ padding }) => padding && css`
         padding: ${padding};
+    `}
+    ${({ marginHorizontal }) => marginHorizontal && css`
+        margin-horizontal: ${marginHorizontal}px;
     `}
     ${({ marginTop }) => marginTop && css`
         margin-top: ${marginTop}px;
@@ -46,18 +50,29 @@ interface layoutProps {
     alignItems?: string;
     justifyContent?: string;
     padding?: number;
+    marginTop?: number;
+    marginBottom?: number;
 }
 export const Layout = styled.View<layoutProps>`
     padding: ${({ padding = 0 }) => padding}px;
     align-items: ${({ alignItems = 'flex-start' }) => alignItems};
     justify-content: ${({ justifyContent = 'flex-start' }) => justifyContent};
+    ${({ marginTop }) => marginTop && css`
+        margin-top: ${marginTop}px;
+    `}
+    ${({ marginBottom }) => marginBottom && css`
+        margin-bottom: ${marginBottom}px;
+    `}
 `;
 
-export const ListBlock = styled.View`
+interface ListProps {
+    paddingHorizontal?: number
+}
+export const ListBlock = styled.View<ListProps>`
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-between;
-    padding-horizontal: 8px;
+    padding-horizontal: ${({ paddingHorizontal }) => paddingHorizontal ? paddingHorizontal : 8}px;
     width: 100%;
 `;

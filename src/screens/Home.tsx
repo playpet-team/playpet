@@ -12,8 +12,6 @@ import ProductList from '../components/ProductList'
 import useLanguage from '../hooks/useLanguage'
 import { useNavigation } from '@react-navigation/native'
 import useTerms from '../hooks/useTerms'
-import useShare from '../hooks/useShare'
-
 
 export default function Home() {
     useLanguage()
