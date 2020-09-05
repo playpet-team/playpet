@@ -6,7 +6,7 @@ import { Icon } from 'react-native-elements';
 import { Layout, Text, DividerBlock } from '../../styles';
 import ListItem from '../../components/ListItem';
 
-export default function PushScreen() {
+export default function MemberScreen() {
     return (
         <ScrollView>
             <Section>

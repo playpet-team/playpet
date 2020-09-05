@@ -1,17 +1,39 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { Avatar } from 'react-native-elements'
-import { Text, Button, View } from 'react-native'
+import { Avatar, Icon } from 'react-native-elements'
+import { Button, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/rootReducers'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import i18n from 'i18n-js'
+import { useNavigation } from '@react-navigation/native'
+import { Text } from '../styles'
 
 function ProfileSection() {
     const {
         profilePhoto,
         username,
         email,
+        isLogged,
     } = useSelector((state: RootState) => state.auth)
-    console.log('username--------', username)
+    console.log('isLogged---------', isLogged)
+    if (!isLogged) {
+        const navigation = useNavigation()
+        return (
+            <AppLoginSection onPress={() => navigation.navigate('AppLogin')}>
+                <Text
+                    bold
+                    size={20}
+                >
+                    {i18n.t('common.loginWithSignUp')}
+                </Text>
+                <Icon
+                    name="keyboard-arrow-right"
+                />
+            </AppLoginSection>
+        )
+    }
+
     return (
         <ProfileSectionBlock>
             <ProfileBlock>
@@ -73,6 +95,14 @@ const ProfileName = styled.View`
     margin-left: 16px;
     flex-direction: column;
     flex: 1;
+`
+
+const AppLoginSection = styled.TouchableOpacity`
+    flex: 1;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 16px;
 `
 
 // const ProfileText = styled(Text)`

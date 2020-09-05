@@ -40,7 +40,7 @@ export default function Home() {
                 </Layout>
                 <DividerBlock marginTop={24} />
                 <ProductList />
-                <DummyCardView />
+                {/* <DummyCardView /> */}
             </ScrollView>
         </SafeAreaViewBlock>
     )

@@ -13,15 +13,20 @@ export default function ListItem({ title, onPress, titleStyle, containerStyle, r
         <List
             onPress={onPress}
             style={{
-                // padding: 16,
+                padding: 0,
                 ...containerStyle
             }}
         >
             <List.Content>
-                <List.Title style={{
-                    fontSize: 16,
-                    ...titleStyle,
-                }}>{title}</List.Title>
+                <List.Title
+                    style={{
+                        fontSize: 16,
+                        padding: 0,
+                        ...titleStyle,
+                    }}
+                >
+                    {title}
+                </List.Title>
             </List.Content>
             {rightIcon && rightIcon}
         </List>

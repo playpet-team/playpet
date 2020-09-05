@@ -32,8 +32,6 @@ function ProductListItem({
         });
     };
 
-    console.log('image--', image);
-
     return (
         <ProductListItemBlock onPress={handleProduct}>
             <Image

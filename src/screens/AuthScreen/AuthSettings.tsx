@@ -23,6 +23,7 @@ interface List {
     type: Handle
 }
 export default function AuthSettings() {
+    // console.log('manifest', manifest, Constants)
     const { loading, setLoading, Indicator } = useLoadingIndicator()
     // const { isPlaySound, isAutoPlay, toggleIsAutoPlay, toggleIsPlaySound } = usePlayOptions()
     const list = getList(setLoading)
@@ -45,7 +46,6 @@ export default function AuthSettings() {
                     value={isAutoPlay}
                 />}
             /> */}
-
             <DividerBlock
                 backgroundColor="#ccc"
                 marginTop={16}

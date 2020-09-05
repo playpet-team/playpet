@@ -4,11 +4,12 @@ import { ActivityIndicator, Modal } from 'react-native';
 
 function useLoadingIndicator() {
     const [loading, setLoading] = useState(false);
-    useEffect(() => {
-        if (!loading) {
-            return;
-        }
-    }, [loading]);
+
+    // useEffect(() => {
+    //     if (!loading) {
+    //         return;
+    //     }
+    // }, [loading]);
 
     return {
         loading,

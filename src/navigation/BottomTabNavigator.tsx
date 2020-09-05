@@ -11,9 +11,9 @@ import ProductWebView from '../components/ProductWebView';
 import PlayGroundScreen from '../screens/PlayGroundScreen';
 import CardFormScreen from '../screens/CardFormScreen';
 import AuthScreen from '../screens/AuthScreen';
-import AuthSettings from '../screens/AuthScreen/AuthSettings';
-import PushSettings from '../screens/AuthScreen/PushSettings';
+import AppSettings from '../screens/AuthScreen/AppSettings';
 import AppLoginAgreeTerms from '../screens/AppLogin/AppLoginAgreeTerms';
+import AppLogin from '../screens/AppLogin';
 
 export type BottomTabParamList = {
     Home: undefined;
@@ -160,8 +160,8 @@ function PlayGroundNavigator() {
 
 export type AuthTapParamList = {
     AuthScreen: undefined;
-    PushSettings: undefined;
-    AuthSettings: undefined;
+    AppSettings: undefined;
+    AppLogin: undefined;
 };
 const AuthTapStack = createStackNavigator<AuthTapParamList>();
 
@@ -172,25 +172,21 @@ function AuthNavigator() {
                 name="AuthScreen"
                 component={AuthScreen}
                 options={({ navigation, route }) => ({
-                    headerTitle: '가족정보',
-                    headerRight: () => (
-                        <HeaderButton onPress={() => navigation.navigate('AuthSettings')}>
-                            <Icon
-                                name="menu"
-                            />
-                        </HeaderButton>
-                    ),
+                    headerTitle: '회원정보',
                 })}
             />
             <AuthTapStack.Screen
-                name="PushSettings"
-                component={PushSettings}
-                options={{ headerTitle: '회원정보' }}
+                name="AppSettings"
+                component={AppSettings}
+                options={{ headerTitle: '앱 세팅' }}
             />
             <AuthTapStack.Screen
-                name="AuthSettings"
-                component={AuthSettings}
-                options={{ headerTitle: '회원정보' }}
+                name="AppLogin"
+                component={AppLogin}
+                options={({ route }) => ({
+                    headerShown: false,
+                    gestureEnabled: false,
+                })}
             />
         </AuthTapStack.Navigator>
     );

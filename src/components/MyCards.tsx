@@ -9,6 +9,9 @@ function MyCards({ listType }: { listType: ItemList }) {
 
     const renderCards = useCallback(() => {
         if (listType === ItemList.MEDIA) {
+            if (!myCards.length) {
+                return <Text>올린 영상이 없습니다.</Text>
+            }
             return myCards.map(card => {
                 return (
                     <Image
@@ -18,8 +21,8 @@ function MyCards({ listType }: { listType: ItemList }) {
                         }}
                         resizeMode="cover"
                         style={{
-                            width: '49%',
-                            height: 200,
+                            width: '24%',
+                            height: 100,
                         }}
                     />
                 )

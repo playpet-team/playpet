@@ -67,7 +67,7 @@ export default function Navigation() {
 }
 
 export type RootStackParamList = {
-    AppLogin: undefined
+    // AppLogin: undefined
     Home: undefined
     NotFound: undefined
 }
@@ -89,7 +89,7 @@ function RootNavigator() {
     return (
         <RootStack.Navigator screenOptions={{ headerShown: false }}>
             <RootStack.Screen name="Home" component={BottomTabNavigator} />
-            <RootStack.Screen name="AppLogin" component={AppLoginNavigator} />
+            {/* <RootStack.Screen name="AppLogin" component={AppLoginNavigator} /> */}
         </RootStack.Navigator>
     )
 }

@@ -25,6 +25,7 @@ function useLoadMyCards({
             setMyCards(filtered);
         }
         if (searchUid === 'my' && user) {
+            console.log('user----', user)
             loadMyCards(user.uid);
         } else {
             loadMyCards(searchUid);

@@ -1,7 +1,7 @@
 // import * as Linking from 'expo-linking';
 
 export default {
-    prefixes: ['playpet.page.link'],
+    prefixes: ['playpetme.page.link'],
     config: {
         screens: {
             AppLogin: 'login',

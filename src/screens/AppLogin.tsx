@@ -20,9 +20,9 @@ export default function AppLogin() {
             <SigninBlock>
                 <SocialSignIn />
                 <LookAround>
-                    <Button
+                    {/* <Button
                         title="돌아가기"
-                        onPress={() => navigation.goBack()}
+                        onPress={() => navigation.navigate('Home')}
                         buttonStyle={{
                             backgroundColor: 'transparent',
                             justifyContent: 'flex-end',
@@ -31,7 +31,7 @@ export default function AppLogin() {
                             color: '#fff',
                             fontSize: 15,
                         }}
-                    />
+                    /> */}
                 </LookAround>
             </SigninBlock>
         </AppLoginBlock>
