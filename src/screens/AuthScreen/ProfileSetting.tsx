@@ -75,7 +75,6 @@ export default function ProfileSetting() {
                 dispatch(authActions.setUserProfilePhoto(downloadUrl))
             } catch (e) {
                 Sentry.captureException(e)
-                console.error(e)
             } finally {
                 setLoading(false)
             }

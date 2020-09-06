@@ -1,21 +1,26 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components/native'
 
 import { ScrollView } from 'react-native-gesture-handler'
 import { Icon } from 'react-native-elements'
-import { Layout, Text, DividerBlock } from '../../styles'
 import ListItem from '../../components/ListItem'
 import i18n from 'i18n-js'
 import { Alert } from 'react-native'
-import { leave, appReload, signOut } from '../../utils'
+import { leave, signOut } from '../../utils'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import AsyncStorage from '@react-native-community/async-storage'
 import { SignType } from '../../models'
 import * as Sentry from "@sentry/react-native";
-import * as Updates from 'expo-updates';
+import { useDispatch } from 'react-redux'
+import { authActions } from '../../store/authReducer'
+import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit'
+import { useNavigation } from '@react-navigation/native'
 
 export default function AppSettings() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
+    const dispatch = useDispatch()
+    const navigation = useNavigation()
+
     return (
         <ScrollView>
             {loading && <Indicator />}
@@ -36,17 +41,21 @@ export default function AppSettings() {
             />
             <ListItem
                 title={i18n.t('common.logout')}
-                onPress={() => handleLogout(setLoading)}
+                onPress={() => handleLogout(setLoading, dispatch, navigation.goBack)}
             />
             <ListItem
                 title={i18n.t('common.leave')}
-                onPress={() => handleLeave(setLoading)}
+                onPress={() => handleLeave(setLoading, dispatch, navigation.goBack)}
             />
         </ScrollView>
     )
 }
 
-const handleLogout = (setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+const handleLogout = (
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    dispatch: React.Dispatch<any>,
+    goBack: Function
+) => {
     Alert.alert('정말로 로그아웃하시게요?', '', [
         {
             text: '취소',
@@ -57,20 +66,25 @@ const handleLogout = (setLoading: React.Dispatch<React.SetStateAction<boolean>>)
                 try {
                     setLoading(true)
                     await signOut(SignType.Google)
+                    dispatch(authActions.signOut)
                     AsyncStorage.clear()
-                    Updates.reloadAsync()
+                    goBack()
                 } catch (e) {
                     Sentry.captureException(e)
                     alert('로그아웃에 실패하였습니다. 잠시후 다시 시도해 주세요')
                 } finally {
-                    // setLoading(false)
+                    setLoading(false)
                 }
             },
         },
     ])
 }
 
-const handleLeave = (setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+const handleLeave = (
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    dispatch: React.Dispatch<any>,
+    goBack: Function
+) => {
     Alert.alert('정말로 탈퇴하시게요?', '', [
         {
             text: '취소',
@@ -81,8 +95,9 @@ const handleLeave = (setLoading: React.Dispatch<React.SetStateAction<boolean>>) 
                 try {
                     setLoading(true)
                     await leave()
+                    dispatch(authActions.signOut)
                     AsyncStorage.clear()
-                    Updates.reloadAsync()
+                    goBack()
                 } catch (e) {
                     Sentry.captureException(e)
                     alert('회원탈퇴에 실패하였습니다. 잠시후 다시 시도해 주세요')

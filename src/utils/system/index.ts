@@ -1,8 +1,7 @@
 import { NativeModules, Dimensions } from 'react-native'
 import moment from 'moment'
 import * as Linking from 'expo-linking'
-
-
+import * as Sentry from "@sentry/react-native";
 export * from './permission'
 
 export const appReload = () => {
@@ -32,7 +31,7 @@ export const linkingUrl = async (url: string) => {
         } else {
             return false
         }
-    } catch (error) {
-        return false
+    } catch (e) {
+        Sentry.captureException(e)
     }
 }

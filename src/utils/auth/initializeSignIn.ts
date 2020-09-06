@@ -77,9 +77,9 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                             setIsSignUp(data.newUser)
                         }
         
-                    } catch (error) {
-                        console.error("getCredential-------", error)
-                        if (error.code != "auth/account-exists-with-different-credential") {
+                    } catch (e) {
+                        Sentry.captureException(e)
+                        if (e.code != "auth/account-exists-with-different-credential") {
                             setToastContent({
                                 ...toastContent,
                                 visible: true,
@@ -156,7 +156,8 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                     break
                 }
             }
-        } catch (error) {
+        } catch (e) {
+            Sentry.captureException(e)
             setLoading(false)
             setToastContent({
                 ...toastContent,
@@ -177,8 +178,8 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                 'customToken',
                 saveData
             )
-        } catch (error) {
-            throw error
+        } catch (e) {
+            Sentry.captureException(e)
         }
     }, [token])
 
@@ -287,7 +288,7 @@ const getProvider = (providerId: string) => {
         case SignType.Apple:
             return auth.AppleAuthProvider
         default:
-            throw new Error(`No provider implemented for ${providerId}`)
+            throw new e(`No provider implemented for ${providerId}`)
     }
 }
 

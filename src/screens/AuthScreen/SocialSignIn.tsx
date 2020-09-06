@@ -31,7 +31,6 @@ export default function SocialSignIn() {
             await getUidByThirdPartySignIn(method)
         } catch (e) {
             Sentry.captureException(e)
-            console.error(e)
         } finally {
             // setLoading(false)
         }

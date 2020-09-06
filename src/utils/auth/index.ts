@@ -75,7 +75,6 @@ export const checkIsExistUser = (uid: string): Promise<CheckUser> => {
         } catch (e) {
             Sentry.captureException(e)
             reject('error')
-            console.error('checkIsExistUser-----error----', e)
         }
     })
 }
@@ -124,8 +123,8 @@ export const signOut = async (type: SignType = SignType.None) => {
             }
         }
         await auth().signOut()
-    } catch (error) {
-        console.error(error)
+    } catch (e) {
+        Sentry.captureException(e)
     }
 }
 
@@ -140,7 +139,7 @@ export const leave = async () => {
         })
         // await withdrawCall()
         auth().signOut()
-    } catch (error) {
-        console.error(error)
+    } catch (e) {
+        Sentry.captureException(e)
     }
 }

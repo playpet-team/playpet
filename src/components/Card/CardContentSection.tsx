@@ -51,7 +51,6 @@ export default function CardContentSection({
             setShowToastLike(true)
         }
         const willLikes = isLike ? [...myLikes, uid] : myLikes.filter(like => like != id)
-        console.log("willLikes------", willLikes)
         dispatch(playgroundActions.setMyLikes(willLikes))
         setCardLike({ uid, id, methods: isLike ? 'remove' : 'add' })
     }

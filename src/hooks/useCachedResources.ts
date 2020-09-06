@@ -24,8 +24,7 @@ export default function useCachedResources() {
                 const response = await AsyncStorage.getItem('customToken')
                 if (response) {
                     const getStorage: AsyncStorageCustomToken = JSON.parse(response);
-                    const res = await signInWithCustomToken(getStorage.customToken)
-                    console.log('res----', res)
+                    await signInWithCustomToken(getStorage.customToken)
                 }
 
                 // Load fonts

@@ -16,8 +16,8 @@ function useFirebaseMessage() {
                 const { status, type } = await askPermission(PermissionsList.USER_FACING_NOTIFICATIONS);
                 _checkFirebasePermission();
             } catch (e) {
+                _registerToken()
                 Sentry.captureException(e)
-              _registerToken()
             }
         }
         return () => {
@@ -57,8 +57,8 @@ function useFirebaseMessage() {
             if (user?.uid) {
                 updateFcmToken(user.uid, fcmToken);
             }
-        } catch (error) {
-          console.error('ERROR: _registerToken', error);
+        } catch (e) {
+            Sentry.captureException(e)
         }
     };
     
@@ -81,15 +81,17 @@ function useFirebaseMessage() {
                   _registerToken()
                 }
             }
-        } catch (error) {
+        } catch (e) {
+            Sentry.captureException(e)
         }
     };
     
     const updateTokenToServer = async () => {
         try {
-          const fcmToken = await messaging().getToken();
-          _registerToken(fcmToken);
-        } catch (error) {
+            const fcmToken = await messaging().getToken();
+            _registerToken(fcmToken);
+        } catch (e) {
+            Sentry.captureException(e)
         }
       };
     
@@ -113,9 +115,9 @@ function useFirebaseMessage() {
                 authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
                 authStatus === messaging.AuthorizationStatus.PROVISIONAL
             );
-        } catch (error) {
-            console.error('_requestPermission', error);
-          // User has rejected permissions
+        } catch (e) {
+            Sentry.captureException(e)
+            // User has rejected permissions
         }
       };
 

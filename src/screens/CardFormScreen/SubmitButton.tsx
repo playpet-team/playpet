@@ -64,7 +64,6 @@ function SubmitButton({
             await submitCard(formData)
         } catch (e) {
             Sentry.captureException(e)
-            console.error(e)
         } finally {
             setLoading(false)
         }
@@ -92,7 +91,6 @@ function SubmitButton({
             )
         } catch (e) {
             Sentry.captureException(e)
-            console.error(e)
         }
     }
 
