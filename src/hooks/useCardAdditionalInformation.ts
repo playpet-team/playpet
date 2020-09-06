@@ -1,33 +1,33 @@
-import { RootState } from '../store/rootReducers';
-import { useSelector } from 'react-redux';
-import { getCardLikes } from '../utils/cards';
-import { useState, useEffect } from 'react';
+import { playgroundActions } from './../store/playgroundReducer';
+import { RootState } from '../store/rootReducers'
+import { useSelector, useDispatch } from 'react-redux'
+import { addListenerCardLikes } from '../utils/cards'
+import { useState, useEffect } from 'react'
 
-let snapshotListener: any;
+let snapshotListener: any
 function useCardAdditionalInformation() {
-    const [myLikes, setMyLikes] = useState<string[]>([]);
-    const { uid } = useSelector((state: RootState) => state.auth);
+    const dispatch = useDispatch()
+    const [myLikes, setMyLikes] = useState<string[]>([])
+    const { uid } = useSelector((state: RootState) => state.auth)
 
     useEffect(() => {
-        loadLikes();
+        loadLikes()
         async function loadLikes() {
             try {
-                snapshotListener = await getCardLikes(uid, (data: any) => {
-                    if (myLikes.length !== (data?.cardLikes || []).length) {
-                        setMyLikes(data?.cardLikes || []);
-                    }
-                });
+                snapshotListener = await addListenerCardLikes(uid, (data: any) => {
+                    dispatch(playgroundActions.setMyLikes(data?.cardLikes))
+                })
             } catch (e) {
-                console.error('loadLikes-e-', e);
+                console.error('loadLikes-e-', e)
             }
-        };
+        }
         if (snapshotListener) {
-            return snapshotListener;
+            return snapshotListener
         }
         
-    }, []);
+    }, [])
 
-    return { myLikes };
+    return { myLikes }
 }
 
-export default useCardAdditionalInformation;
+export default useCardAdditionalInformation

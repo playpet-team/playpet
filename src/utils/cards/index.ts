@@ -3,6 +3,7 @@ import { collections } from '../../models/src/collections';
 
 import firestore, { FirebaseFirestoreTypes, } from '@react-native-firebase/firestore';
 import { manageCardLikes } from '../../callable';
+import { Api } from '../../api';
 
 export interface CardModel {
     status: 'active' | 'deactive';
@@ -38,7 +39,6 @@ export const getMyCards = async (uid: string, sort?: string): Promise<CardModel[
         .where('uid', '==', uid)
         .where('status', '==', 'active')
         .get();
-    console.log('myCards.docs---', myCards.docs.length, uid)
     return myCards.docs.map(card => {
         const cardData = card.data();
         return {
@@ -96,7 +96,8 @@ export const setCardLike = async ({ uid, id, methods = 'add' }: CardLike) => {
         alert('회원가입이 필요합니다')
         return
     }
-    await manageCardLikes({ uid, id, methods });
+    // await manageCardLikes({ uid, id, methods });
+    await Api.post('/playground/likes', { uid, id, methods })
 };
 
 // export interface UserAction {
@@ -104,7 +105,7 @@ export const setCardLike = async ({ uid, id, methods = 'add' }: CardLike) => {
 //     createdAt: FirebaseFirestoreTypes.Timestamp;
 //     updatedAt: FirebaseFirestoreTypes.Timestamp;
 // }
-export const getCardLikes = async (uid: string, onSnapCallback: Function) => {
+export const addListenerCardLikes = async (uid: string, onSnapCallback: Function) => {
     const listener = firestore().collection(collections.UserActions).doc(uid).onSnapshot(snapshot => {
         if (snapshot) {
             onSnapCallback(snapshot.data());

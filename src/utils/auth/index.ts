@@ -1,4 +1,4 @@
-import { withdrawCall } from './../../callable/auth'
+// import { withdrawCall } from './../../callable/auth'
 import firestore from '@react-native-firebase/firestore'
 import { firebaseTimeStampToStringStamp } from './../system/index'
 import auth, { FirebaseAuthTypes, firebase } from '@react-native-firebase/auth'
@@ -7,6 +7,7 @@ import { SignType, collections, User } from '../../models'
 import { initialState } from '../../store/authReducer'
 import { LoginManager } from 'react-native-fbsdk'
 import KakaoLogins from '@react-native-seoul/kakao-login'
+import { Api } from '../../api'
 // import { NaverLogin } from '@react-native-seoul/naver-login'
 
 export const firebaseNow = () => firestore.Timestamp.now()
@@ -128,7 +129,14 @@ export const signOut = async (type: SignType = SignType.None) => {
 
 export const leave = async () => {
     try {
-        await withdrawCall()
+        const user = currentUser()
+        if (!user) {
+            return
+        }
+        const { data } = await Api.post('/auth/withdraw', {
+            uid: user.uid
+        })
+        // await withdrawCall()
         auth().signOut()
     } catch (error) {
         console.error(error)

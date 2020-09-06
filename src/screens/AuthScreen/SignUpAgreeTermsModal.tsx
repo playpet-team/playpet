@@ -20,9 +20,7 @@ export default function SignUpAgreeTermsModal() {
     // })
     const { overAgeAgree, termsOfUseAgree, personalCollectAgree, marketingAgree } = terms
 
-    const handleSingleTerm = (k: string, v: boolean) => dispatch(authActions.setTerms({
-        [k]: v,
-    }))
+    const handleSingleTerm = (k: string, v: boolean) => dispatch(authActions.setTerms({ [k]: v }))
 
     const handleAllAgree = useCallback(() => {
         const isAllTerms = overAgeAgree && termsOfUseAgree && personalCollectAgree && marketingAgree

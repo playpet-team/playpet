@@ -1,6 +1,6 @@
 export enum callable {
-    CreateUser = 'createUser',
-    CreateUserCollection = 'createUserCollection',
-    Withdraw = 'withdraw',
-    ManageCardLikes = 'manageCardLikes',
+    // CreateUser = 'createUser',
+    // CreateUserCollection = 'createUserCollection',
+    // Withdraw = 'withdraw',
+    // ManageCardLikes = 'manageCardLikes',
 }

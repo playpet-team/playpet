@@ -16,6 +16,7 @@ import KakaoLogins, { IProfile, KAKAO_AUTH_TYPES } from '@react-native-seoul/kak
 import { SignType } from '../../models'
 import AsyncStorage from '@react-native-community/async-storage'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
+import { Api } from '../../api'
 
 const GOOGLE_WEB_CLIENT_ID = '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com'
 GoogleSignin.configure({ webClientId: GOOGLE_WEB_CLIENT_ID })
@@ -53,7 +54,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
             if (token && profile && method) {
                 try {
                     setLoading(true)
-                    const { data } = await createUser({
+                    const { data } = await Api.post('/auth/create-user', {
                         ...profile,
                         method,
                     })

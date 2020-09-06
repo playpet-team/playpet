@@ -54,8 +54,8 @@ const handleLogout = (setLoading: React.Dispatch<React.SetStateAction<boolean>>)
             onPress: async () => {
                 try {
                     setLoading(true)
-                    AsyncStorage.clear()
                     await signOut(SignType.Google)
+                    AsyncStorage.clear()
                     appReload()
                 } catch (e) {
                     alert('로그아웃에 실패하였습니다. 잠시후 다시 시도해 주세요')
@@ -78,6 +78,7 @@ const handleLeave = (setLoading: React.Dispatch<React.SetStateAction<boolean>>) 
                 try {
                     setLoading(true)
                     await leave()
+                    AsyncStorage.clear()
                     appReload()
                 } catch (e) {
                     alert('회원탈퇴에 실패하였습니다. 잠시후 다시 시도해 주세요')

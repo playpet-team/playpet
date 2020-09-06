@@ -19,11 +19,9 @@ export default function useCachedResources() {
             try {
                 SplashScreen.preventAutoHideAsync()
                 const response = await AsyncStorage.getItem('customToken')
-                console.log('customToken---', response)
                 if (response) {
                     const getStorage: AsyncStorageCustomToken = JSON.parse(response);
                     const res = await signInWithCustomToken(getStorage.customToken)
-                    console.log("signInCustomToken----", res)
                 }
 
                 // Load fonts

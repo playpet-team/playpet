@@ -22,12 +22,12 @@ export default function PlayGroundScreen() {
     // const { uid } = useSelector((state: RootState) => state.auth)
     const dispatch = useDispatch()
     const isFocused = useIsFocused()
-    const { myLikes } = useCardAdditionalInformation()
-    // const { isPlaySound, toggleIsPlaySound } = usePlayOptions()
+    useCardAdditionalInformation()
+    // const { myLikes } = useCardAdditionalInformation()
 
-    useEffect(() => {
-        dispatch(playgroundActions.setMyLikes(myLikes))
-    }, [myLikes])
+    // useEffect(() => {
+    //     dispatch(playgroundActions.setMyLikes(myLikes))
+    // }, [myLikes])
 
     useEffect(() => {
         if (!isFocused) {
@@ -53,7 +53,7 @@ export default function PlayGroundScreen() {
                 onPlayActive={activeIndex === index}
             />
         )
-    }, [activeIndex, myLikes])
+    }, [activeIndex])
 
     return (
         <PlayGroundBlock>

@@ -32,8 +32,8 @@ import Toast, { ToastParams } from '../../components/Toast'
 //     personalCollectAgree: false,
 //     marketingAgree: false,
 // }
-const MAX_USERNAME_LENGTH = 12
-const MIN_USERNAME_LENGTH = 4
+const MAX_USERNAME_LENGTH = 16
+const MIN_USERNAME_LENGTH = 2
 
 export default function ProfileSetting() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
@@ -105,7 +105,7 @@ export default function ProfileSetting() {
         const isOK = validator(newUsername, 'username')
         if (!isOK) {
             return setToastContent({
-                title: '닉네임은 4자이상 12자 이하여야 합니다',
+                title: `닉네임은 ${MIN_USERNAME_LENGTH}자이상 ${MAX_USERNAME_LENGTH}자 이하여야 합니다`,
                 visible: true
             })
         }
@@ -168,7 +168,6 @@ export default function ProfileSetting() {
 }
 
 const validator = (value: string, type: 'username') => {
-    console.log('value', value, type)
     let isOK = false
     switch (type) {
         case 'username': {
