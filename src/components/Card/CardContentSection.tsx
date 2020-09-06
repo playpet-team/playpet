@@ -1,13 +1,15 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import styled, { css } from 'styled-components/native'
 import Animated, { Value, interpolate } from 'react-native-reanimated'
 import { Icon, Button, Image } from 'react-native-elements'
 import { deviceSize, setCardLike } from '../../utils'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/rootReducers';
 import useShare from '../../hooks/useShare';
 import { useTheme } from '@react-navigation/native'
+import { playgroundActions } from "../../store/playgroundReducer";
+import { View, Modal } from "react-native";
 
 const DEVICE_HEIGHT = deviceSize().height
 
@@ -23,18 +25,36 @@ export default function CardContentSection({
     title,
     myCards,
 }: Section) {
+    const dispatch = useDispatch()
     const { uid } = useSelector((state: RootState) => state.auth);
     const { myLikes } = useSelector((state: RootState) => state.playground);
-    const { popupShare } = useShare({ id, title, })
-    const isLike = useMemo(() => myLikes.includes(id), [id])
-
+    const { popupShare } = useShare({ id, title })
+    const isLike = useMemo(() => myLikes.includes(id), [id, myLikes])
     const { bottom } = useSafeAreaInsets();
     const themes = useTheme()
+    const [showToastLike, setShowToastLike] = useState(false)
+
+    useEffect(() => {
+        if (showToastLike) {
+            setTimeout(() => {
+                setShowToastLike(false)
+            }, 500)
+        }
+    }, [showToastLike])
 
     const handleProduct = () => {
         alert('상품클릭')
     }
-    console.log("myCards", myCards);
+
+    const handleAddLikes = () => {
+        if (!isLike) {
+            setShowToastLike(true)
+        }
+        const willLikes = isLike ? [...myLikes, uid] : myLikes.filter(like => like != id)
+        console.log("willLikes------", willLikes)
+        dispatch(playgroundActions.setMyLikes(willLikes))
+        setCardLike({ uid, id, methods: isLike ? 'remove' : 'add' })
+    }
 
     return (
         <CardSectionBlock
@@ -46,6 +66,23 @@ export default function CardContentSection({
                 })
             }}
         >
+            <Modal
+                transparent={true}
+                visible={showToastLike}
+                animated={true}
+                animationType="fade"
+            >
+                <View style={{
+                    flex: 1,
+                    justifyContent: 'center'
+                }}>
+                    <Icon
+                        name='favorite'
+                        color="#ff0000"
+                        size={120}
+                    />
+                </View>
+            </Modal>
             <FloatingButtonGroup>
                 {/* <Icon
                     onPress={toggleIsPlaySound}
@@ -58,7 +95,7 @@ export default function CardContentSection({
                 /> */}
                 {/* <DividerBlock marginTop={8} /> */}
                 <Icon
-                    onPress={() => setCardLike({ uid, id, methods: isLike ? 'remove' : 'add' })}
+                    onPress={handleAddLikes}
                     name={isLike ? 'favorite' : 'favorite-border'}
                     color="#fff"
                     size={22}
