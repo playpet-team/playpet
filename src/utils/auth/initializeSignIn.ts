@@ -288,7 +288,7 @@ const getProvider = (providerId: string) => {
         case SignType.Apple:
             return auth.AppleAuthProvider
         default:
-            throw new e(`No provider implemented for ${providerId}`)
+            throw new Error(`No provider implemented for ${providerId}`)
     }
 }
 

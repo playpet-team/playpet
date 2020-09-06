@@ -1,8 +1,8 @@
+export * from './permission'
 import { NativeModules, Dimensions } from 'react-native'
 import moment from 'moment'
 import * as Linking from 'expo-linking'
 import * as Sentry from "@sentry/react-native";
-export * from './permission'
 
 export const appReload = () => {
     return NativeModules.DevSettings.reload()
