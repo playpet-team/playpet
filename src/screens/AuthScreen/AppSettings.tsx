@@ -12,6 +12,7 @@ import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import AsyncStorage from '@react-native-community/async-storage'
 import { SignType } from '../../models'
 import * as Sentry from "@sentry/react-native";
+import * as Updates from 'expo-updates';
 
 export default function AppSettings() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
@@ -57,7 +58,7 @@ const handleLogout = (setLoading: React.Dispatch<React.SetStateAction<boolean>>)
                     setLoading(true)
                     await signOut(SignType.Google)
                     AsyncStorage.clear()
-                    appReload()
+                    Updates.reloadAsync()
                 } catch (e) {
                     Sentry.captureException(e)
                     alert('로그아웃에 실패하였습니다. 잠시후 다시 시도해 주세요')
@@ -81,7 +82,7 @@ const handleLeave = (setLoading: React.Dispatch<React.SetStateAction<boolean>>) 
                     setLoading(true)
                     await leave()
                     AsyncStorage.clear()
-                    appReload()
+                    Updates.reloadAsync()
                 } catch (e) {
                     Sentry.captureException(e)
                     alert('회원탈퇴에 실패하였습니다. 잠시후 다시 시도해 주세요')
