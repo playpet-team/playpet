@@ -27,7 +27,7 @@ export default function CardContentSection({
 }: Section) {
     const dispatch = useDispatch()
     const { uid } = useSelector((state: RootState) => state.auth);
-    const { myLikes } = useSelector((state: RootState) => state.playground);
+    const { myLikes = [] } = useSelector((state: RootState) => state.playground);
     const { popupShare } = useShare({ id, title })
     const isLike = useMemo(() => myLikes.includes(id), [id, myLikes])
     const { bottom } = useSafeAreaInsets();
