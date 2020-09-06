@@ -11,6 +11,7 @@ import { currentUser } from '../utils'
 import analytics from '@react-native-firebase/analytics'
 import { Crash } from '../utils/system/crash'
 import { defaultColorPalette, } from '../styles/colors'
+import * as Sentry from "@sentry/react-native";
 
 Appearance.getColorScheme()
 
@@ -32,7 +33,7 @@ export default function Navigation() {
             }
             routeNameRef.current = currentRouteName
         } catch (e) {
-            console.error(e)
+            Sentry.captureException(e)
         }
     }, [navigationRef])
 

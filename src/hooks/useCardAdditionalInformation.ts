@@ -3,6 +3,7 @@ import { RootState } from '../store/rootReducers'
 import { useSelector, useDispatch } from 'react-redux'
 import { addListenerCardLikes } from '../utils/cards'
 import { useState, useEffect } from 'react'
+import * as Sentry from "@sentry/react-native";
 
 let snapshotListener: any
 function useCardAdditionalInformation() {
@@ -18,7 +19,7 @@ function useCardAdditionalInformation() {
                     dispatch(playgroundActions.setMyLikes(data?.cardLikes))
                 })
             } catch (e) {
-                console.error('loadLikes-e-', e)
+                Sentry.captureException(e)
             }
         }
         if (snapshotListener) {

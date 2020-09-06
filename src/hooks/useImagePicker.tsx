@@ -9,8 +9,7 @@ import Constants from 'expo-constants'
 import { askPermission, firebaseNow, PermissionsList } from '../utils'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/rootReducers'
-// import { CardForm } from '../screens/CardFormScreen'
-// import { ProfileForm } from '../screens/AuthScreen/ProfileSetting'
+import * as Sentry from "@sentry/react-native";
 
 function useImagePicker({ setLoading, uploadCallback, form, updateType = 'video' }: {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
@@ -56,7 +55,7 @@ function useImagePicker({ setLoading, uploadCallback, form, updateType = 'video'
                 isError: false,
             }
         } catch (e) {
-            console.error(e)
+            Sentry.captureException(e)
             return {
                 isError: true,
             }

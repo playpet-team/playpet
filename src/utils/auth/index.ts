@@ -8,6 +8,7 @@ import { initialState } from '../../store/authReducer'
 import { LoginManager } from 'react-native-fbsdk'
 import KakaoLogins from '@react-native-seoul/kakao-login'
 import { Api } from '../../api'
+import * as Sentry from "@sentry/react-native";
 // import { NaverLogin } from '@react-native-seoul/naver-login'
 
 export const firebaseNow = () => firestore.Timestamp.now()
@@ -72,6 +73,7 @@ export const checkIsExistUser = (uid: string): Promise<CheckUser> => {
                 resolve(doc.exists ? CheckUser.Exists : CheckUser.Empty)
             })
         } catch (e) {
+            Sentry.captureException(e)
             reject('error')
             console.error('checkIsExistUser-----error----', e)
         }

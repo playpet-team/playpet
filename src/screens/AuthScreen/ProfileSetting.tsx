@@ -10,6 +10,7 @@ import useImagePicker from '../../hooks/useImagePicker'
 import { useUploadFirestore } from '../CardFormScreen/useUploadFirestore'
 import { authActions } from '../../store/authReducer'
 import Toast, { ToastParams } from '../../components/Toast'
+import * as Sentry from "@sentry/react-native";
 
 // isLogged: false,
 // uid: '',
@@ -73,6 +74,7 @@ export default function ProfileSetting() {
                 updateUserProfile('photoURL', downloadUrl)
                 dispatch(authActions.setUserProfilePhoto(downloadUrl))
             } catch (e) {
+                Sentry.captureException(e)
                 console.error(e)
             } finally {
                 setLoading(false)

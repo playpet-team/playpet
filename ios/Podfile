@@ -95,6 +95,8 @@ target 'playpet' do
   # -----------Firebase Libraries-----------
   
 
+  pod 'RNSentry', :path => '../node_modules/@sentry/react-native'
+
   post_install do |installer|
     flipper_post_install(installer)
   end

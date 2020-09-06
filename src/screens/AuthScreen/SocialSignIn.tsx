@@ -12,6 +12,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import PlaypetModal from '../../components/PlaypetModal';
 import { AppleButton, } from '@invertase/react-native-apple-authentication'
 import { Image } from 'react-native-elements'
+import * as Sentry from "@sentry/react-native";
 
 export default function SocialSignIn() {
     const [showOtherMethods, setShowOtherMethods] = useState(false)
@@ -29,6 +30,7 @@ export default function SocialSignIn() {
             // setLoading(true)
             await getUidByThirdPartySignIn(method)
         } catch (e) {
+            Sentry.captureException(e)
             console.error(e)
         } finally {
             // setLoading(false)

@@ -7,9 +7,7 @@ import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import { DividerBlock, Text } from '../../styles'
 import AsyncStorage from '@react-native-community/async-storage'
 import ListItem from '../../components/ListItem'
-import usePlayOptions from '../../hooks/usePlayOptions'
-import { manifest } from 'expo-updates'
-import Constants from 'expo-constants';
+import * as Sentry from "@sentry/react-native";
 
 enum Handle {
     Link,
@@ -116,6 +114,7 @@ const handleLogout = (setLoading: React.Dispatch<React.SetStateAction<boolean>>)
                     await signOut(SignType.Google)
                     appReload()
                 } catch (e) {
+                    Sentry.captureException(e)
                     alert('로그아웃에 실패하였습니다. 잠시후 다시 시도해 주세요')
                 } finally {
                     // setLoading(false)
@@ -138,6 +137,7 @@ const handleLeave = (setLoading: React.Dispatch<React.SetStateAction<boolean>>) 
                     await leave()
                     appReload()
                 } catch (e) {
+                    Sentry.captureException(e)
                     alert('회원탈퇴에 실패하였습니다. 잠시후 다시 시도해 주세요')
                 } finally {
                     setLoading(false)

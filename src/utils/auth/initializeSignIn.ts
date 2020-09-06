@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native'
-import { createUser } from './../../callable/auth'
 import { signInWithCustomToken, currentUser } from '.'
 import { ToastParams } from '../../components/Toast'
 import { useCallback, useState, useEffect } from 'react'
@@ -17,9 +16,11 @@ import { SignType } from '../../models'
 import AsyncStorage from '@react-native-community/async-storage'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import { Api } from '../../api'
+import * as Sentry from "@sentry/react-native";
 
-const GOOGLE_WEB_CLIENT_ID = '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com'
-GoogleSignin.configure({ webClientId: GOOGLE_WEB_CLIENT_ID })
+const DEV_GOOGLE_WEB_CLIENT_ID = '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com'
+const PROD_GOOGLE_WEB_CLIENT_ID = '952410130595-ro7ouus2ia8rtj64guknh8dn91e5o7ns.apps.googleusercontent.com'
+GoogleSignin.configure({ webClientId: __DEV__ ? DEV_GOOGLE_WEB_CLIENT_ID : PROD_GOOGLE_WEB_CLIENT_ID })
 
 export default function initializeSignIn({ toastContent, setToastContent }: {
     toastContent: ToastParams
@@ -95,7 +96,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                         setLoading(false)
                     }
                 } catch (e) {
-                    console.error('getCredential----', e)
+                    Sentry.captureException(e)
                 } finally {
                     setLoading(false)
                 }
@@ -218,7 +219,7 @@ const appleSignIn = async (setProfile: React.Dispatch<any>) => {
         const { identityToken, nonce } = appleAuthRequestResponse
         return getProvider(SignType.Apple).credential(identityToken, nonce)
     } catch (e) {
-        console.error('apple reror', e)
+        Sentry.captureException(e)
     }
 }
 

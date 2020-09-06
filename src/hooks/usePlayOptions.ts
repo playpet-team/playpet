@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import { useState, useEffect } from 'react'
+import * as Sentry from "@sentry/react-native";
 
 function usePlayOptions() {
     const [isLoading, setIsLoading] = useState(false)
@@ -16,7 +17,7 @@ function usePlayOptions() {
                     setIsPlaySound(Boolean(value) !== false)
                 }
             } catch (e) {
-                console.error('loadPlaySound-e-', e)
+                Sentry.captureException(e)
             } finally {
                 setIsLoading(false)
             }
@@ -36,7 +37,7 @@ function usePlayOptions() {
                     setIsAutoPlay(Boolean(value) !== false)
                 }
             } catch (e) {
-                console.error('loadAutoPlay-e-', e)
+                Sentry.captureException(e)
             }
         }
         loadAutoPlay()
@@ -49,7 +50,7 @@ function usePlayOptions() {
                 value: !isAutoPlay,
             }))
         } catch (e) {
-            console.error('toggleIsAutoPlay-e-', e)
+            Sentry.captureException(e)
         }
     }
     
@@ -60,7 +61,7 @@ function usePlayOptions() {
                 value: !isPlaySound,
             }))
         } catch (e) {
-            console.error('toggleIsPlaySound-e-', e)
+            Sentry.captureException(e)
         }
     }
 

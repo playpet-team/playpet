@@ -2,6 +2,7 @@ import { askPermission, PermissionsList } from './../utils/system/permission';
 import { updateFcmToken, currentUser } from './../utils/auth/index';
 import messaging from '@react-native-firebase/messaging';
 import { useEffect } from 'react';
+import * as Sentry from "@sentry/react-native";
 
 let _onTokenRefreshListener: any = null;
 let _notificationListener: any = null;
@@ -15,6 +16,7 @@ function useFirebaseMessage() {
                 const { status, type } = await askPermission(PermissionsList.USER_FACING_NOTIFICATIONS);
                 _checkFirebasePermission();
             } catch (e) {
+                Sentry.captureException(e)
               _registerToken()
             }
         }

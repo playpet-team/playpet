@@ -6,6 +6,7 @@ import { Button } from 'react-native-elements'
 import { RootState } from "../../store/rootReducers"
 import { useSelector } from "react-redux"
 import { Alert } from "react-native"
+import * as Sentry from "@sentry/react-native";
 
 interface Submit {
     cardImages: CardImage[]
@@ -62,6 +63,7 @@ function SubmitButton({
             }
             await submitCard(formData)
         } catch (e) {
+            Sentry.captureException(e)
             console.error(e)
         } finally {
             setLoading(false)
@@ -89,6 +91,7 @@ function SubmitButton({
                 })
             )
         } catch (e) {
+            Sentry.captureException(e)
             console.error(e)
         }
     }

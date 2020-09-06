@@ -7,6 +7,7 @@ import { Text } from '../styles'
 import { Image } from 'react-native-elements'
 import useLoadingIndicator from './useLoadingIndicator'
 import { View } from 'react-native'
+import * as Sentry from "@sentry/react-native";
 
 const BANNER_WIDTH = deviceSize().width * 0.9
 
@@ -24,7 +25,7 @@ function useRollingBanner() {
             try {
                 setBanner(await loadBanner())
             } catch (e) {
-                console.error(e)
+                Sentry.captureException(e)
             } finally {
                 setLoading(false)
             }
