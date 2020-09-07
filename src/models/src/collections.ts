@@ -8,4 +8,5 @@ export enum Collections {
     Payments = 'payments',
     Banners = 'banners',
     Products = 'products',
-};
+    Stores = 'stores',
+}
