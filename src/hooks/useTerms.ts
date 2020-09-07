@@ -6,7 +6,6 @@ import { currentUser, getUserTerms } from '../utils';
 function useTerms({ completeTerm }: { completeTerm: boolean }) {
     const dispatch = useDispatch()
     const [existDoc, setExistDoc] = useState(true)
-    // const [terms, setTerms] = useState<any>(null)
 
     useEffect(() => {
         loadTerms()

@@ -2,7 +2,6 @@ import { firebaseTimeStampToStringStamp } from './../system/index';
 import { Collections } from '../../models/src/collections';
 
 import firestore, { FirebaseFirestoreTypes, } from '@react-native-firebase/firestore';
-import { manageCardLikes } from '../../callable';
 import { Api } from '../../api';
 import { currentUser } from '../auth';
 

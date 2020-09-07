@@ -9,4 +9,5 @@ export enum Collections {
     Banners = 'banners',
     Products = 'products',
     Stores = 'stores',
+    Notifications = 'notifications',
 }

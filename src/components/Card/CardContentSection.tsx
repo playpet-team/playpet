@@ -18,6 +18,7 @@ interface Section {
     id: string
     cardUid: string
     username: string
+    thumbnail: string
     title: string
     myCards: boolean
 }
@@ -26,13 +27,14 @@ export default function CardContentSection({
     id,
     cardUid,
     username,
+    thumbnail,
     title,
     myCards,
 }: Section) {
     const dispatch = useDispatch()
     const { uid: myUid, isLogged } = useSelector((state: RootState) => state.auth);
     const { myLikes = [], myFollowing = [] } = useSelector((state: RootState) => state.playground);
-    const { popupShare } = useShare({ id, title })
+    const { popupShare } = useShare({ id, title, thumbnail, })
     const isLike = useMemo(() => myLikes.includes(id), [id, myLikes])
     const isFollow = useMemo(() => myFollowing.includes(cardUid), [cardUid, myFollowing])
     const { bottom } = useSafeAreaInsets();

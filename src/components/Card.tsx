@@ -111,6 +111,7 @@ function Card({
                     cardUid={uid}
                     username={username}
                     title={title}
+                    thumbnail={contents[0].videoThumbnail}
                 />
             </CardBlock>
         </CardTouchable>

@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
-import { getUserTerms, currentUser } from '../utils'
 import { DividerBlock } from '../styles'
 import useFirebaseMessage from '../hooks/useFirebaseMessage'
 import useRollingBanner from '../hooks/useRollingBanner'
@@ -10,13 +9,13 @@ import { Layout } from '../styles'
 import Logo from '../components/Logo'
 import ProductList from '../components/ProductList'
 import useLanguage from '../hooks/useLanguage'
-import { useNavigation } from '@react-navigation/native'
-import useTerms from '../hooks/useTerms'
 import AgreeTermsModal from './Home/AgreeTermsModal'
+import useInitialDynamicLink from '../hooks/useInitialDynamicLink'
 
 export default function Home() {
     useLanguage()
     useFirebaseMessage()
+    useInitialDynamicLink()
     const { renderBanner } = useRollingBanner()
 
     // useEffect(() => {

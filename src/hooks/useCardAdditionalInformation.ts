@@ -23,8 +23,11 @@ function useCardAdditionalInformation() {
                 Sentry.captureException(e)
             }
         }
-        if (snapshotListener) {
-            return snapshotListener
+        
+        return () => {
+            if (typeof snapshotListener === 'function') {
+                snapshotListener()
+            }
         }
         
     }, [])

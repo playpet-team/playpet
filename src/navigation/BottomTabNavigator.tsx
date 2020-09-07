@@ -10,19 +10,23 @@ import Home from '../screens/Home';
 import ProductWebView from '../components/ProductWebView';
 import PlayGroundScreen from '../screens/PlayGroundScreen';
 import CardFormScreen from '../screens/CardFormScreen';
+import Notifications from '../screens/Notifications';
 import AuthScreen from '../screens/AuthScreen';
 import AppSettings from '../screens/AuthScreen/AppSettings';
 import AppLogin from '../screens/AppLogin';
 import ProfileSetting from '../screens/AuthScreen/ProfileSetting';
+import useUserNotifications from '../hooks/useUserNotifications';
 
 export type BottomTabParamList = {
     Home: undefined;
-    Auth: undefined;
-    Card: undefined;
     PlayGround: undefined;
+    CardForm: undefined;
+    Notifications: undefined;
+    Auth: undefined;
 };
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 export default function BottomTabNavigator() {
+    const { isNew } = useUserNotifications('isNew')
     return (
         <BottomTab.Navigator
             initialRouteName="Home"
@@ -42,7 +46,17 @@ export default function BottomTabNavigator() {
                 }}
             />
             <BottomTab.Screen
-                name="Card"
+                name="PlayGround"
+                component={PlayGroundNavigator}
+                options={{
+                    tabBarIcon: ({ focused }) => <Icon
+                        name="check-box-outline-blank"
+                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
+                    />,
+                }}
+            />
+            <BottomTab.Screen
+                name="CardForm"
                 component={CardFormNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => <Icon
@@ -52,12 +66,12 @@ export default function BottomTabNavigator() {
                 }}
             />
             <BottomTab.Screen
-                name="PlayGround"
-                component={PlayGroundNavigator}
+                name="Notifications"
+                component={NotificationNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => <Icon
-                        name="check-box-outline-blank"
-                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
+                        name="notifications"
+                        color={focused || isNew ? defaultColorPalette.primary : defaultColorPalette.border}
                     />,
                 }}
             />
@@ -115,6 +129,25 @@ function HomeNavigator() {
         </HomeNavigatorTapStack.Navigator>
     );
 }
+
+export type NotificationNavigatorParamList = {
+    Notifications: undefined;
+    NotificationDetail: undefined;
+};
+const NotificationNavigatorStack = createStackNavigator<NotificationNavigatorParamList>();
+function NotificationNavigator() {
+    return (
+        <NotificationNavigatorStack.Navigator>
+            <NotificationNavigatorStack.Screen
+                name="Notifications"
+                component={Notifications}
+                options={({ navigation }) => ({
+                    headerTitle: '알림',
+                })}
+            />
+        </NotificationNavigatorStack.Navigator>
+    );
+};
 
 export type CardFormNavigatorParamList = {
     CardFormNavigator: undefined;
