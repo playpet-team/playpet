@@ -1,9 +1,8 @@
-// import { withdrawCall } from './../../callable/auth'
 import firestore from '@react-native-firebase/firestore'
 import { firebaseTimeStampToStringStamp } from './../system/index'
 import auth, { FirebaseAuthTypes, firebase } from '@react-native-firebase/auth'
 import { GoogleSignin } from '@react-native-community/google-signin'
-import { SignType, collections, User } from '../../models'
+import { SignType, Collections, User } from '../../models'
 import { initialState } from '../../store/authReducer'
 import { LoginManager } from 'react-native-fbsdk'
 import KakaoLogins from '@react-native-seoul/kakao-login'
@@ -16,28 +15,43 @@ export const currentUser = () => auth().currentUser
 export const signInWithCustomToken = async (customToken: string) => await auth().signInWithCustomToken(customToken)
 export const signInCredential = async (credential: FirebaseAuthTypes.AuthCredential) => await auth().signInWithCredential(credential)
 export const updateUserLastLogin = async (uid: string) => {
-    await firestore().collection(collections.Users).doc(uid).update({
+    await firestore().collection(Collections.Users).doc(uid).update({
         updatedAt: firebaseNow(),
         lastLogin: firebaseNow(),
     })
 }
+export const updateUserAuthToken = async (uid: string, customToken: string) => {
+    await firestore().collection(Collections.AuthTokens).doc(uid).set({
+        updatedAt: firebaseNow(),
+        customToken,
+    }, { merge: true })
+}
+export const getUserAuthToken = async (uid: string) => {
+    try {
+        const userData = (await firestore().collection(Collections.AuthTokens).doc(uid).get()).data()
+        return userData || null
+    } catch (e) {
+        Sentry.captureException(e)
+        return null
+    }
+}
 
 export const updateUserProfilePhoto = async (uid: string, profilePhoto: string) => {
-    await firestore().collection(collections.Users).doc(uid).update({
+    await firestore().collection(Collections.Users).doc(uid).update({
         profilePhoto,
         updatedAt: firebaseNow(),
     })
 }
 
 export const updateUsername = async (uid: string, username: string) => {
-    await firestore().collection(collections.Users).doc(uid).update({
+    await firestore().collection(Collections.Users).doc(uid).update({
         username,
         updatedAt: firebaseNow(),
     })
 }
 
 export const getUser = async (uid: string): Promise<User | null> => {
-    const user = (await firestore().collection(collections.Users).doc(uid).get()).data()
+    const user = (await firestore().collection(Collections.Users).doc(uid).get()).data()
     if (!user) {
         return null
     }
@@ -51,7 +65,7 @@ export const getUser = async (uid: string): Promise<User | null> => {
 }
 
 export const getUserTerms = async (uid: string) => {
-    const termsData = (await firestore().collection(collections.Terms).doc(uid).get()).data()
+    const termsData = (await firestore().collection(Collections.Terms).doc(uid).get()).data()
     if (termsData) {
         return {
             ...termsData,
@@ -69,7 +83,7 @@ export enum CheckUser {
 export const checkIsExistUser = (uid: string): Promise<CheckUser> => {
     return new Promise(function(resolve, reject) {
         try {
-            firestore().collection(collections.Users).doc(uid).get().then(doc => {
+            firestore().collection(Collections.Users).doc(uid).get().then(doc => {
                 resolve(doc.exists ? CheckUser.Exists : CheckUser.Empty)
             })
         } catch (e) {
@@ -80,7 +94,7 @@ export const checkIsExistUser = (uid: string): Promise<CheckUser> => {
 }
 
 export const updateUserTerms = async (uid: string, terms: {}) => {
-    const docRef = firestore().collection(collections.Terms).doc(uid)
+    const docRef = firestore().collection(Collections.Terms).doc(uid)
     const setParams = {
         ...terms,
         updatedAt: firebaseNow(),
@@ -90,7 +104,7 @@ export const updateUserTerms = async (uid: string, terms: {}) => {
 }
 
 export const updateFcmToken = async (uid: string, fcmToken: string) => {
-    const docRef = firestore().collection(collections.PushSettings).doc(uid)
+    const docRef = firestore().collection(Collections.PushSettings).doc(uid)
     const setParams = {
         fcmToken,
         updatedAt: firebaseNow(),

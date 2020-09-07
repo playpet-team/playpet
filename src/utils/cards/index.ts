@@ -1,5 +1,5 @@
 import { firebaseTimeStampToStringStamp } from './../system/index';
-import { collections } from '../../models/src/collections';
+import { Collections } from '../../models/src/collections';
 
 import firestore, { FirebaseFirestoreTypes, } from '@react-native-firebase/firestore';
 import { manageCardLikes } from '../../callable';
@@ -26,8 +26,8 @@ export interface CardModel {
 }
 
 export const submitCard = async (formData: CardModel) => {
-    const { id } = firestore().collection(collections.Playground).doc();
-    return await firestore().collection(collections.Playground).doc(id).set({
+    const { id } = firestore().collection(Collections.Playground).doc();
+    return await firestore().collection(Collections.Playground).doc(id).set({
         ...formData,
         id,
     });
@@ -35,7 +35,7 @@ export const submitCard = async (formData: CardModel) => {
 
 export const getMyCards = async (uid: string, sort?: string): Promise<CardModel[]> => {
     const myCards = await firestore()
-        .collection(collections.Playground)
+        .collection(Collections.Playground)
         .where('uid', '==', uid)
         .where('status', '==', 'active')
         .get();
@@ -70,7 +70,7 @@ interface SortParams {
 }
 export const loadPlaygroundCards = async ({ sortType = SortCards.CreatedAt, startAt = 0, limit = 100 }: SortParams) => {
     const cardDoc = await firestore()
-        .collection(collections.Playground)
+        .collection(Collections.Playground)
         .orderBy('createdAt', 'desc')
         .limit(limit)
         .get();
@@ -113,7 +113,7 @@ export const setUserFollow = async ({ myUid, followingUid, methods = 'add' }: Fo
 };
 
 export const addListenerCardLikes = async (uid: string, onSnapCallback: Function) => {
-    const listener = firestore().collection(collections.UserActions).doc(uid).onSnapshot(snapshot => {
+    const listener = firestore().collection(Collections.UserActions).doc(uid).onSnapshot(snapshot => {
         if (snapshot) {
             onSnapCallback(snapshot.data());
         }

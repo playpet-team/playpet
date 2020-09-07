@@ -1,17 +1,17 @@
 import firestore from '@react-native-firebase/firestore';
 import { firebaseTimeStampToStringStamp } from './../system/index';
-import { collections } from '../../models';
+import { Collections } from '../../models';
 
 export const loadProduct = async (PID: string) => {
     return (await firestore()
-        .collection(collections.Products)
+        .collection(Collections.Products)
         .doc(PID)
         .get()).data();
 };
 
 export const loadProductList = async () => {
     const productList = await firestore()
-        .collection(collections.Products)
+        .collection(Collections.Products)
         .where('status', '==', 'active')
         .get();
 

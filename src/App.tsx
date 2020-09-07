@@ -9,22 +9,26 @@ import Navigation from './navigation';
 import { Provider } from 'react-redux';
 import { store } from './store/rootReducers';
 import useUpdater from './hooks/useUpdater';
+import { sentryInit } from './utils/system/sentry';
+import useAutoLogin from './hooks/useAutoLogin';
+sentryInit()
 
 export default function App() {
     const isLoadingComplete = useCachedResources();
+    useAutoLogin()
     useUpdater()
 
     return (
         <Provider store={store}>
             <SafeAreaProvider>
                 <AppearanceProvider>
-                    {!isLoadingComplete ?
-                        <Splash />
-                        :
+                    {isLoadingComplete ?
                         <>
                             <Navigation />
                             <StatusBar style="dark" />
                         </>
+                        :
+                        <Splash />
                     }
                 </AppearanceProvider>
             </SafeAreaProvider>

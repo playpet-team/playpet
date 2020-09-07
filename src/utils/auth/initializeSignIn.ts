@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import { signInWithCustomToken, currentUser } from '.'
+import { signInWithCustomToken, currentUser, updateUserAuthToken } from '.'
 import { ToastParams } from '../../components/Toast'
 import { useCallback, useState, useEffect } from 'react'
 
@@ -55,11 +55,16 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
             if (token && profile && method) {
                 try {
                     setLoading(true)
-                    const { data } = await Api.post('/auth/create-user', {
+                    const { data: { customToken, uid, newUser } }:
+                        { data: {
+                            customToken: string
+                            uid: string
+                            newUser: boolean
+                        }}
+                        = await Api.post('/auth/create-user', {
                         ...profile,
                         method,
                     })
-                    const customToken = data.token
                     if (!customToken) {
                         setLoading(false)
                         return
@@ -67,14 +72,15 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                     
                     try {
                         await signInWithCustomToken(customToken)
-                        saveCustomToken({
+                        putAsyncStorage('customToken', {
                             customToken,
                             email: profile.email,
                             provider: method,
                         })
+                        updateUserAuthToken(uid, customToken)
                         const success = checkUser()
                         if (success) {
-                            setIsSignUp(data.newUser)
+                            setIsSignUp(newUser)
                         }
         
                     } catch (e) {
@@ -170,19 +176,6 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         
     }, [])
 
-    
-    const saveCustomToken = useCallback(async (putData: AsyncStorageCustomToken) => {
-        try {
-            const saveData = JSON.stringify(putData)
-            await AsyncStorage.setItem(
-                'customToken',
-                saveData
-            )
-        } catch (e) {
-            Sentry.captureException(e)
-        }
-    }, [token])
-
     const checkUser = () => {
         const user = currentUser()
         if (!user) {
@@ -219,6 +212,18 @@ const appleSignIn = async (setProfile: React.Dispatch<any>) => {
         // Create a Firebase credential from the response
         const { identityToken, nonce } = appleAuthRequestResponse
         return getProvider(SignType.Apple).credential(identityToken, nonce)
+    } catch (e) {
+        Sentry.captureException(e)
+    }
+}
+
+export const putAsyncStorage = async (key: string, putData: AsyncStorageCustomToken) => {
+    try {
+        const saveData = JSON.stringify(putData)
+        await AsyncStorage.setItem(
+            key,
+            saveData
+        )
     } catch (e) {
         Sentry.captureException(e)
     }
