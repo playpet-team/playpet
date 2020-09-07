@@ -12,19 +12,18 @@ import ProductList from '../components/ProductList'
 import useLanguage from '../hooks/useLanguage'
 import { useNavigation } from '@react-navigation/native'
 import useTerms from '../hooks/useTerms'
+import AgreeTermsModal from './Home/AgreeTermsModal'
 
 export default function Home() {
     useLanguage()
     useFirebaseMessage()
-    const navigation = useNavigation()
     const { renderBanner } = useRollingBanner()
-    const { existDoc } = useTerms()
 
-    useEffect(() => {
-        if (!existDoc) {
-            navigation.navigate('AppLoginAgreeTerms')
-        }
-    }, [existDoc])
+    // useEffect(() => {
+    //     if (!existDoc) {
+    //         navigation.navigate('AppLoginAgreeTerms')
+    //     }
+    // }, [existDoc])
 
     return (
         <SafeAreaViewBlock>
@@ -40,6 +39,7 @@ export default function Home() {
                 <ProductList />
                 {/* <DummyCardView /> */}
             </ScrollView>
+            <AgreeTermsModal />
         </SafeAreaViewBlock>
     )
 }

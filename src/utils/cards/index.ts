@@ -4,6 +4,7 @@ import { Collections } from '../../models/src/collections';
 import firestore, { FirebaseFirestoreTypes, } from '@react-native-firebase/firestore';
 import { manageCardLikes } from '../../callable';
 import { Api } from '../../api';
+import { currentUser } from '../auth';
 
 export interface CardModel {
     status: 'active' | 'deactive';
@@ -92,7 +93,8 @@ export interface CardLike {
     methods: 'add' | 'remove';
 }
 export const setCardLike = async ({ uid, id, methods = 'add' }: CardLike) => {
-    if (!uid) {
+    const user = currentUser()
+    if (!user || !uid) {
         alert('회원가입이 필요합니다')
         return
     }
@@ -105,7 +107,8 @@ export interface FollowProps {
     methods: 'add' | 'remove';
 }
 export const setUserFollow = async ({ myUid, followingUid, methods = 'add' }: FollowProps) => {
-    if (!myUid) {
+    const user = currentUser()
+    if (!user || !myUid) {
         alert('회원가입이 필요합니다')
         return
     }

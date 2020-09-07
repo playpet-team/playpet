@@ -6,10 +6,9 @@ import { Icon } from "react-native-elements"
 
 interface ModalProps {
     modalVisible: boolean
-    setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+    setModalVisible?: Function
     children: ReactNode
     isHideCloseButton?: boolean
-    isBackdropPress?: boolean
     containerStyle?: {
         width?: number
         padding?: string
@@ -19,9 +18,8 @@ interface ModalProps {
 
 const PlaypetModal = ({
     modalVisible,
-    setModalVisible,
+    setModalVisible = () => { },
     isHideCloseButton = false,
-    isBackdropPress = true,
     containerStyle = {},
     children,
     header = false,
@@ -29,45 +27,45 @@ const PlaypetModal = ({
     const handleCloseModal = () => setModalVisible(false)
     const themes = useTheme()
     return (
-        <StyledSafeAreaView>
-            <Modal
-                isVisible={modalVisible}
-                useNativeDriver={true}
-                hideModalContentWhileAnimating={true}
-                hasBackdrop={isBackdropPress}
-                onBackdropPress={handleCloseModal}
-                style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
+        // <StyledSafeAreaView>
+        <Modal
+            isVisible={modalVisible}
+            useNativeDriver={true}
+            hideModalContentWhileAnimating={true}
+            backdropColor="black"
+            onBackdropPress={handleCloseModal}
+            style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <Container
+                colors={themes.colors}
+                containerStyle={containerStyle}
             >
-                <Container
-                    colors={themes.colors}
-                    containerStyle={containerStyle}
-                >
-                    {header &&
-                        <PlaypetDialogHeader>
-                            {!isHideCloseButton &&
-                                <CloseButton onPress={handleCloseModal}>
-                                    <Icon name='close' />
-                                </CloseButton>
-                            }
-                        </PlaypetDialogHeader>
-                    }
-                    <PlaypetDialogChildren header={header}>
-                        {children}
-                    </PlaypetDialogChildren>
-                </Container>
-            </Modal>
-        </StyledSafeAreaView>
+                {header &&
+                    <PlaypetDialogHeader>
+                        {!isHideCloseButton &&
+                            <CloseButton onPress={handleCloseModal}>
+                                <Icon name='close' />
+                            </CloseButton>
+                        }
+                    </PlaypetDialogHeader>
+                }
+                <PlaypetDialogChildren header={header}>
+                    {children}
+                </PlaypetDialogChildren>
+            </Container>
+        </Modal>
+        // </StyledSafeAreaView>
     )
 }
 
-const StyledSafeAreaView = styled.SafeAreaView`
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-`
+// const StyledSafeAreaView = styled.SafeAreaView`
+//     flex: 1;
+//     justify-content: center;
+//     align-items: center;
+// `
 
 const Container = styled.View<Pick<Theme, 'colors'> & Pick<ModalProps, 'containerStyle'>>`
     flex-direction: column;

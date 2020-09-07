@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { currentUser, getUserTerms } from '../utils';
 
-function useTerms() {
+function useTerms({ completeTerm }: { completeTerm: boolean }) {
     const dispatch = useDispatch()
     const [existDoc, setExistDoc] = useState(true)
     // const [terms, setTerms] = useState<any>(null)
@@ -14,11 +14,10 @@ function useTerms() {
             const user = currentUser()
             if (user && user.uid) {
                 const termsData = await getUserTerms(user.uid)
+                setExistDoc(Boolean(termsData))
                 if (!termsData) {
-                    setExistDoc(false)
                     dispatch(authActions.setTerms(initialState.terms))
                 } else {
-                    const { overAgeAgree, termsOfUseAgree, personalCollectAgree, marketingAgree }: any = termsData
                     dispatch(authActions.setTerms({
                         existDoc: true,
                         ...termsData,
@@ -26,7 +25,7 @@ function useTerms() {
                 }
             }
         }
-    }, [])
+    }, [completeTerm])
 
     return { existDoc }
 }

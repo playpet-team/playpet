@@ -8,16 +8,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../../store/authReducer';
 import { RootState } from '../../store/rootReducers';
 
-export default function SignUpAgreeTermsModal() {
-    const navigation = useNavigation();
+export default function SignUpAgreeTermsModal({ setCompleteTerm }: {
+    setCompleteTerm: React.Dispatch<React.SetStateAction<boolean>>
+}) {
     const dispatch = useDispatch()
     const { terms } = useSelector((state: RootState) => state.auth)
-    // const [agreementList, setAgreementList] = useState({
-    //     overAgeAgree: false,
-    //     termsOfUseAgree: false,
-    //     personalCollectAgree: false,
-    //     marketingAgree: false,
-    // })
     const { overAgeAgree, termsOfUseAgree, personalCollectAgree, marketingAgree } = terms
 
     const handleSingleTerm = (k: string, v: boolean) => dispatch(authActions.setTerms({ [k]: v }))
@@ -40,13 +35,14 @@ export default function SignUpAgreeTermsModal() {
             return
         }
         const uid = user.uid
-        updateUserTerms(uid, {
+        await updateUserTerms(uid, {
             overAgeAgree,
             termsOfUseAgree,
             personalCollectAgree,
             marketingAgree,
         })
-        navigation.navigate('Home');
+        setCompleteTerm(true)
+        // navigation.goBack()
     }
 
     return (

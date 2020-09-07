@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonGroup, ElementObject } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
-import { ItemList } from '../screens/AuthScreen';
 
 interface Groups {
     buttons: string[] | ElementObject[];

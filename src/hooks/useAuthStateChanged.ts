@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import { askPermission, PermissionsList } from './../utils/system/permission';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { authActions } from '../store/authReducer';
@@ -18,6 +19,7 @@ function useAuthStateChanged() {
                 setIsLogged(true);
             } else {
                 dispatch(authActions.signOut());
+                await AsyncStorage.clear()
             }
         }
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);

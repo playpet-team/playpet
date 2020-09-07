@@ -28,7 +28,6 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
 }) {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
     const [isSignUp, setIsSignUp] = useState<boolean | null>(null)
-    // const [credential, setCredential] = useState<FirebaseAuthTypes.AuthCredential | null>(null)
     const [method, setMethod] = useState<SignType>(SignType.None)
     const [token, setToken] = useState<any>(null)
     const [profile, setProfile] = useState<{
@@ -40,13 +39,14 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         email: '',
         photo: '',
     })
+
     const navigation = useNavigation()
 
     useEffect(() => {
         if (isSignUp === null) {
             return
         }
-        isSignUp ? navigation.navigate('AppLoginAgreeTerms') : navigation.goBack()
+        navigation.goBack()
     }, [isSignUp])
 
     useEffect(() => {
@@ -55,16 +55,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
             if (token && profile && method) {
                 try {
                     setLoading(true)
-                    const { data: { customToken, uid, newUser } }:
-                        { data: {
-                            customToken: string
-                            uid: string
-                            newUser: boolean
-                        }}
-                        = await Api.post('/auth/create-user', {
-                        ...profile,
-                        method,
-                    })
+                    const { customToken, uid, newUser } = await postCreateUser()
                     if (!customToken) {
                         setLoading(false)
                         return
@@ -188,6 +179,23 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         }
         return true
     }
+
+    const postCreateUser = useCallback(async () => {
+        const { data: { customToken, uid, newUser } }:
+            { data: {
+                customToken: string
+                uid: string
+                newUser: boolean
+            }}
+            = await Api.post('/auth/create-user', {
+            ...profile,
+            method,
+        })
+
+        return {
+            customToken, uid, newUser
+        }
+    }, [profile, method])
 
     return { getUidByThirdPartySignIn, loading, Indicator }
 }

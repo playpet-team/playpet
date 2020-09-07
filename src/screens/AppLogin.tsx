@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Text, Button } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import SocialSignIn from './AuthScreen/SocialSignIn';
-import { View, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function AppLogin() {
-    const navigation = useNavigation();
 
     return (
         <AppLoginBlock>
@@ -19,8 +17,8 @@ export default function AppLogin() {
             <MainTitleBlock><Text>누구든 반려동물을 사랑할수 있습니다</Text></MainTitleBlock>
             <SigninBlock>
                 <SocialSignIn />
-                <LookAround>
-                    {/* <Button
+                {/* <LookAround> */}
+                {/* <Button
                         title="돌아가기"
                         onPress={() => navigation.navigate('Home')}
                         buttonStyle={{
@@ -32,7 +30,7 @@ export default function AppLogin() {
                             fontSize: 15,
                         }}
                     /> */}
-                </LookAround>
+                {/* </LookAround> */}
             </SigninBlock>
         </AppLoginBlock>
     )

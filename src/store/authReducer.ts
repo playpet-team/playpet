@@ -35,25 +35,15 @@ const slice = createSlice({
         signIn(state) {
             state.isLogged = true
         },
-        signOut(state) {
-            state.isLogged = false
-        },
+        signOut: () => initialState,
         setUser(state, { payload }) {
             state = Object.assign(state, payload)
-            // return {
-            //     ...state,
-            //     ...payload,
-            // }
         },
         setUserProfilePhoto(state, { payload }) {
             state.profilePhoto = payload
         },
         setTerms(state, { payload }) {
             state.terms = Object.assign(state.terms, payload)
-            // state.terms = {
-            //     ...state.terms,
-            //     ...payload
-            // }
         }
     },
 })

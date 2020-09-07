@@ -12,7 +12,6 @@ import PlayGroundScreen from '../screens/PlayGroundScreen';
 import CardFormScreen from '../screens/CardFormScreen';
 import AuthScreen from '../screens/AuthScreen';
 import AppSettings from '../screens/AuthScreen/AppSettings';
-import AppLoginAgreeTerms from '../screens/AppLogin/AppLoginAgreeTerms';
 import AppLogin from '../screens/AppLogin';
 import ProfileSetting from '../screens/AuthScreen/ProfileSetting';
 
@@ -85,12 +84,12 @@ export default function BottomTabNavigator() {
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 export type HomeNavigatorTabParamList = {
-    AppLoginAgreeTerms: undefined;
     HomeNavigator: undefined;
     ProductWebView: {
         url: string;
         title: string;
     };
+    AppLoginAgreeTerms: undefined;
 };
 const HomeNavigatorTapStack = createStackNavigator<HomeNavigatorTabParamList>();
 
@@ -112,11 +111,6 @@ function HomeNavigator() {
                     title: route.params.title,
                     gestureEnabled: false,
                 })}
-            />
-            <HomeNavigatorTapStack.Screen
-                name="AppLoginAgreeTerms"
-                component={AppLoginAgreeTerms}
-                options={{ headerShown: false }}
             />
         </HomeNavigatorTapStack.Navigator>
     );
@@ -164,6 +158,7 @@ export type AuthTapParamList = {
     AppSettings: undefined;
     ProfileSetting: undefined;
     AppLogin: undefined;
+    AppLoginAgreeTerms: undefined;
 };
 const AuthTapStack = createStackNavigator<AuthTapParamList>();
 

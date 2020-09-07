@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components/native'
-
 import { ScrollView } from 'react-native-gesture-handler'
 import { Icon } from 'react-native-elements'
 import ListItem from '../../components/ListItem'
@@ -8,16 +7,15 @@ import i18n from 'i18n-js'
 import { Alert } from 'react-native'
 import { leave, signOut } from '../../utils'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
-import AsyncStorage from '@react-native-community/async-storage'
 import { SignType } from '../../models'
 import * as Sentry from "@sentry/react-native";
-import { useDispatch } from 'react-redux'
-import { authActions } from '../../store/authReducer'
-import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
+import { RootState } from '../../store/rootReducers'
 
 export default function AppSettings() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
+    const { isLogged } = useSelector((state: RootState) => state.auth)
     const dispatch = useDispatch()
     const navigation = useNavigation()
 
@@ -39,14 +37,18 @@ export default function AppSettings() {
                 title='동영상 자동재생'
                 onPress={() => { }}
             />
-            <ListItem
-                title={i18n.t('common.logout')}
-                onPress={() => handleLogout(setLoading, dispatch, navigation.goBack)}
-            />
-            <ListItem
-                title={i18n.t('common.leave')}
-                onPress={() => handleLeave(setLoading, dispatch, navigation.goBack)}
-            />
+            {isLogged &&
+                <>
+                    <ListItem
+                        title={i18n.t('common.logout')}
+                        onPress={() => handleLogout(setLoading, dispatch, navigation.navigate)}
+                    />
+                    <ListItem
+                        title={i18n.t('common.leave')}
+                        onPress={() => handleLeave(setLoading, dispatch, navigation.navigate)}
+                    />
+                </>
+            }
         </ScrollView>
     )
 }
@@ -54,7 +56,7 @@ export default function AppSettings() {
 const handleLogout = (
     setLoading: React.Dispatch<React.SetStateAction<boolean>>,
     dispatch: React.Dispatch<any>,
-    goBack: Function
+    navigate: Function
 ) => {
     Alert.alert('정말로 로그아웃하시게요?', '', [
         {
@@ -66,9 +68,7 @@ const handleLogout = (
                 try {
                     setLoading(true)
                     await signOut(SignType.Google)
-                    dispatch(authActions.signOut)
-                    AsyncStorage.clear()
-                    goBack()
+                    navigate('AuthScreen')
                 } catch (e) {
                     Sentry.captureException(e)
                     alert('로그아웃에 실패하였습니다. 잠시후 다시 시도해 주세요')
@@ -83,7 +83,7 @@ const handleLogout = (
 const handleLeave = (
     setLoading: React.Dispatch<React.SetStateAction<boolean>>,
     dispatch: React.Dispatch<any>,
-    goBack: Function
+    navigate: Function
 ) => {
     Alert.alert('정말로 탈퇴하시게요?', '', [
         {
@@ -95,9 +95,7 @@ const handleLeave = (
                 try {
                     setLoading(true)
                     await leave()
-                    dispatch(authActions.signOut)
-                    AsyncStorage.clear()
-                    goBack()
+                    navigate('AuthScreen')
                 } catch (e) {
                     Sentry.captureException(e)
                     alert('회원탈퇴에 실패하였습니다. 잠시후 다시 시도해 주세요')
