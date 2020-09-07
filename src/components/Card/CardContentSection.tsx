@@ -1,8 +1,8 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import styled, { css } from 'styled-components/native'
 import Animated, { Value, interpolate } from 'react-native-reanimated'
 import { Icon, Button, Image } from 'react-native-elements'
-import { deviceSize, setCardLike } from '../../utils'
+import { deviceSize, setCardLike, setUserFollow } from '../../utils'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/rootReducers';
@@ -16,20 +16,25 @@ const DEVICE_HEIGHT = deviceSize().height
 interface Section {
     bounceValue: Value<0>
     id: string
+    cardUid: string
+    username: string
     title: string
     myCards: boolean
 }
 export default function CardContentSection({
     bounceValue,
     id,
+    cardUid,
+    username,
     title,
     myCards,
 }: Section) {
     const dispatch = useDispatch()
-    const { uid } = useSelector((state: RootState) => state.auth);
-    const { myLikes = [] } = useSelector((state: RootState) => state.playground);
+    const { uid: myUid } = useSelector((state: RootState) => state.auth);
+    const { myLikes = [], myFollowing = [] } = useSelector((state: RootState) => state.playground);
     const { popupShare } = useShare({ id, title })
     const isLike = useMemo(() => myLikes.includes(id), [id, myLikes])
+    const isFollow = useMemo(() => myFollowing.includes(cardUid), [cardUid, myFollowing])
     const { bottom } = useSafeAreaInsets();
     const themes = useTheme()
     const [showToastLike, setShowToastLike] = useState(false)
@@ -46,14 +51,23 @@ export default function CardContentSection({
         alert('상품클릭')
     }
 
-    const handleAddLikes = () => {
+    const handleLikes = useCallback(() => {
         if (!isLike) {
             setShowToastLike(true)
         }
-        const willLikes = isLike ? [...myLikes, uid] : myLikes.filter(like => like != id)
+        const willLikes = isLike ? myLikes.filter(like => like != id) : [...myLikes, myUid]
         dispatch(playgroundActions.setMyLikes(willLikes))
-        setCardLike({ uid, id, methods: isLike ? 'remove' : 'add' })
-    }
+        setCardLike({ uid: myUid, id, methods: isLike ? 'remove' : 'add' })
+    }, [isLike])
+
+    const handleFollow = useCallback(() => {
+        if (!isFollow) {
+            setShowToastLike(true)
+        }
+        const willFollow = isFollow ? [...myFollowing, myUid] : myFollowing.filter(like => like != id)
+        dispatch(playgroundActions.setMyFollowing(willFollow))
+        setUserFollow({ myUid, followingUid: cardUid, methods: isFollow ? 'remove' : 'add' })
+    }, [isFollow])
 
     return (
         <CardSectionBlock
@@ -94,7 +108,7 @@ export default function CardContentSection({
                 /> */}
                 {/* <DividerBlock marginTop={8} /> */}
                 <Icon
-                    onPress={handleAddLikes}
+                    onPress={handleLikes}
                     name={isLike ? 'favorite' : 'favorite-border'}
                     color="#fff"
                     size={22}
@@ -113,17 +127,33 @@ export default function CardContentSection({
             <Content>
                 <BodySection>
                     <Header>
-                        <TitleText header>바우와우</TitleText>
+                        <Button
+                            onPress={() => dispatch(playgroundActions.setSelectedProfileId(id))}
+                            title={username || 'playpet'}
+                            titleStyle={{
+                                color: '#fff',
+                                fontSize: 18,
+                                fontWeight: '800',
+                            }}
+                            buttonStyle={{
+                                backgroundColor: 'transparent',
+                                padding: 4,
+                            }}
+                        />
                         {!myCards &&
                             <Button
-                                title="+팔로우"
+                                onPress={handleFollow}
+                                title={isFollow ? '팔로잉' : '+팔로우'}
                                 titleStyle={{
                                     color: themes.colors.primary,
                                     fontSize: 12,
+                                    fontWeight: '700',
                                 }}
                                 buttonStyle={{
                                     backgroundColor: themes.colors.background,
                                     padding: 4,
+                                    width: 60,
+                                    height: 25,
                                 }}
                             />
                         }
@@ -176,6 +206,9 @@ const BodySection = styled.View`
 
 const Header = styled.View`
     flex-direction: row;
+    /* flex: 1; */
+    justify-content: space-between;
+    align-items: center;
 `
 
 const Main = styled.View`
@@ -191,11 +224,7 @@ const Aside = styled.View`
     /* justify-content: center; */
 `
 
-const TitleText = styled.Text<{ header?: boolean }>`
+const TitleText = styled.Text`
     color: #fff;
     flex: 1;
-    ${({ header }) => header && css`
-        font-size: 18px;
-        font-weight: 800;
-    `};
 `

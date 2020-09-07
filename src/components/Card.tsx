@@ -20,6 +20,8 @@ const containerWidth: string = '100%'
 
 function Card({
     id,
+    uid,
+    username,
     title,
     contents,
     onPlayActive = true, // 현재 액티브 된 카드인지 여부
@@ -29,10 +31,8 @@ function Card({
 }: CardType) {
     const [getReadyPlay, setGetReadyPlay] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
-    // const { isPlaySound, toggleIsPlaySound } = usePlayOptions()
     const videoRef = useRef<null | Video>(null)
     const bounceValue = useRef(new Value(0)).current
-    // const { popupShare } = useShare({ id, title, })
     const isFocus = useIsFocused()
 
     const trackingVideoStatus = (status: AVPlaybackStatus) => setGetReadyPlay(status.isLoaded)
@@ -108,6 +108,8 @@ function Card({
                     myCards={myCards}
                     bounceValue={bounceValue}
                     id={id}
+                    cardUid={uid}
+                    username={username}
                     title={title}
                 />
             </CardBlock>

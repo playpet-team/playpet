@@ -17,6 +17,7 @@ function useCardAdditionalInformation() {
             try {
                 snapshotListener = await addListenerCardLikes(uid, (data: any) => {
                     dispatch(playgroundActions.setMyLikes(data?.cardLikes))
+                    dispatch(playgroundActions.setMyFollowing(data?.followings))
                 })
             } catch (e) {
                 Sentry.captureException(e)

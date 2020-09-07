@@ -8,26 +8,21 @@ import { playgroundActions } from '../store/playgroundReducer'
 import { RootState } from '../store/rootReducers'
 import { useIsFocused } from '@react-navigation/native'
 import useCardAdditionalInformation from '../hooks/useCardAdditionalInformation'
-// import usePlayOptions from '../hooks/usePlayOptions'
+import { Text } from 'react-native'
+import PlaypetModal from '../components/PlaypetModal'
 
-// const BOTTOM_NAV_BAR_HEIGHT = 65
+const DEVICE_WIDTH = deviceSize().width
 const SLIDER_HEIGHT = deviceSize().height
 export interface RenderItemProps {
     item: CardModel
     index: number
 }
 export default function PlayGroundScreen() {
-    const [activeIndex, setActiveIndex] = useState(0)
-    const { cards } = useSelector((state: RootState) => state.playground)
-    // const { uid } = useSelector((state: RootState) => state.auth)
     const dispatch = useDispatch()
+    const [activeIndex, setActiveIndex] = useState(0)
+    const { cards, selectedProfileId } = useSelector((state: RootState) => state.playground)
     const isFocused = useIsFocused()
     useCardAdditionalInformation()
-    // const { myLikes } = useCardAdditionalInformation()
-
-    // useEffect(() => {
-    //     dispatch(playgroundActions.setMyLikes(myLikes))
-    // }, [myLikes])
 
     useEffect(() => {
         if (!isFocused) {
@@ -47,8 +42,6 @@ export default function PlayGroundScreen() {
         return (
             <Card
                 {...item}
-                // uid={uid}
-                // isLike={myLikes.includes(item.id)}
                 renderRange={renderRange(activeIndex, index)}
                 onPlayActive={activeIndex === index}
             />
@@ -63,9 +56,18 @@ export default function PlayGroundScreen() {
                 sliderHeight={SLIDER_HEIGHT}
                 itemHeight={SLIDER_HEIGHT}
                 vertical={true}
-                // 4 버전이 베타라서 onScrollIndexChanged type이 아직 들어오지 않았음
                 onScrollIndexChanged={useCallback((slideIndex: number) => setActiveIndex(slideIndex), [])}
             />
+            <PlaypetModal
+                modalVisible={Boolean(selectedProfileId)}
+                setModalVisible={() => dispatch(playgroundActions.setSelectedProfileId(''))}
+                containerStyle={{
+                    // width: DEVICE_WIDTH,
+                    // padding: '0',
+                }}
+            >
+                <Text>프로필</Text>
+            </PlaypetModal>
         </PlayGroundBlock>
     )
 }

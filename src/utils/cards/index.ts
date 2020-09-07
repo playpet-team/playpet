@@ -96,15 +96,22 @@ export const setCardLike = async ({ uid, id, methods = 'add' }: CardLike) => {
         alert('회원가입이 필요합니다')
         return
     }
-    // await manageCardLikes({ uid, id, methods });
     await Api.post('/playground/likes', { uid, id, methods })
 };
 
-// export interface UserAction {
-//     cardLikes: string[];
-//     createdAt: FirebaseFirestoreTypes.Timestamp;
-//     updatedAt: FirebaseFirestoreTypes.Timestamp;
-// }
+export interface FollowProps {
+    myUid: string;
+    followingUid: string;
+    methods: 'add' | 'remove';
+}
+export const setUserFollow = async ({ myUid, followingUid, methods = 'add' }: FollowProps) => {
+    if (!myUid) {
+        alert('회원가입이 필요합니다')
+        return
+    }
+    await Api.post('/playground/follow', { myUid, followingUid, methods })
+};
+
 export const addListenerCardLikes = async (uid: string, onSnapCallback: Function) => {
     const listener = firestore().collection(collections.UserActions).doc(uid).onSnapshot(snapshot => {
         if (snapshot) {
@@ -112,9 +119,4 @@ export const addListenerCardLikes = async (uid: string, onSnapCallback: Function
         }
     });
     return listener;
-    // if (!getDoc.exists) {
-    //     return [];
-    // }
-    // const userActions = getDoc.data();
-    // return userActions?.cardLikes || [];
 };
