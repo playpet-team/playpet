@@ -12,6 +12,7 @@ import * as Sentry from "@sentry/react-native";
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { RootState } from '../../store/rootReducers'
+import * as Updates from 'expo-updates';
 
 export default function AppSettings() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
@@ -49,6 +50,10 @@ export default function AppSettings() {
                     />
                 </>
             }
+            <ListItem
+                title={`앱버전 v${Updates.manifest.version}`}
+                onPress={() => { }}
+            />
         </ScrollView>
     )
 }
