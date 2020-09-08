@@ -1,3 +1,4 @@
+import analytics from '@react-native-firebase/analytics';
 import { useNavigation } from '@react-navigation/native'
 import { signInWithCustomToken, currentUser, updateUserAuthToken } from '.'
 import { ToastParams } from '../../components/Toast'
@@ -45,6 +46,9 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     useEffect(() => {
         if (isSignUp === null) {
             return
+        }
+        if (isSignUp === true) {
+            analytics().logSignUp({ method })
         }
         navigation.goBack()
     }, [isSignUp])

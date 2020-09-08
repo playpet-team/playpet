@@ -1,3 +1,5 @@
+import { signOut } from './../utils/auth/index';
+import analytics from '@react-native-firebase/analytics';
 import AsyncStorage from '@react-native-community/async-storage';
 import { askPermission, PermissionsList } from './../utils/system/permission';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
@@ -13,7 +15,14 @@ function useAuthStateChanged() {
     useEffect(() => {
         const onAuthStateChanged = async (user: FirebaseAuthTypes.User | null) => {
             if (user) {
-                dispatch(authActions.setUser(await getUser(user.uid)));
+                const userData = await getUser(user.uid)
+                if (!userData) {
+                    signOut()
+                    return
+                }
+                dispatch(authActions.setUser(userData));
+                analytics().setUserId(user.uid)
+                analytics().logLogin({ method: userData.method })
                 updateUserLastLogin(user.uid);
                 dispatch(authActions.signIn());
                 setIsLogged(true);

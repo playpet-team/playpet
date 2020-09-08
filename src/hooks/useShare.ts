@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import analytics from '@react-native-firebase/analytics';
 import dynamicLinks, { FirebaseDynamicLinksTypes } from '@react-native-firebase/dynamic-links'
 import { Share } from 'react-native'
 import { ANDROID_BUNDLE_IDENTIFY, IOS_BUNDLE_IDENTIFY, SEO_TITLE } from '../utils/system/constants'
@@ -15,6 +15,7 @@ function useShare({ id, title, thumbnail }: {
                 title: 'link',
                 url: link,
             });
+            analytics().logSignUp({ method: 'share' })
         }
     }
     return { popupShare }
