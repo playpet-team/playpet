@@ -112,6 +112,7 @@ function Card({
                     username={username}
                     title={title}
                     thumbnail={contents[0].videoThumbnail}
+                    onPlayActive={onPlayActive}
                 />
             </CardBlock>
         </CardTouchable>

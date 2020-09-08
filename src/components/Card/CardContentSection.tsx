@@ -22,6 +22,7 @@ interface Section {
     username: string
     title: string
     myCards: boolean
+    onPlayActive: boolean
 }
 export default function CardContentSection({
     bounceValue,
@@ -31,6 +32,7 @@ export default function CardContentSection({
     username,
     title,
     myCards,
+    onPlayActive,
 }: Section) {
     const dispatch = useDispatch()
     const [fetchUser, setFetchUser] = useState({
@@ -47,8 +49,11 @@ export default function CardContentSection({
     const [showToastLike, setShowToastLike] = useState(false)
 
     useEffect(() => {
-        loadFetchUsername()
+        if (onPlayActive) {
+            loadFetchUsername()
+        }
         async function loadFetchUsername() {
+            console.log('fetch username')
             const userData = await getUserDoc(cardUid)
             if (userData) {
                 setFetchUser({
@@ -57,7 +62,7 @@ export default function CardContentSection({
                 })
             }
         }
-    }, [])
+    }, [onPlayActive])
 
     useEffect(() => {
         if (showToastLike) {
@@ -88,6 +93,10 @@ export default function CardContentSection({
         dispatch(playgroundActions.setMyFollowing(willFollow))
         setUserFollow({ myUid, followingUid: cardUid, methods: isFollow ? 'remove' : 'add' })
     }, [isFollow])
+
+    if (!onPlayActive) {
+        return null
+    }
 
     return (
         <CardSectionBlock
