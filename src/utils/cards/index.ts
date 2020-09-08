@@ -4,6 +4,7 @@ import { Collections } from '../../models/src/collections';
 import firestore, { FirebaseFirestoreTypes, } from '@react-native-firebase/firestore';
 import { Api } from '../../api';
 import { currentUser } from '../auth';
+import * as Sentry from "@sentry/react-native";
 
 export interface CardModel {
     status: 'active' | 'deactive';
@@ -34,27 +35,33 @@ export const submitCard = async (formData: CardModel) => {
 };
 
 export const getMyCards = async (uid: string, sort?: string): Promise<CardModel[]> => {
-    const myCards = await firestore()
+    try {
+        const myCards = await firestore()
         .collection(Collections.Playground)
         .where('uid', '==', uid)
         .where('status', '==', 'active')
         .get();
-    return myCards.docs.map(card => {
-        const cardData = card.data();
-        return {
-            id: card.id,
-            username: cardData.username,
-            status: cardData.status,
-            title: cardData.title,
-            description: cardData.description,
-            tags: cardData.tags,
-            uid: cardData.uid,
-            likes: cardData.likes,
-            contents: cardData.contents,
-            createdAt: cardData.createdAt,
-            updatedAt: cardData.updatedAt,
-        };
-    })
+
+        return myCards.docs.map(card => {
+            const cardData = card.data();
+            return {
+                id: card.id,
+                username: cardData.username,
+                status: cardData.status,
+                title: cardData.title,
+                description: cardData.description,
+                tags: cardData.tags,
+                uid: cardData.uid,
+                likes: cardData.likes,
+                contents: cardData.contents,
+                createdAt: cardData.createdAt,
+                updatedAt: cardData.updatedAt,
+            };
+        })
+    } catch (e) {
+        Sentry.captureException(e)
+        return []
+    }
 };
 
 export enum SortCards {
@@ -69,21 +76,27 @@ interface SortParams {
     limit?: number;
 }
 export const loadPlaygroundCards = async ({ sortType = SortCards.CreatedAt, startAt = 0, limit = 100 }: SortParams) => {
-    const cardDoc = await firestore()
-        .collection(Collections.Playground)
-        .orderBy('createdAt', 'desc')
-        .limit(limit)
-        .get();
+    try {
+        const cardDoc = await firestore()
+            .collection(Collections.Playground)
+            .orderBy('createdAt', 'desc')
+            .limit(limit)
+            .get();
 
-    return cardDoc.docs.map(doc => {
-        const docData = doc.data();
-        return {
-            id: doc.id,
-            ...docData,
-            createdAt: firebaseTimeStampToStringStamp(docData.createdAt),
-            updatedAt: firebaseTimeStampToStringStamp(docData.updatedAt),
-        }
-    });
+        return cardDoc.docs.map(doc => {
+            const docData = doc.data();
+            return {
+                id: doc.id,
+                ...docData,
+                createdAt: firebaseTimeStampToStringStamp(docData.createdAt),
+                updatedAt: firebaseTimeStampToStringStamp(docData.updatedAt),
+            }
+        });
+    } catch (e) {
+        Sentry.captureException(e)
+        return []
+    }
+
 };
 
 export interface CardLike {
@@ -97,7 +110,11 @@ export const setCardLike = async ({ uid, id, methods = 'add' }: CardLike) => {
         alert('회원가입이 필요합니다')
         return
     }
-    await Api.post('/playground/likes', { uid, id, methods })
+    try {
+        await Api.post('/playground/likes', { uid, id, methods })
+    } catch (e) {
+        Sentry.captureException(e)
+    }
 };
 
 export interface FollowProps {
@@ -111,7 +128,11 @@ export const setUserFollow = async ({ myUid, followingUid, methods = 'add' }: Fo
         alert('회원가입이 필요합니다')
         return
     }
-    await Api.post('/playground/follow', { myUid, followingUid, methods })
+    try {
+        await Api.post('/playground/follow', { myUid, followingUid, methods })
+    } catch (e) {
+        Sentry.captureException(e)
+    }
 };
 
 export const addListenerCardLikes = async (uid: string, onSnapCallback: Function) => {

@@ -50,8 +50,18 @@ export const updateUsername = async (uid: string, username: string) => {
     })
 }
 
+export const getUserDoc = async (uid: string) => {
+    try {
+        const userData = (await firestore().collection(Collections.Users).doc(uid).get()).data()
+        return userData || null
+    } catch (e) {
+        Sentry.captureException(e)
+        return null
+    }
+}
+
 export const getUser = async (uid: string): Promise<User | null> => {
-    const user = (await firestore().collection(Collections.Users).doc(uid).get()).data()
+    const user = await getUserDoc(uid)
     if (!user) {
         return null
     }

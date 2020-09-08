@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect, useCallback } from "react";
 import styled, { css } from 'styled-components/native'
 import Animated, { Value, interpolate } from 'react-native-reanimated'
-import { Icon, Button, Image } from 'react-native-elements'
+import { Icon, Button, Image, Avatar } from 'react-native-elements'
 import { deviceSize, setCardLike, setUserFollow } from '../../utils'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,6 +10,7 @@ import useShare from '../../hooks/useShare';
 import { useTheme } from '@react-navigation/native'
 import { playgroundActions } from "../../store/playgroundReducer";
 import { View, Modal } from "react-native";
+import { getUserDoc } from '../../utils/auth'
 
 const DEVICE_HEIGHT = deviceSize().height
 
@@ -17,8 +18,8 @@ interface Section {
     bounceValue: Value<0>
     id: string
     cardUid: string
-    username: string
     thumbnail: string
+    username: string
     title: string
     myCards: boolean
 }
@@ -26,12 +27,16 @@ export default function CardContentSection({
     bounceValue,
     id,
     cardUid,
-    username,
     thumbnail,
+    username,
     title,
     myCards,
 }: Section) {
     const dispatch = useDispatch()
+    const [fetchUser, setFetchUser] = useState({
+        username,
+        profilePhoto: '',
+    })
     const { uid: myUid, isLogged } = useSelector((state: RootState) => state.auth);
     const { myLikes = [], myFollowing = [] } = useSelector((state: RootState) => state.playground);
     const { popupShare } = useShare({ id, title, thumbnail, })
@@ -40,6 +45,19 @@ export default function CardContentSection({
     const { bottom } = useSafeAreaInsets();
     const themes = useTheme()
     const [showToastLike, setShowToastLike] = useState(false)
+
+    useEffect(() => {
+        loadFetchUsername()
+        async function loadFetchUsername() {
+            const userData = await getUserDoc(cardUid)
+            if (userData) {
+                setFetchUser({
+                    username: userData.username,
+                    profilePhoto: userData.profilePhoto,
+                })
+            }
+        }
+    }, [])
 
     useEffect(() => {
         if (showToastLike) {
@@ -131,7 +149,15 @@ export default function CardContentSection({
                     <Header>
                         <Button
                             onPress={() => dispatch(playgroundActions.setSelectedProfileId(id))}
-                            title={username || 'playpet'}
+                            title={fetchUser.username || 'playpet'}
+                            icon={fetchUser.profilePhoto ? <Avatar
+                                source={{ uri: fetchUser.profilePhoto }}
+                                size="small"
+                                rounded
+                                containerStyle={{
+                                    marginRight: 8,
+                                }}
+                            /> : undefined}
                             titleStyle={{
                                 color: '#fff',
                                 fontSize: 18,
@@ -183,7 +209,7 @@ const CardSectionBlock = styled(Animated.View) <{ bottom: number }>`
     z-index: 3;
     flex-direction: column;
     min-height: 180px;
-    bottom: ${({ bottom }) => bottom + 8}px;
+    bottom: ${({ bottom }) => bottom + 24}px;
     width: 100%;
     padding: 16px;
     background-color: rgba(0, 0, 0, 0.05);

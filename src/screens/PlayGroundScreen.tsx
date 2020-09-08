@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import styled from 'styled-components/native'
 import Card from '../components/Card'
 import Carousel from 'react-native-snap-carousel'
-import { deviceSize, loadPlaygroundCards, CardModel } from '../utils'
+import { deviceSize, CardModel } from '../utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { playgroundActions } from '../store/playgroundReducer'
 import { RootState } from '../store/rootReducers'
-import { useIsFocused } from '@react-navigation/native'
 import useCardAdditionalInformation from '../hooks/useCardAdditionalInformation'
 import { Text } from 'react-native'
 import PlaypetModal from '../components/PlaypetModal'
+import useLoadPlaygroundCards from '../hooks/useLoadPlaygroundCards'
+import useLoadingIndicator from '../hooks/useLoadingIndicator'
 
 const DEVICE_WIDTH = deviceSize().width
 const SLIDER_HEIGHT = deviceSize().height
@@ -21,19 +22,9 @@ export default function PlayGroundScreen() {
     const dispatch = useDispatch()
     const [activeIndex, setActiveIndex] = useState(0)
     const { cards, selectedProfileId } = useSelector((state: RootState) => state.playground)
-    const isFocused = useIsFocused()
     useCardAdditionalInformation()
-
-    useEffect(() => {
-        if (!isFocused) {
-            return
-        }
-        const loadCards = async () => {
-            const response = await loadPlaygroundCards({})
-            dispatch(playgroundActions.setCards(response))
-        }
-        loadCards()
-    }, [isFocused])
+    const { loading } = useLoadPlaygroundCards()
+    const { Indicator } = useLoadingIndicator()
 
     const renderItem = useCallback(({ item, index }: RenderItemProps) => {
         if (!item.contents.length) {
@@ -50,13 +41,18 @@ export default function PlayGroundScreen() {
 
     return (
         <PlayGroundBlock>
+            {loading && <Indicator />}
             <Carousel
                 data={cards}
                 renderItem={renderItem}
                 sliderHeight={SLIDER_HEIGHT}
                 itemHeight={SLIDER_HEIGHT}
                 vertical={true}
-                onScrollIndexChanged={useCallback((slideIndex: number) => setActiveIndex(slideIndex), [])}
+                keyExtractor={card => card.id}
+                onScrollIndexChanged={useCallback((slideIndex: number) => {
+                    console.log('slideIndex---', slideIndex)
+                    setActiveIndex(slideIndex)
+                }, [])}
             />
             <PlaypetModal
                 modalVisible={Boolean(selectedProfileId)}
