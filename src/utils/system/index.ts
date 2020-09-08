@@ -4,6 +4,7 @@ import moment from 'moment'
 import * as Linking from 'expo-linking'
 import * as Sentry from "@sentry/react-native";
 
+export const decimalWonPrice = (val: string | number) => val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' 원'
 export const appReload = () => {
     return NativeModules.DevSettings.reload()
 }

@@ -4,6 +4,7 @@ import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
+import { decimalWonPrice } from '../utils';
 
 export interface ProductItem {
     image: string;
@@ -41,8 +42,8 @@ function ProductListItem({
             <Texts type="title">{title}</Texts>
             <Texts type="description">{description}</Texts>
             <DescriptionBlock>
-                <Texts>별이 다섯</Texts>
-                <Texts type="price">{price}</Texts>
+                <Texts></Texts>
+                <Texts type="price">{decimalWonPrice(price)}</Texts>
             </DescriptionBlock>
         </ProductListItemBlock>
     )
@@ -65,6 +66,7 @@ const Texts = styled.Text<TextProps>`
         switch (type) {
             case 'title': {
                 return css`
+                    min-height: 45px;
                     margin-top: 8px;
                     font-size: 16px;
                     font-weight: 600;
