@@ -18,6 +18,6 @@ export default Logo;
 
 const LogoBlock = styled.Image<LogoProps>`
     margin-top: 24px;
-    height: ${({ width }) => width * 0.3}px;
+    height: ${({ width = 120 }) => width * 0.3}px;
     resize-mode: contain;
 `;

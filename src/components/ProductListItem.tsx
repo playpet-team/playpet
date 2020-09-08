@@ -22,7 +22,7 @@ function ProductListItem({
     const navigation = useNavigation();
     // const { isLogged } = useSelector((state: RootState) => state.auth);
 
-    const handleProduct = async () => {
+    const handleProduct = () => {
         // if (!isLogged) {
         //     alert('로그인이 필요합니다');
         // }
@@ -33,7 +33,7 @@ function ProductListItem({
     };
 
     return (
-        <ProductListItemBlock onPress={handleProduct}>
+        <ProductListItemBlock testID="ProductListItem-block" onPress={handleProduct}>
             <Image
                 source={{ uri: image }}
                 resizeMode="cover"

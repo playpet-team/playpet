@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components/native'
 import ProfileSection from '../components/ProfileSection'
-import MyCards from '../components/MyCards'
+import MyCards from './AuthScreen/MyCards'
 import ListItem from '../components/ListItem'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'

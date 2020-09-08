@@ -1,12 +1,12 @@
 import React, { useCallback, useState, useMemo, } from 'react'
 import styled from 'styled-components/native'
-import useLoadMyCards from '../hooks/useLoadMyCards'
-import { ListBlock, Text } from '../styles'
-import { ItemList } from '../models'
-import PlaypetModal from './PlaypetModal'
+import useLoadMyCards from '../../hooks/useLoadMyCards'
+import { ListBlock, Text } from '../../styles'
+import { ItemList } from '../../models'
+import PlaypetModal from '../../components/PlaypetModal'
 import { Image, Icon } from 'react-native-elements'
-import { deviceSize } from '../utils'
-import Card from './Card'
+import { deviceSize } from '../../utils'
+import Card from '../../components/Card'
 
 const DEVICE_WIDTH = deviceSize().width
 function MyCards({ listType }: { listType: ItemList }) {
