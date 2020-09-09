@@ -4,6 +4,7 @@ export interface TextProps {
     padding?: string;
     bold?: boolean;
     size?: number;
+    color?: string;
 }
 export const Text = styled.Text<TextProps>`
     ${({ bold }) => bold && css`
@@ -14,6 +15,9 @@ export const Text = styled.Text<TextProps>`
     `}
     ${({ size }) => size && css`
         font-size: ${size}px;
+    `}
+    ${({ color }) => color && css`
+        color: ${color};
     `}
 `
 

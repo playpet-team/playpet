@@ -7,8 +7,8 @@ import { Api } from '../api';
 /*
     1. AsyncStorage 에서 customToken 을 꺼낸다.
     2. 서버에서 마지막으로 업데이트 했던 customToken 을 꺼낸다
-    3. 두 토큰을 비교해서 동일한 토큰이면 새로운 customToken 을 생성한다
-    4. 생성된 customToken 을 AsyncStorage와 서버에 업데이트 해준다
+    3. 두 토큰을 비교해서 동일한 토큰이면 서버에서 새로운 customToken 을 생성하고 서버에 업데이트 해준다
+    4. 앱에서는 customToken을 AsyncStorage에 저장한다
     5. 새로운 customToken 으로 로그인을 시킨다.
 
     이들중 하나라도 옳지 않은경우 로그인이 풀림

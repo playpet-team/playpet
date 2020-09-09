@@ -11,10 +11,9 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../store/rootReducers'
 import * as Sentry from "@sentry/react-native";
 
-function useImagePicker({ setLoading, uploadCallback, form, updateType = 'video' }: {
+function useImagePicker({ setLoading, uploadCallback, updateType = 'video' }: {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
     uploadCallback: Function
-    form: object
     updateType?: 'video' | 'photo',
 }) {
     // react-native-image-picker
@@ -32,7 +31,7 @@ function useImagePicker({ setLoading, uploadCallback, form, updateType = 'video'
                 cameraRoll: true,
                 waitUntilSaved: true,
             }
-        }, addCardImage)
+        }, addCardMedia)
     }, [])
 
     const getThumbnail = useCallback(async (path: string | undefined, fileUri: string) => {
@@ -62,15 +61,17 @@ function useImagePicker({ setLoading, uploadCallback, form, updateType = 'video'
         }
     }, [])
 
-    const addCardImage = useCallback(async (response: ImagePickerResponse) => {
+    const addCardMedia = useCallback(async (response: ImagePickerResponse | { uri: string; didCancel?: boolean; error?: string; path?: string | undefined; }) => {
         if (response.didCancel || response.error || !response.uri) {
             return
         }
         const { path, uri } = response
-        setLoading(true)
+        // setLoading(true)
         const tempId = `${uid}_${firebaseNow().seconds}`
         if (updateType === 'video') {
             const { videoThumbnail = '', width = 0, height = 0, isError = false } = await getThumbnail(path, uri)
+            console.log("generate thumbnail")
+            // setLoading(false)
             if (isError === true) {
                 return alert('업로드에 실패했습니다')
             }
@@ -88,11 +89,12 @@ function useImagePicker({ setLoading, uploadCallback, form, updateType = 'video'
                 uri,
             })
         }
-        setLoading(false)
+
     }, [])
 
     return {
         openPicker,
+        addCardMedia,
     }
 }
 
@@ -113,5 +115,5 @@ const getPermissionAsync = async () => {
 //         allowsEditing: true,
 //         quality: 1,
 //     })
-//     addCardImage(response)
+//     addCardMedia(response)
 // }, [])
