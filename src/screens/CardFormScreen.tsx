@@ -13,6 +13,7 @@ import { Text } from '../styles';
 import CameraRecordWrapper from '../components/CameraRecordWrapper';
 import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function CardFormScreen() {
     const [videoUri, setVideoUri] = useState('')
@@ -20,6 +21,8 @@ export default function CardFormScreen() {
     const { loading, setLoading, Indicator } = useLoadingIndicator();
     const { isLogged } = useSelector((state: RootState) => state.auth);
     const [form, setForm] = useState<CardForm>(initialForm);
+
+    const isFocused = useIsFocused()
 
     useEffect(() => {
         console.log('videouri 이 뭔가 변했다!!!!!!', videoUri)
@@ -91,7 +94,7 @@ export default function CardFormScreen() {
         <>
             <CardBlock>
                 {loading && <Indicator />}
-                {cameraOn && <CameraRecordWrapper
+                {(cameraOn && isFocused) && <CameraRecordWrapper
                     setVideoUri={setVideoUri}
                     setCameraOn={setCameraOn}
                 />}
@@ -114,14 +117,16 @@ export default function CardFormScreen() {
                     <UploadImageBlock>
                         {!cameraOn && completeUpload ?
                             <UploadImage>
-                                <Camera
-                                    style={{ flex: 1, height: 200, alignItems: 'center', justifyContent: 'center', }}
-                                    type={Camera.Constants.Type.back}
-                                >
-                                    <TouchableOpacity onPress={() => setCameraOn(true)} containerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-                                        <Text color='#fff' bold>지금 찍기</Text>
-                                    </TouchableOpacity>
-                                </Camera>
+                                {isFocused && (
+                                    <Camera
+                                        style={{ flex: 1, height: 200, alignItems: 'center', justifyContent: 'center', }}
+                                        type={Camera.Constants.Type.back}
+                                    >
+                                        <TouchableOpacity onPress={() => setCameraOn(true)} containerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
+                                            <Text color='#fff' bold>지금 찍기</Text>
+                                        </TouchableOpacity>
+                                    </Camera>
+                                )}
                                 <TouchableOpacity
                                     onPress={openPicker}
                                     containerStyle={{

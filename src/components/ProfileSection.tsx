@@ -17,6 +17,7 @@ function ProfileSection() {
     } = useSelector((state: RootState) => state.auth)
 
     const navigation = useNavigation()
+
     if (!isLogged) {
         return (
             <AppLoginSection onPress={() => navigation.navigate('AppLogin')}>
@@ -26,9 +27,7 @@ function ProfileSection() {
                 >
                     {i18n.t('common.loginWithSignUp')}
                 </Text>
-                <Icon
-                    name="keyboard-arrow-right"
-                />
+                <Icon name="keyboard-arrow-right" />
             </AppLoginSection>
         )
     }

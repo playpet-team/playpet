@@ -1,6 +1,7 @@
 import { getMyCards, CardModel } from './../utils/cards/index';
 import React, { useState, useEffect, useCallback } from 'react';
 import { currentUser } from '../utils';
+import { useIsFocused } from '@react-navigation/native';
 
 const user = currentUser();
 
@@ -15,7 +16,7 @@ function useLoadMyCards({
     searchUid = 'my',
     type = 'video',
 }: LoadCards): { myCards: CardModel[] } {
-
+    const isFocused = useIsFocused()
     const [myCards, setMyCards] = useState<CardModel[]>([]);
 
     useEffect(() => {
@@ -29,7 +30,7 @@ function useLoadMyCards({
         } else {
             loadMyCards(searchUid);
         }
-    }, [sort, searchUid, type]);
+    }, [isFocused, sort, searchUid, type]);
 
     return { myCards };
 };
