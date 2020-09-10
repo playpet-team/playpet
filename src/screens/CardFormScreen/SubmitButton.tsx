@@ -7,6 +7,7 @@ import { RootState } from "../../store/rootReducers"
 import { useSelector } from "react-redux"
 import { Alert } from "react-native"
 import * as Sentry from "@sentry/react-native";
+import { Api } from "../../api"
 
 interface Submit {
     cardImages: CardImage[]
@@ -51,9 +52,9 @@ function SubmitButton({
                 tags,
                 uid,
                 username,
-                contents: cardImages.map((image, index) => ({
-                    url: downloadUrls[index].url,
-                    videoThumbnail: downloadUrls[index].thumbnail,
+                contents: cardImages.map((image) => ({
+                    url: downloadUrls.url,
+                    videoThumbnail: downloadUrls.thumbnail,
                     isVideo: image.isVideo,
                     width: image.width,
                     height: image.height,
@@ -72,23 +73,30 @@ function SubmitButton({
 
     const startUploadStorage = async () => {
         try {
-            return await Promise.all(
-                cardImages.map(async (image) => {
-                    const urls = {
-                        url: '',
-                        thumbnail: '',
-                    }
-                    const reference = firebase.storage().ref(`playground/${uid}_${firebaseNow().seconds}`)
-                    await reference.putFile(image.uri)
-                    urls.url = await reference.getDownloadURL()
-                    if (image.videoThumbnail) {
-                        const reference = firebase.storage().ref(`playground/${uid}_${firebaseNow().seconds}_thumbnail.jpg`)
-                        await reference.putFile(image.videoThumbnail)
-                        urls.thumbnail = await reference.getDownloadURL()
-                    }
-                    return urls
-                })
-            )
+            const image = cardImages[0]
+            // return await Promise.all(
+            // cardImages.map(async image => {
+            const urls = {
+                url: '',
+                thumbnail: '',
+            }
+            const cardId = `${uid}_${firebaseNow().seconds}`
+            const reference = firebase.storage().ref(`playground/${cardId}`)
+            await reference.putFile(image.uri)
+            console.log('000', cardId)
+            Api.post('/playground/upload-video', {
+                cardId,
+            })
+            // console.log("response---", response)
+            urls.url = await reference.getDownloadURL()
+            if (image.videoThumbnail) {
+                const reference = firebase.storage().ref(`playground/${cardId}_thumbnail.jpg`)
+                await reference.putFile(image.videoThumbnail)
+                urls.thumbnail = await reference.getDownloadURL()
+            }
+            return urls
+            // })
+            // )
         } catch (e) {
             Sentry.captureException(e)
         }
