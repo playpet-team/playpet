@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components/native'
 import { Icon, Input, Avatar } from 'react-native-elements'
-import { Layout, Text, DividerBlock } from '../../styles'
+import { Layout, Text } from '../../styles'
 import { firebaseNow, updateUserProfilePhoto, updateUsername, currentUser } from '../../utils'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import { useSelector, useDispatch } from 'react-redux'
@@ -12,27 +12,6 @@ import { authActions } from '../../store/authReducer'
 import Toast, { ToastParams } from '../../components/Toast'
 import * as Sentry from "@sentry/react-native";
 
-// isLogged: false,
-// uid: '',
-// method: SignType.None,
-// email: '',
-// isLeave: false,
-// leaveAt: '',
-// username: '',
-// gender: '',
-// birthDate: '',
-// phoneNumber: '',
-// profilePhoto: '',
-// lastLogin: null,
-// createdAt: null,
-// updatedAt: null,
-// terms: {
-//     existDoc: true,
-//     overAgeAgree: false,
-//     termsOfUseAgree: false,
-//     personalCollectAgree: false,
-//     marketingAgree: false,
-// }
 const MAX_USERNAME_LENGTH = 16
 const MIN_USERNAME_LENGTH = 2
 
@@ -46,17 +25,59 @@ export default function ProfileSetting() {
         uid,
     } = useSelector((state: RootState) => state.auth)
     const [form, setForm] = useState<ProfileForm>({ uri: '' });
-    const [newUsername, setNewUsername] = useState(username)
-    const [editUsername, setEditUsername] = useState(false)
+
+    // input username
+    const usernameRef = useRef<Input | null>(null)
+    const [value, setValue] = useState(username)
+    const [editMode, setEditMode] = useState(false)
+
+    useEffect(() => {
+        if (editMode && usernameRef.current) {
+            usernameRef.current?.focus()
+        }
+    }, [editMode])
+
+    const { upload } = useUploadFirestore()
+    const dispatch = useDispatch()
+
+    // 프로필 변경용
     const uploadCallback = (form: ProfileForm) => setForm(form)
+    const { openPicker } = useImagePicker({
+        updateType: 'photo',
+        setLoading,
+        uploadCallback,
+    })
+
+    const handleEditUsername = () => {
+        if (!editMode) {
+            setEditMode(true)
+            return
+        }
+        const isOK = validator(value, 'username')
+        if (!isOK) {
+            return setToastContent({
+                title: `닉네임은 ${MIN_USERNAME_LENGTH}자이상 ${MAX_USERNAME_LENGTH}자 이하여야 합니다`,
+                visible: true
+            })
+        }
+        updateUsername(uid, value)
+        updateUserProfile('displayName', value)
+        dispatch(authActions.setUsername(value))
+        setEditMode(false)
+        return setToastContent({
+            title: '닉네임 변경 완료!',
+            visible: true
+        })
+    }
+
+
+
     const [toastContent, setToastContent] = useState<ToastParams>({
         visible: false,
         title: '',
         description: '',
         image: '',
     })
-    const { upload } = useUploadFirestore()
-    const dispatch = useDispatch()
 
     useEffect(() => {
         if (!form.uri) {
@@ -81,43 +102,6 @@ export default function ProfileSetting() {
         }
 
     }, [form])
-
-    const updateUserProfile = (key: 'displayName' | 'photoURL', value: string) => {
-        const user = currentUser()
-        if (!user) {
-            return
-        }
-        user.updateProfile({
-            [key]: value
-        })
-    }
-
-    const { openPicker } = useImagePicker({
-        updateType: 'photo',
-        setLoading,
-        form,
-        uploadCallback,
-    })
-
-    const handleEditUsername = () => {
-        if (!editUsername) {
-            return setEditUsername(true)
-        }
-        const isOK = validator(newUsername, 'username')
-        if (!isOK) {
-            return setToastContent({
-                title: `닉네임은 ${MIN_USERNAME_LENGTH}자이상 ${MAX_USERNAME_LENGTH}자 이하여야 합니다`,
-                visible: true
-            })
-        }
-        updateUsername(uid, newUsername)
-        updateUserProfile('displayName', newUsername)
-        setEditUsername(false)
-        return setToastContent({
-            title: '닉네임 변경 완료!',
-            visible: true
-        })
-    }
 
     return (
         <ProfileSettingBlock>
@@ -147,12 +131,13 @@ export default function ProfileSetting() {
             </Layout>
             <Layout>
                 <Input
+                    ref={usernameRef}
                     label="닉네임"
-                    value={newUsername}
-                    onChangeText={(text: string) => setNewUsername(text)}
-                    disabled={!editUsername}
+                    value={value}
+                    onChangeText={(text: string) => setValue(text)}
+                    disabled={!editMode}
                     rightIcon={<Icon
-                        name={editUsername ? 'check' : 'edit'}
+                        name={editMode ? 'check' : 'edit'}
                         onPress={handleEditUsername}
                     />}
                 />
@@ -166,6 +151,16 @@ export default function ProfileSetting() {
             </Layout>
         </ProfileSettingBlock>
     )
+}
+
+const updateUserProfile = (key: 'displayName' | 'photoURL', value: string) => {
+    const user = currentUser()
+    if (!user) {
+        return
+    }
+    user.updateProfile({
+        [key]: value
+    })
 }
 
 const validator = (value: string, type: 'username') => {
