@@ -65,6 +65,7 @@ function useImagePicker({ setLoading, uploadCallback, updateType = 'video' }: {
         if (response.didCancel || response.error || !response.uri) {
             return
         }
+        console.log('response----', response)
         const { path, uri } = response
         // setLoading(true)
         const tempId = `${uid}_${firebaseNow().seconds}`

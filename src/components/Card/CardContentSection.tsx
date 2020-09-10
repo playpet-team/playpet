@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/rootReducers';
 import useShare from '../../hooks/useShare';
-import { useTheme } from '@react-navigation/native'
+import { useTheme, useIsFocused } from '@react-navigation/native'
 import { playgroundActions } from "../../store/playgroundReducer";
 import { View, Modal } from "react-native";
 import { getUserDoc } from '../../utils/auth'
@@ -39,7 +39,7 @@ export default function CardContentSection({
         username,
         profilePhoto: '',
     })
-    const { uid: myUid, isLogged } = useSelector((state: RootState) => state.auth);
+    const { uid: myUid } = useSelector((state: RootState) => state.auth);
     const { myLikes = [], myFollowing = [] } = useSelector((state: RootState) => state.playground);
     const { popupShare } = useShare({ id, title, thumbnail, })
     const isLike = useMemo(() => myLikes.includes(id), [id, myLikes])
@@ -47,13 +47,13 @@ export default function CardContentSection({
     const { bottom } = useSafeAreaInsets();
     const themes = useTheme()
     const [showToastLike, setShowToastLike] = useState(false)
+    const focused = useIsFocused()
 
     useEffect(() => {
-        if (onPlayActive) {
+        if (onPlayActive && focused) {
             loadFetchUsername()
         }
         async function loadFetchUsername() {
-            console.log('fetch username')
             const userData = await getUserDoc(cardUid)
             if (userData) {
                 setFetchUser({
@@ -62,7 +62,7 @@ export default function CardContentSection({
                 })
             }
         }
-    }, [onPlayActive])
+    }, [onPlayActive, focused])
 
     useEffect(() => {
         if (showToastLike) {

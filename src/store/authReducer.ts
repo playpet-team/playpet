@@ -39,6 +39,9 @@ const slice = createSlice({
         setUser(state, { payload }) {
             state = Object.assign(state, payload)
         },
+        setUsername(state, { payload }) {
+            state.username = payload
+        },
         setUserProfilePhoto(state, { payload }) {
             state.profilePhoto = payload
         },

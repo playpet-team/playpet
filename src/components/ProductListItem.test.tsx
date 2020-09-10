@@ -26,8 +26,7 @@ it('<ProductListItem />', async () => {
         />
     );
 
-    await act(async () => {
-        console.log('----------')
+    await act(() => {
         expect(getByTestId('ProductListItem-block')).toBeDefined()
     })
 

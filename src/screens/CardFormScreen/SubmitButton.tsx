@@ -6,7 +6,7 @@ import { Button } from 'react-native-elements'
 import { RootState } from "../../store/rootReducers"
 import { useSelector } from "react-redux"
 import { Alert } from "react-native"
-import * as Sentry from "@sentry/react-native";
+import * as Sentry from "@sentry/react-native"
 import { Api } from "../../api"
 
 interface Submit {
@@ -36,8 +36,8 @@ function SubmitButton({
 
     const formSubmit = async () => {
         setLoading(true)
-        const downloadUrls = await startUploadStorage()
-        if (!downloadUrls) {
+        const cardInfo = await startUploadStorage()
+        if (!cardInfo) {
             setLoading(false)
             Alert.alert('포스팅에 실패했습니다. 잠시 후 다시 시도해주세요')
             return
@@ -53,9 +53,11 @@ function SubmitButton({
                 uid,
                 username,
                 contents: cardImages.map((image) => ({
-                    url: downloadUrls.url,
-                    videoThumbnail: downloadUrls.thumbnail,
+                    cardId: cardInfo.cardId,
+                    url: cardInfo.url,
+                    videoThumbnail: cardInfo.thumbnail,
                     isVideo: image.isVideo,
+                    vertical: image.height > image.width,
                     width: image.width,
                     height: image.height,
                 })),
@@ -74,29 +76,22 @@ function SubmitButton({
     const startUploadStorage = async () => {
         try {
             const image = cardImages[0]
-            // return await Promise.all(
-            // cardImages.map(async image => {
-            const urls = {
+            const cardId = `${uid}_${firebaseNow().seconds}`
+            const card = {
+                cardId,
                 url: '',
                 thumbnail: '',
             }
-            const cardId = `${uid}_${firebaseNow().seconds}`
             const reference = firebase.storage().ref(`playground/${cardId}`)
             await reference.putFile(image.uri)
-            console.log('000', cardId)
-            Api.post('/playground/upload-video', {
-                cardId,
-            })
-            // console.log("response---", response)
-            urls.url = await reference.getDownloadURL()
+            Api.post('/playground/upload-video', { cardId })
+            card.url = await reference.getDownloadURL()
             if (image.videoThumbnail) {
                 const reference = firebase.storage().ref(`playground/${cardId}_thumbnail.jpg`)
                 await reference.putFile(image.videoThumbnail)
-                urls.thumbnail = await reference.getDownloadURL()
+                card.thumbnail = await reference.getDownloadURL()
             }
-            return urls
-            // })
-            // )
+            return card
         } catch (e) {
             Sentry.captureException(e)
         }
@@ -112,6 +107,7 @@ function SubmitButton({
             containerStyle={containerStyle}
             buttonStyle={{
                 padding: 16,
+                ...buttonStyle,
             }}
             titleStyle={{
                 fontWeight: '800',

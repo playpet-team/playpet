@@ -7,6 +7,7 @@ import CardCoveredImage from './Card/CardCoveredImage'
 import { deviceSize, CardModel } from '../utils'
 import { TouchableWithoutFeedback } from 'react-native'
 import CardContentSection from './Card/CardContentSection'
+import { firebase } from '@react-native-firebase/storage'
 
 const DEVICE_WIDTH = deviceSize().width
 const DEVICE_HEIGHT = deviceSize().height
@@ -14,6 +15,7 @@ export interface CardType extends CardModel {
     onPlayActive?: boolean
     renderRange?: boolean
     myCards?: boolean
+    index: number
 }
 
 const containerWidth: string = '100%'
@@ -27,13 +29,34 @@ function Card({
     onPlayActive = true, // 현재 액티브 된 카드인지 여부
     renderRange = true, // Carousel 에 렌더까지 된 대기중인 카드인지 여부
     myCards = false,
+    index,
     // isLike,
 }: CardType) {
     const [getReadyPlay, setGetReadyPlay] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
+    const [videoUrl, setVideoUrl] = useState('')
     const videoRef = useRef<null | Video>(null)
     const bounceValue = useRef(new Value(0)).current
     const isFocus = useIsFocused()
+
+    useEffect(() => {
+        if (!contents.length || !onPlayActive) {
+            return
+        }
+        if (contents[0].cardId) {
+            loadDownloadUrl()
+            return
+        }
+        if (contents[0].url) {
+            setVideoUrl(contents[0].url)
+            return
+        }
+
+        async function loadDownloadUrl() {
+            const reference = firebase.storage().ref(`playground/${contents[0].cardId}`)
+            setVideoUrl(await reference.getDownloadURL())
+        }
+    }, [contents, onPlayActive])
 
     const trackingVideoStatus = (status: AVPlaybackStatus) => setGetReadyPlay(status.isLoaded)
     // 재생 조건
@@ -74,8 +97,6 @@ function Card({
 
     const shouldPlay = useMemo(() => getReadyPlay && onPlayActive && !showDetail, [getReadyPlay && onPlayActive && !showDetail])
 
-    const content = contents[0]
-
     return (
         <CardTouchable onPress={() => setShowDetail(!showDetail)}>
             <CardBlock containerHeight={getContainerHeight(DEVICE_WIDTH)}>
@@ -84,7 +105,7 @@ function Card({
                     <Video
                         ref={videoRef}
                         // isMuted={!isPlaySound}
-                        source={{ uri: content.url }}
+                        source={{ uri: videoUrl }}
                         isLooping={true}
                         shouldPlay={shouldPlay}
                         resizeMode={Video.RESIZE_MODE_COVER}
@@ -96,14 +117,14 @@ function Card({
                         }}
                     />
                 }
-                <AnimatedOverlayBackground
+                {onPlayActive && <AnimatedOverlayBackground
                     style={{
                         opacity: interpolate(bounceValue, {
                             inputRange: [0, 1],
                             outputRange: [0, 1],
                         }),
                     }}
-                />
+                />}
                 <CardContentSection
                     myCards={myCards}
                     bounceValue={bounceValue}

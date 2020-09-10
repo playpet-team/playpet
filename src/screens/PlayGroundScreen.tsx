@@ -33,6 +33,7 @@ export default function PlayGroundScreen() {
         return (
             <Card
                 {...item}
+                index={index}
                 renderRange={renderRange(activeIndex, index)}
                 onPlayActive={activeIndex === index}
             />
