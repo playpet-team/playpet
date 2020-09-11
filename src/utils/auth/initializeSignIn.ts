@@ -58,6 +58,14 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         async function getCredential() {
             if (token && profile && method) {
                 try {
+                    if (!profile.email) {
+                        setToastContent({
+                            ...toastContent,
+                            visible: true,
+                            title: '이메일 정보를 받아 올수 없습니다. 잠시 후 다시 시도해주세요',
+                        })
+                        return
+                    }
                     setLoading(true)
                     const { customToken, uid, newUser } = await postCreateUser()
                     if (!customToken) {
@@ -289,6 +297,7 @@ const kakaoLogin = async (setToken: React.Dispatch<React.SetStateAction<string |
 
 const getKakaoProfile = async (setProfile: React.Dispatch<any>) => {
     const result = await KakaoLogins.getProfile()
+    console.log('result', result)
     setProfile({
         username: result.nickname,
         email: result.email,
