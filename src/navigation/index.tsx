@@ -1,15 +1,15 @@
-import { NavigationContainer, DefaultTheme, DarkTheme, Theme, useTheme, RouteProp, NavigationContainerRef } from '@react-navigation/native'
+import analytics from '@react-native-firebase/analytics'
+import { DefaultTheme, NavigationContainer, NavigationContainerRef, RouteProp } from '@react-navigation/native'
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack'
+import * as Sentry from "@sentry/react-native"
 import * as React from 'react'
-import { AppearanceProvider, Appearance, useColorScheme } from 'react-native-appearance'
+import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance'
+import useAuthStateChanged from '../hooks/useAuthStateChanged'
+import { defaultColorPalette } from '../styles/colors'
+import { currentUser } from '../utils'
+import { Crash } from '../utils/system/crash'
 import BottomTabNavigator from './BottomTabNavigator'
 import LinkingConfiguration from './LinkingConfiguration'
-import useAuthStateChanged from '../hooks/useAuthStateChanged'
-import { currentUser } from '../utils'
-import analytics from '@react-native-firebase/analytics'
-import { Crash } from '../utils/system/crash'
-import { defaultColorPalette, } from '../styles/colors'
-import * as Sentry from "@sentry/react-native";
 
 Appearance.getColorScheme()
 
@@ -26,7 +26,7 @@ export default function Navigation() {
             const currentRouteName = navigationRef.current.getCurrentRoute().name
 
             if (previousRouteName !== currentRouteName) {
-                analytics().setCurrentScreen(currentRouteName, currentRouteName)
+                analytics().logScreenView({ screen_name: currentRouteName })
             }
             routeNameRef.current = currentRouteName
         } catch (e) {
@@ -54,7 +54,7 @@ export default function Navigation() {
                 ref={navigationRef}
                 onReady={() => {
                     routeNameRef.current = navigationRef.current.getCurrentRoute().name
-                    analytics().setCurrentScreen(routeNameRef.current, routeNameRef.current)
+                    analytics().logScreenView({ screen_name: routeNameRef.current })
                 }}
                 onStateChange={onChangeScreen}
             >

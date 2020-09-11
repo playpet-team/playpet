@@ -1,12 +1,12 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from "react"
-import styled, { css } from "styled-components/native"
 import { Camera } from 'expo-camera';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { View, Modal } from 'react-native';
-import { Text } from "../styles";
 import * as MediaLibrary from 'expo-media-library';
-import { askPermission, PermissionsList } from "../utils";
+import React, { useEffect, useRef, useState } from "react";
+import { Modal, View } from 'react-native';
 import { Icon } from "react-native-elements";
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import styled, { css } from "styled-components/native";
+import { Text } from "../styles";
+import { askPermission, PermissionsList } from "../utils";
 
 const RECORD_PROPERTY = {
     quality: 0.6,

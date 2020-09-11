@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
+import analytics from '@react-native-firebase/analytics'
+import * as Sentry from "@sentry/react-native"
+import React, { useEffect, useRef, useState } from 'react'
+import { Avatar, Icon, Input } from 'react-native-elements'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/native'
-import { Icon, Input, Avatar } from 'react-native-elements'
-import { Layout, Text } from '../../styles'
-import { firebaseNow, updateUserProfilePhoto, updateUsername, currentUser } from '../../utils'
-import useLoadingIndicator from '../../hooks/useLoadingIndicator'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../../store/rootReducers'
-import useImagePicker from '../../hooks/useImagePicker'
-import { useUploadFirestore } from '../CardFormScreen/useUploadFirestore'
-import { authActions } from '../../store/authReducer'
 import Toast, { ToastParams } from '../../components/Toast'
-import * as Sentry from "@sentry/react-native";
+import useImagePicker from '../../hooks/useImagePicker'
+import useLoadingIndicator from '../../hooks/useLoadingIndicator'
+import { authActions } from '../../store/authReducer'
+import { RootState } from '../../store/rootReducers'
+import { Layout, Text } from '../../styles'
+import { currentUser, firebaseNow, updateUsername, updateUserProfilePhoto } from '../../utils'
+import { useUploadFirestore } from '../CardFormScreen/useUploadFirestore'
 
 const MAX_USERNAME_LENGTH = 16
 const MIN_USERNAME_LENGTH = 2
@@ -64,13 +65,12 @@ export default function ProfileSetting() {
         updateUserProfile('displayName', value)
         dispatch(authActions.setUsername(value))
         setEditMode(false)
+        analytics().logEvent('change_nickname')
         return setToastContent({
             title: '닉네임 변경 완료!',
             visible: true
         })
     }
-
-
 
     const [toastContent, setToastContent] = useState<ToastParams>({
         visible: false,

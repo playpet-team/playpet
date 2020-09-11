@@ -1,16 +1,17 @@
-import React, { useMemo, useState, useEffect, useCallback } from "react";
-import styled, { css } from 'styled-components/native'
-import Animated, { Value, interpolate } from 'react-native-reanimated'
-import { Icon, Button, Image, Avatar } from 'react-native-elements'
-import { deviceSize, setCardLike, setUserFollow } from '../../utils'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../store/rootReducers';
+import analytics from '@react-native-firebase/analytics';
+import { useIsFocused, useTheme } from '@react-navigation/native';
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Modal, View } from "react-native";
+import { Avatar, Button, Icon, Image } from 'react-native-elements';
+import Animated, { interpolate, Value } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components/native';
 import useShare from '../../hooks/useShare';
-import { useTheme, useIsFocused } from '@react-navigation/native'
 import { playgroundActions } from "../../store/playgroundReducer";
-import { View, Modal } from "react-native";
-import { getUserDoc } from '../../utils/auth'
+import { RootState } from '../../store/rootReducers';
+import { deviceSize, setCardLike, setUserFollow } from '../../utils';
+import { getUserDoc } from '../../utils/auth';
 
 const DEVICE_HEIGHT = deviceSize().height
 
@@ -81,6 +82,9 @@ export default function CardContentSection({
             setShowToastLike(true)
         }
         const willLikes = isLike ? myLikes.filter(like => like != id) : [...myLikes, myUid]
+        analytics().logEvent('click_card_like', {
+            method: isLike ? 'remove' : 'add',
+        })
         dispatch(playgroundActions.setMyLikes(willLikes))
         setCardLike({ uid: myUid, id, methods: isLike ? 'remove' : 'add' })
     }, [isLike])
@@ -92,6 +96,9 @@ export default function CardContentSection({
         const willFollow = isFollow ? [...myFollowing, myUid] : myFollowing.filter(like => like != id)
         dispatch(playgroundActions.setMyFollowing(willFollow))
         setUserFollow({ myUid, followingUid: cardUid, methods: isFollow ? 'remove' : 'add' })
+        analytics().logEvent('click_follow', {
+            method: isFollow ? 'remove' : 'add',
+        })
     }, [isFollow])
 
     if (!onPlayActive) {

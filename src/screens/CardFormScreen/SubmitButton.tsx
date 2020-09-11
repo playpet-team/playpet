@@ -1,13 +1,14 @@
-import { CardImage } from "../CardFormScreen"
-import React, { useState } from "react"
-import { CardModel, submitCard, firebaseNow } from "../../utils"
+import analytics from '@react-native-firebase/analytics'
 import { firebase } from '@react-native-firebase/storage'
-import { Button } from 'react-native-elements'
-import { RootState } from "../../store/rootReducers"
-import { useSelector } from "react-redux"
-import { Alert } from "react-native"
 import * as Sentry from "@sentry/react-native"
+import React from "react"
+import { Alert } from "react-native"
+import { Button } from 'react-native-elements'
+import { useSelector } from "react-redux"
 import { Api } from "../../api"
+import { RootState } from "../../store/rootReducers"
+import { CardModel, firebaseNow, submitCard } from "../../utils"
+import { CardImage } from "../CardFormScreen"
 
 interface Submit {
     cardImages: CardImage[]
@@ -65,6 +66,7 @@ function SubmitButton({
                 updatedAt: firebaseNow(),
             }
             await submitCard(formData)
+            analytics().logEvent('submit_upload_playground')
         } catch (e) {
             Sentry.captureException(e)
         } finally {
