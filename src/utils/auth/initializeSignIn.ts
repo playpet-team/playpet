@@ -64,6 +64,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                             visible: true,
                             title: '이메일 정보를 받아 올수 없습니다. 잠시 후 다시 시도해주세요',
                         })
+                        setLoading(false)
                         return
                     }
                     setLoading(true)
@@ -193,9 +194,9 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     }
 
     const postCreateUser = useCallback(async () => {
-        const { data: { customToken, uid, newUser } }:
+        const { data: { customTokenForExistUser, uid, newUser } }:
             { data: {
-                customToken: string
+                customTokenForExistUser: string
                 uid: string
                 newUser: boolean
             }}
@@ -205,7 +206,9 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         })
 
         return {
-            customToken, uid, newUser
+            customToken: customTokenForExistUser,
+            uid,
+            newUser
         }
     }, [profile, method])
 
