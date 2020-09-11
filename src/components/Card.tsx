@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react'
-import styled from 'styled-components/native'
-import { Video, AVPlaybackStatus } from 'expo-av'
-import Animated, { Value, interpolate, Easing } from 'react-native-reanimated'
-import { useIsFocused } from '@react-navigation/native'
-import CardCoveredImage from './Card/CardCoveredImage'
-import { deviceSize, CardModel } from '../utils'
-import { TouchableWithoutFeedback } from 'react-native'
-import CardContentSection from './Card/CardContentSection'
 import { firebase } from '@react-native-firebase/storage'
+import { useIsFocused } from '@react-navigation/native'
+import { AVPlaybackStatus, Video } from 'expo-av'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { Text, TouchableWithoutFeedback } from 'react-native'
+import Animated, { Easing, interpolate, Value } from 'react-native-reanimated'
+import styled from 'styled-components/native'
+import { CardModel, deviceSize } from '../utils'
+import CardContentSection from './Card/CardContentSection'
+import CardCoveredImage from './Card/CardCoveredImage'
 
 const DEVICE_WIDTH = deviceSize().width
 const DEVICE_HEIGHT = deviceSize().height
@@ -125,6 +125,7 @@ function Card({
                         }),
                     }}
                 />}
+                <Text>{contents[0].cardId ? 'o' : 'x'}</Text>
                 <CardContentSection
                     myCards={myCards}
                     bounceValue={bounceValue}
