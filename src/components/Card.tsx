@@ -2,7 +2,7 @@ import { firebase } from '@react-native-firebase/storage'
 import { useIsFocused } from '@react-navigation/native'
 import { AVPlaybackStatus, Video } from 'expo-av'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { Text, TouchableWithoutFeedback } from 'react-native'
+import { TouchableWithoutFeedback } from 'react-native'
 import Animated, { Easing, interpolate, Value } from 'react-native-reanimated'
 import styled from 'styled-components/native'
 import { CardModel, deviceSize } from '../utils'
@@ -125,7 +125,6 @@ function Card({
                         }),
                     }}
                 />}
-                <Text>{contents[0].cardId ? 'o' : 'x'}</Text>
                 <CardContentSection
                     myCards={myCards}
                     bounceValue={bounceValue}

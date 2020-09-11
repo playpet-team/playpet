@@ -302,7 +302,7 @@ export const putAsyncStorage = async (key: string, putData: AsyncStorageCustomTo
 // }
 
 const kakaoLogin = async (setToken: React.Dispatch<React.SetStateAction<string | null>>) => {
-    const result = await KakaoLogins.login([KAKAO_AUTH_TYPES.Account])
+    const result = await KakaoLogins.login([KAKAO_AUTH_TYPES.Talk])
     setToken(result.accessToken)
 }
 
