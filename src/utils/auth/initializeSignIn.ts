@@ -65,11 +65,13 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                             title: '이메일 정보를 받아 올수 없습니다. 잠시 후 다시 시도해주세요',
                         })
                         setLoading(false)
+                        Sentry.captureException('getCredential-이메일 정보를 받아 올수 없습니다. 잠시 후 다시 시도해주세요')
                         return
                     }
                     setLoading(true)
                     const { customToken, uid, newUser } = await postCreateUser()
-                    if (!customToken) {
+                    if (!customToken || !uid || typeof newUser !== 'boolean') {
+                        Sentry.captureException(`getCredential-no-information-from-postCreateUser-${uid}-${newUser}`)
                         setLoading(false)
                         return
                     }
@@ -88,12 +90,12 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                         }
         
                     } catch (e) {
-                        Sentry.captureException(e)
+                        Sentry.captureException(`getCredential-${e}`)
                         if (e.code != "auth/account-exists-with-different-credential") {
                             setToastContent({
                                 ...toastContent,
                                 visible: true,
-                                title: '인증 정보를 받아오는 작업을 실패했습니다',
+                                title: '로그인에 실패하였습니다',
                             })
                         } else {
                             setToastContent({
@@ -106,7 +108,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                         setLoading(false)
                     }
                 } catch (e) {
-                    Sentry.captureException(e)
+                    Sentry.captureException(`getCredential-${e}`)
                 } finally {
                     setLoading(false)
                 }
@@ -140,7 +142,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                         setToastContent({
                             ...toastContent,
                             visible: true,
-                            title: '인증 정보를 받아오는 작업을 실패했습니다',
+                            title: '페이스북 인증 정보를 받아오는 작업을 실패했습니다',
                         })
                     } else {
                         setToken(getProvider(SignType.Facebook).credential(data.accessToken))
@@ -167,7 +169,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                 }
             }
         } catch (e) {
-            Sentry.captureException(e)
+            Sentry.captureException(`getCredential-${e}`)
             setLoading(false)
             setToastContent({
                 ...toastContent,
@@ -183,10 +185,11 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     const checkUser = () => {
         const user = currentUser()
         if (!user) {
+            Sentry.captureException('checkUser-회원정보를 찾을 수 없습니다')
             setToastContent({
                 ...toastContent,
                 visible: true,
-                title: '인증 정보를 받아오는 작업을 실패했습니다',
+                title: '회원정보를 찾을 수 없습니다',
             })
             return
         }
@@ -194,21 +197,26 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     }
 
     const postCreateUser = useCallback(async () => {
-        const { data: { customTokenForExistUser, uid, newUser } }:
-            { data: {
-                customTokenForExistUser: string
-                uid: string
-                newUser: boolean
-            }}
-            = await Api.post('/auth/create-user', {
-            ...profile,
-            method,
-        })
-
-        return {
-            customToken: customTokenForExistUser,
-            uid,
-            newUser
+        try {
+            const { data: { customTokenForExistUser, uid, newUser } }:
+                { data: {
+                    customTokenForExistUser: string
+                    uid: string
+                    newUser: boolean
+                }}
+                = await Api.post('/auth/create-user', {
+                ...profile,
+                method,
+            })
+    
+            return {
+                customToken: customTokenForExistUser,
+                uid,
+                newUser
+            }
+        } catch (e) {
+            Sentry.captureException(`postCreateUser-${e}`)
+            return {}
         }
     }, [profile, method])
 
