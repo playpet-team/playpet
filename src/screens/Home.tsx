@@ -1,28 +1,21 @@
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import styled from 'styled-components/native'
-import { DividerBlock } from '../styles'
-import useFirebaseMessage from '../hooks/useFirebaseMessage'
-import useRollingBanner from '../hooks/useRollingBanner'
-import { ScrollView } from 'react-native-gesture-handler'
-import { Layout } from '../styles'
-import Logo from '../components/Logo'
-import ProductList from '../components/ProductList'
-import useLanguage from '../hooks/useLanguage'
-import AgreeTermsModal from './Home/AgreeTermsModal'
-import useInitialDynamicLink from '../hooks/useInitialDynamicLink'
+import React from 'react';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import styled from 'styled-components/native';
+import Logo from '../components/Logo';
+import ProductList from '../components/ProductList';
+import useFirebaseMessage from '../hooks/useFirebaseMessage';
+import useInitialDynamicLink from '../hooks/useInitialDynamicLink';
+import useLanguage from '../hooks/useLanguage';
+import useRollingBanner from '../hooks/useRollingBanner';
+import { DividerBlock, Layout } from '../styles';
+import AgreeTermsModal from './Home/AgreeTermsModal';
 
 export default function Home() {
     useLanguage()
     useFirebaseMessage()
     useInitialDynamicLink()
     const { renderBanner } = useRollingBanner()
-
-    // useEffect(() => {
-    //     if (!existDoc) {
-    //         navigation.navigate('AppLoginAgreeTerms')
-    //     }
-    // }, [existDoc])
 
     return (
         <SafeAreaViewBlock>

@@ -1,23 +1,23 @@
-import analytics from '@react-native-firebase/analytics';
-import { useNavigation } from '@react-navigation/native'
-import { signInWithCustomToken, currentUser, updateUserAuthToken } from '.'
-import { ToastParams } from '../../components/Toast'
-import { useCallback, useState, useEffect } from 'react'
-
-import auth from '@react-native-firebase/auth'
 import appleAuth, {
     AppleAuthRequestOperation,
-    AppleAuthRequestScope,
-} from '@invertase/react-native-apple-authentication'
-import { GoogleSignin } from '@react-native-community/google-signin'
-import { LoginManager, AccessToken } from 'react-native-fbsdk'
-import KakaoLogins, { IProfile, KAKAO_AUTH_TYPES } from '@react-native-seoul/kakao-login'
-
-import { SignType } from '../../models'
-import AsyncStorage from '@react-native-community/async-storage'
-import useLoadingIndicator from '../../hooks/useLoadingIndicator'
-import { Api } from '../../api'
+    AppleAuthRequestScope
+} from '@invertase/react-native-apple-authentication';
+import AsyncStorage from '@react-native-community/async-storage';
+import { GoogleSignin } from '@react-native-community/google-signin';
+import analytics from '@react-native-firebase/analytics';
+import auth from '@react-native-firebase/auth';
+import KakaoLogins, { KAKAO_AUTH_TYPES } from '@react-native-seoul/kakao-login';
+import { useNavigation } from '@react-navigation/native';
 import * as Sentry from "@sentry/react-native";
+import { useCallback, useEffect, useState } from 'react';
+import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import { currentUser, signInWithCustomToken, updateUserAuthToken } from '.';
+import { Api } from '../../api';
+import { ToastParams } from '../../components/Toast';
+import useLoadingIndicator from '../../hooks/useLoadingIndicator';
+import { SignType } from '../../models';
+
+
 
 const DEV_GOOGLE_WEB_CLIENT_ID = '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com'
 const PROD_GOOGLE_WEB_CLIENT_ID = '952410130595-ro7ouus2ia8rtj64guknh8dn91e5o7ns.apps.googleusercontent.com'
@@ -302,7 +302,7 @@ export const putAsyncStorage = async (key: string, putData: AsyncStorageCustomTo
 // }
 
 const kakaoLogin = async (setToken: React.Dispatch<React.SetStateAction<string | null>>) => {
-    const result = await KakaoLogins.login([KAKAO_AUTH_TYPES.Talk])
+    const result = await KakaoLogins.login([KAKAO_AUTH_TYPES.Account])
     setToken(result.accessToken)
 }
 
