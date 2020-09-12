@@ -161,7 +161,7 @@ function CameraRecordWrapper({ setVideoUri, setCameraOn, openPicker }: {
                                     name="radio-button-checked"
                                     size={90}
                                     style={{ padding: 8 }}
-                                    color={recordStatus === 'in' ? '#ff0000' : '#333'}
+                                    color={recordStatus === 'in' ? '#ff0000' : '#fff'}
                                 />
                                 {/* <ProgressCircle
                                     containerStyle={{
