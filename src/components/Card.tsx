@@ -40,7 +40,7 @@ function Card({
     const isFocus = useIsFocused()
 
     useEffect(() => {
-        if (!contents.length || !onPlayActive) {
+        if (!contents.length) {
             return
         }
         if (contents[0].cardId) {
@@ -53,10 +53,13 @@ function Card({
         }
 
         async function loadDownloadUrl() {
+            if (videoUrl) {
+                return
+            }
             const reference = firebase.storage().ref(`playground/${contents[0].cardId}`)
             setVideoUrl(await reference.getDownloadURL())
         }
-    }, [contents, onPlayActive])
+    }, [])
 
     const trackingVideoStatus = (status: AVPlaybackStatus) => setGetReadyPlay(status.isLoaded)
     // 재생 조건
@@ -96,6 +99,7 @@ function Card({
     }, [showDetail, onPlayActive])
 
     const shouldPlay = useMemo(() => getReadyPlay && onPlayActive && !showDetail, [getReadyPlay && onPlayActive && !showDetail])
+    console.log("videoUrl", videoUrl)
 
     return (
         <CardTouchable onPress={() => setShowDetail(!showDetail)}>
