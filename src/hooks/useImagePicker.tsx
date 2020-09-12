@@ -1,15 +1,14 @@
-import { CardImage } from '../screens/CardFormScreen'
-import ImagePicker, { ImagePickerResponse } from 'react-native-image-picker'
+import * as Sentry from "@sentry/react-native"
+import Constants from 'expo-constants'
 // import * as ImagePicker from 'expo-image-picker'
 // expo-image-picker 를 사용하지 않은 이유: upload 된 video 가 아이폰의경우 quicktime 용으로로만 올라가기 때문에 기타 장비에서는 재생이 불가능 (크롬, 안드로이드 등)
 // 하지만 react-native-image-picker의 경우 mp4로 convert 시키는 기능이 있음
 import * as VideoThumbnails from 'expo-video-thumbnails'
 import React, { useCallback } from 'react'
-import Constants from 'expo-constants'
-import { askPermission, firebaseNow, PermissionsList } from '../utils'
+import ImagePicker, { ImagePickerResponse } from 'react-native-image-picker'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/rootReducers'
-import * as Sentry from "@sentry/react-native";
+import { askPermission, firebaseNow, PermissionsList } from '../utils'
 
 function useImagePicker({ setLoading, uploadCallback, updateType = 'video' }: {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>

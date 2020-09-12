@@ -58,6 +58,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         async function getCredential() {
             if (token && profile && method) {
                 try {
+                    console.log("111")
                     if (!profile.email) {
                         setToastContent({
                             ...toastContent,
@@ -68,6 +69,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                         Sentry.captureException('getCredential-이메일 정보를 받아 올수 없습니다. 잠시 후 다시 시도해주세요')
                         return
                     }
+                    console.log("22")
                     setLoading(true)
                     const { customToken, uid, newUser } = await postCreateUser()
                     if (!customToken || !uid || typeof newUser !== 'boolean') {
@@ -75,6 +77,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                         setLoading(false)
                         return
                     }
+                    console.log("33")
                     
                     try {
                         await signInWithCustomToken(customToken)
@@ -198,6 +201,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
 
     const postCreateUser = useCallback(async () => {
         try {
+            console.log('a')
             const { data: { customTokenForExistUser, uid, newUser } }:
                 { data: {
                     customTokenForExistUser: string
@@ -208,6 +212,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                 ...profile,
                 method,
             })
+            console.log('bb')
     
             return {
                 customToken: customTokenForExistUser,

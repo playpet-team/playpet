@@ -1,19 +1,19 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import styled from 'styled-components/native';
-import { Input, Icon, Image, BottomSheet } from 'react-native-elements';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/rootReducers';
-import SubmitButton from './CardFormScreen/SubmitButton';
-import useLoadingIndicator from '../hooks/useLoadingIndicator';
-import useImagePicker from '../hooks/useImagePicker';
-import { placeholderColor, tintColorBackground } from '../styles/colors';
-import { Camera } from 'expo-camera';
-
-import { Text } from '../styles';
-import CameraRecordWrapper from '../components/CameraRecordWrapper';
-import { View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native';
+import { Camera } from 'expo-camera';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { View } from 'react-native';
+import { Icon, Image, Input } from 'react-native-elements';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components/native';
+import CameraRecordWrapper from '../components/CameraRecordWrapper';
+import useImagePicker from '../hooks/useImagePicker';
+import useLoadingIndicator from '../hooks/useLoadingIndicator';
+import { RootState } from '../store/rootReducers';
+import { Text } from '../styles';
+import { placeholderColor, tintColorBackground } from '../styles/colors';
+import SubmitButton from './CardFormScreen/SubmitButton';
+
 
 export default function CardFormScreen() {
     const [videoUri, setVideoUri] = useState('')
@@ -35,13 +35,16 @@ export default function CardFormScreen() {
         }
     }, [videoUri])
 
-    const uploadCallback = (newForm: CardImage) => setForm({
-        ...form,
-        cardImages: [
-            ...form.cardImages,
-            newForm,
-        ],
-    })
+    const uploadCallback = (newForm: CardImage) => {
+        setCameraOn(false)
+        setForm({
+            ...form,
+            cardImages: [
+                ...form.cardImages,
+                newForm,
+            ],
+        })
+    }
     const { openPicker, addCardMedia } = useImagePicker({
         setLoading,
         uploadCallback,
@@ -97,16 +100,13 @@ export default function CardFormScreen() {
                 {(cameraOn && isFocused) && <CameraRecordWrapper
                     setVideoUri={setVideoUri}
                     setCameraOn={setCameraOn}
+                    openPicker={openPicker}
                 />}
                 <InputTextGroup>
                     <Input
-                        containerStyle={{
-                            minHeight: 200,
-                        }}
+                        containerStyle={{ minHeight: 200 }}
                         placeholderTextColor={placeholderColor}
-                        inputContainerStyle={{
-                            borderBottomWidth: 0,
-                        }}
+                        inputContainerStyle={{ borderBottomWidth: 0 }}
                         placeholder='오늘은 어떤 일이 있었나요?'
                         value={form.title}
                         onChangeText={(value: string) => setForm({
@@ -115,9 +115,9 @@ export default function CardFormScreen() {
                         })}
                     />
                     <UploadImageBlock>
-                        {!cameraOn && completeUpload ?
+                        {completeUpload ?
                             <UploadImage>
-                                {isFocused && (
+                                {false && isFocused && (
                                     <Camera
                                         style={{ flex: 1, height: 200, alignItems: 'center', justifyContent: 'center', }}
                                         type={Camera.Constants.Type.back}
@@ -128,7 +128,7 @@ export default function CardFormScreen() {
                                     </Camera>
                                 )}
                                 <TouchableOpacity
-                                    onPress={openPicker}
+                                    onPress={() => setCameraOn(true)}
                                     containerStyle={{
                                         marginTop: 16,
                                         flex: 1,
@@ -136,8 +136,9 @@ export default function CardFormScreen() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    <Icon name="photo-library" size={48} />
-                                    <Text>라이브러리에서 선택</Text>
+                                    <Icon name="party-mode" size={48} />
+                                    {/* <Text>라이브러리에서 선택</Text> */}
+                                    <Text>영상 업로드</Text>
                                 </TouchableOpacity>
                             </UploadImage>
                             :
