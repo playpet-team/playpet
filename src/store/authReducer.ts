@@ -26,7 +26,18 @@ export const initialState: AuthSettings = {
         termsOfUseAgree: false,
         personalCollectAgree: false,
         marketingAgree: false,
-    }
+        createdAt: null,
+        updatedAt: null,
+    },
+    activePet: {
+        petName: '',
+        petType: '',
+        searchPetType: '',
+        size: '',
+        favorite: '',
+        createdAt: null,
+        updatedAt: null,
+    },
 }
 
 const slice = createSlice({
@@ -49,9 +60,12 @@ const slice = createSlice({
         setTerms(state, { payload }) {
             state.terms = Object.assign(state.terms, payload)
         },
-        setActivePet(state, { payload }) {
+        setActivePetDocId(state, { payload }: { payload: string }) {
             state.activePetDocId = payload
-        }
+        },
+        setActivePet(state, { payload }) {
+            state.activePet = payload
+        },
     },
 })
 

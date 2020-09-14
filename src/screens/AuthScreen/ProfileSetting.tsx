@@ -1,7 +1,9 @@
 import analytics from '@react-native-firebase/analytics'
 import * as Sentry from "@sentry/react-native"
 import React, { useEffect, useRef, useState } from 'react'
+import { View } from 'react-native'
 import { Avatar, Icon, Input } from 'react-native-elements'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/native'
 import Toast, { ToastParams } from '../../components/Toast'
@@ -9,8 +11,8 @@ import useImagePicker from '../../hooks/useImagePicker'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import { authActions } from '../../store/authReducer'
 import { RootState } from '../../store/rootReducers'
-import { Layout, Text } from '../../styles'
-import { currentUser, firebaseNow, updateUsername, updateUserProfilePhoto } from '../../utils'
+import { DividerBlock, Layout, Text } from '../../styles'
+import { currentUser, firebaseNow, getPetDoc, resetUserActivePetDocId, updateUsername, updateUserProfilePhoto } from '../../utils'
 import { useUploadFirestore } from '../CardFormScreen/useUploadFirestore'
 
 const MAX_USERNAME_LENGTH = 16
@@ -24,8 +26,37 @@ export default function ProfileSetting() {
         email,
         method,
         uid,
+        activePetDocId,
+        activePet,
     } = useSelector((state: RootState) => state.auth)
     const [form, setForm] = useState<ProfileForm>({ uri: '' });
+
+    useEffect(() => {
+        if (activePetDocId && uid) {
+            loadMyPet()
+        }
+        async function loadMyPet() {
+            console.log("load")
+            setLoading(true)
+            const petDoc = await getPetDoc(uid, activePetDocId)
+            dispatch(authActions.setActivePet(petDoc))
+            setLoading(false)
+        }
+    }, [activePetDocId, uid])
+
+    const resetActivePetDocId = () => {
+        resetUserActivePetDocId(uid)
+        dispatch(authActions.setActivePetDocId(''))
+        dispatch(authActions.setActivePet({
+            petName: '',
+            petType: '',
+            searchPetType: '',
+            size: '',
+            favorite: '',
+            createdAt: null,
+            updatedAt: null,
+        }))
+    }
 
     // input username
     const usernameRef = useRef<Input | null>(null)
@@ -149,6 +180,35 @@ export default function ProfileSetting() {
                     disabled
                 />
             </Layout>
+            <View>
+                <DividerBlock marginTop={12} />
+                <TouchableOpacity onPress={resetActivePetDocId}><Text size={16}>동물 정보 초기화하기(개발용)</Text></TouchableOpacity>
+                <DividerBlock marginTop={4} marginBottom={2} />
+                <Input
+                    label="아이 이름"
+                    value={activePet.petName}
+                    disabled
+                />
+                <Input
+                    value={activePet.petType}
+                    disabled
+                />
+                <Input
+                    label="품종"
+                    value={activePet.searchPetType}
+                    disabled
+                />
+                {Boolean(activePet.size) && <Input
+                    label="품종"
+                    value={activePet.size}
+                    disabled
+                />}
+                <Input
+                    label="관심사"
+                    value={activePet.favorite}
+                    disabled
+                />
+            </View>
         </ProfileSettingBlock>
     )
 }

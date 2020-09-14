@@ -38,9 +38,7 @@ export interface TERMS {
     marketingAgree: boolean;
 }
 const DEVICE_WIDTH = deviceSize().width
-export default function SignInAdditionalInformation({
-    modalVisible = false
-}) {
+export default function SignInAdditionalInformation() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
     const [currentStep, setStep] = useState<Step>(Step.WELCOME)
     const [valid, setValid] = useState(false)
@@ -139,13 +137,15 @@ export default function SignInAdditionalInformation({
                 size,
                 favorite,
             })
-            dispatch(authActions.setTerms({
-                overAgeAgree,
-                termsOfUseAgree,
-                personalCollectAgree,
-                marketingAgree,
-            }))
-            dispatch(authActions.setActivePet(activePetDocId))
+            if (activePetDocId) {
+                dispatch(authActions.setTerms({
+                    overAgeAgree,
+                    termsOfUseAgree,
+                    personalCollectAgree,
+                    marketingAgree,
+                }))
+                dispatch(authActions.setActivePetDocId(activePetDocId))
+            }
         } catch (e) {
             Sentry.captureException(e)
         } finally {
@@ -157,7 +157,7 @@ export default function SignInAdditionalInformation({
 
     return (
         <PlaypetModal
-            modalVisible={modalVisible}
+            modalVisible={true}
             isHideCloseButton={true}
             containerStyle={{
                 flex: 1,

@@ -1,13 +1,14 @@
-import { GoogleSignin } from '@react-native-community/google-signin'
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
-import firestore from '@react-native-firebase/firestore'
-import KakaoLogins from '@react-native-seoul/kakao-login'
-import * as Sentry from "@sentry/react-native"
-import { LoginManager } from 'react-native-fbsdk'
-import { Api } from '../../api'
-import { Collections, SignType, User } from '../../models'
-import { initialState } from '../../store/authReducer'
-import { firebaseTimeStampToStringStamp } from './../system/index'
+import { GoogleSignin } from '@react-native-community/google-signin';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import KakaoLogins from '@react-native-seoul/kakao-login';
+import * as Sentry from "@sentry/react-native";
+import { LoginManager } from 'react-native-fbsdk';
+import { Api } from '../../api';
+import { Collections, SignType, User } from '../../models';
+import { initialState } from '../../store/authReducer';
+import { MyPet, Terms } from './../../models/src/user';
+import { firebaseTimeStampToStringStamp } from './../system/index';
 // import { NaverLogin } from '@react-native-seoul/naver-login'
 
 export const firebaseNow = () => firestore.Timestamp.now()
@@ -76,7 +77,12 @@ export const getUser = async (uid: string): Promise<User | null> => {
 }
 
 export const getUserTerms = async (uid: string) => {
-    return (await firestore().collection(Collections.Terms).doc(uid).get()).data() as Pick<User, 'terms'>
+    const terms = (await firestore().collection(Collections.Terms).doc(uid).get()).data() as Terms
+    return {
+        ...terms,
+        createdAt: firebaseTimeStampToStringStamp(terms.createdAt),
+        updatedAt: firebaseTimeStampToStringStamp(terms.updatedAt),
+    }
 }
 
 // export enum CheckUser {
@@ -109,29 +115,59 @@ export const updateUserTerms = async (uid: string, terms: {}) => {
 }
 
 export const updateUserPets = async (uid: string, petInformation: {}) => {
-    const userDoc = firestore().collection(Collections.Users).doc(uid)
-    const { id } = userDoc.collection('pets').doc()
-
-    await userDoc.collection('pets').doc(id).set({
-        ...petInformation,
-        createdAt: firebaseNow(),
-        updatedAt: firebaseNow(),
-    })
-    await userDoc.update({
-        activePetDocId: id,
-        updatedAt: firebaseNow(),
-    })
-
-    return id
-    // const setParams = {
-    //     ...terms,
-    //     updatedAt: firebaseNow(),
-    //     ...((await userDoc.get()).exists ? {} : { createdAt: firebaseNow() })
-    // }
-    // docRef.set(setParams, { merge: true })
+    try {
+        const userDoc = firestore().collection(Collections.Users).doc(uid)
+        const { id } = userDoc.collection('pets').doc()
+    
+        await userDoc.collection('pets').doc(id).set({
+            ...petInformation,
+            createdAt: firebaseNow(),
+            updatedAt: firebaseNow(),
+        })
+        await userDoc.update({
+            activePetDocId: id,
+            updatedAt: firebaseNow(),
+        })
+        return id
+    } catch (e) {
+        Sentry.captureException(e)
+        return null
+    }
 }
 
+export const resetUserActivePetDocId = async (uid: string) => {
+    try {
+        await firestore()
+            .collection(Collections.Users)
+            .doc(uid)
+            .update({
+                activePetDocId: '',
+                updatedAt: firebaseNow(),
+            })
+    } catch (e) {
+        Sentry.captureException(e)
+    }
+}
 
+export const getPetDoc = async (uid: string, petDocId: string) => {
+    try {
+        const petData = (await firestore()
+            .collection(Collections.Users)
+            .doc(uid)
+            .collection('pets')
+            .doc(petDocId)
+            .get())
+            .data() as MyPet
+        return {
+            ...petData,
+            createdAt: firebaseTimeStampToStringStamp(petData.createdAt),
+            updatedAt: firebaseTimeStampToStringStamp(petData.updatedAt),
+        }
+    } catch (e) {
+        Sentry.captureException(e)
+        return null
+    }
+}
 
 export const updateFcmToken = async (uid: string, fcmToken: string) => {
     const docRef = firestore().collection(Collections.PushSettings).doc(uid)

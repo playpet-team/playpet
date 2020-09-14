@@ -22,11 +22,26 @@ export interface User {
     createdAt: string | FirebaseTimeStamp | null
     updatedAt: string | FirebaseTimeStamp | null
     activePetDocId: string
-    terms: {
-        existDoc: boolean
-        overAgeAgree: boolean
-        termsOfUseAgree: boolean
-        personalCollectAgree: boolean
-        marketingAgree: boolean
-    }
+    terms: Terms
+    activePet: MyPet
+}
+
+export interface Terms {
+    existDoc: boolean
+    overAgeAgree: boolean
+    termsOfUseAgree: boolean
+    personalCollectAgree: boolean
+    marketingAgree: boolean
+    createdAt: string | FirebaseTimeStamp | null
+    updatedAt: string | FirebaseTimeStamp | null
+}
+
+export interface MyPet {
+    petName: string
+    petType: string
+    searchPetType: string
+    size: string
+    favorite: string
+    createdAt: string | FirebaseTimeStamp | null
+    updatedAt: string | FirebaseTimeStamp | null
 }

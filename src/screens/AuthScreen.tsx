@@ -85,9 +85,9 @@ export default function AuthScreen() {
                     />}
                 />
             </Section>
-            <SignInAdditionalInformation
-                modalVisible={Boolean(isLogged && (!existDoc || !activePetDocId.length))}
-            />
+            {Boolean(isLogged && (!existDoc || !activePetDocId.length)) &&
+                <SignInAdditionalInformation />
+            }
         </ScrollView>
     )
 }

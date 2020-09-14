@@ -18,8 +18,8 @@ function useTerms() {
                     dispatch(authActions.setTerms(initialState.terms))
                 } else {
                     dispatch(authActions.setTerms({
-                        existDoc: true,
                         ...termsData,
+                        existDoc: true,
                     }))
                 }
             }
