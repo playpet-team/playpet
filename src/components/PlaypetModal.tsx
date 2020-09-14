@@ -1,8 +1,8 @@
+import { Theme, useTheme } from "@react-navigation/native"
 import React, { ReactNode } from "react"
-import Modal from "react-native-modal"
-import styled from 'styled-components/native'
-import { useTheme, Theme } from "@react-navigation/native"
 import { Icon } from "react-native-elements"
+import Modal from "react-native-modal"
+import styled, { css } from 'styled-components/native'
 
 interface ModalProps {
     modalVisible: boolean
@@ -10,8 +10,9 @@ interface ModalProps {
     children: ReactNode
     isHideCloseButton?: boolean
     containerStyle?: {
-        width?: number
+        width?: number | string
         padding?: string
+        flex?: number
     }
     header?: boolean
 }
@@ -69,6 +70,9 @@ const PlaypetModal = ({
 
 const Container = styled.View<Pick<Theme, 'colors'> & Pick<ModalProps, 'containerStyle'>>`
     flex-direction: column;
+    ${({ containerStyle }) => containerStyle?.flex && css`
+        flex: ${containerStyle.flex};
+    `}
     width: ${({ containerStyle }) => containerStyle?.width ? containerStyle.width : 320}px;
     padding: ${({ containerStyle }) => containerStyle?.padding ? containerStyle.padding : 16}px;
     background-color: ${({ colors }) => colors.background};
@@ -76,7 +80,6 @@ const Container = styled.View<Pick<Theme, 'colors'> & Pick<ModalProps, 'containe
 `
 
 const PlaypetDialogHeader = styled.View`
-
     justify-content: center;
     flex-direction: row;
     width: 100%;

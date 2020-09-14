@@ -15,7 +15,6 @@ export interface CardType extends CardModel {
     onPlayActive?: boolean
     renderRange?: boolean
     myCards?: boolean
-    index: number
 }
 
 const containerWidth: string = '100%'
@@ -29,7 +28,6 @@ function Card({
     onPlayActive = true, // 현재 액티브 된 카드인지 여부
     renderRange = true, // Carousel 에 렌더까지 된 대기중인 카드인지 여부
     myCards = false,
-    index,
     // isLike,
 }: CardType) {
     const [getReadyPlay, setGetReadyPlay] = useState(false)

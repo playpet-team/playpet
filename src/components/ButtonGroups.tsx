@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { ButtonGroup, ElementObject } from 'react-native-elements';
 import { useTheme } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { ButtonGroup, ElementObject } from 'react-native-elements';
 
 interface Groups {
     buttons: string[] | ElementObject[];
@@ -29,7 +29,7 @@ export default function ButtonGroups({
         <ButtonGroup
             onPress={index => {
                 setSelectedIndex(index);
-                onSelect!(index);
+                onSelect!(buttons[index]);
             }}
             selectedIndex={selectedIndex}
             buttons={buttons}

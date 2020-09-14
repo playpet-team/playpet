@@ -1,6 +1,5 @@
-import React, { ReactNode } from 'react';
-import { ListItem as List, Icon } from 'react-native-elements';
-import styled, { css } from 'styled-components/native';
+import React from 'react';
+import { ListItem as List } from 'react-native-elements';
 
 export default function ListItem({ title, onPress, titleStyle, containerStyle, rightIcon }: {
     title: string;

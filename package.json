@@ -66,6 +66,7 @@
     "expo-updates": "~0.2.14",
     "expo-video-thumbnails": "~4.3.0",
     "expo-web-browser": "~8.3.1",
+    "hangul-js": "^0.2.6",
     "i18n-js": "^3.7.1",
     "jetifier": "^1.6.6",
     "lodash": "^4.17.19",

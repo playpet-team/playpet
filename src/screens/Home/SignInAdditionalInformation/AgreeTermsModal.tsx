@@ -1,49 +1,32 @@
-import React, { useState, useCallback } from 'react'
-import styled from 'styled-components/native'
-import { Text } from '../../styles'
+import React, { useCallback } from 'react';
+import styled from 'styled-components/native';
+import { Text } from '../../../styles';
+import { Step, TERMS } from '../SignInAdditionalInformation';
 
-import { updateUserTerms, currentUser } from '../../utils'
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import { authActions } from '../../store/authReducer';
-import { RootState } from '../../store/rootReducers';
 
-export default function SignUpAgreeTermsModal({ setCompleteTerm }: {
+export default function AgreeTermsModal({ terms, setTerms, handleSingleTerm, setCompleteTerm, step }: {
+    terms: TERMS
+    setTerms: React.Dispatch<React.SetStateAction<TERMS>>
+    handleSingleTerm: (k: string, v: boolean) => void
     setCompleteTerm: React.Dispatch<React.SetStateAction<boolean>>
+    step: number
 }) {
-    const dispatch = useDispatch()
-    const { terms } = useSelector((state: RootState) => state.auth)
+    if (step !== Step.TERMS) {
+        return null
+    }
     const { overAgeAgree, termsOfUseAgree, personalCollectAgree, marketingAgree } = terms
-
-    const handleSingleTerm = (k: string, v: boolean) => dispatch(authActions.setTerms({ [k]: v }))
 
     const handleAllAgree = useCallback(() => {
         const isAllTerms = overAgeAgree && termsOfUseAgree && personalCollectAgree && marketingAgree
-        dispatch(authActions.setTerms({
+        setTerms({
             overAgeAgree: !isAllTerms,
             termsOfUseAgree: !isAllTerms,
             personalCollectAgree: !isAllTerms,
             marketingAgree: !isAllTerms,
-        }))
+        })
     }, [])
 
     const isAllRequiredAgreeTerms = () => overAgeAgree && termsOfUseAgree && personalCollectAgree
-
-    const hanbleSubmitAgreeTerms = async () => {
-        const user = currentUser()
-        if (!user) {
-            return
-        }
-        const uid = user.uid
-        await updateUserTerms(uid, {
-            overAgeAgree,
-            termsOfUseAgree,
-            personalCollectAgree,
-            marketingAgree,
-        })
-        setCompleteTerm(true)
-        // navigation.goBack()
-    }
 
     return (
         <>
@@ -62,7 +45,7 @@ export default function SignUpAgreeTermsModal({ setCompleteTerm }: {
             <TermsAgree onPress={() => handleSingleTerm('marketingAgree', !marketingAgree)}>
                 <Text>{marketingAgree ? 'checked' : 'none'}</Text><Text>홍보 및 마케팅 이용에 동의</Text>
             </TermsAgree>
-            <SubmitSignIn onPress={() => hanbleSubmitAgreeTerms()} disabled={!isAllRequiredAgreeTerms}>
+            <SubmitSignIn onPress={() => setCompleteTerm(true)} disabled={!isAllRequiredAgreeTerms}>
                 <Text>확인</Text>
             </SubmitSignIn>
         </>
