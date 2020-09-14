@@ -12,22 +12,31 @@ export const PET_TYPE = [
     'DOG',
     'CAT',
     'ETC',
+    'NOT_YET'
 ]
 export const SIZE = [
     'SMALL',
     'MEDIUM',
     'LARGE',
 ]
-export default function PetType({ step }: { step: number }) {
-    if (step !== Step.PET_TYPE) {
+export default function PetType({ currentStep, petType, setPetType, searchPetType, setSearchPetType, size, setSize, valid }: {
+    currentStep: Step
+    petType: string
+    setPetType: React.Dispatch<React.SetStateAction<string>>
+    searchPetType: string
+    setSearchPetType: React.Dispatch<React.SetStateAction<string>>
+    size: string
+    setSize: React.Dispatch<React.SetStateAction<string>>
+    valid: boolean
+}) {
+    if (currentStep !== Step.PET_TYPE) {
         return null
     }
-    const [myPetType, setMyPetType] = useState('DOG')
+
     const [searchPetTyping, setSearchPetTyping] = useState('')
-    const [searchPetType, setSearchPetType] = useState('')
     const searchedPetType = useMemo(() => {
         let types = ['']
-        switch (myPetType) {
+        switch (petType) {
             case 'DOG': {
                 types = DOG_TYPE
                 break;
@@ -43,9 +52,7 @@ export default function PetType({ step }: { step: number }) {
         }
 
         return types.filter(type => type.includes(searchPetTyping))
-    }, [myPetType, searchPetTyping])
-
-    const [size, setSize] = useState(SIZE[0])
+    }, [petType, searchPetTyping])
 
     const themes = useTheme();
 
@@ -55,42 +62,36 @@ export default function PetType({ step }: { step: number }) {
             <Text bold size={16}>어떤 반려동물인가?</Text>
             <ButtonGroups
                 buttons={PET_TYPE}
-                onSelect={setMyPetType}
+                onSelect={setPetType}
                 containerStyle={{
                     width: '100%',
                 }}
             />
-
-            <View
-                style={{
-                    display: myPetType && myPetType ? 'flex' : 'none'
-                }}
-            >
-                <SearchBar
-                    placeholder="Type Here..."
-                    onChangeText={setSearchPetTyping}
-                    value={searchPetTyping}
-                />
-                <ScrollView style={{ maxHeight: 300,}}>
-                    {searchedPetType.map(type => {
-                        return (
-                            <ListItem
-                                key={type}
-                                title={type}
-                                onPress={() => setSearchPetType(type)}
-                                titleStyle={{
-                                    color: type === searchPetType ? themes.colors.primary : '#333',
-                                }}
-                            />
-                        )
-                    })}
-                </ScrollView>
-            </View>
-            <View
-                style={{
-                    display: myPetType && searchPetType ? 'flex' : 'none'
-                }}
-            >
+            {petType && petType !== 'NOT_YET' &&
+                <>
+                    <SearchBar
+                        placeholder="품종을 선택해주세요"
+                        onChangeText={setSearchPetTyping}
+                        value={searchPetTyping}
+                    />
+                    <ScrollView style={{ maxHeight: 300,}}>
+                        {searchedPetType.map(type => {
+                            return (
+                                <ListItem
+                                    key={type}
+                                    title={type}
+                                    onPress={() => setSearchPetType(type)}
+                                    titleStyle={{
+                                        color: type === searchPetType ? themes.colors.primary : '#333',
+                                    }}
+                                />
+                            )
+                        })}
+                    </ScrollView>
+                </>
+            }
+            {Boolean(petType === 'DOG' && searchPetType.length) &&
+            <>
                 <DividerBlock marginBottom={8} />
                 <Text bold size={16}>견종 사이즈?</Text>
                 <ButtonGroups
@@ -100,7 +101,7 @@ export default function PetType({ step }: { step: number }) {
                         width: '100%',
                     }}
                 />
-            </View>
+            </>}
         </View>
     )
 }

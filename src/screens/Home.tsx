@@ -9,7 +9,6 @@ import useInitialDynamicLink from '../hooks/useInitialDynamicLink';
 import useLanguage from '../hooks/useLanguage';
 import useRollingBanner from '../hooks/useRollingBanner';
 import { DividerBlock, Layout } from '../styles';
-import SignInAdditionalInformation from './Home/SignInAdditionalInformation';
 
 export default function Home() {
     useLanguage()
@@ -31,7 +30,6 @@ export default function Home() {
                 <ProductList />
                 {/* <DummyCardView /> */}
             </ScrollView>
-            <SignInAdditionalInformation />
         </SafeAreaViewBlock>
     )
 }

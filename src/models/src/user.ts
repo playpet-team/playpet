@@ -16,10 +16,11 @@ export interface User {
     gender: string
     birthDate: string
     phoneNumber: string
-    profilePhoto: string,
+    profilePhoto: string
     lastLogin: string | null
     createdAt: string | null
     updatedAt: string | null
+    activePetDocId: string
     terms: {
         existDoc: boolean
         overAgeAgree: boolean

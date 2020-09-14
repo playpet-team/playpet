@@ -1,13 +1,13 @@
-import firestore from '@react-native-firebase/firestore'
-import { firebaseTimeStampToStringStamp } from './../system/index'
-import auth, { FirebaseAuthTypes, firebase } from '@react-native-firebase/auth'
 import { GoogleSignin } from '@react-native-community/google-signin'
-import { SignType, Collections, User } from '../../models'
-import { initialState } from '../../store/authReducer'
-import { LoginManager } from 'react-native-fbsdk'
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
 import KakaoLogins from '@react-native-seoul/kakao-login'
+import * as Sentry from "@sentry/react-native"
+import { LoginManager } from 'react-native-fbsdk'
 import { Api } from '../../api'
-import * as Sentry from "@sentry/react-native";
+import { Collections, SignType, User } from '../../models'
+import { initialState } from '../../store/authReducer'
+import { firebaseTimeStampToStringStamp } from './../system/index'
 // import { NaverLogin } from '@react-native-seoul/naver-login'
 
 export const firebaseNow = () => firestore.Timestamp.now()
@@ -112,6 +112,31 @@ export const updateUserTerms = async (uid: string, terms: {}) => {
     }
     docRef.set(setParams, { merge: true })
 }
+
+export const updateUserPets = async (uid: string, petInformation: {}) => {
+    const userDoc = firestore().collection(Collections.Users).doc(uid)
+    const { id } = userDoc.collection('pets').doc()
+
+    await userDoc.collection('pets').doc(id).set({
+        ...petInformation,
+        createdAt: firebaseNow(),
+        updatedAt: firebaseNow(),
+    })
+    await userDoc.update({
+        activePetDocId: id,
+        updatedAt: firebaseNow(),
+    })
+
+    return id
+    // const setParams = {
+    //     ...terms,
+    //     updatedAt: firebaseNow(),
+    //     ...((await userDoc.get()).exists ? {} : { createdAt: firebaseNow() })
+    // }
+    // docRef.set(setParams, { merge: true })
+}
+
+
 
 export const updateFcmToken = async (uid: string, fcmToken: string) => {
     const docRef = firestore().collection(Collections.PushSettings).doc(uid)

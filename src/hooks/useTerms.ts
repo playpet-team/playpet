@@ -1,9 +1,9 @@
-import { authActions, initialState } from './../store/authReducer';
-import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { currentUser, getUserTerms } from '../utils';
+import { authActions, initialState } from './../store/authReducer';
 
-function useTerms({ completeTerm }: { completeTerm: boolean }) {
+function useTerms() {
     const dispatch = useDispatch()
     const [existDoc, setExistDoc] = useState(true)
 
@@ -24,7 +24,7 @@ function useTerms({ completeTerm }: { completeTerm: boolean }) {
                 }
             }
         }
-    }, [completeTerm])
+    }, [])
 
     return { existDoc }
 }

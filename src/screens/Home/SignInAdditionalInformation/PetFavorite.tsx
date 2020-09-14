@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { View } from "react-native"
 import ButtonGroups from "../../../components/ButtonGroups"
 import { Text } from "../../../styles"
@@ -10,12 +10,15 @@ export const FAVORITE = [
     'HEALTH',
     'ETC',
 ]
-export default function PetFavorite({ step }: { step: number }) {
-    if (step !== Step.PET_FAVORITE) {
+export default function PetFavorite({ currentStep, favorite, setFavorite, valid }: {
+    currentStep: Step
+    favorite: string
+    setFavorite: React.Dispatch<React.SetStateAction<string>>
+    valid: boolean
+}) {
+    if (currentStep !== Step.PET_FAVORITE) {
         return null
     }
-    const [favorite, setFavorite] = useState('')
-
 
     return (
         <View>

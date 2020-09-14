@@ -4,14 +4,15 @@ import { Text } from '../../../styles';
 import { Step, TERMS } from '../SignInAdditionalInformation';
 
 
-export default function AgreeTermsModal({ terms, setTerms, handleSingleTerm, setCompleteTerm, step }: {
+export default function AgreeTermsModal({ terms, setTerms, handleSingleTerm, setCompleteTerm, currentStep, valid }: {
     terms: TERMS
     setTerms: React.Dispatch<React.SetStateAction<TERMS>>
     handleSingleTerm: (k: string, v: boolean) => void
     setCompleteTerm: React.Dispatch<React.SetStateAction<boolean>>
-    step: number
+    currentStep: Step
+    valid: boolean
 }) {
-    if (step !== Step.TERMS) {
+    if (currentStep !== Step.TERMS) {
         return null
     }
     const { overAgeAgree, termsOfUseAgree, personalCollectAgree, marketingAgree } = terms

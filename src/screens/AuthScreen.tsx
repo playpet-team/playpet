@@ -7,16 +7,20 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components/native'
 import ListItem from '../components/ListItem'
 import ProfileSection from '../components/ProfileSection'
+import useTerms from '../hooks/useTerms'
 import { ItemList } from '../models'
 import { RootState } from '../store/rootReducers'
 import { DividerBlock } from '../styles'
 import { linkingUrl } from '../utils'
 import MyCards from './AuthScreen/MyCards'
+import SignInAdditionalInformation from './Home/SignInAdditionalInformation'
 
 export default function AuthScreen() {
     const [listType, setListType] = useState(ItemList.MEDIA)
-    const { isLogged } = useSelector((state: RootState) => state.auth)
+    const { isLogged, activePetDocId = 'dummy' } = useSelector((state: RootState) => state.auth)
     const navigation = useNavigation()
+    const { existDoc } = useTerms()
+    console.log('isLogged', isLogged)
 
     return (
         <ScrollView>
@@ -81,6 +85,9 @@ export default function AuthScreen() {
                     />}
                 />
             </Section>
+            <SignInAdditionalInformation
+                modalVisible={Boolean(isLogged && (!existDoc || !activePetDocId.length))}
+            />
         </ScrollView>
     )
 }

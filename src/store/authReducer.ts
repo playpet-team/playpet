@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { User, SignType } from '../models'
+import { createSlice } from "@reduxjs/toolkit"
+import { SignType, User } from '../models'
 
 interface AuthSettings extends User {
     isLogged: boolean
@@ -19,6 +19,7 @@ export const initialState: AuthSettings = {
     lastLogin: null,
     createdAt: null,
     updatedAt: null,
+    activePetDocId: '',
     terms: {
         existDoc: true,
         overAgeAgree: false,
@@ -47,6 +48,9 @@ const slice = createSlice({
         },
         setTerms(state, { payload }) {
             state.terms = Object.assign(state.terms, payload)
+        },
+        setActivePet(state, { payload }) {
+            state.activePetDocId = payload
         }
     },
 })
