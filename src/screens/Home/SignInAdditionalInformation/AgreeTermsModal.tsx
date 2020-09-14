@@ -4,11 +4,10 @@ import { Text } from '../../../styles';
 import { Step, TERMS } from '../SignInAdditionalInformation';
 
 
-export default function AgreeTermsModal({ terms, setTerms, handleSingleTerm, setCompleteTerm, currentStep, valid }: {
+export default function AgreeTermsModal({ terms, setTerms, handleSingleTerm, currentStep, valid }: {
     terms: TERMS
     setTerms: React.Dispatch<React.SetStateAction<TERMS>>
     handleSingleTerm: (k: string, v: boolean) => void
-    setCompleteTerm: React.Dispatch<React.SetStateAction<boolean>>
     currentStep: Step
     valid: boolean
 }) {
@@ -46,9 +45,6 @@ export default function AgreeTermsModal({ terms, setTerms, handleSingleTerm, set
             <TermsAgree onPress={() => handleSingleTerm('marketingAgree', !marketingAgree)}>
                 <Text>{marketingAgree ? 'checked' : 'none'}</Text><Text>홍보 및 마케팅 이용에 동의</Text>
             </TermsAgree>
-            <SubmitSignIn onPress={() => setCompleteTerm(true)} disabled={!isAllRequiredAgreeTerms}>
-                <Text>확인</Text>
-            </SubmitSignIn>
         </>
     )
 }

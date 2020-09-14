@@ -1,16 +1,18 @@
 import { useTheme } from '@react-navigation/native'
+import * as Sentry from "@sentry/react-native"
 import React, { useState } from 'react'
 import { Icon } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components/native'
 import PlaypetModal from '../../components/PlaypetModal'
+import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import { authActions } from '../../store/authReducer'
 import { currentUser, deviceSize, updateUserPets, updateUserTerms } from '../../utils'
 import AgreeTermsModal from './SignInAdditionalInformation/AgreeTermsModal'
 import CheckMyInformation from './SignInAdditionalInformation/CheckMyInformation'
 import PetFavorite from './SignInAdditionalInformation/PetFavorite'
-import PetName from './SignInAdditionalInformation/Petname'
+import PetName from './SignInAdditionalInformation/PetName'
 import PetType, { SIZE } from './SignInAdditionalInformation/PetType'
 import WelcomeSign from './SignInAdditionalInformation/WelcomeSign'
 
@@ -39,6 +41,7 @@ const DEVICE_WIDTH = deviceSize().width
 export default function SignInAdditionalInformation({
     modalVisible = false
 }) {
+    const { loading, setLoading, Indicator } = useLoadingIndicator()
     const [currentStep, setStep] = useState<Step>(Step.WELCOME)
     const [valid, setValid] = useState(false)
     const [petName, setPetname] = useState('')
@@ -52,7 +55,7 @@ export default function SignInAdditionalInformation({
         personalCollectAgree: false,
         marketingAgree: false,
     })
-    const [completeTerm, setCompleteTerm] = useState(false)
+    // const [completeTerm, setCompleteTerm] = useState(false)
     const themes = useTheme();
     const dispatch = useDispatch()
 
@@ -62,7 +65,6 @@ export default function SignInAdditionalInformation({
     })
 
     const handleStep = (type: 'back' | 'front') => {
-        console.log('0')
         if (type === 'back') {
             if (currentStep === Step.WELCOME) {
                 return
@@ -70,19 +72,15 @@ export default function SignInAdditionalInformation({
             setStep(currentStep - 1)
             return
         }
-        console.log('1')
         
         const isValid = checkValid()
-        console.log('2')
         setValid(isValid)
         if (!isValid) {
             setValid(true)
             return
         }
         
-        console.log('3')
         if (type === 'front') {
-            console.log('4')
             if (currentStep === Step.TERMS) {
                 hanbleSubmitAgreeTerms()
                 return
@@ -120,40 +118,42 @@ export default function SignInAdditionalInformation({
 
     const hanbleSubmitAgreeTerms = async () => {
         const user = currentUser()
-        console.log('111')
         if (!user) {
             return
         }
         const uid = user.uid
-        console.log('222')
         const { overAgeAgree, termsOfUseAgree, personalCollectAgree, marketingAgree } = terms
-        await updateUserTerms(uid, {
-            overAgeAgree,
-            termsOfUseAgree,
-            personalCollectAgree,
-            marketingAgree,
-        })
-        console.log('333')
-        
-        const activePetDocId = await updateUserPets(uid, {
-            petName,
-            petType,
-            searchPetType,
-            size,
-            favorite,
-        })
-        console.log('444')
+        try {
+            setLoading(true)
+            await updateUserTerms(uid, {
+                overAgeAgree,
+                termsOfUseAgree,
+                personalCollectAgree,
+                marketingAgree,
+            })
+            
+            const activePetDocId = await updateUserPets(uid, {
+                petName,
+                petType,
+                searchPetType,
+                size,
+                favorite,
+            })
+            dispatch(authActions.setTerms({
+                overAgeAgree,
+                termsOfUseAgree,
+                personalCollectAgree,
+                marketingAgree,
+            }))
+            dispatch(authActions.setActivePet(activePetDocId))
+        } catch (e) {
+            Sentry.captureException(e)
+        } finally {
+            setLoading(false)
+        }
 
-        dispatch(authActions.setTerms({
-            overAgeAgree,
-            termsOfUseAgree,
-            personalCollectAgree,
-            marketingAgree,
-        }))
-        dispatch(authActions.setActivePet(activePetDocId))
     }
 
-    console.log('modalVisible-', modalVisible)
 
     return (
         <PlaypetModal
@@ -164,6 +164,7 @@ export default function SignInAdditionalInformation({
                 width: DEVICE_WIDTH,
             }}
         >
+            {loading && <Indicator />}
             <SignInAdditionalInformationBlock>
                 <WelcomeSign currentStep={currentStep} />
                 <PetName
@@ -200,7 +201,6 @@ export default function SignInAdditionalInformation({
                     terms={terms}
                     setTerms={setTerms}
                     handleSingleTerm={handleSingleTerm}
-                    setCompleteTerm={setCompleteTerm}
                     currentStep={currentStep}
                     valid={valid}
                 />
@@ -215,9 +215,7 @@ export default function SignInAdditionalInformation({
                             color={currentStep === Step.WELCOME ? '#e9e9e9' : themes.colors.primary}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => handleStep('front')}
-                    >
+                    <TouchableOpacity onPress={() => handleStep('front')}>
                         <Icon
                             name="keyboard-arrow-right"
                             size={38}
