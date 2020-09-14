@@ -1,8 +1,8 @@
-export * from './permission'
-import { NativeModules, Dimensions } from 'react-native'
-import moment from 'moment'
-import * as Linking from 'expo-linking'
+export * from './permission';
 import * as Sentry from "@sentry/react-native";
+import * as Linking from 'expo-linking';
+import moment from 'moment';
+import { Dimensions, NativeModules } from 'react-native';
 
 export const decimalWonPrice = (val: string | number) => val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' 원'
 export const appReload = () => {
@@ -18,7 +18,15 @@ export interface FirebaseTimeStamp {
     nonoseconds: number
     seconds: number
 }
-export const firebaseTimeStampToStringStamp = (at: FirebaseTimeStamp) => moment(at.seconds).toString()
+export const firebaseTimeStampToStringStamp = (at: FirebaseTimeStamp | string | null) => {
+    if (!at) {
+        return ''
+    }
+    if (typeof at === 'string') {
+        return at
+    }
+    return moment(at.seconds).toString()
+}
 
 export const linkingUrl = async (url: string) => {
     // tel: 이 붙어서 4번째부터 +82인지 검사

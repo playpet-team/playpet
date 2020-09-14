@@ -1,12 +1,12 @@
 import firestore from '@react-native-firebase/firestore';
-import { firebaseTimeStampToStringStamp } from './../system/index';
 import { Collections } from '../../models';
+import { ProductItem } from './../../components/ProductListItem';
 
 export const loadProduct = async (PID: string) => {
     return (await firestore()
         .collection(Collections.Products)
         .doc(PID)
-        .get()).data();
+        .get()).data() as ProductItem;
 };
 
 export const loadProductList = async () => {
@@ -17,7 +17,7 @@ export const loadProductList = async () => {
 
     return productList.docs.map((product: any) => {
         return {
-            ...product.data(),
+            ...product.data() as ProductItem,
             id: product.id,
         };
     });

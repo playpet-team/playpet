@@ -1,10 +1,10 @@
-import { firebaseTimeStampToStringStamp } from './../system/index'
-import { Collections } from '../../models/src/collections'
-
-import firestore, { FirebaseFirestoreTypes, } from '@react-native-firebase/firestore'
-import { Api } from '../../api'
-import { currentUser } from '../auth'
+import firestore from '@react-native-firebase/firestore'
 import * as Sentry from "@sentry/react-native"
+import { Api } from '../../api'
+import { Collections } from '../../models/src/collections'
+import { currentUser } from '../auth'
+import { FirebaseTimeStamp, firebaseTimeStampToStringStamp } from './../system/index'
+
 
 export interface CardModel {
     status: 'active' | 'deactive'
@@ -24,8 +24,8 @@ export interface CardModel {
         width: number
         height: number
     }[]
-    createdAt: FirebaseFirestoreTypes.Timestamp
-    updatedAt: FirebaseFirestoreTypes.Timestamp
+    createdAt: FirebaseTimeStamp
+    updatedAt: FirebaseTimeStamp
 }
 
 export const submitCard = async (formData: CardModel) => {
@@ -36,7 +36,7 @@ export const submitCard = async (formData: CardModel) => {
     })
 }
 
-export const getMyCards = async (uid: string, sort?: string): Promise<CardModel[]> => {
+export const getMyCards = async (uid: string, sort?: string) => {
     try {
         const myCards = await firestore()
         .collection(Collections.Playground)
@@ -45,19 +45,10 @@ export const getMyCards = async (uid: string, sort?: string): Promise<CardModel[
         .get()
 
         return myCards.docs.map(card => {
-            const cardData = card.data()
+            const cardData = card.data() as CardModel
             return {
+                ...cardData,
                 id: card.id,
-                username: cardData.username,
-                status: cardData.status,
-                title: cardData.title,
-                description: cardData.description,
-                tags: cardData.tags,
-                uid: cardData.uid,
-                likes: cardData.likes,
-                contents: cardData.contents,
-                createdAt: cardData.createdAt,
-                updatedAt: cardData.updatedAt,
             }
         })
     } catch (e) {
@@ -85,11 +76,11 @@ export const loadPlaygroundCards = async ({ sortType = SortCards.CreatedAt, star
             .limit(limit)
             .get()
 
-        return cardDoc.docs.map(doc => {
-            const docData = doc.data()
+        return cardDoc.docs.map(card => {
+            const docData = card.data() as CardModel
             return {
-                id: doc.id,
                 ...docData,
+                id: card.id,
                 createdAt: firebaseTimeStampToStringStamp(docData.createdAt),
                 updatedAt: firebaseTimeStampToStringStamp(docData.updatedAt),
             }
@@ -137,10 +128,14 @@ export const setUserFollow = async ({ myUid, followingUid, methods = 'add' }: Fo
     }
 }
 
-export const addListenerCardLikes = async (uid: string, onSnapCallback: Function) => {
+export interface UserAction {
+    cardLikes?: string[]
+    followings?: string[]
+}
+export const addListenerCardLikes = async (uid: string, onSnapCallback: (action: UserAction) => void) => {
     const listener = firestore().collection(Collections.UserActions).doc(uid).onSnapshot(snapshot => {
         if (snapshot) {
-            onSnapCallback(snapshot.data())
+            onSnapCallback(snapshot.data() as UserAction)
         }
     })
     return listener

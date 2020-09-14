@@ -1,21 +1,13 @@
 import firestore from '@react-native-firebase/firestore';
-import { firebaseTimeStampToStringStamp } from './../system/index';
 import { Collections } from '../../models';
+import { firebaseTimeStampToStringStamp } from './../system/index';
 
-export const loadBanner = async (): Promise<BannerProp[] | []> => {
+export const loadBanner = async () => {
     const banners = await firestore().collection(Collections.Banners).where('status', '==', 'active').get();
     return banners.docs.map(banner => {
-        const bannerData = banner.data();
+        const bannerData = banner.data() as BannerProp;
         return {
             ...bannerData,
-            id: bannerData.id,
-            status: bannerData.status,
-            title: bannerData.title,
-            description: bannerData.description,
-            image: bannerData.image,
-            link: bannerData.link,
-            type: bannerData.type,
-            backgroundColor: bannerData.backgroundColor,
             createdAt: firebaseTimeStampToStringStamp(bannerData.createdAt),
             updatedAt: firebaseTimeStampToStringStamp(bannerData.updatedAt),
             expiredAt: firebaseTimeStampToStringStamp(bannerData.updatedAt),

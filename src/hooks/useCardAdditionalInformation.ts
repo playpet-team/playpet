@@ -1,9 +1,9 @@
-import { playgroundActions } from './../store/playgroundReducer';
-import { RootState } from '../store/rootReducers'
-import { useSelector, useDispatch } from 'react-redux'
-import { addListenerCardLikes } from '../utils/cards'
-import { useState, useEffect } from 'react'
 import * as Sentry from "@sentry/react-native";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/rootReducers';
+import { addListenerCardLikes, UserAction } from '../utils/cards';
+import { playgroundActions } from './../store/playgroundReducer';
 
 let snapshotListener: any
 function useCardAdditionalInformation() {
@@ -15,7 +15,7 @@ function useCardAdditionalInformation() {
         loadLikes()
         async function loadLikes() {
             try {
-                snapshotListener = await addListenerCardLikes(uid, (data: any) => {
+                snapshotListener = await addListenerCardLikes(uid, (data: UserAction) => {
                     dispatch(playgroundActions.setMyLikes(data?.cardLikes))
                     dispatch(playgroundActions.setMyFollowing(data?.followings))
                 })

@@ -1,7 +1,8 @@
-import { firebaseTimeStampToStringStamp } from './../system/index';
-import { Collections } from '../../models/src/collections';
+import firestore from '@react-native-firebase/firestore';
 import * as Sentry from "@sentry/react-native";
-import firestore, { FirebaseFirestoreTypes, } from '@react-native-firebase/firestore';
+import { Collections } from '../../models/src/collections';
+import { Notification } from './../../hooks/useUserNotifications';
+import { firebaseTimeStampToStringStamp } from './../system/index';
 
 export const hasNewNotification = async (uid: string) => {
     try {
@@ -24,7 +25,7 @@ export const addListenerNotification = async (uid: string, onSnapCallback: Funct
         .where('toUid', '==', uid)
         .onSnapshot(snapshot => {
             onSnapCallback(snapshot.docs.map(doc => {
-                const data = doc.data()
+                const data = doc.data() as Notification
                 return {
                     ...data,
                     createdAt: firebaseTimeStampToStringStamp(data.createdAt),

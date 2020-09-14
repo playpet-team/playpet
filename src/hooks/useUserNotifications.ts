@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useCallback } from "react"
-import { addListenerNotification, hasNewNotification } from "../utils"
-import { useSelector } from "react-redux"
-import { RootState } from "../store/rootReducers"
 import * as Sentry from "@sentry/react-native";
+import { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/rootReducers";
+import { addListenerNotification, FirebaseTimeStamp, hasNewNotification } from "../utils";
 
 let snapshotListener: any
 function useUserNotifications(getType: 'listener' | 'isNew' = 'listener') {
@@ -44,7 +44,7 @@ function useUserNotifications(getType: 'listener' | 'isNew' = 'listener') {
 
 export default useUserNotifications
 
-interface Notification {
+export interface Notification {
     actionUrl: string
     status: 'active' | 'deactive'
     data: {
@@ -59,7 +59,7 @@ interface Notification {
     fromUsername: string
     title: string
     type: 'simple' | 'detail' | 'link'
-    createdAt: string
-    expiredAt: string
-    updatedAt: string
+    createdAt: FirebaseTimeStamp | string
+    expiredAt: FirebaseTimeStamp | string
+    updatedAt: FirebaseTimeStamp | string
 }

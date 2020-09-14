@@ -1,3 +1,4 @@
+import { FirebaseTimeStamp } from '../../utils';
 export enum SignType {
     Google = 'GOOGLE',
     Apple = 'APPLE',
@@ -17,9 +18,9 @@ export interface User {
     birthDate: string
     phoneNumber: string
     profilePhoto: string
-    lastLogin: string | null
-    createdAt: string | null
-    updatedAt: string | null
+    lastLogin: string | FirebaseTimeStamp | null
+    createdAt: string | FirebaseTimeStamp | null
+    updatedAt: string | FirebaseTimeStamp | null
     activePetDocId: string
     terms: {
         existDoc: boolean

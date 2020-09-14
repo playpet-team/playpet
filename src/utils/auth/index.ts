@@ -26,9 +26,10 @@ export const updateUserAuthToken = async (uid: string, customToken: string) => {
         customToken,
     }, { merge: true })
 }
+
 export const getUserAuthToken = async (uid: string) => {
     try {
-        const userData = (await firestore().collection(Collections.AuthTokens).doc(uid).get()).data()
+        const userData = (await firestore().collection(Collections.AuthTokens).doc(uid).get()).data() as { customToken: string }
         return userData || null
     } catch (e) {
         Sentry.captureException(e)
@@ -52,7 +53,7 @@ export const updateUsername = async (uid: string, username: string) => {
 
 export const getUserDoc = async (uid: string) => {
     try {
-        const userData = (await firestore().collection(Collections.Users).doc(uid).get()).data()
+        const userData = (await firestore().collection(Collections.Users).doc(uid).get()).data() as User
         return userData || null
     } catch (e) {
         Sentry.captureException(e)
@@ -75,33 +76,27 @@ export const getUser = async (uid: string): Promise<User | null> => {
 }
 
 export const getUserTerms = async (uid: string) => {
-    const termsData = (await firestore().collection(Collections.Terms).doc(uid).get()).data()
-    if (termsData) {
-        return {
-            ...termsData,
-            createdAt: firebaseTimeStampToStringStamp(termsData.createdAt),
-            updatedAt: firebaseTimeStampToStringStamp(termsData.updatedAt),
-        }
-    }
-    return termsData
+    return (await firestore().collection(Collections.Terms).doc(uid).get()).data() as Pick<User, 'terms'>
 }
 
-export enum CheckUser {
-    Exists,
-    Empty,
-}
-export const checkIsExistUser = (uid: string): Promise<CheckUser> => {
-    return new Promise(function(resolve, reject) {
-        try {
-            firestore().collection(Collections.Users).doc(uid).get().then(doc => {
-                resolve(doc.exists ? CheckUser.Exists : CheckUser.Empty)
-            })
-        } catch (e) {
-            Sentry.captureException(e)
-            reject('error')
-        }
-    })
-}
+// export enum CheckUser {
+//     Exists,
+//     Empty,
+// }
+// export const checkIsExistUser = async (uid: string): Promise<CheckUser> => {
+//     // return new Promise(function(resolve, reject) {
+//         try {
+//             // firestore().collection(Collections.Users).doc(uid).get().then(doc => {
+//             //     resolve(doc.exists ? CheckUser.Exists : CheckUser.Empty)
+//             // })
+//             const doc = await firestore().collection(Collections.Users).doc(uid).get()
+//             return doc.exists ? CheckUser.Exists : CheckUser.Empty
+//         } catch (e) {
+//             Sentry.captureException(e)
+//             return 'error'
+//         }
+//     // })
+// }
 
 export const updateUserTerms = async (uid: string, terms: {}) => {
     const docRef = firestore().collection(Collections.Terms).doc(uid)
