@@ -3,6 +3,7 @@ import React, { ReactNode } from "react"
 import { Icon } from "react-native-elements"
 import Modal from "react-native-modal"
 import styled, { css } from 'styled-components/native'
+import { Text } from "../styles"
 
 interface ModalProps {
     modalVisible: boolean
@@ -14,7 +15,7 @@ interface ModalProps {
         padding?: string
         flex?: number
     }
-    header?: boolean
+    header?: string
 }
 
 const PlaypetModal = ({
@@ -23,7 +24,7 @@ const PlaypetModal = ({
     isHideCloseButton = false,
     containerStyle = {},
     children,
-    header = false,
+    header = '',
 }: ModalProps) => {
     const handleCloseModal = () => setModalVisible(false)
     const themes = useTheme()
@@ -46,6 +47,7 @@ const PlaypetModal = ({
             >
                 {header &&
                     <PlaypetDialogHeader>
+                        <Text bold>{header}</Text>
                         {!isHideCloseButton &&
                             <CloseButton onPress={handleCloseModal}>
                                 <Icon name='close' />
@@ -83,6 +85,8 @@ const PlaypetDialogHeader = styled.View`
     justify-content: center;
     flex-direction: row;
     width: 100%;
+    position: relative;
+    height: 24px;
 `
 
 const CloseButton = styled.TouchableOpacity`
@@ -90,7 +94,7 @@ const CloseButton = styled.TouchableOpacity`
     right: 8px;
 `
 
-const PlaypetDialogChildren = styled.View<{ header: boolean }>`
+const PlaypetDialogChildren = styled.View<{ header: string }>`
     margin-top: ${({ header }) => header ? 16 : 0}px;
 `
 

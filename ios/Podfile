@@ -97,6 +97,8 @@ target 'playpet' do
 
   pod 'RNSentry', :path => '../node_modules/@sentry/react-native'
 
+  pod 'IamportReactNative', :path => '../node_modules/iamport-react-native'
+
   post_install do |installer|
     flipper_post_install(installer)
   end

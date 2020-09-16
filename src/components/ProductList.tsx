@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ListBlock } from '../styles';
-import ProductListItem from './ProductListItem';
-import { loadProductList, ProductForm } from '../utils/product';
+import { loadProductList } from '../utils/product';
+import ProductListItem, { ProductItem } from './ProductListItem';
 
 function ProductList() {
-    const [list, setList] = useState<ProductForm[]>([]);
+    const [list, setList] = useState<ProductItem[]>([]);
     useEffect(() => {
         async function loadList() {
             setList(await loadProductList());

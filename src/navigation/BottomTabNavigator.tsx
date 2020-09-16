@@ -1,21 +1,22 @@
-import { Icon } from 'react-native-elements'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-
+import { Icon } from 'react-native-elements';
 import styled from 'styled-components/native';
-
-import { defaultColorPalette } from '../styles/colors';
-import Home from '../screens/Home';
 import ProductWebView from '../components/ProductWebView';
-import PlayGroundScreen from '../screens/PlayGroundScreen';
-import CardFormScreen from '../screens/CardFormScreen';
-import Notifications from '../screens/Notifications';
+import useUserNotifications from '../hooks/useUserNotifications';
+import AppLogin from '../screens/AppLogin';
 import AuthScreen from '../screens/AuthScreen';
 import AppSettings from '../screens/AuthScreen/AppSettings';
-import AppLogin from '../screens/AppLogin';
+import PaymentSetting from '../screens/AuthScreen/PaymentSetting';
 import ProfileSetting from '../screens/AuthScreen/ProfileSetting';
-import useUserNotifications from '../hooks/useUserNotifications';
+import CardFormScreen from '../screens/CardFormScreen';
+import Home from '../screens/Home';
+import Notifications from '../screens/Notifications';
+import PlayGroundScreen from '../screens/PlayGroundScreen';
+import { defaultColorPalette } from '../styles/colors';
+
+
 
 export type BottomTabParamList = {
     Home: undefined;
@@ -103,6 +104,18 @@ export type HomeNavigatorTabParamList = {
         url: string;
         title: string;
     };
+    IamportHome: {
+        type: any;
+        response: any;
+    };
+    Payment: {
+        userCode: any;
+        data: any;
+    };
+    AuthCertification: {
+        userCode: any;
+        data: any;
+    };
     AppLoginAgreeTerms: undefined;
 };
 const HomeNavigatorTapStack = createStackNavigator<HomeNavigatorTabParamList>();
@@ -126,6 +139,27 @@ function HomeNavigator() {
                     gestureEnabled: false,
                 })}
             />
+            {/* <HomeNavigatorTapStack.Screen
+                name="Payment"
+                component={Payment}
+                options={({ route }) => ({
+                    gestureEnabled: false,
+                })}
+            />
+            <HomeNavigatorTapStack.Screen
+                name="IamportHome"
+                component={IamportHome}
+                options={({ route }) => ({
+                    gestureEnabled: false,
+                })}
+            />
+            <HomeNavigatorTapStack.Screen
+                name="AuthCertification"
+                component={AuthCertification}
+                options={({ route }) => ({
+                    gestureEnabled: false,
+                })}
+            /> */}
         </HomeNavigatorTapStack.Navigator>
     );
 }
@@ -189,6 +223,7 @@ function PlayGroundNavigator() {
 export type AuthTapParamList = {
     AuthScreen: undefined;
     AppSettings: undefined;
+    PaymentSetting: undefined;
     ProfileSetting: undefined;
     AppLogin: undefined;
     AppLoginAgreeTerms: undefined;
@@ -214,6 +249,11 @@ function AuthNavigator() {
                 name="ProfileSetting"
                 component={ProfileSetting}
                 options={{ headerTitle: '회원정보' }}
+            />
+            <AuthTapStack.Screen
+                name="PaymentSetting"
+                component={PaymentSetting}
+                options={{ headerTitle: '결제정보' }}
             />
             <AuthTapStack.Screen
                 name="AppLogin"

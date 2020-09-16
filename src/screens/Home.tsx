@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,9 +16,11 @@ export default function Home() {
     useFirebaseMessage()
     useInitialDynamicLink()
     const { renderBanner } = useRollingBanner()
+    const navigation = useNavigation()
 
     return (
         <SafeAreaViewBlock>
+            {/* <Payment /> */}
             <HomeBlock>
                 <Logo />
                 <DividerBlock marginTop={24} />

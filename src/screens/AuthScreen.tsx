@@ -45,6 +45,12 @@ export default function AuthScreen() {
                     }}
                     onPress={() => { }}
                 />
+                <ListItem
+                    title='결제 정보'
+                    titleStyle={{
+                    }}
+                    onPress={() => navigation.navigate('PaymentSetting')}
+                />
             </Section>
             <DividerBlock
                 marginHorizontal={16}

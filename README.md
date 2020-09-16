@@ -13,6 +13,9 @@
 `$ react-native set-icon --path ./assets/icons/appicon.png --background "#0558d1"`
 
 XXX ### node_modules 변경 XXX
+iamport / node_modules / webview 폴더 삭제
+서로다른 버전이 충돌남
+
 naver 로그인이 컴파일 에러가난다 하지만 업데이트가 안되고 있다. 대체제가 없다. 하지만 해결책은 있다.
 `node_modules/@react-native-seoul/naver-login/android/build.gradle`
 `android {

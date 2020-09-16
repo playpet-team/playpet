@@ -1,10 +1,9 @@
+import analytics from '@react-native-firebase/analytics';
+import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import styled from 'styled-components/native';
 import { WebView } from 'react-native-webview';
-import { RouteProp, useRoute, } from '@react-navigation/native';
-import analytics from '@react-native-firebase/analytics'
-
 import { HomeNavigatorTabParamList } from '../navigation/BottomTabNavigator';
+
 
 function ProductWebView() {
     const { params } = useRoute<RouteProp<HomeNavigatorTabParamList, 'ProductWebView'>>();

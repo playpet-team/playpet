@@ -557,6 +557,8 @@ PODS:
   - GTMSessionFetcher/Core (1.4.0)
   - GTMSessionFetcher/Full (1.4.0):
     - GTMSessionFetcher/Core (= 1.4.0)
+  - IamportReactNative (1.5.2):
+    - React
   - kakao-login (2.10.1):
     - KakaoOpenSDK (~> 1.21.0)
     - React
@@ -980,6 +982,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (~> 0.33.1)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - IamportReactNative (from `../node_modules/iamport-react-native`)
   - "kakao-login (from `../node_modules/@react-native-seoul/kakao-login`)"
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -1157,6 +1160,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  IamportReactNative:
+    :path: "../node_modules/iamport-react-native"
   kakao-login:
     :path: "../node_modules/@react-native-seoul/kakao-login"
   RCTRequired:
@@ -1356,6 +1361,7 @@ SPEC CHECKSUMS:
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
+  IamportReactNative: fa545db126321da41c420aa30261e4b1bc54d84b
   kakao-login: 7111f3ee3231418c4bcd310d273651a637a46eac
   KakaoOpenSDK: 7a7b728491fc199bf2186fec5bbf2c70ba14f474
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
@@ -1429,6 +1435,6 @@ SPEC CHECKSUMS:
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 6c3013aa6373bee1a12d7b47e40d1edf26f02989
+PODFILE CHECKSUM: ad4c2b3633cfc6482d8c1b8e842e3d4bf9241d92
 
 COCOAPODS: 1.9.3

@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
-import styled, { css } from 'styled-components/native';
-import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/rootReducers';
+import React from 'react';
+import styled, { css } from 'styled-components/native';
 import { decimalWonPrice } from '../utils';
 
 export interface ProductItem {
+    id: string;
     image: string;
     title: string;
     description: string;

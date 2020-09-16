@@ -18,7 +18,7 @@ export const loadProductList = async () => {
     return productList.docs.map((product: any) => {
         return {
             ...product.data() as ProductItem,
-            id: product.id,
+            id: product.id as string,
         };
     });
 };
