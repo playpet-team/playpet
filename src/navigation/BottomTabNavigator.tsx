@@ -10,6 +10,7 @@ import AuthScreen from '../screens/AuthScreen';
 import AppSettings from '../screens/AuthScreen/AppSettings';
 import PaymentSetting from '../screens/AuthScreen/PaymentSetting';
 import ProfileSetting from '../screens/AuthScreen/ProfileSetting';
+import ShippingDestinationSetting from '../screens/AuthScreen/ShippingDestinationSetting';
 import CardFormScreen from '../screens/CardFormScreen';
 import Home from '../screens/Home';
 import Notifications from '../screens/Notifications';
@@ -224,6 +225,7 @@ export type AuthTapParamList = {
     AuthScreen: undefined;
     AppSettings: undefined;
     PaymentSetting: undefined;
+    ShippingDestinationSetting: undefined;
     ProfileSetting: undefined;
     AppLogin: undefined;
     AppLoginAgreeTerms: undefined;
@@ -248,12 +250,17 @@ function AuthNavigator() {
             <AuthTapStack.Screen
                 name="ProfileSetting"
                 component={ProfileSetting}
-                options={{ headerTitle: '회원정보' }}
+                options={{ headerTitle: '회원 정보' }}
             />
             <AuthTapStack.Screen
                 name="PaymentSetting"
                 component={PaymentSetting}
-                options={{ headerTitle: '결제정보' }}
+                options={{ headerTitle: '결제 정보' }}
+            />
+            <AuthTapStack.Screen
+                name="ShippingDestinationSetting"
+                component={ShippingDestinationSetting}
+                options={{ headerTitle: '배송지 관리' }}
             />
             <AuthTapStack.Screen
                 name="AppLogin"

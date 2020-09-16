@@ -51,6 +51,12 @@ export default function AuthScreen() {
                     }}
                     onPress={() => navigation.navigate('PaymentSetting')}
                 />
+                <ListItem
+                    title='배송지 관리'
+                    titleStyle={{
+                    }}
+                    onPress={() => navigation.navigate('ShippingDestinationSetting')}
+                />
             </Section>
             <DividerBlock
                 marginHorizontal={16}

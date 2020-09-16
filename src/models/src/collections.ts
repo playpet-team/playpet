@@ -10,4 +10,5 @@ export enum Collections {
     Products = 'products',
     Stores = 'stores',
     Notifications = 'notifications',
+    ShippingDestination = 'shippingDestination',
 }

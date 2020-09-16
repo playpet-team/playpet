@@ -7,6 +7,7 @@ import { LoginManager } from 'react-native-fbsdk';
 import { Api } from '../../api';
 import { Collections, SignType, User } from '../../models';
 import { initialState } from '../../store/authReducer';
+import { ShippingInformation } from './../../hooks/useShippingDestination';
 import { MyPet, Terms } from './../../models/src/user';
 import { firebaseTimeStampToStringStamp } from './../system/index';
 // import { NaverLogin } from '@react-native-seoul/naver-login'
@@ -83,6 +84,32 @@ export const getUserTerms = async (uid: string) => {
         createdAt: firebaseTimeStampToStringStamp(terms.createdAt),
         updatedAt: firebaseTimeStampToStringStamp(terms.updatedAt),
     }
+}
+
+export const getUserShippingDestination = async (uid: string) => {
+    const shippingDocs = (await firestore()
+        .collection(Collections.ShippingDestination)
+        .where('uid', '==', uid)
+        .orderBy('createdAt', 'desc')
+        .get())
+    return shippingDocs.docs.map(ship => {
+        const shippingData = ship.data() as ShippingInformation
+        return {
+            ...shippingData,
+            id: ship.id,
+            createdAt: firebaseTimeStampToStringStamp(shippingData.createdAt),
+            updatedAt: firebaseTimeStampToStringStamp(shippingData.updatedAt),
+        }
+    })
+}
+
+export const updateUserShippingDestination = async (uid: string, data: any) => {
+    await firestore().collection(Collections.ShippingDestination).add({
+        ...data,
+        uid,
+        createdAt: firebaseNow(),
+        updatedAt: firebaseNow(),
+    })
 }
 
 // export enum CheckUser {

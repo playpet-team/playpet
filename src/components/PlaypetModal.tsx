@@ -45,7 +45,7 @@ const PlaypetModal = ({
                 colors={themes.colors}
                 containerStyle={containerStyle}
             >
-                {header &&
+                {Boolean(header) &&
                     <PlaypetDialogHeader>
                         <Text bold>{header}</Text>
                         {!isHideCloseButton &&

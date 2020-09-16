@@ -7,8 +7,13 @@ import styled from "styled-components/native";
 import ButtonGroups from "../../components/ButtonGroups";
 import PlaypetModal from "../../components/PlaypetModal";
 import { Text } from "../../styles";
+import { currentUser } from "../../utils";
 
 function PaymentSetting() {
+    const user = currentUser()
+    if (!user) {
+        return <PaymentSettingBlock><Text>로그인이 필요합니다</Text></PaymentSettingBlock>
+    }
     const theme = useTheme()
     const [visible, setVisible] = useState(false)
     const { control, handleSubmit, errors } = useForm();
@@ -140,7 +145,8 @@ function PaymentSetting() {
 }
 
 const PaymentSettingBlock = styled.View`
-  
+    flex: 1;
+    padding: 24px;
 `
 
 const Title = styled(Text)``
