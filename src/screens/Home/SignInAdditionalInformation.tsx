@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/react-native"
 import React, { useState } from 'react'
 import { Icon } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components/native'
 import PlaypetModal from '../../components/PlaypetModal'
@@ -13,8 +14,7 @@ import AgreeTermsModal from './SignInAdditionalInformation/AgreeTermsModal'
 import CheckMyInformation from './SignInAdditionalInformation/CheckMyInformation'
 import PetFavorite from './SignInAdditionalInformation/PetFavorite'
 import PetName from './SignInAdditionalInformation/PetName'
-import PetType, { SIZE } from './SignInAdditionalInformation/PetType'
-import WelcomeSign from './SignInAdditionalInformation/WelcomeSign'
+import PetType, { PET_TYPE, SIZE } from './SignInAdditionalInformation/PetType'
 
 // export const Step = {
 //     PET_NAME: 0,
@@ -22,9 +22,8 @@ import WelcomeSign from './SignInAdditionalInformation/WelcomeSign'
 //     PET_FAVORITE: 2,
 //     TERMS: 3,
 // }
-export type StepName = 'WELCOME' | 'PET_NAME' | 'PET_TYPE' | 'PET_FAVORITE' | 'TERMS'
+export type StepName = 'PET_NAME' | 'PET_TYPE' | 'PET_FAVORITE' | 'TERMS'
 export enum Step {
-    WELCOME,
     PET_NAME,
     PET_TYPE,
     PET_FAVORITE,
@@ -38,12 +37,13 @@ export interface TERMS {
     marketingAgree: boolean;
 }
 const DEVICE_WIDTH = deviceSize().width
+const DEVICE_HEIGHT = deviceSize().height
 export default function SignInAdditionalInformation() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
-    const [currentStep, setStep] = useState<Step>(Step.WELCOME)
+    const [currentStep, setStep] = useState<Step>(Step.PET_NAME)
     const [valid, setValid] = useState(false)
     const [petName, setPetname] = useState('')
-    const [petType, setPetType] = useState('DOG')
+    const [petType, setPetType] = useState<string>(PET_TYPE.DOG)
     const [searchPetType, setSearchPetType] = useState('')
     const [size, setSize] = useState(SIZE[0])
     const [favorite, setFavorite] = useState('')
@@ -64,7 +64,7 @@ export default function SignInAdditionalInformation() {
 
     const handleStep = (type: 'back' | 'front') => {
         if (type === 'back') {
-            if (currentStep === Step.WELCOME) {
+            if (currentStep === Step.PET_NAME) {
                 return
             }
             setStep(currentStep - 1)
@@ -89,9 +89,6 @@ export default function SignInAdditionalInformation() {
     
     const checkValid = () => {
         switch (currentStep) {
-            case Step.WELCOME: {
-                return true
-            }
             case Step.PET_NAME: {
                 return Boolean(petName.length)
             }
@@ -160,13 +157,12 @@ export default function SignInAdditionalInformation() {
             modalVisible={true}
             isHideCloseButton={true}
             containerStyle={{
-                flex: 1,
+                height: DEVICE_HEIGHT,
                 width: DEVICE_WIDTH,
             }}
         >
             {loading && <Indicator />}
             <SignInAdditionalInformationBlock>
-                <WelcomeSign currentStep={currentStep} />
                 <PetName
                     currentStep={currentStep}
                     valid={valid}
@@ -207,12 +203,12 @@ export default function SignInAdditionalInformation() {
                 <StepNavigatorSection>
                     <TouchableOpacity
                         onPress={() => handleStep('back')}
-                        disabled={currentStep === Step.WELCOME}
+                        disabled={currentStep === Step.PET_NAME}
                     >
                         <Icon
                             name="keyboard-arrow-left"
                             size={38}
-                            color={currentStep === Step.WELCOME ? '#e9e9e9' : themes.colors.primary}
+                            color={currentStep === Step.PET_NAME ? '#e9e9e9' : themes.colors.primary}
                         />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => handleStep('front')}>
@@ -237,10 +233,10 @@ const StepNavigatorSection = styled.View`
     justify-content: space-between;
 `
 
-const SignInAdditionalInformationBlock = styled.View`
+const SignInAdditionalInformationBlock = styled(SafeAreaView)`
     /* flex: 1; */
     height: 100%;
-    padding-vertical: 24px;
+    padding-vertical: 40px;
     flex-direction: column;
 `
 

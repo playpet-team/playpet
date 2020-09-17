@@ -82,13 +82,13 @@ function ShippingDestinationSetting() {
     }
     return (
         <ShippingDestinationSettingBlock>
+            {loading && <Indicator />}
             {toastContent.visible &&
                 <Toast
                     title={toastContent.title}
                     setToastContent={setToastContent}
                 />
             }
-            {loading && <Indicator />}
             {!loading && !visible &&
                 <DestinationInformation>
                     <InformationBlock>

@@ -34,7 +34,8 @@ export default function ButtonGroups({
             selectedIndex={selectedIndex}
             buttons={buttons}
             textStyle={{
-                color: themes.colors.text,
+                color: themes.colors.border,
+                fontSize: 16,
                 ...textStyle,
             }}
             containerStyle={{
@@ -52,7 +53,7 @@ export default function ButtonGroups({
                 ...selectedButtonStyle,
             }}
             selectedTextStyle={{
-                color: themes.colors.primary,
+                color: themes.colors.text,
                 ...selectedTextStyle,
             }}
         />

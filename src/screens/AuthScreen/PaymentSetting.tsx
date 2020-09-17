@@ -1,4 +1,5 @@
 import { useTheme } from "@react-navigation/native";
+import * as Sentry from "@sentry/react-native";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "react-native-elements";
@@ -6,10 +7,13 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 import ButtonGroups from "../../components/ButtonGroups";
 import PlaypetModal from "../../components/PlaypetModal";
+import Toast, { ToastParams } from "../../components/Toast";
+import useLoadingIndicator from "../../hooks/useLoadingIndicator";
 import { Text } from "../../styles";
 import { currentUser } from "../../utils";
 
 function PaymentSetting() {
+    const { loading, setLoading, Indicator } = useLoadingIndicator()
     const user = currentUser()
     if (!user) {
         return <PaymentSettingBlock><Text>로그인이 필요합니다</Text></PaymentSettingBlock>
@@ -17,12 +21,40 @@ function PaymentSetting() {
     const theme = useTheme()
     const [visible, setVisible] = useState(false)
     const { control, handleSubmit, errors } = useForm();
+    const [toastContent, setToastContent] = useState<ToastParams>({
+        visible: false,
+        title: '',
+        description: '',
+        image: '',
+    })
     const onSubmit = (data: any) => {
         console.log('data------', data)
+        setLoading(true)
+        try {
+            // await updateUserShippingDestination(user.uid, {
+            //     ...data,
+            //     shippingLocation: address.shippingLocation,
+            // })
+        } catch (e) {
+            Sentry.captureException(e)
+        } finally {
+            setToastContent({
+                visible: true,
+                title: '저장이 완료되었습니다',
+            })
+            setLoading(false)
+        }
     }
 
     return (
         <PaymentSettingBlock>
+            {loading && <Indicator />}
+            {toastContent.visible &&
+                <Toast
+                    title={toastContent.title}
+                    setToastContent={setToastContent}
+                />
+            }
             <Title>입력된 결제 정보가 없습니다</Title>
             <AddCardBlock>
                 <AddCard onPress={() => setVisible(true)}>

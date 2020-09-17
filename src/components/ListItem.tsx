@@ -1,11 +1,14 @@
 import React from 'react';
-import { ListItem as List } from 'react-native-elements';
+import { ImageSourcePropType } from 'react-native';
+import { Avatar, ListItem as List } from 'react-native-elements';
 
-export default function ListItem({ title, onPress, titleStyle, containerStyle, rightIcon }: {
+export default function ListItem({ title, onPress, titleStyle, containerStyle, rightIcon, activeStyle, avatarSource = null }: {
     title: string;
     onPress: () => void;
     titleStyle?: object;
     containerStyle?: object;
+    activeStyle?: object;
+    avatarSource?: ImageSourcePropType | null;
     rightIcon?: React.ReactElement;
 }) {
     return (
@@ -13,9 +16,18 @@ export default function ListItem({ title, onPress, titleStyle, containerStyle, r
             onPress={onPress}
             style={{
                 padding: 0,
-                ...containerStyle
+            }}
+            containerStyle={{
+                ...activeStyle,
+                ...containerStyle,
             }}
         >
+            {avatarSource !== null &&
+                <Avatar
+                    source={avatarSource}
+                    rounded={true}
+                />
+            }
             <List.Content>
                 <List.Title
                     style={{
