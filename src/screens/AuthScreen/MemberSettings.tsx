@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components/native';
-
-import { ScrollView } from 'react-native-gesture-handler';
-import { Icon } from 'react-native-elements';
-import { Layout, Text, DividerBlock } from '../../styles';
-import ListItem from '../../components/ListItem';
+import React from 'react'
+import { Icon } from 'react-native-elements'
+import { ScrollView } from 'react-native-gesture-handler'
+import styled from 'styled-components/native'
+import ListItem from '../../components/ListItem'
+import { Text } from '../../styles'
 
 export default function MemberScreen() {
     return (
@@ -43,8 +42,8 @@ export default function MemberScreen() {
             </Section>
         </ScrollView>
     )
-};
+}
 
 const Section = styled.View`
     margin-top: 16px;
-`;
+`

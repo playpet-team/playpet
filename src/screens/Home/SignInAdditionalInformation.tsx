@@ -14,7 +14,7 @@ import AgreeTermsModal from './SignInAdditionalInformation/AgreeTermsModal'
 import CheckMyInformation from './SignInAdditionalInformation/CheckMyInformation'
 import PetFavorite from './SignInAdditionalInformation/PetFavorite'
 import PetName from './SignInAdditionalInformation/PetName'
-import PetType, { PET_TYPE, SIZE } from './SignInAdditionalInformation/PetType'
+import PetType, { DefaultSize, PET_TYPE } from './SignInAdditionalInformation/PetType'
 
 // export const Step = {
 //     PET_NAME: 0,
@@ -45,7 +45,7 @@ export default function SignInAdditionalInformation() {
     const [petName, setPetname] = useState('')
     const [petType, setPetType] = useState<string>(PET_TYPE.DOG)
     const [searchPetType, setSearchPetType] = useState('')
-    const [size, setSize] = useState(SIZE[0])
+    const [size, setSize] = useState(DefaultSize[0])
     const [favorite, setFavorite] = useState('')
     const [terms, setTerms] = useState<TERMS>({
         overAgeAgree: false,

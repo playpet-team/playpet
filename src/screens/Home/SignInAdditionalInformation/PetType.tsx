@@ -17,7 +17,7 @@ export const PET_TYPE = {
     NOT_YET: '아직 없어요!',
 }
 
-export const SIZE = [
+export const DefaultSize = [
     'S',
     'M',
     'L',
@@ -150,7 +150,7 @@ export default function PetType({ currentStep, petType, setPetType, searchPetTyp
                 <Transition type="fade-bottom">
                     <PetSize>
                         <Text bold size={16}>견종 사이즈</Text>
-                        {SIZE.map(sizeType => (
+                        {DefaultSize.map(sizeType => (
                             <SizeType
                                 onPress={() => setSize(sizeType)}
                                 key={sizeType}
