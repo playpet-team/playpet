@@ -1,23 +1,26 @@
 import { useTheme } from "@react-navigation/native"
-import React, { useMemo, useState } from "react"
-import { View } from "react-native"
+import React, { useCallback, useMemo, useState } from "react"
+import { ImageSourcePropType } from 'react-native'
 import { SearchBar } from "react-native-elements"
-import { ScrollView } from "react-native-gesture-handler"
+import { FlatList } from "react-native-gesture-handler"
+import styled from 'styled-components/native'
 import ButtonGroups from "../../../components/ButtonGroups"
 import ListItem from "../../../components/ListItem"
+import Transition from "../../../components/Transition"
 import { DividerBlock, Text } from "../../../styles"
 import { Step } from "../SignInAdditionalInformation"
 
-export const PET_TYPE = [
-    'DOG',
-    'CAT',
-    'ETC',
-    'NOT_YET'
-]
+export const PET_TYPE = {
+    DOG: '강아지',
+    CAT: '고양이',
+    ETC: '기타',
+    NOT_YET: '아직 없어요!',
+}
+
 export const SIZE = [
-    'SMALL',
-    'MEDIUM',
-    'LARGE',
+    'S',
+    'M',
+    'L',
 ]
 export default function PetType({ currentStep, petType, setPetType, searchPetType, setSearchPetType, size, setSize, valid }: {
     currentStep: Step
@@ -33,10 +36,23 @@ export default function PetType({ currentStep, petType, setPetType, searchPetTyp
         return null
     }
 
+    const getPetKey = useCallback(() => {
+        let petKey = ''
+        for (const [key, value] of Object.entries(PET_TYPE)) {
+           if (value === petType) {
+               petKey = key
+               break
+           }
+        }
+        return petKey
+    }, [petType])
+
     const [searchPetTyping, setSearchPetTyping] = useState('')
     const searchedPetType = useMemo(() => {
         let types = ['']
-        switch (petType) {
+        console.log('petType------', petType)
+        const petKey = getPetKey()
+        switch (petKey) {
             case 'DOG': {
                 types = DOG_TYPE
                 break;
@@ -54,57 +70,131 @@ export default function PetType({ currentStep, petType, setPetType, searchPetTyp
         return types.filter(type => type.includes(searchPetTyping))
     }, [petType, searchPetTyping])
 
-    const themes = useTheme();
+    const theme = useTheme();
+
+    const avatarSource = useMemo((): ImageSourcePropType | null => {
+        let source = null
+        switch (getPetKey()) {
+            case 'DOG': {
+                source = require('../../../../assets/images/dog_default_thumb.jpg')
+                break;
+            }
+            case 'CAT': {
+                source = require('../../../../assets/images/cat_default_thumb.jpg')
+                break;
+            }
+            default: {
+                source = null
+                break;
+            }
+        }
+        return source
+    }, [petType])
+
+    const renderType = ({ item }: { item: string }) => {
+        return (
+            <ListItem
+                title={item}
+                onPress={() => setSearchPetType(item)}
+                titleStyle={{
+                }}
+                containerStyle={{
+                    borderRadius: 8,
+                }}
+                activeStyle={{
+                    backgroundColor: item === searchPetType ? `${theme.colors.primary}33` : 'transparent',
+                }}
+                avatarSource={avatarSource}
+            />
+        )
+    }
 
     return (
-        <View>
+        <PetTypeBlock>
             <DividerBlock marginBottom={8} />
-            <Text bold size={16}>어떤 반려동물인가?</Text>
+            <Text
+                bold
+                size={20}
+            >
+                어떤 반려동물인가?
+            </Text>
+            <DividerBlock marginTop={8} />
+            <Text
+                color={theme.colors.border}
+                size={16}
+            >
+                {searchedPetType.length}종류
+            </Text>
             <ButtonGroups
-                buttons={PET_TYPE}
+                buttons={Object.values(PET_TYPE)}
                 onSelect={setPetType}
                 containerStyle={{
                     width: '100%',
                 }}
             />
-            {petType && petType !== 'NOT_YET' &&
+            {petType && getPetKey() !== 'NOT_YET' &&
                 <>
                     <SearchBar
                         placeholder="품종을 선택해주세요"
                         onChangeText={setSearchPetTyping}
                         value={searchPetTyping}
                     />
-                    <ScrollView style={{ maxHeight: 300,}}>
-                        {searchedPetType.map(type => {
-                            return (
-                                <ListItem
-                                    key={type}
-                                    title={type}
-                                    onPress={() => setSearchPetType(type)}
-                                    titleStyle={{
-                                        color: type === searchPetType ? themes.colors.primary : '#333',
-                                    }}
-                                />
-                            )
-                        })}
-                    </ScrollView>
+                    <FlatList
+                        data={searchedPetType}
+                        keyExtractor={type => type}
+                        renderItem={renderType}
+                    />
                 </>
             }
-            {Boolean(petType === 'DOG' && searchPetType.length) &&
-            <>
-                <DividerBlock marginBottom={8} />
-                <Text bold size={16}>견종 사이즈?</Text>
-                <ButtonGroups
-                    buttons={SIZE}
-                    onSelect={setSize}
-                    containerStyle={{
-                        width: '100%',
-                    }}
-                />
-            </>}
-        </View>
+            {Boolean(getPetKey() === 'DOG' && searchPetType.length) &&
+                <Transition type="fade-bottom">
+                    <PetSize>
+                        <Text bold size={16}>견종 사이즈</Text>
+                        {SIZE.map(sizeType => (
+                            <SizeType
+                                onPress={() => setSize(sizeType)}
+                                key={sizeType}
+                                activeType={size === sizeType}
+                                primary={theme.colors.primary}
+                            >
+                                <Text size={16}>{sizeType}</Text>
+                            </SizeType>
+                        ))}
+                        
+                    </PetSize>
+                </Transition>
+            }
+        </PetTypeBlock>
     )
 }
+
+const PetTypeBlock = styled.View`
+    height: 100%;
+`
+const PetSize = styled.View`
+    flex-direction: row;
+    align-items: center;
+    padding: 24px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    /* background-color: #fffffe; */
+`
+
+const SizeType = styled.TouchableOpacity<{ activeType: boolean; primary: string; }>`
+    padding: 8px;
+    border-radius: 16px;
+    width: 35px;
+    height: 35px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
+    background-color: ${({ activeType, primary }) => activeType ? primary : '#eee'};
+`
 
 const DOG_TYPE = [
     '고든 세터',
