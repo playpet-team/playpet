@@ -1,23 +1,23 @@
-import { useTheme } from "@react-navigation/native";
-import * as Sentry from "@sentry/react-native";
-import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { View } from "react-native";
-import Postcode, { OnCompleteParams } from 'react-native-daum-postcode';
-import { Input } from "react-native-elements";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import Modal from "react-native-modal";
-import styled from "styled-components/native";
-import Toast, { ToastParams } from '../../components/Toast';
-import useLoadingIndicator from "../../hooks/useLoadingIndicator";
-import useShippingDestination, { ShippingInformation } from "../../hooks/useShippingDestination";
-import { Text } from "../../styles";
-import { currentUser, updateUserShippingDestination } from "../../utils";
+import { useTheme } from "@react-navigation/native"
+import * as Sentry from "@sentry/react-native"
+import React, { useCallback, useEffect, useState } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { View } from "react-native"
+import Postcode, { OnCompleteParams } from 'react-native-daum-postcode'
+import { Input } from "react-native-elements"
+import { TouchableOpacity } from "react-native-gesture-handler"
+import Modal from "react-native-modal"
+import styled from "styled-components/native"
+import Toast, { ToastParams } from '../../components/Toast'
+import useLoadingIndicator from "../../hooks/useLoadingIndicator"
+import useShippingDestination, { ShippingInformation } from "../../hooks/useShippingDestination"
+import { Text } from "../../styles"
+import { currentUser, updateUserShippingDestination } from "../../utils"
 
 function ShippingDestinationSetting() {
+    const theme = useTheme()
     const { Indicator, loading, setLoading } = useLoadingIndicator()
     const { shippingData } = useShippingDestination()
-    const theme = useTheme()
     const [visible, setVisible] = useState(false)
     const [address, setAddress] = useState<Omit<ShippingInformation, 'createdAt' | 'updatedAt' | 'uid'>>({
         shippingLocation: '',
@@ -33,6 +33,15 @@ function ShippingDestinationSetting() {
         image: '',
     })
 
+    const user = currentUser()
+    if (!user) {
+        return (
+            <ShippingDestinationSettingBlock>
+                <Text>로그인이 필요합니다</Text>
+            </ShippingDestinationSettingBlock>
+        )
+    }
+
     useEffect(() => {
         if (shippingData === null) {
             setLoading(true)
@@ -40,20 +49,14 @@ function ShippingDestinationSetting() {
         }
         setLoading(false)
         if (shippingData.length) {
-            console.log("shippingData[0]------", shippingData[0])
             const { shippingLocation, shippingAdditionalAddress, shippingPhonenumber, shippingUsername, } = shippingData[0]
             setAddress({
                 shippingLocation, shippingAdditionalAddress, shippingPhonenumber, shippingUsername
             })
         }
     }, [shippingData])
-    const user = currentUser()
-    if (!user) {
-        return <ShippingDestinationSettingBlock><Text>로그인이 필요합니다</Text></ShippingDestinationSettingBlock>
-    }
 
-    const onSubmit = async (data: any) => {
-        console.log('data-------', data)
+    const onSubmit = useCallback(async (data: any) => {
         setLoading(true)
         try {
             await updateUserShippingDestination(user.uid, {
@@ -69,17 +72,17 @@ function ShippingDestinationSetting() {
             })
             setLoading(false)
         }
-    }
+    }, [setLoading, setToastContent])
 
-    const handleSelected = (data: OnCompleteParams) => {
-        console.log('data------', data)
+    const handleSelected = useCallback((data: OnCompleteParams) => {
         const { roadAddress, jibunAddress } = data
         setAddress({
             ...address,
             shippingLocation: roadAddress || jibunAddress
         })
         setVisible(false)
-    }
+    }, [setAddress, setVisible])
+
     return (
         <ShippingDestinationSettingBlock>
             {loading && <Indicator />}
@@ -191,7 +194,7 @@ function ShippingDestinationSetting() {
                     <Postcode
                         style={{ flex: 1 }}
                         onSelected={handleSelected}
-                        onError={(err) => console.log('error', err)}
+                        onError={(error) => console.error('err', error)}
                     />
                 </View>
             </Modal>
@@ -209,10 +212,6 @@ const DestinationInformation = styled.View`
 `
 const InformationBlock = styled.View`
     margin-top: 8px;
-    /* flex-direction: row; */
-    /* flex: 1; */
-    /* align-items: center; */
-    /* justify-content: center; */
 `
 
 const SaveDestination = styled.TouchableOpacity<{ backgroundColor: string }>`
@@ -221,6 +220,5 @@ const SaveDestination = styled.TouchableOpacity<{ backgroundColor: string }>`
     align-items: center;
     justify-content: center;
     background-color: ${({ backgroundColor }) => backgroundColor};
-    /* flex: 1; */
 `
 export default ShippingDestinationSetting

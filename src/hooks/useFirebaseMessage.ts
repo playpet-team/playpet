@@ -1,8 +1,8 @@
-import { askPermission, PermissionsList } from './../utils/system/permission';
-import { updateFcmToken, currentUser } from './../utils/auth/index';
 import messaging from '@react-native-firebase/messaging';
-import { useEffect } from 'react';
 import * as Sentry from "@sentry/react-native";
+import { useEffect } from 'react';
+import { currentUser, updateFcmToken } from './../utils/auth/index';
+import { askPermission, PermissionsList } from './../utils/system/permission';
 
 let _onTokenRefreshListener: any = null;
 let _notificationListener: any = null;

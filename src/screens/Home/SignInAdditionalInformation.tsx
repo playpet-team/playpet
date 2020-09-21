@@ -151,7 +151,6 @@ export default function SignInAdditionalInformation() {
 
     }
 
-
     return (
         <PlaypetModal
             modalVisible={true}
