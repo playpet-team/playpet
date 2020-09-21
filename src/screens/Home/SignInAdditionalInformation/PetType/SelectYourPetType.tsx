@@ -1,6 +1,5 @@
 import { useTheme } from "@react-navigation/native"
 import React, { useMemo } from "react"
-import { ImageSourcePropType } from 'react-native'
 import { SearchBar } from "react-native-elements"
 import { FlatList } from "react-native-gesture-handler"
 import styled from "styled-components/native"
@@ -42,24 +41,24 @@ function SelectYourPetType({ petType, setPetType, searchPetTyping, setSearchPetT
         return types.filter(type => type.includes(searchPetTyping))
     }, [petType, searchPetTyping])
 
-    const avatarSource = useMemo((): ImageSourcePropType | null => {
-        let source = null
-        switch (getPetKey()) {
-            case 'DOG': {
-                source = require('../../../../../assets/images/dog_default_thumb.jpg')
-                break;
-            }
-            case 'CAT': {
-                source = require('../../../../../assets/images/cat_default_thumb.jpg')
-                break;
-            }
-            default: {
-                source = null
-                break;
-            }
-        }
-        return source
-    }, [petType])
+    // const avatarSource = useMemo((): ImageSourcePropType | null => {
+    //     let source = null
+    //     switch (getPetKey()) {
+    //         case 'DOG': {
+    //             source = require('../../../../../assets/images/dog_default_thumb.jpg')
+    //             break;
+    //         }
+    //         case 'CAT': {
+    //             source = require('../../../../../assets/images/cat_default_thumb.jpg')
+    //             break;
+    //         }
+    //         default: {
+    //             source = null
+    //             break;
+    //         }
+    //     }
+    //     return source
+    // }, [petType])
 
     const renderType = ({ item }: { item: string }) => {
         return (
@@ -74,7 +73,6 @@ function SelectYourPetType({ petType, setPetType, searchPetTyping, setSearchPetT
                 activeStyle={{
                     backgroundColor: item === searchPetType ? `${theme.colors.primary}33` : 'transparent',
                 }}
-                avatarSource={avatarSource}
             />
         )
     }
@@ -113,7 +111,7 @@ function SelectYourPetType({ petType, setPetType, searchPetTyping, setSearchPetT
 }
 
 const SelectYourPetTypeBlock = styled.View`
-  
+    margin-bottom: 200px;
 `
 
 export default SelectYourPetType

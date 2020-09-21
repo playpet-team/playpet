@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native'
-import i18n from 'i18n-js'
 import React, { useState } from 'react'
 import { Image } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -39,12 +38,12 @@ export default function AuthScreen() {
                 </>
             }
             <Section>
-                <ListItem
+                {/* <ListItem
                     title={i18n.t('product.recentViewed')}
                     titleStyle={{
                     }}
                     onPress={() => { }}
-                />
+                /> */}
                 <ListItem
                     title='결제 정보'
                     titleStyle={{

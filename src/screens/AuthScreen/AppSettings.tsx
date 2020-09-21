@@ -1,18 +1,18 @@
-import React from 'react'
-import styled from 'styled-components/native'
-import { ScrollView } from 'react-native-gesture-handler'
-import { Icon } from 'react-native-elements'
-import ListItem from '../../components/ListItem'
+import { useNavigation } from '@react-navigation/native'
+import * as Sentry from "@sentry/react-native"
+import * as Updates from 'expo-updates'
 import i18n from 'i18n-js'
+import React from 'react'
 import { Alert } from 'react-native'
-import { leave, signOut } from '../../utils'
+import { Icon } from 'react-native-elements'
+import { ScrollView } from 'react-native-gesture-handler'
+import { useDispatch, useSelector } from 'react-redux'
+import styled from 'styled-components/native'
+import ListItem from '../../components/ListItem'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import { SignType } from '../../models'
-import * as Sentry from "@sentry/react-native";
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
 import { RootState } from '../../store/rootReducers'
-import * as Updates from 'expo-updates';
+import { leave, signOut } from '../../utils'
 
 export default function AppSettings() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
@@ -24,7 +24,7 @@ export default function AppSettings() {
         <ScrollView>
             {loading && <Indicator />}
             <ListItem
-                title='푸시 설정'
+                title={i18n.t('settings.settingPush')}
                 onPress={() => { }}
                 rightIcon={<Icon
                     name="keyboard-arrow-right"

@@ -18,7 +18,7 @@ export default function ButtonGroups({
     selectedTextStyle,
     onSelect,
 }: Groups) {
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [selectedIndex, setSelectedIndex] = useState(-1);
     const themes = useTheme();
 
     useEffect(() => {

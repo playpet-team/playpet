@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 import Logo from '../components/Logo';
 import ProductList from '../components/ProductList';
-import useFirebaseMessage from '../hooks/useFirebaseMessage';
+// import useFirebaseMessage from '../hooks/useFirebaseMessage';
 import useInitialDynamicLink from '../hooks/useInitialDynamicLink';
 import useLanguage from '../hooks/useLanguage';
 import useRollingBanner from '../hooks/useRollingBanner';
@@ -13,7 +13,7 @@ import { DividerBlock, Layout } from '../styles';
 
 export default function Home() {
     useLanguage()
-    useFirebaseMessage()
+    // useFirebaseMessage()
     useInitialDynamicLink()
     const { renderBanner } = useRollingBanner()
     const navigation = useNavigation()
