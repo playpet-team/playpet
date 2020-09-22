@@ -6,7 +6,7 @@ import styled from "styled-components/native"
 import ButtonGroups from "../../../../components/ButtonGroups"
 import ListItem from "../../../../components/ListItem"
 import { Text } from "../../../../styles"
-import { PET_TYPE } from "../PetType"
+import { PET_TYPE } from "../PetAdditionalType"
 
 function SelectYourPetType({ petType, setPetType, searchPetTyping, setSearchPetTyping, searchPetType, setSearchPetType, getPetKey }: {
     petType: string
@@ -93,7 +93,7 @@ function SelectYourPetType({ petType, setPetType, searchPetTyping, setSearchPetT
                 }}
             />
             {petType && getPetKey() !== 'NOT_YET' &&
-                <>
+                <MaxHeightView>
                     <SearchBar
                         placeholder="품종을 선택해주세요"
                         onChangeText={setSearchPetTyping}
@@ -103,15 +103,22 @@ function SelectYourPetType({ petType, setPetType, searchPetTyping, setSearchPetT
                         data={searchedPetType}
                         keyExtractor={type => type}
                         renderItem={renderType}
+                        style={{
+                            // maxHeight: 200,
+                        }}
                     />
-                </>
+                </MaxHeightView>
             }
         </SelectYourPetTypeBlock>
     )
 }
 
 const SelectYourPetTypeBlock = styled.View`
-    margin-bottom: 200px;
+    /* margin-bottom: 200px; */
+`
+
+const MaxHeightView = styled.View`
+    max-height: 500px;
 `
 
 export default SelectYourPetType

@@ -1,8 +1,7 @@
 import { useTheme } from '@react-navigation/native'
 import * as Sentry from "@sentry/react-native"
 import React, { useState } from 'react'
-import { Icon } from 'react-native-elements'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components/native'
@@ -12,9 +11,10 @@ import { authActions } from '../../store/authReducer'
 import { currentUser, deviceSize, updateUserPets, updateUserTerms } from '../../utils'
 import AgreeTermsModal from './SignInAdditionalInformation/AgreeTermsModal'
 import CheckMyInformation from './SignInAdditionalInformation/CheckMyInformation'
+import PetAdditionalType, { DefaultAge, DefaultSize, PET_TYPE } from './SignInAdditionalInformation/PetAdditionalType'
 import PetFavorite from './SignInAdditionalInformation/PetFavorite'
 import PetName from './SignInAdditionalInformation/PetName'
-import PetType, { DefaultSize, PET_TYPE } from './SignInAdditionalInformation/PetType'
+import PetType from './SignInAdditionalInformation/PetType'
 
 // export const Step = {
 //     PET_NAME: 0,
@@ -22,10 +22,11 @@ import PetType, { DefaultSize, PET_TYPE } from './SignInAdditionalInformation/Pe
 //     PET_FAVORITE: 2,
 //     TERMS: 3,
 // }
-export type StepName = 'PET_NAME' | 'PET_TYPE' | 'PET_FAVORITE' | 'TERMS'
+export type StepName = 'PET_NAME' | 'PET_TYPE' | 'PET_ADDITIONAL_TYPE' | 'PET_FAVORITE' | 'TERMS'
 export enum Step {
     PET_NAME,
     PET_TYPE,
+    PET_ADDITIONAL_TYPE,
     PET_FAVORITE,
     CHECK_MY_INFORMATION,
     TERMS,
@@ -45,7 +46,8 @@ export default function SignInAdditionalInformation() {
     const [petName, setPetname] = useState('')
     const [petType, setPetType] = useState<string>(PET_TYPE.DOG)
     const [searchPetType, setSearchPetType] = useState('')
-    const [size, setSize] = useState(DefaultSize[0])
+    const [size, setSize] = useState(DefaultSize.S)
+    const [age, setAge] = useState(DefaultAge.ADLUT)
     const [favorite, setFavorite] = useState('')
     const [terms, setTerms] = useState<TERMS>({
         overAgeAgree: false,
@@ -93,7 +95,10 @@ export default function SignInAdditionalInformation() {
                 return Boolean(petName.length)
             }
             case Step.PET_TYPE: {
-                return Boolean(petType && searchPetType.length && size)
+                return Boolean(petType && searchPetType.length)
+            }
+            case Step.PET_ADDITIONAL_TYPE: {
+                return Boolean(size.length)
             }
             case Step.PET_FAVORITE: {
                 return Boolean(favorite.length)
@@ -162,6 +167,7 @@ export default function SignInAdditionalInformation() {
         >
             {loading && <Indicator />}
             <SignInAdditionalInformationBlock>
+                <ScrollView>
                 <PetName
                     currentStep={currentStep}
                     valid={valid}
@@ -175,8 +181,15 @@ export default function SignInAdditionalInformation() {
                     setPetType={setPetType}
                     searchPetType={searchPetType}
                     setSearchPetType={setSearchPetType}
+                />
+                <PetAdditionalType
+                    currentStep={currentStep}
+                    petType={petType}
+                    valid={valid}
                     size={size}
                     setSize={setSize}
+                    age={age}
+                    setAge={setAge}
                 />
                 <PetFavorite
                     currentStep={currentStep}
@@ -199,7 +212,7 @@ export default function SignInAdditionalInformation() {
                     currentStep={currentStep}
                     valid={valid}
                 />
-                <StepNavigatorSection>
+                {/* <StepNavigatorSection>
                     <TouchableOpacity
                         onPress={() => handleStep('back')}
                         disabled={currentStep === Step.PET_NAME}
@@ -217,7 +230,8 @@ export default function SignInAdditionalInformation() {
                             color={themes.colors.primary}
                         />
                     </TouchableOpacity>
-                </StepNavigatorSection>
+                </StepNavigatorSection> */}
+                </ScrollView>
             </SignInAdditionalInformationBlock>
         </PlaypetModal>
     )
@@ -234,7 +248,7 @@ const StepNavigatorSection = styled.View`
 
 const SignInAdditionalInformationBlock = styled(SafeAreaView)`
     /* flex: 1; */
-    height: 100%;
+    /* height: 100%; */
     padding-vertical: 40px;
     flex-direction: column;
 `

@@ -4,7 +4,6 @@ import * as React from 'react';
 import { Icon } from 'react-native-elements';
 import styled from 'styled-components/native';
 import ProductWebView from '../components/ProductWebView';
-import useUserNotifications from '../hooks/useUserNotifications';
 import AppLogin from '../screens/AppLogin';
 import AuthScreen from '../screens/AuthScreen';
 import AppSettings from '../screens/AuthScreen/AppSettings';
@@ -15,12 +14,14 @@ import CardFormScreen from '../screens/CardFormScreen';
 import Home from '../screens/Home';
 import Notifications from '../screens/Notifications';
 import PlayGroundScreen from '../screens/PlayGroundScreen';
+import SubscribeFormScreen from '../screens/SubscribeFormScreen';
 import { defaultColorPalette } from '../styles/colors';
 
 
 
 export type BottomTabParamList = {
     Home: undefined;
+    SubscribeForm: undefined;
     PlayGround: undefined;
     CardForm: undefined;
     Notifications: undefined;
@@ -28,7 +29,7 @@ export type BottomTabParamList = {
 };
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 export default function BottomTabNavigator() {
-    const { isNew } = useUserNotifications('isNew')
+    // const { isNew } = useUserNotifications('isNew')
     return (
         <BottomTab.Navigator
             initialRouteName="Home"
@@ -58,6 +59,16 @@ export default function BottomTabNavigator() {
                 }}
             />
             <BottomTab.Screen
+                name="SubscribeForm"
+                component={SubscribeFormNavigator}
+                options={{
+                    tabBarIcon: ({ focused }) => <Icon
+                        name="add"
+                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
+                    />,
+                }}
+            />
+            {/* <BottomTab.Screen
                 name="CardForm"
                 component={CardFormNavigator}
                 options={{
@@ -66,8 +77,8 @@ export default function BottomTabNavigator() {
                         color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
                     />,
                 }}
-            />
-            <BottomTab.Screen
+            /> */}
+            {/* <BottomTab.Screen
                 name="Notifications"
                 component={NotificationNavigator}
                 options={{
@@ -76,7 +87,7 @@ export default function BottomTabNavigator() {
                         color={focused || isNew ? defaultColorPalette.primary : defaultColorPalette.border}
                     />,
                 }}
-            />
+            /> */}
             <BottomTab.Screen
                 name="Auth"
                 component={AuthNavigator}
@@ -218,6 +229,25 @@ function PlayGroundNavigator() {
                 })}
             />
         </BlankTapStack.Navigator>
+    );
+};
+
+export type SubscribeFormTapParamList = {
+    SubscribeForm: undefined
+};
+const SubscribeFormTapStack = createStackNavigator<SubscribeFormTapParamList>();
+function SubscribeFormNavigator() {
+    return (
+        <SubscribeFormTapStack.Navigator>
+            <SubscribeFormTapStack.Screen
+                name="SubscribeForm"
+                component={SubscribeFormScreen}
+                options={({ navigation }) => ({
+                    headerShown: false,
+                    headerTitle: '정기배송',
+                })}
+            />
+        </SubscribeFormTapStack.Navigator>
     );
 };
 

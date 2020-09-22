@@ -13,9 +13,9 @@ export default function PetName({ currentStep, petName, setPetname, valid }: {
     setPetname: React.Dispatch<React.SetStateAction<string>>
     valid: boolean
 }) {
-    if (currentStep !== Step.PET_NAME) {
-        return null
-    }
+    // if (currentStep !== Step.PET_NAME) {
+    //     return null
+    // }
     // const { TransitionBlock } = useTransition()
     const usernameRef = useRef(null)
     const theme = useTheme()

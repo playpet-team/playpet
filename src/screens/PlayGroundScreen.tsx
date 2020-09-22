@@ -1,16 +1,16 @@
-import React, { useState, useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
+import { Text } from 'react-native'
+import Carousel from 'react-native-snap-carousel'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/native'
 import Card from '../components/Card'
-import Carousel from 'react-native-snap-carousel'
-import { deviceSize, CardModel } from '../utils'
-import { useDispatch, useSelector } from 'react-redux'
+import PlaypetModal from '../components/PlaypetModal'
+import useCardAdditionalInformation from '../hooks/useCardAdditionalInformation'
+import useLoadingIndicator from '../hooks/useLoadingIndicator'
+import useLoadPlaygroundCards from '../hooks/useLoadPlaygroundCards'
 import { playgroundActions } from '../store/playgroundReducer'
 import { RootState } from '../store/rootReducers'
-import useCardAdditionalInformation from '../hooks/useCardAdditionalInformation'
-import { Text } from 'react-native'
-import PlaypetModal from '../components/PlaypetModal'
-import useLoadPlaygroundCards from '../hooks/useLoadPlaygroundCards'
-import useLoadingIndicator from '../hooks/useLoadingIndicator'
+import { CardModel, deviceSize } from '../utils'
 
 const DEVICE_WIDTH = deviceSize().width
 const SLIDER_HEIGHT = deviceSize().height
@@ -33,7 +33,6 @@ export default function PlayGroundScreen() {
         return (
             <Card
                 {...item}
-                index={index}
                 renderRange={renderRange(activeIndex, index)}
                 onPlayActive={activeIndex === index}
             />

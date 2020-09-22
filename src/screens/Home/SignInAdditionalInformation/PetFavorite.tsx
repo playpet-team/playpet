@@ -16,9 +16,9 @@ export default function PetFavorite({ currentStep, favorite, setFavorite, valid 
     setFavorite: React.Dispatch<React.SetStateAction<string>>
     valid: boolean
 }) {
-    if (currentStep !== Step.PET_FAVORITE) {
-        return null
-    }
+    // if (currentStep !== Step.PET_FAVORITE) {
+    //     return null
+    // }
 
     return (
         <View>
