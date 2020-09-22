@@ -9,17 +9,17 @@ export const PET_TYPE = {
     CAT: '고양이',
     ETC: '기타',
     NOT_YET: '아직 없어요!',
-}
+} as const
 export const DefaultSize: { [key: string]: string } = {
     S: '소형견(7kg 미만)',
     M: '중형견(20kg 미만)',
     L: '소형견(20kg 이상)',
-}
+} as const
 export const DefaultAge: { [key: string]: string } = {
     BABY: '5개월 이하',
     ADLUT: '5개월 이상',
     OLD: '8세 이상',
-}
+} as const
 export default function PetAdditionalType({ currentStep, valid, petType, size, setSize, age, setAge }: {
     currentStep: Step
     valid: boolean
