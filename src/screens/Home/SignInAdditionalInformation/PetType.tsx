@@ -11,7 +11,7 @@ export default function PetType({ currentStep, petType, setPetType, searchPetTyp
     setPetType: React.Dispatch<React.SetStateAction<string>>
     searchPetType: string
     setSearchPetType: React.Dispatch<React.SetStateAction<string>>
-    valid: boolean
+    valid: string[]
 }) {
     // if (currentStep !== Step.PET_TYPE) {
     //     return null
@@ -32,7 +32,6 @@ export default function PetType({ currentStep, petType, setPetType, searchPetTyp
 
     return (
         <PetTypeBlock>
-            <DividerBlock marginBottom={8} />
             <Text
                 bold
                 size={20}

@@ -22,7 +22,7 @@ export const DefaultAge: { [key: string]: string } = {
 } as const
 export default function PetAdditionalType({ currentStep, valid, petType, size, setSize, age, setAge }: {
     currentStep: Step
-    valid: boolean
+    valid: string[]
     petType: string
     size: string
     setSize: React.Dispatch<React.SetStateAction<string>>
@@ -49,7 +49,6 @@ export default function PetAdditionalType({ currentStep, valid, petType, size, s
     return (
         <PetAdditionalTypeBlock>
             <Wrapper>
-                <DividerBlock marginBottom={8} />
                 <Text
                     bold
                     size={20}

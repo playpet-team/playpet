@@ -50,7 +50,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         if (isSignUp === true) {
             analytics().logSignUp({ method })
         }
-        navigation.goBack()
+        // navigation.goBack()
     }, [isSignUp])
 
     useEffect(() => {
@@ -72,6 +72,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                     console.log("22")
                     setLoading(true)
                     const { customToken, uid, newUser } = await postCreateUser()
+                    console.log('customToken, uid, newUser----------', customToken, uid, newUser)
                     if (!customToken || !uid || typeof newUser !== 'boolean') {
                         Sentry.captureException(`getCredential-no-information-from-postCreateUser-${uid}-${newUser}`)
                         setLoading(false)
@@ -202,9 +203,10 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     const postCreateUser = useCallback(async () => {
         try {
             console.log('a')
-            const { data: { customTokenForExistUser, uid, newUser } }:
+            const { data: { customTokenForExistUser, customToken, uid, newUser } }:
                 { data: {
                     customTokenForExistUser: string
+                    customToken: string
                     uid: string
                     newUser: boolean
                 }}
@@ -212,10 +214,10 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                 ...profile,
                 method,
             })
-            console.log('bb')
+            console.log('bb', newUser, typeof newUser)
     
             return {
-                customToken: customTokenForExistUser,
+                customToken: customTokenForExistUser || customToken,
                 uid,
                 newUser
             }
@@ -225,7 +227,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         }
     }, [profile, method])
 
-    return { getUidByThirdPartySignIn, loading, Indicator }
+    return { getUidByThirdPartySignIn, isSignUp, loading, Indicator }
 }
 
 const appleSignIn = async (setProfile: React.Dispatch<any>) => {

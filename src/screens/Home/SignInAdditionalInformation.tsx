@@ -1,20 +1,20 @@
-import { useTheme } from '@react-navigation/native'
-import * as Sentry from "@sentry/react-native"
+import { useTheme } from "@react-navigation/native"
 import React, { useState } from 'react'
-import { ScrollView } from 'react-native-gesture-handler'
+import { Icon } from "react-native-elements"
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components/native'
 import PlaypetModal from '../../components/PlaypetModal'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import { authActions } from '../../store/authReducer'
-import { currentUser, deviceSize, updateUserPets, updateUserTerms } from '../../utils'
-import AgreeTermsModal from './SignInAdditionalInformation/AgreeTermsModal'
-import CheckMyInformation from './SignInAdditionalInformation/CheckMyInformation'
+import { DividerBlock } from "../../styles"
+import { currentUser, deviceSize, updateUserPets } from '../../utils'
 import PetAdditionalType, { DefaultAge, DefaultSize, PET_TYPE } from './SignInAdditionalInformation/PetAdditionalType'
 import PetFavorite from './SignInAdditionalInformation/PetFavorite'
 import PetName from './SignInAdditionalInformation/PetName'
 import PetType from './SignInAdditionalInformation/PetType'
+import WelcomeSign from "./SignInAdditionalInformation/WelcomeSign"
 
 // export const Step = {
 //     PET_NAME: 0,
@@ -41,119 +41,72 @@ const DEVICE_WIDTH = deviceSize().width
 const DEVICE_HEIGHT = deviceSize().height
 export default function SignInAdditionalInformation() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
+    const [visible, setVisible] = useState(false)
     const [currentStep, setStep] = useState<Step>(Step.PET_NAME)
-    const [valid, setValid] = useState(false)
+    const [valid, setValid] = useState<string[]>([])
     const [petName, setPetname] = useState('')
     const [petType, setPetType] = useState<string>(PET_TYPE.DOG)
     const [searchPetType, setSearchPetType] = useState('')
     const [size, setSize] = useState(DefaultSize.S)
     const [age, setAge] = useState(DefaultAge.ADLUT)
     const [favorite, setFavorite] = useState('')
-    const [terms, setTerms] = useState<TERMS>({
-        overAgeAgree: false,
-        termsOfUseAgree: false,
-        personalCollectAgree: false,
-        marketingAgree: false,
-    })
-    // const [completeTerm, setCompleteTerm] = useState(false)
-    const themes = useTheme();
+    // const [terms, setTerms] = useState<TERMS>({
+    //     overAgeAgree: false,
+    //     termsOfUseAgree: false,
+    //     personalCollectAgree: false,
+    //     marketingAgree: false,
+    // })
+
+    const themes = useTheme()
     const dispatch = useDispatch()
 
-    const handleSingleTerm = (k: string, v: boolean) => setTerms({
-        ...terms,
-        [k]: v,
-    })
-
-    const handleStep = (type: 'back' | 'front') => {
-        if (type === 'back') {
-            if (currentStep === Step.PET_NAME) {
-                return
-            }
-            setStep(currentStep - 1)
+    const handleStep = () => {
+        const errors = checkValid()
+        if (errors.length) {
+            setValid(errors)
             return
         }
-        
-        const isValid = checkValid()
-        setValid(isValid)
-        if (!isValid) {
-            setValid(true)
-            return
-        }
-        
-        if (type === 'front') {
-            if (currentStep === Step.TERMS) {
-                hanbleSubmitAgreeTerms()
-                return
-            }
-            setStep(currentStep + 1)
-        }
+        setValid([])
+        setVisible(true)
+        handleUpdatePet()
     }
     
     const checkValid = () => {
-        switch (currentStep) {
-            case Step.PET_NAME: {
-                return Boolean(petName.length)
-            }
-            case Step.PET_TYPE: {
-                return Boolean(petType && searchPetType.length)
-            }
-            case Step.PET_ADDITIONAL_TYPE: {
-                return Boolean(size.length)
-            }
-            case Step.PET_FAVORITE: {
-                return Boolean(favorite.length)
-            }
-            case Step.CHECK_MY_INFORMATION: {
-                return true
-            }
-            case Step.TERMS: {
-                const { overAgeAgree, termsOfUseAgree, personalCollectAgree } = terms
-                return Boolean(overAgeAgree && termsOfUseAgree && personalCollectAgree)
-            }
-            default: {
-                return false
-            }
+        const errors = []
+        if (!petName.length) {
+            errors.push('petName')
         }
+        if (petType && !searchPetType.length) {
+            errors.push('searchPetType')
+        }
+        if (petType && !size.length) {
+            errors.push('size')
+        }
+        if (petType && !size.length) {
+            errors.push('age')
+        }
+        if (petType && !favorite.length) {
+            errors.push('favorite')
+        }
+        return errors
     }
 
-    const hanbleSubmitAgreeTerms = async () => {
+    const handleUpdatePet = async () => {
         const user = currentUser()
         if (!user) {
             return
         }
-        const uid = user.uid
-        const { overAgeAgree, termsOfUseAgree, personalCollectAgree, marketingAgree } = terms
-        try {
-            setLoading(true)
-            await updateUserTerms(uid, {
-                overAgeAgree,
-                termsOfUseAgree,
-                personalCollectAgree,
-                marketingAgree,
-            })
-            
-            const activePetDocId = await updateUserPets(uid, {
-                petName,
-                petType,
-                searchPetType,
-                size,
-                favorite,
-            })
-            if (activePetDocId) {
-                dispatch(authActions.setTerms({
-                    overAgeAgree,
-                    termsOfUseAgree,
-                    personalCollectAgree,
-                    marketingAgree,
-                }))
-                dispatch(authActions.setActivePetDocId(activePetDocId))
-            }
-        } catch (e) {
-            Sentry.captureException(e)
-        } finally {
-            setLoading(false)
-        }
+        const activePetDocId = await updateUserPets(user.uid, {
+            petName,
+            petType,
+            searchPetType,
+            size,
+            favorite,
+        })
 
+        if (activePetDocId) {
+            dispatch(authActions.setActivePetDocId(activePetDocId))
+        }
     }
 
     return (
@@ -168,69 +121,49 @@ export default function SignInAdditionalInformation() {
             {loading && <Indicator />}
             <SignInAdditionalInformationBlock>
                 <ScrollView>
-                <PetName
-                    currentStep={currentStep}
-                    valid={valid}
-                    petName={petName}
-                    setPetname={setPetname}
-                />
-                <PetType
-                    currentStep={currentStep}
-                    valid={valid}
-                    petType={petType}
-                    setPetType={setPetType}
-                    searchPetType={searchPetType}
-                    setSearchPetType={setSearchPetType}
-                />
-                <PetAdditionalType
-                    currentStep={currentStep}
-                    petType={petType}
-                    valid={valid}
-                    size={size}
-                    setSize={setSize}
-                    age={age}
-                    setAge={setAge}
-                />
-                <PetFavorite
-                    currentStep={currentStep}
-                    valid={valid}
-                    favorite={favorite}
-                    setFavorite={setFavorite}
-                />
-                <CheckMyInformation
-                    currentStep={currentStep}
-                    petName={petName}
-                    petType={petType}
-                    searchPetType={searchPetType}
-                    size={size}
-                    favorite={favorite}
-                />
-                <AgreeTermsModal
-                    terms={terms}
-                    setTerms={setTerms}
-                    handleSingleTerm={handleSingleTerm}
-                    currentStep={currentStep}
-                    valid={valid}
-                />
-                {/* <StepNavigatorSection>
-                    <TouchableOpacity
-                        onPress={() => handleStep('back')}
-                        disabled={currentStep === Step.PET_NAME}
-                    >
-                        <Icon
-                            name="keyboard-arrow-left"
-                            size={38}
-                            color={currentStep === Step.PET_NAME ? '#e9e9e9' : themes.colors.primary}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleStep('front')}>
-                        <Icon
-                            name="keyboard-arrow-right"
-                            size={38}
-                            color={themes.colors.primary}
-                        />
-                    </TouchableOpacity>
-                </StepNavigatorSection> */}
+                    <WelcomeSign />
+                    <DividerBlock marginTop={44} />
+                    <PetName
+                        currentStep={currentStep}
+                        valid={valid.includes('petName')}
+                        petName={petName}
+                        setPetname={setPetname}
+                    />
+                    <DividerBlock marginBottom={36} />
+                    <PetType
+                        currentStep={currentStep}
+                        valid={valid}
+                        petType={petType}
+                        setPetType={setPetType}
+                        searchPetType={searchPetType}
+                        setSearchPetType={setSearchPetType}
+                    />
+                    <DividerBlock marginBottom={36} />
+                    <PetAdditionalType
+                        currentStep={currentStep}
+                        petType={petType}
+                        valid={valid}
+                        size={size}
+                        setSize={setSize}
+                        age={age}
+                        setAge={setAge}
+                    />
+                    <DividerBlock marginBottom={36} />
+                    <PetFavorite
+                        currentStep={currentStep}
+                        valid={valid.includes('favorite')}
+                        favorite={favorite}
+                        setFavorite={setFavorite}
+                    />
+                    <StepNavigatorSection>
+                        <TouchableOpacity onPress={handleStep}>
+                            <Icon
+                                name="keyboard-arrow-right"
+                                size={38}
+                                color={themes.colors.primary}
+                            />
+                        </TouchableOpacity>
+                    </StepNavigatorSection>
                 </ScrollView>
             </SignInAdditionalInformationBlock>
         </PlaypetModal>
@@ -238,17 +171,12 @@ export default function SignInAdditionalInformation() {
 }
 
 const StepNavigatorSection = styled.View`
-    position: absolute;
-    bottom: 12px;
-    /* right: 12px; */
     flex-direction: row;
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-end;
 `
 
 const SignInAdditionalInformationBlock = styled(SafeAreaView)`
-    /* flex: 1; */
-    /* height: 100%; */
     padding-vertical: 40px;
     flex-direction: column;
 `

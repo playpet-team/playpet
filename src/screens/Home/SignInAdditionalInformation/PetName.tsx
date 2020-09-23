@@ -3,9 +3,7 @@ import React, { useRef } from "react"
 import { View } from "react-native"
 import { Input } from "react-native-elements"
 import Transition from "../../../components/Transition"
-import { DividerBlock } from "../../../styles"
 import { Step } from "../SignInAdditionalInformation"
-import WelcomeSign from "./WelcomeSign"
 
 export default function PetName({ currentStep, petName, setPetname, valid }: {
     currentStep: Step
@@ -13,6 +11,7 @@ export default function PetName({ currentStep, petName, setPetname, valid }: {
     setPetname: React.Dispatch<React.SetStateAction<string>>
     valid: boolean
 }) {
+    console.log('petname valid------', valid)
     // if (currentStep !== Step.PET_NAME) {
     //     return null
     // }
@@ -22,8 +21,6 @@ export default function PetName({ currentStep, petName, setPetname, valid }: {
 
     return (
         <View>
-            <WelcomeSign />
-            <DividerBlock marginTop={44} />
             <Transition>
                 <Input
                     maxLength={16}

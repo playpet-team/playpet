@@ -1,15 +1,16 @@
-import React, { useState, useCallback } from 'react'
-import styled from 'styled-components/native'
-import { useDispatch } from 'react-redux'
-import initializeSignIn from '../../utils/auth/initializeSignIn'
-import { SignType } from '../../models'
+import { AppleButton } from '@invertase/react-native-apple-authentication'
+import * as Sentry from "@sentry/react-native"
 import Constants from 'expo-constants'
-import Toast, { ToastParams } from '../../components/Toast'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import PlaypetModal from '../../components/PlaypetModal';
-import { AppleButton, } from '@invertase/react-native-apple-authentication'
+import React, { useCallback, useState } from 'react'
 import { Image } from 'react-native-elements'
-import * as Sentry from "@sentry/react-native";
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useDispatch } from 'react-redux'
+import styled from 'styled-components/native'
+import PlaypetModal from '../../components/PlaypetModal'
+import Toast, { ToastParams } from '../../components/Toast'
+import { SignType } from '../../models'
+import initializeSignIn from '../../utils/auth/initializeSignIn'
+import AgreeTermsModal from '../Home/SignInAdditionalInformation/AgreeTermsModal'
 
 export default function SocialSignIn() {
     const [showOtherMethods, setShowOtherMethods] = useState(false)
@@ -19,7 +20,7 @@ export default function SocialSignIn() {
         description: '',
         image: '',
     })
-    const { getUidByThirdPartySignIn, loading, Indicator } = initializeSignIn({ toastContent, setToastContent })
+    const { getUidByThirdPartySignIn, isSignUp, loading, Indicator } = initializeSignIn({ toastContent, setToastContent })
     const dispatch = useDispatch()
 
     const handleSignIn = useCallback(async (method: SignType) => {
@@ -32,6 +33,8 @@ export default function SocialSignIn() {
             // setLoading(false)
         }
     }, [dispatch])
+
+    console.log("---------isSignUps---------", isSignUp)
 
     const SigninWrapper = useCallback(({ modal }: { modal?: boolean }) => {
         return (
@@ -105,6 +108,7 @@ export default function SocialSignIn() {
                     setToastContent={setToastContent}
                 />
             }
+            <AgreeTermsModal visible={Boolean(isSignUp)} />
             <SigninWrapper />
             <TouchableOpacity onPress={() => setShowOtherMethods(!showOtherMethods)}>
                 <SigninOtherMethodsText>다른 방법으로 로그인 하기</SigninOtherMethodsText>

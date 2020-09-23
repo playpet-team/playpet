@@ -77,7 +77,7 @@ const Container = styled.View<Pick<Theme, 'colors'> & Pick<ModalProps, 'containe
         flex: ${containerStyle.flex};
     `}
     width: ${({ containerStyle }) => containerStyle?.width ? containerStyle.width : 320}px;
-    height: ${({ containerStyle }) => containerStyle?.height ? containerStyle.height : 'auto'}px;
+    height: ${({ containerStyle }) => containerStyle?.height ? `${containerStyle.height}px` : 'auto'};
     padding: ${({ containerStyle }) => containerStyle?.padding ? containerStyle.padding : 16}px;
     background-color: ${({ colors }) => colors.background};
     border-radius: 4px;

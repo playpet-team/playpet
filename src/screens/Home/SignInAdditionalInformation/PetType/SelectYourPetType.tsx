@@ -5,7 +5,6 @@ import { FlatList } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 import ButtonGroups from "../../../../components/ButtonGroups"
 import ListItem from "../../../../components/ListItem"
-import { Text } from "../../../../styles"
 import { PET_TYPE } from "../PetAdditionalType"
 
 function SelectYourPetType({ petType, setPetType, searchPetTyping, setSearchPetTyping, searchPetType, setSearchPetType, getPetKey }: {
@@ -41,25 +40,6 @@ function SelectYourPetType({ petType, setPetType, searchPetTyping, setSearchPetT
         return types.filter(type => type.includes(searchPetTyping))
     }, [petType, searchPetTyping])
 
-    // const avatarSource = useMemo((): ImageSourcePropType | null => {
-    //     let source = null
-    //     switch (getPetKey()) {
-    //         case 'DOG': {
-    //             source = require('../../../../../assets/images/dog_default_thumb.jpg')
-    //             break;
-    //         }
-    //         case 'CAT': {
-    //             source = require('../../../../../assets/images/cat_default_thumb.jpg')
-    //             break;
-    //         }
-    //         default: {
-    //             source = null
-    //             break;
-    //         }
-    //     }
-    //     return source
-    // }, [petType])
-
     const renderType = ({ item }: { item: string }) => {
         return (
             <ListItem
@@ -79,12 +59,6 @@ function SelectYourPetType({ petType, setPetType, searchPetTyping, setSearchPetT
 
     return (
         <SelectYourPetTypeBlock>
-            <Text
-                color={theme.colors.border}
-                size={16}
-            >
-                {searchedPetType.length}종류
-            </Text>
             <ButtonGroups
                 buttons={Object.values(PET_TYPE)}
                 onSelect={setPetType}
