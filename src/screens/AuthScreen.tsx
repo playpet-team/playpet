@@ -1,49 +1,29 @@
-import { useNavigation } from '@react-navigation/native'
-import React, { useState } from 'react'
+import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
+import React from 'react'
 import { Image } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components/native'
 import ListItem from '../components/ListItem'
 import ProfileSection from '../components/ProfileSection'
-import useTerms from '../hooks/useTerms'
-import { ItemList } from '../models'
+import { AuthTapParamList } from '../navigation/BottomTabNavigator'
 import { RootState } from '../store/rootReducers'
 import { DividerBlock } from '../styles'
 import { linkingUrl } from '../utils'
-import MyCards from './AuthScreen/MyCards'
 import SignInAdditionalInformation from './Home/SignInAdditionalInformation'
 
 export default function AuthScreen() {
-    const [listType, setListType] = useState(ItemList.MEDIA)
-    const { isLogged, activePetDocId = 'dummy' } = useSelector((state: RootState) => state.auth)
+    const { params } = useRoute<RouteProp<AuthTapParamList, 'AuthScreen'>>();
+    const { isLogged, } = useSelector((state: RootState) => state.auth)
     const navigation = useNavigation()
-    const { existDoc } = useTerms()
+    const isFocus = useIsFocused()
+    console.log('visible-modal--------', isLogged && params?.isSignUp && isFocus)
     console.log('isLogged', isLogged)
 
     return (
         <ScrollView>
             <ProfileSection />
-            {isLogged &&
-                <>
-                    <ListItem
-                        title='영상'
-                        titleStyle={{
-                            fontSize: 18,
-                            fontWeight: 'bold'
-                        }}
-                        onPress={() => navigation.navigate('AppSettings')}
-                    />
-                    <MyCards listType={listType} />
-                </>
-            }
             <Section>
-                {/* <ListItem
-                    title={i18n.t('product.recentViewed')}
-                    titleStyle={{
-                    }}
-                    onPress={() => { }}
-                /> */}
                 <ListItem
                     title='결제 정보'
                     titleStyle={{
@@ -96,7 +76,7 @@ export default function AuthScreen() {
                     />}
                 />
             </Section>
-            {Boolean(isLogged && (!existDoc || !activePetDocId.length)) &&
+            {(isLogged && params?.isSignUp && isFocus) &&
                 <SignInAdditionalInformation />
             }
         </ScrollView>

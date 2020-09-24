@@ -39,9 +39,10 @@ export interface TERMS {
 }
 const DEVICE_WIDTH = deviceSize().width
 const DEVICE_HEIGHT = deviceSize().height
+
 export default function SignInAdditionalInformation() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
-    const [visible, setVisible] = useState(false)
+    const [visible, setVisible] = useState(true)
     const [currentStep, setStep] = useState<Step>(Step.PET_NAME)
     const [valid, setValid] = useState<string[]>([])
     const [petName, setPetname] = useState('')
@@ -60,15 +61,15 @@ export default function SignInAdditionalInformation() {
     const themes = useTheme()
     const dispatch = useDispatch()
 
-    const handleStep = () => {
+    const handleStep = async () => {
         const errors = checkValid()
         if (errors.length) {
             setValid(errors)
             return
         }
         setValid([])
-        setVisible(true)
-        handleUpdatePet()
+        await handleUpdatePet()
+        setVisible(false)
     }
     
     const checkValid = () => {
@@ -111,7 +112,7 @@ export default function SignInAdditionalInformation() {
 
     return (
         <PlaypetModal
-            modalVisible={true}
+            modalVisible={visible}
             isHideCloseButton={true}
             containerStyle={{
                 height: DEVICE_HEIGHT,

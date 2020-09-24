@@ -1,7 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
 import * as Sentry from "@sentry/react-native";
 import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components/native';
+import PlaypetModal from "../../../components/PlaypetModal";
 import Transition from '../../../components/Transition';
 import useLoadingIndicator from '../../../hooks/useLoadingIndicator';
 import { authActions } from '../../../store/authReducer';
@@ -10,12 +12,13 @@ import { currentUser, updateUserTerms } from '../../../utils';
 import { TERMS } from '../SignInAdditionalInformation';
 
 
-export default function AgreeTermsModal({ visible }: {
-    visible: boolean
-}) {
-    if (!visible) {
-        return null
-    }
+export default function AgreeTermsModal() {
+    const [modalVisible, setModalVisible] = useState(true)
+
+    // if (!modalVisible) {
+    //     return null
+    // }
+    const navigation = useNavigation()
 
     const { loading, setLoading, Indicator } = useLoadingIndicator()
     const [terms, setTerms] = useState<TERMS>({
@@ -50,6 +53,11 @@ export default function AgreeTermsModal({ visible }: {
                 marketingAgree,
             }))
 
+            setModalVisible(false)
+            navigation.navigate('AuthScreen', {
+                isSignUp: true,
+            })
+
         } catch (e) {
             Sentry.captureException(e)
         } finally {
@@ -73,41 +81,48 @@ export default function AgreeTermsModal({ visible }: {
         })
     }, [])
 
+    console.log('term')
+
     const isAllRequiredAgreeTerms = () => overAgeAgree && termsOfUseAgree && personalCollectAgree
 
     return (
         <Transition type="fade-top">
-            <AgreeTermsModalBlock>
-                {loading && <Indicator />}
-                    <AllTermsAgree onPress={handleAllAgree}>
-                        <Text>약관에 모두 동의</Text>
-                    </AllTermsAgree>
-                    <TermsAgree onPress={() => handleSingleTerm('overAgeAgree', !overAgeAgree)}>
-                        <Text>{overAgeAgree ? 'checked' : 'none'}</Text><Text>만 14세 이상입니다</Text>
-                    </TermsAgree>
-                    <TermsAgree onPress={() => handleSingleTerm('termsOfUseAgree', !termsOfUseAgree)}>
-                        <Text>{termsOfUseAgree ? 'checked' : 'none'}</Text><Text>서비스 이용약관에 동의</Text>
-                    </TermsAgree>
-                    <TermsAgree onPress={() => handleSingleTerm('personalCollectAgree', !personalCollectAgree)}>
-                        <Text>{personalCollectAgree ? 'checked' : 'none'}</Text><Text>개인정보 수집 이용에 동의</Text>
-                    </TermsAgree>
-                    <TermsAgree onPress={() => handleSingleTerm('marketingAgree', !marketingAgree)}>
-                        <Text>{marketingAgree ? 'checked' : 'none'}</Text><Text>홍보 및 마케팅 이용에 동의</Text>
-                    </TermsAgree>
-                    <Complete onPress={hanbleSubmitAgreeTerms}>
-                        <Text>완료</Text>
-                    </Complete>
-            </AgreeTermsModalBlock>
+            <PlaypetModal
+                modalVisible={modalVisible}
+                isHideCloseButton={true}
+            >
+                <AgreeTermsModalBlock>
+                    {loading && <Indicator />}
+                        <AllTermsAgree onPress={handleAllAgree}>
+                            <Text>약관에 모두 동의</Text>
+                        </AllTermsAgree>
+                        <TermsAgree onPress={() => handleSingleTerm('overAgeAgree', !overAgeAgree)}>
+                            <Text>{overAgeAgree ? 'checked' : 'none'}</Text><Text>만 14세 이상입니다</Text>
+                        </TermsAgree>
+                        <TermsAgree onPress={() => handleSingleTerm('termsOfUseAgree', !termsOfUseAgree)}>
+                            <Text>{termsOfUseAgree ? 'checked' : 'none'}</Text><Text>서비스 이용약관에 동의</Text>
+                        </TermsAgree>
+                        <TermsAgree onPress={() => handleSingleTerm('personalCollectAgree', !personalCollectAgree)}>
+                            <Text>{personalCollectAgree ? 'checked' : 'none'}</Text><Text>개인정보 수집 이용에 동의</Text>
+                        </TermsAgree>
+                        <TermsAgree onPress={() => handleSingleTerm('marketingAgree', !marketingAgree)}>
+                            <Text>{marketingAgree ? 'checked' : 'none'}</Text><Text>홍보 및 마케팅 이용에 동의</Text>
+                        </TermsAgree>
+                        <Complete onPress={hanbleSubmitAgreeTerms}>
+                            <Text>완료</Text>
+                        </Complete>
+                </AgreeTermsModalBlock>
+            </PlaypetModal>
         </Transition>
     )
 }
 
 const AgreeTermsModalBlock = styled.View`
-    position: absolute;
+    /* position: absolute; */
     width: 100%;
-    bottom: 0;
-    left: 0;
-    padding: 24px;
+    /* bottom: 0; */
+    /* left: 0; */
+    /* padding: 24px; */
     background-color: #fff;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;

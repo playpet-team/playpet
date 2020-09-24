@@ -252,7 +252,9 @@ function SubscribeFormNavigator() {
 };
 
 export type AuthTapParamList = {
-    AuthScreen: undefined;
+    AuthScreen: {
+        isSignUp?: boolean;
+    };
     AppSettings: undefined;
     PaymentSetting: undefined;
     ShippingDestinationSetting: undefined;

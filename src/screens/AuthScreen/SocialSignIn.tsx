@@ -108,7 +108,7 @@ export default function SocialSignIn() {
                     setToastContent={setToastContent}
                 />
             }
-            <AgreeTermsModal visible={Boolean(isSignUp)} />
+            {Boolean(isSignUp) && <AgreeTermsModal />}
             <SigninWrapper />
             <TouchableOpacity onPress={() => setShowOtherMethods(!showOtherMethods)}>
                 <SigninOtherMethodsText>다른 방법으로 로그인 하기</SigninOtherMethodsText>
