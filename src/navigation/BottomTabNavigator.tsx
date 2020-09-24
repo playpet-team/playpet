@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { Icon } from 'react-native-elements';
-import styled from 'styled-components/native';
 import ProductWebView from '../components/ProductWebView';
 import AppLogin from '../screens/AppLogin';
 import AuthScreen from '../screens/AuthScreen';
@@ -305,8 +304,3 @@ function AuthNavigator() {
         </AuthTapStack.Navigator>
     );
 };
-
-const HeaderButton = styled.TouchableOpacity`
-    padding: 8px;
-`;
-

@@ -16,21 +16,6 @@ import PetName from './SignInAdditionalInformation/PetName'
 import PetType from './SignInAdditionalInformation/PetType'
 import WelcomeSign from "./SignInAdditionalInformation/WelcomeSign"
 
-// export const Step = {
-//     PET_NAME: 0,
-//     PET_TYPE: 1,
-//     PET_FAVORITE: 2,
-//     TERMS: 3,
-// }
-export type StepName = 'PET_NAME' | 'PET_TYPE' | 'PET_ADDITIONAL_TYPE' | 'PET_FAVORITE' | 'TERMS'
-export enum Step {
-    PET_NAME,
-    PET_TYPE,
-    PET_ADDITIONAL_TYPE,
-    PET_FAVORITE,
-    CHECK_MY_INFORMATION,
-    TERMS,
-}
 export interface TERMS {
     overAgeAgree: boolean;
     termsOfUseAgree: boolean;
@@ -41,9 +26,9 @@ const DEVICE_WIDTH = deviceSize().width
 const DEVICE_HEIGHT = deviceSize().height
 
 export default function SignInAdditionalInformation() {
-    const { loading, setLoading, Indicator } = useLoadingIndicator()
+    const { loading, Indicator } = useLoadingIndicator()
     const [visible, setVisible] = useState(true)
-    const [currentStep, setStep] = useState<Step>(Step.PET_NAME)
+
     const [valid, setValid] = useState<string[]>([])
     const [petName, setPetname] = useState('')
     const [petType, setPetType] = useState<string>(PET_TYPE.DOG)
@@ -51,12 +36,6 @@ export default function SignInAdditionalInformation() {
     const [size, setSize] = useState(DefaultSize.S)
     const [age, setAge] = useState(DefaultAge.ADLUT)
     const [favorite, setFavorite] = useState('')
-    // const [terms, setTerms] = useState<TERMS>({
-    //     overAgeAgree: false,
-    //     termsOfUseAgree: false,
-    //     personalCollectAgree: false,
-    //     marketingAgree: false,
-    // })
 
     const themes = useTheme()
     const dispatch = useDispatch()
@@ -125,14 +104,12 @@ export default function SignInAdditionalInformation() {
                     <WelcomeSign />
                     <DividerBlock marginTop={44} />
                     <PetName
-                        currentStep={currentStep}
                         valid={valid.includes('petName')}
                         petName={petName}
                         setPetname={setPetname}
                     />
                     <DividerBlock marginBottom={36} />
                     <PetType
-                        currentStep={currentStep}
                         valid={valid}
                         petType={petType}
                         setPetType={setPetType}
@@ -141,7 +118,6 @@ export default function SignInAdditionalInformation() {
                     />
                     <DividerBlock marginBottom={36} />
                     <PetAdditionalType
-                        currentStep={currentStep}
                         petType={petType}
                         valid={valid}
                         size={size}
@@ -151,7 +127,6 @@ export default function SignInAdditionalInformation() {
                     />
                     <DividerBlock marginBottom={36} />
                     <PetFavorite
-                        currentStep={currentStep}
                         valid={valid.includes('favorite')}
                         favorite={favorite}
                         setFavorite={setFavorite}
@@ -181,4 +156,3 @@ const SignInAdditionalInformationBlock = styled(SafeAreaView)`
     padding-vertical: 40px;
     flex-direction: column;
 `
-

@@ -81,8 +81,6 @@ export default function AgreeTermsModal() {
         })
     }, [])
 
-    console.log('term')
-
     const isAllRequiredAgreeTerms = () => overAgeAgree && termsOfUseAgree && personalCollectAgree
 
     return (

@@ -85,14 +85,7 @@ export default function AuthScreen() {
 
 const Section = styled.View`
     margin-top: 16px;
-    /* padding-horizontal: 16px; */
 `
-
-// const SignInButton = styled.TouchableOpacity`
-//     padding: 16px;
-//     flex-direction: row;
-//     justify-content: space-between;
-// `
 
 const KakaoChannelButton = styled.TouchableOpacity`
     flex-direction: row;

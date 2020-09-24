@@ -2,7 +2,6 @@ import React from "react"
 import { View } from "react-native"
 import ButtonGroups from "../../../components/ButtonGroups"
 import { Text } from "../../../styles"
-import { Step } from "../SignInAdditionalInformation"
 
 export const FAVORITE = [
     'FOODS',
@@ -10,16 +9,11 @@ export const FAVORITE = [
     'HEALTH',
     'ETC',
 ]
-export default function PetFavorite({ currentStep, favorite, setFavorite, valid }: {
-    currentStep: Step
+export default function PetFavorite({ favorite, setFavorite, valid }: {
     favorite: string
     setFavorite: React.Dispatch<React.SetStateAction<string>>
     valid: boolean
 }) {
-    // if (currentStep !== Step.PET_FAVORITE) {
-    //     return null
-    // }
-
     return (
         <View>
             <Text bold size={16}>관심 분야?</Text>

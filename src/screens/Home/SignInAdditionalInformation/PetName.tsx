@@ -3,19 +3,12 @@ import React, { useRef } from "react"
 import { View } from "react-native"
 import { Input } from "react-native-elements"
 import Transition from "../../../components/Transition"
-import { Step } from "../SignInAdditionalInformation"
 
-export default function PetName({ currentStep, petName, setPetname, valid }: {
-    currentStep: Step
+export default function PetName({ petName, setPetname, valid }: {
     petName: string
     setPetname: React.Dispatch<React.SetStateAction<string>>
     valid: boolean
 }) {
-    console.log('petname valid------', valid)
-    // if (currentStep !== Step.PET_NAME) {
-    //     return null
-    // }
-    // const { TransitionBlock } = useTransition()
     const usernameRef = useRef(null)
     const theme = useTheme()
 

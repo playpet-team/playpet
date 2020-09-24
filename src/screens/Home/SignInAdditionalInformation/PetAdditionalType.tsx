@@ -2,7 +2,6 @@ import { useTheme } from "@react-navigation/native";
 import React, { useCallback } from "react";
 import styled from "styled-components/native";
 import { DividerBlock, Text } from "../../../styles";
-import { Step } from "../SignInAdditionalInformation";
 
 export const PET_TYPE = {
     DOG: '강아지',
@@ -20,8 +19,7 @@ export const DefaultAge: { [key: string]: string } = {
     ADLUT: '5개월 이상',
     OLD: '8세 이상',
 } as const
-export default function PetAdditionalType({ currentStep, valid, petType, size, setSize, age, setAge }: {
-    currentStep: Step
+export default function PetAdditionalType({ valid, petType, size, setSize, age, setAge }: {
     valid: string[]
     petType: string
     size: string
@@ -29,10 +27,6 @@ export default function PetAdditionalType({ currentStep, valid, petType, size, s
     age: string
     setAge: React.Dispatch<React.SetStateAction<string>>
 }) {
-    // if (currentStep !== Step.PET_ADDITIONAL_TYPE) {
-    //     return null
-    // }
-
     const theme = useTheme();
 
     const getPetKey = useCallback(() => {

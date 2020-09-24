@@ -1,22 +1,16 @@
 import React, { useCallback, useState } from "react"
 import styled from 'styled-components/native'
 import { DividerBlock, Text } from "../../../styles"
-import { Step } from "../SignInAdditionalInformation"
 import { PET_TYPE } from "./PetAdditionalType"
 import SelectYourPetType from "./PetType/SelectYourPetType"
 
-export default function PetType({ currentStep, petType, setPetType, searchPetType, setSearchPetType, valid }: {
-    currentStep: Step
+export default function PetType({ petType, setPetType, searchPetType, setSearchPetType, valid }: {
     petType: string
     setPetType: React.Dispatch<React.SetStateAction<string>>
     searchPetType: string
     setSearchPetType: React.Dispatch<React.SetStateAction<string>>
     valid: string[]
 }) {
-    // if (currentStep !== Step.PET_TYPE) {
-    //     return null
-    // }
-
     const [searchPetTyping, setSearchPetTyping] = useState('')
 
     const getPetKey = useCallback(() => {
