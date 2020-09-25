@@ -9,10 +9,9 @@ export const FAVORITE = [
     'HEALTH',
     'ETC',
 ]
-export default function PetFavorite({ favorite, setFavorite, valid }: {
+export default function PetFavorite({ favorite, setFavorite }: {
     favorite: string
     setFavorite: React.Dispatch<React.SetStateAction<string>>
-    valid: boolean
 }) {
     return (
         <View>

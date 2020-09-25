@@ -1,17 +1,18 @@
 import { useTheme } from "@react-navigation/native"
 import React, { useMemo, useState } from "react"
+import { Control, Controller } from "react-hook-form"
 import { SearchBar } from "react-native-elements"
 import { FlatList } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 import ListItem from "../../../components/ListItem"
 import { DividerBlock } from "../../../styles"
 import { PetTypes } from "../../../utils/product"
+import { ItemBlock, PetItems } from "../SignInAdditionalInformation"
 
-export default function PetKind({ valid, petType, petKind, setPetKind }: {
-    valid: boolean
+export default function PetKind({ petType, control, openItem }: {
+    control: Control<Record<string, any>>
     petType: PetTypes
-    petKind: string
-    setPetKind: React.Dispatch<React.SetStateAction<string>>
+    openItem: PetItems
 }) {
     const [searchPetTyping, setSearchPetTyping] = useState('')
     const theme = useTheme()
@@ -23,23 +24,34 @@ export default function PetKind({ valid, petType, petKind, setPetKind }: {
 
     const renderType = ({ item }: { item: string }) => {
         return (
-            <ListItem
-                title={item}
-                onPress={() => setPetKind(item)}
-                titleStyle={{
-                }}
-                containerStyle={{
-                    borderRadius: 8,
-                }}
-                activeStyle={{
-                    backgroundColor: item === petKind ? `${theme.colors.primary}33` : 'transparent',
-                }}
+            <Controller
+                control={control}
+                render={({ value, onChange }) => (
+                    <ListItem
+                        title={item}
+                        onPress={() => onChange(item)}
+                        titleStyle={{
+                        }}
+                        containerStyle={{
+                            borderRadius: 8,
+                        }}
+                        activeStyle={{
+                            backgroundColor: item === value ? `${theme.colors.primary}33` : 'transparent',
+                        }}
+                    />
+                )}
+                name="petKind"
+                rules={{ required: true, minLength: 1, maxLength: 16, }}
+                defaultValue=""
             />
+            
         )
     }
 
+    console.log("petType--------", petType)
+
     return (
-        <PetKindBlock>
+        <ItemBlock display={openItem === 'PetKind'}>
             <DividerBlock marginTop={16} />
             {Boolean(petType) && petType !== 'NOT_YET' &&
                 <MaxHeightView>
@@ -69,11 +81,9 @@ export default function PetKind({ valid, petType, petKind, setPetKind }: {
                     />
                 </MaxHeightView>
             }
-        </PetKindBlock>
+        </ItemBlock>
     )
 }
-
-const PetKindBlock = styled.View``
 
 const MaxHeightView = styled.View`
     height: 350px;

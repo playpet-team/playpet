@@ -1,38 +1,37 @@
-import { useTheme } from "@react-navigation/native"
-import React, { useRef } from "react"
-import { View } from "react-native"
+import React from "react"
+import { Control, Controller, DeepMap, FieldError } from "react-hook-form"
 import { Input } from "react-native-elements"
 import Transition from "../../../components/Transition"
+import { ItemBlock, PetItems } from "../SignInAdditionalInformation"
 
-export default function PetName({ petName, setPetname, valid }: {
-    petName: string
-    setPetname: React.Dispatch<React.SetStateAction<string>>
-    valid: boolean
+export default function PetName({ control, errors, openItem }: {
+    control: Control<Record<string, any>>
+    errors: DeepMap<Record<string, any>, FieldError>
+    openItem: PetItems
 }) {
-    const usernameRef = useRef(null)
-    const theme = useTheme()
-
     return (
-        <View>
+        <ItemBlock display={openItem === 'PetName'}>
             <Transition>
-                <Input
-                    maxLength={16}
-                    ref={usernameRef}
-                    label="아이 이름을 알려주세요"
-                    labelStyle={{
-                        color: theme.colors.text,
-                        fontWeight: '500',
-                        marginBottom: 24,
-                    }}
-                    containerStyle={{
-                        paddingHorizontal: 0
-                    }}
-                    placeholder="예) 바오, 순철이, 나옹이"
-                    value={petName}
-                    onChangeText={setPetname}
-                    errorMessage={valid ? '최대 16글자로 이름을 적어주세요' : ''}
+                <Controller
+                    control={control}
+                    render={({ value, onChange }) => (
+                        <Input
+                            maxLength={16}
+                            containerStyle={{
+                                paddingHorizontal: 0,
+                                
+                            }}
+                            placeholder="예) 바오, 순철이, 나옹이"
+                            value={value}
+                            onChangeText={onChange}
+                            errorMessage={errors.petName ? '최대 16글자로 이름을 적어주세요' : ''}
+                        />
+                    )}
+                    name="petName"
+                    rules={{ required: true, minLength: 1, maxLength: 16, }}
+                    defaultValue=""
                 />
             </Transition>
-        </View>
+        </ItemBlock>
     )
 }

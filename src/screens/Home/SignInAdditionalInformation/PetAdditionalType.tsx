@@ -1,9 +1,9 @@
 import { useTheme } from "@react-navigation/native";
 import React from "react";
 import styled from "styled-components/native";
-import Transition from "../../../components/Transition";
 import { DividerBlock, Text } from "../../../styles";
 import { PetTypes } from "../../../utils/product";
+import { ItemBlock, PetItems } from "../SignInAdditionalInformation";
 
 export const PET_TYPE: ['DOG', 'CAT', 'ETC', 'NOT_YET'] = [
     'DOG',
@@ -21,8 +21,8 @@ export const DefaultAge: { [key: string]: string } = {
     ADLUT: '5개월 이상',
     OLD: '8세 이상',
 } as const
-export default function PetAdditionalType({ valid, petType, size, setSize, age, setAge }: {
-    valid: string[]
+export default function PetAdditionalType({ openItem, petType, size, setSize, age, setAge }: {
+    openItem: PetItems
     petType: PetTypes
     size: string
     setSize: React.Dispatch<React.SetStateAction<string>>
@@ -32,45 +32,39 @@ export default function PetAdditionalType({ valid, petType, size, setSize, age, 
     const theme = useTheme();
 
     return (
-        <Transition>
-            <PetAdditionalTypeBlock>
-                    {petType === 'DOG' &&
-                        <PetSize>
-                            <Text bold size={16}>견종 사이즈</Text>
-                            {Object.keys(DefaultSize).map(size => (
-                                <TypeItem
-                                    onPress={() => setSize(size)}
-                                    key={size}
-                                    activeType={size === size}
-                                    primary={theme.colors.primary}
-                                >
-                                    <Text size={16}>{DefaultSize[size]}</Text>
-                                </TypeItem>
-                            ))}
-                            <DividerBlock marginTop={16} />
-                        </PetSize>
-                    }
-                    <PetAge>
-                        <Text bold size={16}>나이</Text>
-                        {Object.keys(DefaultAge).map(age => (
+        <ItemBlock display={openItem === 'PetAdditionalType'}>
+                {petType === 'DOG' &&
+                    <PetSize>
+                        <Text bold size={16}>견종 사이즈</Text>
+                        {Object.keys(DefaultSize).map(size => (
                             <TypeItem
-                                onPress={() => setSize(age)}
-                                key={age}
-                                activeType={size === age}
+                                onPress={() => setSize(size)}
+                                key={size}
+                                activeType={size === size}
                                 primary={theme.colors.primary}
                             >
-                                <Text size={16}>{DefaultAge[age]}</Text>
+                                <Text size={16}>{DefaultSize[size]}</Text>
                             </TypeItem>
                         ))}
-                    </PetAge>
-            </PetAdditionalTypeBlock>
-        </Transition>
+                        <DividerBlock marginTop={16} />
+                    </PetSize>
+                }
+                <PetAge>
+                    <Text bold size={16}>나이</Text>
+                    {Object.keys(DefaultAge).map(age => (
+                        <TypeItem
+                            onPress={() => setSize(age)}
+                            key={age}
+                            activeType={size === age}
+                            primary={theme.colors.primary}
+                        >
+                            <Text size={16}>{DefaultAge[age]}</Text>
+                        </TypeItem>
+                    ))}
+                </PetAge>
+        </ItemBlock>
     )
 }
-
-const PetAdditionalTypeBlock = styled.View`
-    /* height: 100%; */
-`
 
 const Wrapper = styled.View`
     justify-content: center;

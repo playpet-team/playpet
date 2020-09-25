@@ -1,10 +1,11 @@
 import { useTheme } from "@react-navigation/native"
 import React, { useEffect, useState } from 'react'
+import { FormProvider, useForm } from "react-hook-form"
 import { Icon } from "react-native-elements"
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch } from 'react-redux'
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 import PlaypetModal from '../../components/PlaypetModal'
 import Toast, { ToastParams } from "../../components/Toast"
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
@@ -29,11 +30,13 @@ export interface Terms {
 export type PetItems = '' | 'PetName' | 'PetType' | 'PetKind' | 'PetAdditionalType' | 'PetFavorite'
 
 const DEVICE_WIDTH = deviceSize().width
-const DEVICE_HEIGHT = deviceSize().height
+// const DEVICE_HEIGHT = deviceSize().height
 
 export default function SignInAdditionalInformation() {
     const { loading, Indicator } = useLoadingIndicator()
     const [visible, setVisible] = useState(true)
+
+    const methods = useForm();
 
     const [valid, setValid] = useState<string[]>([])
     const [petName, setPetname] = useState('')
@@ -56,7 +59,7 @@ export default function SignInAdditionalInformation() {
     })
 
     useEffect(() => {
-        if (petType === '' && ['PetKind', 'PetAdditionalType'].includes(openItem)) {
+        if (methods.getValues('petType') === '' && ['PetKind', 'PetAdditionalType'].includes(openItem)) {
             setToastContent({
                 title: '반려동물을 먼저 선택해주세요',
                 visible: true,
@@ -65,7 +68,14 @@ export default function SignInAdditionalInformation() {
         }
     }, [openItem])
 
-    const handleStep = async () => {
+    const handleLater = () => {
+        setValid([])
+        setVisible(false)
+    }
+
+    const handleStep = async (data: any) => {
+        console.log('data------', data)
+        return
         const errors = checkValid()
         if (errors.length) {
             setValid(errors)
@@ -118,7 +128,7 @@ export default function SignInAdditionalInformation() {
     }
 
     const getInformationStatus = (type: PetItems) => {
-        let status: '' | 'invalid' | 'complete' = ''
+        let status: '' | 'invalid' | 'complete' | 'disabled' = ''
         switch (type) {
             case 'PetName': {
                 if (!petName.length) {
@@ -129,6 +139,17 @@ export default function SignInAdditionalInformation() {
             }
             case 'PetType': {
                 if (!petType.length) {
+                    break
+                }
+                status = valid.includes('petType') ? 'invalid' : 'complete'
+                break
+            }
+            case 'PetKind': {
+                if (['NOT_YET', 'ETC'].includes(methods.getValues('petType'))) {
+                    status = 'disabled'
+                    break
+                }
+                if (!PetKind.length) {
                     break
                 }
                 status = valid.includes('petType') ? 'invalid' : 'complete'
@@ -155,6 +176,10 @@ export default function SignInAdditionalInformation() {
         return status
     }
 
+    const handleSetOpenItem = (item: PetItems) => {
+        setOpenItem(openItem === item ? '' : item)
+    }
+
     return (
         <PlaypetModal
             modalVisible={visible}
@@ -174,109 +199,110 @@ export default function SignInAdditionalInformation() {
             
             <SignInAdditionalInformationBlock>
                 <ScrollView>
-                    <WelcomeSign />
-                    <DividerBlock marginTop={44} />
-                    <HandleInformationItem
-                        onPress={() => setOpenItem('PetName')}
-                        colors={{
-                            border: themes.colors.border,
-                            primary: themes.colors.primary
-                        }}
-                        status={getInformationStatus('PetName')}
-                    >
-                        <Text>아이 이름을 알려주세요</Text>
-                    </HandleInformationItem>
-                    {openItem === 'PetName' && <PetName
-                        valid={valid.includes('petName')}
-                        petName={petName}
-                        setPetname={setPetname}
-                    />}
+                    <FormProvider {...methods} >
+                        <WelcomeSign />
+                        <DividerBlock marginTop={44} />
 
-                    <DividerBlock marginBottom={8} />
+                        <HandleInformationItem
+                            onPress={() => handleSetOpenItem('PetName')}
+                            colors={{
+                                border: themes.colors.border,
+                                primary: themes.colors.primary
+                            }}
+                            status={getInformationStatus('PetName')}
+                        >
+                            <Text>아이 이름을 알려주세요</Text>
+                        </HandleInformationItem>
+                        <PetName
+                            control={methods.control}
+                            errors={methods.errors}
+                            openItem={openItem}
+                        />
 
-                    <HandleInformationItem
-                        onPress={() => setOpenItem('PetType')}
-                        colors={{
-                            border: themes.colors.border,
-                            primary: themes.colors.primary
-                        }}
-                        status={getInformationStatus('PetType')}
-                    >
-                        <Text>어떤 반려동물 인가요?</Text>
-                    </HandleInformationItem>
-                    {openItem === 'PetType' && <PetType
-                        valid={valid}
-                        petType={petType}
-                        setPetType={setPetType}
-                    />}
+                        <DividerBlock marginBottom={8} />
 
-                    <DividerBlock marginBottom={8} />
+                        <HandleInformationItem
+                            onPress={() => handleSetOpenItem('PetType')}
+                            colors={{
+                                border: themes.colors.border,
+                                primary: themes.colors.primary
+                            }}
+                            status={getInformationStatus('PetType')}
+                        >
+                            <Text>어떤 반려동물 인가요?</Text>
+                        </HandleInformationItem>
+                        <PetType
+                            control={methods.control}
+                            openItem={openItem}
+                        />
 
-                    <HandleInformationItem
-                        onPress={() => setOpenItem('PetKind')}
-                        colors={{
-                            border: themes.colors.border,
-                            primary: themes.colors.primary
-                        }}
-                        status={getInformationStatus('PetKind')}
-                    >
-                        <Text>품종을 선택해주세요</Text>
-                    </HandleInformationItem>
-                    {openItem === 'PetKind' && <PetKind
-                        valid={valid.includes('petKind')}
-                        petType={petType}
-                        petKind={petKind}
-                        setPetKind={setPetKind}
-                    />}
+                        <DividerBlock marginBottom={8} />
 
-                    <DividerBlock marginBottom={8} />
+                        <HandleInformationItem
+                            onPress={() => handleSetOpenItem('PetKind')}
+                            disabled={['NOT_YET', 'ETC'].includes(methods.getValues('petType'))}
+                            colors={{
+                                border: themes.colors.border,
+                                primary: themes.colors.primary,
+                            }}
+                            status={getInformationStatus('PetKind')}
+                        >
+                            <Text>품종을 선택해주세요</Text>
+                        </HandleInformationItem>
+                        <PetKind
+                            openItem={openItem}
+                            control={methods.control}
+                            petType={methods.getValues('petType') as PetTypes}
+                        />
 
-                    <HandleInformationItem
-                        onPress={() => setOpenItem('PetAdditionalType')}
-                        colors={{
-                            border: themes.colors.border,
-                            primary: themes.colors.primary
-                        }}
-                        status={getInformationStatus('PetAdditionalType')}
-                    >
-                        <Text>아이 사이즈와 나이를 알려주세요</Text>
-                    </HandleInformationItem>
-                    {openItem === 'PetAdditionalType' && <PetAdditionalType
-                        petType={petType}
-                        valid={valid}
-                        size={size}
-                        setSize={setSize}
-                        age={age}
-                        setAge={setAge}
-                    />}
-                    <DividerBlock marginBottom={8} />
-                    <HandleInformationItem
-                        onPress={() => setOpenItem('PetFavorite')}
-                        colors={{
-                            border: themes.colors.border,
-                            primary: themes.colors.primary
-                        }}
-                        status={getInformationStatus('PetFavorite')}
-                    >
-                        <Text>관심분야를 알려주세요</Text>
-                    </HandleInformationItem>
-                    {openItem === 'PetFavorite' && <PetFavorite
-                        valid={valid.includes('favorite')}
-                        favorite={favorite}
-                        setFavorite={setFavorite}
-                    />}
-                    <BottomNavigation>
-                        <InputLater onPress={handleStep}>
-                            <Text>나중에 하기</Text>
-                        </InputLater>
-                        <SubmitButton onPress={handleStep}>
-                            <Icon
-                                name="keyboard-arrow-right"
-                                size={38}
-                                color={themes.colors.primary}
-                            />
-                        </SubmitButton>
-                    </BottomNavigation>
+                        <DividerBlock marginBottom={8} />
+
+                        <HandleInformationItem
+                            onPress={() => handleSetOpenItem('PetAdditionalType')}
+                            colors={{
+                                border: themes.colors.border,
+                                primary: themes.colors.primary
+                            }}
+                            status={getInformationStatus('PetAdditionalType')}
+                        >
+                            <Text>아이 사이즈와 나이를 알려주세요</Text>
+                        </HandleInformationItem>
+                        <PetAdditionalType
+                            openItem={openItem}
+                            petType={petType}
+                            size={size}
+                            setSize={setSize}
+                            age={age}
+                            setAge={setAge}
+                        />
+                        <DividerBlock marginBottom={8} />
+                        <HandleInformationItem
+                            onPress={() => handleSetOpenItem('PetFavorite')}
+                            colors={{
+                                border: themes.colors.border,
+                                primary: themes.colors.primary
+                            }}
+                            status={getInformationStatus('PetFavorite')}
+                        >
+                            <Text>관심분야를 알려주세요</Text>
+                        </HandleInformationItem>
+                        {openItem === 'PetFavorite' && <PetFavorite
+                            favorite={favorite}
+                            setFavorite={setFavorite}
+                        />}
+                        <BottomNavigation>
+                            <InputLater onPress={handleLater}>
+                                <Text>나중에 하기</Text>
+                            </InputLater>
+                            <SubmitButton onPress={methods.handleSubmit(handleStep)}>
+                                <Icon
+                                    name="keyboard-arrow-right"
+                                    size={38}
+                                    color={themes.colors.primary}
+                                />
+                            </SubmitButton>
+                        </BottomNavigation>
+                    </FormProvider>
                 </ScrollView>
             </SignInAdditionalInformationBlock>
         </PlaypetModal>
@@ -301,8 +327,9 @@ interface InformationItem {
     colors: {
         border: string
         primary: string
+        background?: string
     }
-    status: '' | 'invalid' | 'complete'
+    status: '' | 'invalid' | 'complete' | 'disabled'
 }
 const getBorderColorByStatus = ({ colors, status }: InformationItem) => {
     let color = colors.border
@@ -315,11 +342,14 @@ const getBorderColorByStatus = ({ colors, status }: InformationItem) => {
             color = colors.primary
             break
         }
+        case 'disabled': {
+            color = 'transparent'
+            break
+        }
         default: {
             color = colors.border
         }
     }
-    console.log('color------', color, status, colors.primary, colors.border)
     return color
 }
 
@@ -328,10 +358,17 @@ const HandleInformationItem = styled.TouchableOpacity<InformationItem>`
     border-width: 1px;
     padding: 16px;
     border-color: ${({ colors, status }) => getBorderColorByStatus({ colors, status })};
+    ${({ status }) => status === 'disabled' && css`
+        background-color: #e3e3e3;
+    `}
     
 `
 
 const SignInAdditionalInformationBlock = styled(SafeAreaView)`
     padding-vertical: 40px;
     flex-direction: column;
+`
+
+export const ItemBlock = styled.View<{ display: boolean }>`
+    display: ${({ display }) => display ? 'flex' : 'none'};
 `

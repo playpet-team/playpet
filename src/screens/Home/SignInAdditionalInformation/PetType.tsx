@@ -1,10 +1,9 @@
 import { useTheme } from "@react-navigation/native"
-import React, { useState } from "react"
+import React from "react"
+import { Control, Controller } from "react-hook-form"
 import { Image } from "react-native"
 import styled, { css } from 'styled-components/native'
-import Transition from "../../../components/Transition"
-import { DividerBlock } from "../../../styles"
-import { PetTypes } from "../../../utils/product"
+import { ItemBlock, PetItems } from "../SignInAdditionalInformation"
 import { PET_TYPE } from "./PetAdditionalType"
 
 const petSrcMap: any = {
@@ -14,39 +13,37 @@ const petSrcMap: any = {
     not_yet: require('../../../../assets/images/not_yet_default_thumb.jpg'),
 }
 
-export default function PetType({ petType, setPetType, valid }: {
-    petType: PetTypes
-    setPetType: React.Dispatch<React.SetStateAction<"" | "DOG" | "CAT" | "ETC" | "NOT_YET">>
-    valid: string[]
+export default function PetType({ control, openItem }: {
+    control: Control<Record<string, any>>
+    openItem: PetItems
 }) {
-    const [searchPetTyping, setSearchPetTyping] = useState('')
     const theme = useTheme()
 
     return (
-        <Transition>
-            <PetTypeBlock>
-                <DividerBlock marginTop={16} />
-                <PetIcons>
-                    {PET_TYPE.map(pet => (
-                        <Pet
-                            onPress={() => setPetType(pet)}
-                            primary={theme.colors.primary}
-                            active={petType === pet}
-                        >
-                            <PetThumb
-                                source={petSrcMap[pet.toLowerCase()]}
-                            />
-                        </Pet>
-                    ))}
-                </PetIcons>
-            </PetTypeBlock>
-        </Transition>
+        <ItemBlock display={openItem === 'PetType'}>
+            <Controller
+                control={control}
+                render={({ value, onChange }) => (
+                    <PetIcons>
+                        {PET_TYPE.map(pet => (
+                            <Pet
+                                key={pet}
+                                onPress={() => onChange(pet)}
+                                primary={theme.colors.primary}
+                                active={value === pet}
+                            >
+                                <PetThumb source={petSrcMap[pet.toLowerCase()]} />
+                            </Pet>
+                        ))}
+                    </PetIcons>
+                )}
+                name="petType"
+                rules={{ required: true }}
+                defaultValue=""
+            />
+        </ItemBlock>
     )
 }
-
-const PetTypeBlock = styled.View`
-    /* height: 100%; */
-`
 
 const PetIcons = styled.View`
     flex-wrap: wrap;
