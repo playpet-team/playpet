@@ -15,7 +15,9 @@ interface ModalProps {
         height?: number | string
         padding?: string
         flex?: number
+        borderRadius?: number
     }
+    modalJustify?: 'center' | 'flex-end' | 'flex-start'
     header?: string
 }
 
@@ -24,6 +26,7 @@ const PlaypetModal = ({
     setModalVisible = () => { },
     isHideCloseButton = false,
     containerStyle = {},
+    modalJustify = 'center',
     children,
     header = '',
 }: ModalProps) => {
@@ -38,7 +41,7 @@ const PlaypetModal = ({
             backdropColor="black"
             onBackdropPress={handleCloseModal}
             style={{
-                justifyContent: 'center',
+                justifyContent: modalJustify,
                 alignItems: 'center',
             }}
         >
@@ -80,7 +83,7 @@ const Container = styled.View<Pick<Theme, 'colors'> & Pick<ModalProps, 'containe
     height: ${({ containerStyle }) => containerStyle?.height ? `${containerStyle.height}px` : 'auto'};
     padding: ${({ containerStyle }) => containerStyle?.padding ? containerStyle.padding : 16}px;
     background-color: ${({ colors }) => colors.background};
-    border-radius: 4px;
+    border-radius: ${({ containerStyle }) => containerStyle?.borderRadius}px;
 `
 
 const PlaypetDialogHeader = styled.View`

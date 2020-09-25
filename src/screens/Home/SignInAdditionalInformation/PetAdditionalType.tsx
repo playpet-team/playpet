@@ -1,14 +1,16 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useCallback } from "react";
+import React from "react";
 import styled from "styled-components/native";
+import Transition from "../../../components/Transition";
 import { DividerBlock, Text } from "../../../styles";
+import { PetTypes } from "../../../utils/product";
 
-export const PET_TYPE = {
-    DOG: '강아지',
-    CAT: '고양이',
-    ETC: '기타',
-    NOT_YET: '아직 없어요!',
-} as const
+export const PET_TYPE: ['DOG', 'CAT', 'ETC', 'NOT_YET'] = [
+    'DOG',
+    'CAT',
+    'ETC',
+    'NOT_YET',
+]
 export const DefaultSize: { [key: string]: string } = {
     S: '소형견(7kg 미만)',
     M: '중형견(20kg 미만)',
@@ -21,7 +23,7 @@ export const DefaultAge: { [key: string]: string } = {
 } as const
 export default function PetAdditionalType({ valid, petType, size, setSize, age, setAge }: {
     valid: string[]
-    petType: string
+    petType: PetTypes
     size: string
     setSize: React.Dispatch<React.SetStateAction<string>>
     age: string
@@ -29,59 +31,40 @@ export default function PetAdditionalType({ valid, petType, size, setSize, age, 
 }) {
     const theme = useTheme();
 
-    const getPetKey = useCallback(() => {
-        let petKey = ''
-        for (const [key, value] of Object.entries(PET_TYPE)) {
-            if (value === petType) {
-                petKey = key
-                break
-            }
-        }
-        return petKey
-    }, [petType])
-
     return (
-        <PetAdditionalTypeBlock>
-            <Wrapper>
-                <Text
-                    bold
-                    size={20}
-                >
-                    추가정보를 입력해주세요
-                </Text>
-                <DividerBlock marginTop={8} />
-
-                {getPetKey() === 'DOG' &&
-                    <PetSize>
-                        <Text bold size={16}>견종 사이즈</Text>
-                        {Object.keys(DefaultSize).map(size => (
+        <Transition>
+            <PetAdditionalTypeBlock>
+                    {petType === 'DOG' &&
+                        <PetSize>
+                            <Text bold size={16}>견종 사이즈</Text>
+                            {Object.keys(DefaultSize).map(size => (
+                                <TypeItem
+                                    onPress={() => setSize(size)}
+                                    key={size}
+                                    activeType={size === size}
+                                    primary={theme.colors.primary}
+                                >
+                                    <Text size={16}>{DefaultSize[size]}</Text>
+                                </TypeItem>
+                            ))}
+                            <DividerBlock marginTop={16} />
+                        </PetSize>
+                    }
+                    <PetAge>
+                        <Text bold size={16}>나이</Text>
+                        {Object.keys(DefaultAge).map(age => (
                             <TypeItem
-                                onPress={() => setSize(size)}
-                                key={size}
-                                activeType={size === size}
+                                onPress={() => setSize(age)}
+                                key={age}
+                                activeType={size === age}
                                 primary={theme.colors.primary}
                             >
-                                <Text size={16}>{DefaultSize[size]}</Text>
+                                <Text size={16}>{DefaultAge[age]}</Text>
                             </TypeItem>
                         ))}
-                        <DividerBlock marginTop={16} />
-                    </PetSize>
-                }
-                <PetAge>
-                    <Text bold size={16}>나이</Text>
-                    {Object.keys(DefaultAge).map(age => (
-                        <TypeItem
-                            onPress={() => setSize(age)}
-                            key={age}
-                            activeType={size === age}
-                            primary={theme.colors.primary}
-                        >
-                            <Text size={16}>{DefaultAge[age]}</Text>
-                        </TypeItem>
-                    ))}
-                </PetAge>
-            </Wrapper>
-        </PetAdditionalTypeBlock>
+                    </PetAge>
+            </PetAdditionalTypeBlock>
+        </Transition>
     )
 }
 

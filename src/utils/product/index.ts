@@ -1,50 +1,51 @@
-import firestore from '@react-native-firebase/firestore';
-import { Collections } from '../../models';
-import { ProductItem } from './../../components/ProductListItem';
+import firestore from '@react-native-firebase/firestore'
+import { Collections } from '../../models'
+import { ProductItem } from './../../components/ProductListItem'
 
 export const loadProduct = async (PID: string) => {
     return (await firestore()
         .collection(Collections.Products)
         .doc(PID)
-        .get()).data() as ProductItem;
-};
+        .get()).data() as ProductItem
+}
 
 export const loadProductList = async () => {
     const productList = await firestore()
         .collection(Collections.Products)
         .where('status', '==', 'active')
-        .get();
+        .get()
 
     return productList.docs.map((product: any) => {
         return {
             ...product.data() as ProductItem,
             id: product.id as string,
-        };
-    });
-};
+        }
+    })
+}
 
-export type petType = 'dog' | 'cat';
+
+export type PetTypes = "" | "DOG" | "CAT" | "ETC" | "NOT_YET"
 export interface ProductForm {
-    id: string;
-    uid: string;
-    title: string;
-    status: 'active' | 'deactive';
-    description: string;
-    petType: petType;
-    ratings: number;
-    mallName: string;
-    originalCategoery: string;
-    tags: string[];
-    category: string;
-    url: string;
-    image: string;
-    price: number;
-    discountPrice: number;
-    hits: number;
-    reviewCount: number;
-    orderCount: number;
-    profits: number;
-    createdAt: any;
-    updatedAt: any;
-    expiredAt: any;
-};
+    id: string
+    uid: string
+    title: string
+    status: 'active' | 'deactive'
+    description: string
+    petType: PetTypes
+    ratings: number
+    mallName: string
+    originalCategoery: string
+    tags: string[]
+    category: string
+    url: string
+    image: string
+    price: number
+    discountPrice: number
+    hits: number
+    reviewCount: number
+    orderCount: number
+    profits: number
+    createdAt: any
+    updatedAt: any
+    expiredAt: any
+}

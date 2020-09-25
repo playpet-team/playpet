@@ -1,4 +1,5 @@
 import { FirebaseTimeStamp } from '../../utils';
+import { PetTypes } from './../../utils/product/index';
 export enum SignType {
     Google = 'GOOGLE',
     Apple = 'APPLE',
@@ -38,7 +39,7 @@ export interface Terms {
 
 export interface MyPet {
     petName: string
-    petType: string
+    petType: PetTypes
     searchPetType: string
     size: string
     favorite: string

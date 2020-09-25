@@ -14,6 +14,7 @@ import { RootState } from '../../store/rootReducers'
 import { DividerBlock, Layout, Text } from '../../styles'
 import { currentUser, firebaseNow, getPetDoc, resetUserActivePetDocId, updateUsername, updateUserProfilePhoto } from '../../utils'
 import { useUploadFirestore } from '../CardFormScreen/useUploadFirestore'
+import SignInAdditionalInformation from '../Home/SignInAdditionalInformation'
 
 const MAX_USERNAME_LENGTH = 16
 const MIN_USERNAME_LENGTH = 2
@@ -30,6 +31,7 @@ export default function ProfileSetting() {
         activePet,
     } = useSelector((state: RootState) => state.auth)
     const [form, setForm] = useState<ProfileForm>({ uri: '' });
+    const [openAdditionalInformation, setOpenAdditionalInformation] = useState(false);
 
     useEffect(() => {
         if (activePetDocId && uid) {
@@ -56,6 +58,7 @@ export default function ProfileSetting() {
             createdAt: null,
             updatedAt: null,
         }))
+        setOpenAdditionalInformation(true)
     }
 
     // input username
@@ -209,6 +212,7 @@ export default function ProfileSetting() {
                     disabled
                 />
             </View>
+            {openAdditionalInformation && <SignInAdditionalInformation />}
         </ProfileSettingBlock>
     )
 }

@@ -1,7 +1,7 @@
 import React from "react"
 import { View } from "react-native"
 import ButtonGroups from "../../../components/ButtonGroups"
-import { Text } from "../../../styles"
+import Transition from "../../../components/Transition"
 
 export const FAVORITE = [
     'FOODS',
@@ -16,14 +16,15 @@ export default function PetFavorite({ favorite, setFavorite, valid }: {
 }) {
     return (
         <View>
-            <Text bold size={16}>관심 분야?</Text>
-            <ButtonGroups
-                buttons={FAVORITE}
-                onSelect={setFavorite}
-                containerStyle={{
-                    width: '100%',
-                }}
-            />
+            <Transition>
+                <ButtonGroups
+                    buttons={FAVORITE}
+                    onSelect={setFavorite}
+                    containerStyle={{
+                        width: '100%',
+                    }}
+                />
+            </Transition>
         </View>
     )
 }

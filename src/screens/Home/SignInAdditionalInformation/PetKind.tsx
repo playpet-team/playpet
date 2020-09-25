@@ -1,101 +1,104 @@
 import { useTheme } from "@react-navigation/native"
-import React, { useMemo } from "react"
+import React, { useMemo, useState } from "react"
 import { SearchBar } from "react-native-elements"
 import { FlatList } from "react-native-gesture-handler"
 import styled from "styled-components/native"
-import ButtonGroups from "../../../../components/ButtonGroups"
-import ListItem from "../../../../components/ListItem"
-import { PET_TYPE } from "../PetAdditionalType"
+import ListItem from "../../../components/ListItem"
+import { DividerBlock } from "../../../styles"
+import { PetTypes } from "../../../utils/product"
 
-function SelectYourPetType({ petType, setPetType, searchPetTyping, setSearchPetTyping, searchPetType, setSearchPetType, getPetKey }: {
-    petType: string
-    setPetType: React.Dispatch<React.SetStateAction<string>>
-    searchPetTyping: string
-    setSearchPetTyping: React.Dispatch<React.SetStateAction<string>>
-    searchPetType: string
-    setSearchPetType: React.Dispatch<React.SetStateAction<string>>
-    getPetKey: () => string
+export default function PetKind({ valid, petType, petKind, setPetKind }: {
+    valid: boolean
+    petType: PetTypes
+    petKind: string
+    setPetKind: React.Dispatch<React.SetStateAction<string>>
 }) {
+    const [searchPetTyping, setSearchPetTyping] = useState('')
     const theme = useTheme()
 
     const searchedPetType = useMemo(() => {
-        let types = ['']
-        console.log('petType------', petType)
-        const petKey = getPetKey()
-        switch (petKey) {
-            case 'DOG': {
-                types = DOG_TYPE
-                break;
-            }
-            case 'CAT': {
-                types = CAT_TYPE
-                break;
-            }
-            default:
-            case 'ETC': {
-                break;
-            }
-        }
+        // let types = ['']
+        // switch (petType) {
+        //     case 'DOG': {
+        //         types = DOG_TYPE
+        //         break;
+        //     }
+        //     case 'CAT': {
+        //         types = CAT_TYPE
+        //         break;
+        //     }
+        //     default:
+        //     case 'ETC': {
+        //         break;
+        //     }
+        // }
+        // if (petTypeToListMaps.hasOwnProperty(petType)) {
+            petTypeToListMaps[petType]
+        // }
 
-        return types.filter(type => type.includes(searchPetTyping))
-    }, [petType, searchPetTyping])
+        return types.filter(type => type.includes(petKind))
+    }, [petType, petKind])
 
     const renderType = ({ item }: { item: string }) => {
+        console.log('item-------------', item)
         return (
             <ListItem
                 title={item}
-                onPress={() => setSearchPetType(item)}
+                onPress={() => setPetKind(item)}
                 titleStyle={{
                 }}
                 containerStyle={{
                     borderRadius: 8,
                 }}
                 activeStyle={{
-                    backgroundColor: item === searchPetType ? `${theme.colors.primary}33` : 'transparent',
+                    backgroundColor: item === petKind ? `${theme.colors.primary}33` : 'transparent',
                 }}
             />
         )
     }
 
     return (
-        <SelectYourPetTypeBlock>
-            <ButtonGroups
-                buttons={Object.values(PET_TYPE)}
-                onSelect={setPetType}
-                containerStyle={{
-                    width: '100%',
-                }}
-            />
-            {petType && getPetKey() !== 'NOT_YET' &&
+        <PetKindBlock>
+            <DividerBlock marginTop={16} />
+            {Boolean(petType) && petType !== 'NOT_YET' &&
                 <MaxHeightView>
                     <SearchBar
                         placeholder="품종을 선택해주세요"
                         onChangeText={setSearchPetTyping}
                         value={searchPetTyping}
+                        containerStyle={{
+                            backgroundColor: '#fff',
+                            padding: 0,
+                            borderTopWidth: 0,
+                            borderBottomWidth: 0,
+                        }}
+                        inputContainerStyle={{
+                            marginTop: 16,
+                            marginBottom: 8,
+                            borderRadius: 30,
+                            backgroundColor: '#fafafa',
+                            borderWidth: 0,
+                        }}
+                        lightTheme={!theme.dark}
                     />
                     <FlatList
                         data={searchedPetType}
                         keyExtractor={type => type}
                         renderItem={renderType}
-                        style={{
-                            // maxHeight: 200,
-                        }}
                     />
                 </MaxHeightView>
             }
-        </SelectYourPetTypeBlock>
+        </PetKindBlock>
     )
 }
 
-const SelectYourPetTypeBlock = styled.View`
+const PetKindBlock = styled.View`
     /* margin-bottom: 200px; */
 `
 
 const MaxHeightView = styled.View`
-    max-height: 500px;
+    max-height: 350px;
 `
-
-export default SelectYourPetType
 
 const DOG_TYPE = [
     '고든 세터',
@@ -364,3 +367,8 @@ const CAT_TYPE = [
     '하이랜더',
     '히말라얀',
 ]
+
+const petTypeToListMaps = {
+    DOG: DOG_TYPE,
+    CAT: CAT_TYPE,
+}

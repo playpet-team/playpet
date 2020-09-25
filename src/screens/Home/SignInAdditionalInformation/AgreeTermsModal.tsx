@@ -9,7 +9,7 @@ import useLoadingIndicator from '../../../hooks/useLoadingIndicator';
 import { authActions } from '../../../store/authReducer';
 import { Text } from '../../../styles';
 import { currentUser, updateUserTerms } from '../../../utils';
-import { TERMS } from '../SignInAdditionalInformation';
+import { Terms } from '../SignInAdditionalInformation';
 
 
 export default function AgreeTermsModal() {
@@ -21,7 +21,7 @@ export default function AgreeTermsModal() {
     const navigation = useNavigation()
 
     const { loading, setLoading, Indicator } = useLoadingIndicator()
-    const [terms, setTerms] = useState<TERMS>({
+    const [terms, setTerms] = useState<Terms>({
         overAgeAgree: false,
         termsOfUseAgree: false,
         personalCollectAgree: false,
