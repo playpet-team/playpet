@@ -17,30 +17,11 @@ export default function PetKind({ valid, petType, petKind, setPetKind }: {
     const theme = useTheme()
 
     const searchedPetType = useMemo(() => {
-        // let types = ['']
-        // switch (petType) {
-        //     case 'DOG': {
-        //         types = DOG_TYPE
-        //         break;
-        //     }
-        //     case 'CAT': {
-        //         types = CAT_TYPE
-        //         break;
-        //     }
-        //     default:
-        //     case 'ETC': {
-        //         break;
-        //     }
-        // }
-        // if (petTypeToListMaps.hasOwnProperty(petType)) {
-            petTypeToListMaps[petType]
-        // }
-
-        return types.filter(type => type.includes(petKind))
-    }, [petType, petKind])
+        const selectedList = petTypeToListMaps[petType]
+        return selectedList.filter(item => item.includes(searchPetTyping))
+    }, [petType, searchPetTyping])
 
     const renderType = ({ item }: { item: string }) => {
-        console.log('item-------------', item)
         return (
             <ListItem
                 title={item}
@@ -92,12 +73,10 @@ export default function PetKind({ valid, petType, petKind, setPetKind }: {
     )
 }
 
-const PetKindBlock = styled.View`
-    /* margin-bottom: 200px; */
-`
+const PetKindBlock = styled.View``
 
 const MaxHeightView = styled.View`
-    max-height: 350px;
+    height: 350px;
 `
 
 const DOG_TYPE = [
@@ -371,4 +350,7 @@ const CAT_TYPE = [
 const petTypeToListMaps = {
     DOG: DOG_TYPE,
     CAT: CAT_TYPE,
+    'NOT_YET': [],
+    'ETC': [],
+    '': [],
 }
