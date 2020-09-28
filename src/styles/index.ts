@@ -1,10 +1,11 @@
 import styled, { css } from 'styled-components/native';
 
 export interface TextProps {
-    padding?: string;
-    bold?: boolean;
-    size?: number;
-    color?: string;
+    padding?: string
+    bold?: boolean
+    size?: number
+    color?: string
+    align?: 'left' | 'center' | 'right'
 }
 export const Text = styled.Text<TextProps>`
     ${({ bold }) => bold && css`
@@ -18,6 +19,9 @@ export const Text = styled.Text<TextProps>`
     `}
     ${({ color }) => color && css`
         color: ${color};
+    `}
+    ${({ align = 'left' }) => align && css`
+        text-align: ${align};
     `}
 `
 

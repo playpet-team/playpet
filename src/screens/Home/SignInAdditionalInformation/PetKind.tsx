@@ -5,7 +5,7 @@ import { SearchBar } from "react-native-elements"
 import { FlatList } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 import ListItem from "../../../components/ListItem"
-import { DividerBlock } from "../../../styles"
+import { DividerBlock, Text } from "../../../styles"
 import { PetTypes } from "../../../utils/product"
 import { ItemBlock, PetItems } from "../SignInAdditionalInformation"
 
@@ -48,7 +48,7 @@ export default function PetKind({ petType, control, openItem }: {
     return (
         <ItemBlock display={openItem === 'PetKind'}>
             <DividerBlock marginTop={16} />
-            {Boolean(petType) && petType !== 'NOT_YET' &&
+            {searchedPetType.length ?
                 <MaxHeightView>
                     <SearchBar
                         placeholder="품종을 선택해주세요"
@@ -79,11 +79,14 @@ export default function PetKind({ petType, control, openItem }: {
                             />
                         )}
                         name="petKind"
-                        rules={{ required: isDogCatType }}
+                        rules={{
+                            required: isDogCatType || !Boolean(petType),
+                            min: 1,
+                        }}
                         defaultValue=""
                     />
                 </MaxHeightView>
-            }
+            : <Text>찾을 수 있는 반려동물이 없어요</Text>}
             <DividerBlock marginBottom={8} />
         </ItemBlock>
     )

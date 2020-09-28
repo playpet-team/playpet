@@ -34,6 +34,7 @@ interface OutputData {
     petType: string
     petKind: string
     size: string
+    age: string
     favorite: string
 }
 const DEVICE_WIDTH = deviceSize().width
@@ -42,7 +43,11 @@ const DEVICE_WIDTH = deviceSize().width
 export default function SignInAdditionalInformation() {
     const { loading, Indicator } = useLoadingIndicator()
     const [visible, setVisible] = useState(true)
-    const methods = useForm();
+    const methods = useForm({
+        // mode: 'all',
+        // reValidateMode: 'onChange'
+    });
+    methods.trigger
     const [openItem, setOpenItem] = useState<PetItems>('')
     const themes = useTheme()
     const dispatch = useDispatch()
@@ -71,7 +76,7 @@ export default function SignInAdditionalInformation() {
         setVisible(false)
     }
     
-    const handleUpdatePet = useCallback(async ({ petName, petType, petKind, size, favorite }: OutputData) => {
+    const handleUpdatePet = useCallback(async ({ petName, petType, petKind, size, age, favorite }: OutputData) => {
         const user = currentUser()
         if (!user) {
             return
@@ -101,10 +106,11 @@ export default function SignInAdditionalInformation() {
                 break
             }
             case 'PetKind': {
-                if (['NOT_YET', 'ETC'].includes(methods.getValues('petType'))) {
-                    status = 'disabled'
-                    break
-                }
+                // if (['NOT_YET', 'ETC'].includes(methods.getValues('petType'))) {
+                    // status = 'disabled'
+                    // break
+                // }
+                console.log("methods.errors['petKind']---------", methods.errors['petKind'])
                 status = methods.errors['petKind'] ? 'invalid' : 'complete'
                 break
             }
@@ -161,7 +167,7 @@ export default function SignInAdditionalInformation() {
                                 border: themes.colors.border,
                                 primary: themes.colors.primary
                             }}
-                            status={getInformationStatus('PetName')}
+                            status={methods.errors['petName'] ? 'invalid' : ''}
                         >
                             <Text>{openItem !== 'PetName' && methods.getValues('petName') || '아이 이름을 알려주세요'}</Text>
                         </HandleInformationItem>
@@ -176,7 +182,7 @@ export default function SignInAdditionalInformation() {
                                 border: themes.colors.border,
                                 primary: themes.colors.primary
                             }}
-                            status={getInformationStatus('PetType')}
+                            status={methods.errors['petType'] ? 'invalid' : ''}
                         >
                             <Text>{openItem !== 'PetType' && methods.getValues('petType') || '어떤 반려동물 인가요?'}</Text>
                         </HandleInformationItem>
@@ -186,12 +192,11 @@ export default function SignInAdditionalInformation() {
                         />
                         <HandleInformationItem
                             onPress={() => handleSetOpenItem('PetKind')}
-                            disabled={['NOT_YET', 'ETC'].includes(methods.getValues('petType'))}
                             colors={{
                                 border: themes.colors.border,
                                 primary: themes.colors.primary,
                             }}
-                            status={getInformationStatus('PetKind')}
+                            status={methods.errors['petKind'] ? 'invalid' : ''}
                         >
                             <Text>품종을 선택해주세요</Text>
                         </HandleInformationItem>
@@ -206,7 +211,7 @@ export default function SignInAdditionalInformation() {
                                 border: themes.colors.border,
                                 primary: themes.colors.primary
                             }}
-                            status={getInformationStatus('PetAdditionalType')}
+                            status={methods.errors['size'] || methods.errors['age'] ? 'invalid' : ''}
                         >
                             <Text>아이 사이즈와 나이를 알려주세요</Text>
                         </HandleInformationItem>
@@ -221,7 +226,7 @@ export default function SignInAdditionalInformation() {
                                 border: themes.colors.border,
                                 primary: themes.colors.primary
                             }}
-                            status={getInformationStatus('PetFavorite')}
+                            status={methods.errors['favorite'] ? 'invalid' : ''}
                         >
                             <Text>관심분야를 알려주세요</Text>
                         </HandleInformationItem>
@@ -293,6 +298,7 @@ const getBorderColorByStatus = ({ colors, status }: InformationItem) => {
 }
 
 const HandleInformationItem = styled.TouchableOpacity<InformationItem>`
+    margin-top: 8px;
     border-radius: 8px;
     border-width: 1px;
     padding: 16px;
