@@ -84,6 +84,7 @@ export default function PetKind({ petType, control, openItem }: {
                     />
                 </MaxHeightView>
             }
+            <DividerBlock marginBottom={8} />
         </ItemBlock>
     )
 }

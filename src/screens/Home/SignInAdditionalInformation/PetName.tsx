@@ -2,6 +2,7 @@ import React from "react"
 import { Control, Controller, DeepMap, FieldError } from "react-hook-form"
 import { Input } from "react-native-elements"
 import Transition from "../../../components/Transition"
+import { DividerBlock } from "../../../styles"
 import { ItemBlock, PetItems } from "../SignInAdditionalInformation"
 
 export default function PetName({ control, errors, openItem }: {
@@ -32,6 +33,7 @@ export default function PetName({ control, errors, openItem }: {
                     defaultValue=""
                 />
             </Transition>
+            <DividerBlock marginBottom={8} />
         </ItemBlock>
     )
 }

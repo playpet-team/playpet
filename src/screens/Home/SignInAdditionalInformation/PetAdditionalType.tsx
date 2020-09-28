@@ -31,56 +31,57 @@ export default function PetAdditionalType({ openItem, petType, control }: {
 
     return (
         <ItemBlock display={openItem === 'PetAdditionalType'}>
-                {petType === 'DOG' &&
-                    <PetSize>
-                        <Label bold size={16}>견종 사이즈</Label>
-                        <Controller
-                            control={control}
-                            render={({ value, onChange }) => (
-                                <ItemWrapper>
-                                    {Object.keys(DefaultSize).map(size => (
-                                        <TypeItem
-                                            onPress={() => onChange(size)}
-                                            key={size}
-                                            activeType={value === size}
-                                            primary={theme.colors.primary}
-                                        >
-                                            <Text size={16}>{DefaultSize[size]}</Text>
-                                        </TypeItem>
-                                    ))}
-                                </ItemWrapper>
-                            )}
-                            name="size"
-                            rules={{ required: true, }}
-                            defaultValue=""
-                        />
-                        
-                        <DividerBlock marginTop={16} />
-                    </PetSize>
-                }
-                <PetAge>
-                    <Label bold size={16}>나이</Label>
+            {petType === 'DOG' &&
+                <PetSize>
+                    <Label bold size={16}>견종 사이즈</Label>
                     <Controller
                         control={control}
                         render={({ value, onChange }) => (
                             <ItemWrapper>
-                                {Object.keys(DefaultAge).map(age => (
+                                {Object.keys(DefaultSize).map(size => (
                                     <TypeItem
-                                        onPress={() => onChange(age)}
-                                        key={age}
-                                        activeType={value === age}
+                                        onPress={() => onChange(size)}
+                                        key={size}
+                                        activeType={value === size}
                                         primary={theme.colors.primary}
                                     >
-                                        <Text size={16}>{DefaultAge[age]}</Text>
+                                        <Text size={16}>{DefaultSize[size]}</Text>
                                     </TypeItem>
                                 ))}
                             </ItemWrapper>
                         )}
-                        name="age"
+                        name="size"
                         rules={{ required: true, }}
                         defaultValue=""
                     />
-                </PetAge>
+                    
+                    <DividerBlock marginTop={16} />
+                </PetSize>
+            }
+            <PetAge>
+                <Label bold size={16}>나이</Label>
+                <Controller
+                    control={control}
+                    render={({ value, onChange }) => (
+                        <ItemWrapper>
+                            {Object.keys(DefaultAge).map(age => (
+                                <TypeItem
+                                    onPress={() => onChange(age)}
+                                    key={age}
+                                    activeType={value === age}
+                                    primary={theme.colors.primary}
+                                >
+                                    <Text size={16}>{DefaultAge[age]}</Text>
+                                </TypeItem>
+                            ))}
+                        </ItemWrapper>
+                    )}
+                    name="age"
+                    rules={{ required: true, }}
+                    defaultValue=""
+                />
+            </PetAge>
+            <DividerBlock marginBottom={8} />
         </ItemBlock>
     )
 }

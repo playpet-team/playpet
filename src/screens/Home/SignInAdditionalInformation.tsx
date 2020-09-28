@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native"
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from "react-hook-form"
 import { Icon } from "react-native-elements"
 import { ScrollView } from 'react-native-gesture-handler'
@@ -10,7 +10,7 @@ import PlaypetModal from '../../components/PlaypetModal'
 import Toast, { ToastParams } from "../../components/Toast"
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import { authActions } from '../../store/authReducer'
-import { DividerBlock, Text } from "../../styles"
+import { Text } from "../../styles"
 import { currentUser, deviceSize, updateUserPets } from '../../utils'
 import { PetTypes } from "../../utils/product"
 import PetAdditionalType from './SignInAdditionalInformation/PetAdditionalType'
@@ -29,17 +29,21 @@ export interface Terms {
 
 export type PetItems = '' | 'PetName' | 'PetType' | 'PetKind' | 'PetAdditionalType' | 'PetFavorite'
 
+interface OutputData {
+    petName: string
+    petType: string
+    petKind: string
+    size: string
+    favorite: string
+}
 const DEVICE_WIDTH = deviceSize().width
 // const DEVICE_HEIGHT = deviceSize().height
 
 export default function SignInAdditionalInformation() {
     const { loading, Indicator } = useLoadingIndicator()
     const [visible, setVisible] = useState(true)
-
     const methods = useForm();
-
     const [openItem, setOpenItem] = useState<PetItems>('')
-
     const themes = useTheme()
     const dispatch = useDispatch()
 
@@ -60,20 +64,14 @@ export default function SignInAdditionalInformation() {
         }
     }, [openItem])
 
-    const handleLater = () => {
-        setVisible(false)
-    }
+    const handleLater = () => setVisible(false)
 
-    const handleStep = async (data: any) => {
-        console.log('data------', data)
-        return
+    const handleStep = async (data: OutputData) => {
         await handleUpdatePet(data)
         setVisible(false)
     }
     
-    const handleUpdatePet = async ({ petName, petType, petKind, size, favorite }: {
-        petName: string; petType: string; petKind: string; size: string; favorite: string
-    }) => {
+    const handleUpdatePet = useCallback(async ({ petName, petType, petKind, size, favorite }: OutputData) => {
         const user = currentUser()
         if (!user) {
             return
@@ -89,23 +87,16 @@ export default function SignInAdditionalInformation() {
         if (activePetDocId) {
             dispatch(authActions.setActivePetDocId(activePetDocId))
         }
-    }
+    }, [dispatch])
 
-    const getInformationStatus = (type: PetItems) => {
+    const getInformationStatus = useCallback((type: PetItems) => {
         let status: '' | 'invalid' | 'complete' | 'disabled' = ''
-        // const getValue = methods.getValues(type)
-        // const getError = methods.errors[type]
-        // methods.errors
         switch (type) {
             case 'PetName': {
                 status = methods.errors['petName'] ? 'invalid' : 'complete'
                 break
             }
             case 'PetType': {
-                // if (!petType.length) {
-                //     break
-                // }
-                // status = valid.includes('petType') ? 'invalid' : 'complete'
                 status = methods.errors['petType'] ? 'invalid' : 'complete'
                 break
             }
@@ -114,10 +105,6 @@ export default function SignInAdditionalInformation() {
                     status = 'disabled'
                     break
                 }
-                // if (!PetKind.length) {
-                //     break
-                // }
-                // status = valid.includes('petType') ? 'invalid' : 'complete'
                 status = methods.errors['petKind'] ? 'invalid' : 'complete'
                 break
             }
@@ -125,7 +112,6 @@ export default function SignInAdditionalInformation() {
                 if (!methods.getValues('size') && !methods.getValues('age')) {
                     break
                 }
-                // status = valid.includes('size') || valid.includes('age') ? 'invalid' : 'complete'
                 status = methods.errors['size'] || methods.errors['age'] ? 'invalid' : 'complete'
                 break
             }
@@ -133,7 +119,6 @@ export default function SignInAdditionalInformation() {
                 if (!methods.getValues('favorite')) {
                     break
                 }
-                // status = valid.includes('favorite') ? 'invalid' : 'complete'
                 status = methods.errors['favorite'] ? 'invalid' : 'complete'
                 break
             }
@@ -142,7 +127,7 @@ export default function SignInAdditionalInformation() {
             }
         }
         return status
-    }
+    }, [methods])
 
     const handleSetOpenItem = (item: PetItems) => {
         setOpenItem(openItem === item ? '' : item)
@@ -159,17 +144,17 @@ export default function SignInAdditionalInformation() {
             }}
         >
             {loading && <Indicator />}
-            {toastContent.visible && <Toast
-                title={toastContent.title}
-                setToastContent={setToastContent}
-            />}
+            {toastContent.visible &&
+                <Toast
+                    title={toastContent.title}
+                    setToastContent={setToastContent}
+                />
+            }
             
             <SignInAdditionalInformationBlock>
                 <ScrollView>
                     <FormProvider {...methods} >
                         <WelcomeSign />
-                        <DividerBlock marginTop={44} />
-
                         <HandleInformationItem
                             onPress={() => handleSetOpenItem('PetName')}
                             colors={{
@@ -185,9 +170,6 @@ export default function SignInAdditionalInformation() {
                             errors={methods.errors}
                             openItem={openItem}
                         />
-
-                        <DividerBlock marginBottom={8} />
-
                         <HandleInformationItem
                             onPress={() => handleSetOpenItem('PetType')}
                             colors={{
@@ -202,9 +184,6 @@ export default function SignInAdditionalInformation() {
                             control={methods.control}
                             openItem={openItem}
                         />
-
-                        <DividerBlock marginBottom={8} />
-
                         <HandleInformationItem
                             onPress={() => handleSetOpenItem('PetKind')}
                             disabled={['NOT_YET', 'ETC'].includes(methods.getValues('petType'))}
@@ -221,9 +200,6 @@ export default function SignInAdditionalInformation() {
                             control={methods.control}
                             petType={methods.getValues('petType') as PetTypes}
                         />
-
-                        <DividerBlock marginBottom={8} />
-
                         <HandleInformationItem
                             onPress={() => handleSetOpenItem('PetAdditionalType')}
                             colors={{
@@ -239,7 +215,6 @@ export default function SignInAdditionalInformation() {
                             control={methods.control}
                             petType={methods.getValues('petType') as PetTypes}
                         />
-                        <DividerBlock marginBottom={8} />
                         <HandleInformationItem
                             onPress={() => handleSetOpenItem('PetFavorite')}
                             colors={{

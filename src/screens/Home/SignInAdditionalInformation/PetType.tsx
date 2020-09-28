@@ -3,6 +3,7 @@ import React from "react"
 import { Control, Controller } from "react-hook-form"
 import { Image } from "react-native"
 import styled, { css } from 'styled-components/native'
+import { DividerBlock } from "../../../styles"
 import { ItemBlock, PetItems } from "../SignInAdditionalInformation"
 import { PET_TYPE } from "./PetAdditionalType"
 
@@ -41,6 +42,7 @@ export default function PetType({ control, openItem }: {
                 rules={{ required: true }}
                 defaultValue=""
             />
+            <DividerBlock marginBottom={8} />
         </ItemBlock>
     )
 }
