@@ -1,29 +1,53 @@
-import React from "react"
-import { View } from "react-native"
-import ButtonGroups from "../../../components/ButtonGroups"
-import Transition from "../../../components/Transition"
+import { useTheme } from "@react-navigation/native";
+import React from "react";
+import { Control, Controller } from "react-hook-form";
+import styled from "styled-components/native";
+import Transition from "../../../components/Transition";
+import { Text } from "../../../styles";
+import { ItemBlock, PetItems } from "../SignInAdditionalInformation";
+import { TypeItem } from './PetAdditionalType';
 
-export const FAVORITE = [
-    'FOODS',
-    'TOYS',
-    'HEALTH',
-    'ETC',
-]
-export default function PetFavorite({ favorite, setFavorite }: {
-    favorite: string
-    setFavorite: React.Dispatch<React.SetStateAction<string>>
+export const Favorites: { [key: string]: string } = {
+    FOOTS: '사료, 간식',
+    TOYS: '장난감, 놀이',
+    HEALTH: '건강',
+    ETC: '기타'
+} as const
+export default function PetFavorite({ openItem, control }: {
+    openItem: PetItems
+    control: Control<Record<string, any>>
 }) {
+    const theme = useTheme();
     return (
-        <View>
+        <ItemBlock display={openItem === 'PetFavorite'}>
             <Transition>
-                <ButtonGroups
-                    buttons={FAVORITE}
-                    onSelect={setFavorite}
-                    containerStyle={{
-                        width: '100%',
-                    }}
-                />
+                <PetFavoriteBlock>
+                    <Controller
+                        control={control}
+                        render={({ value, onChange }) => (
+                            <>
+                                {Object.keys(Favorites).map(favorite => (
+                                    <TypeItem
+                                        onPress={() => onChange(favorite)}
+                                        key={favorite}
+                                        activeType={value === favorite}
+                                        primary={theme.colors.primary}
+                                    >
+                                        <Text size={16}>{Favorites[favorite]}</Text>
+                                    </TypeItem>
+                                ))}
+                            </>
+                        )}
+                        name="favorite"
+                        rules={{ required: true, }}
+                        defaultValue=""
+                    />
+                </PetFavoriteBlock>
             </Transition>
-        </View>
+        </ItemBlock>
     )
 }
+
+const PetFavoriteBlock = styled.View`
+    flex-direction: row;
+`

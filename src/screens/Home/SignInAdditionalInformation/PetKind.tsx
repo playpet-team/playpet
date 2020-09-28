@@ -18,37 +18,32 @@ export default function PetKind({ petType, control, openItem }: {
     const theme = useTheme()
 
     const searchedPetType = useMemo(() => {
-        const selectedList = petTypeToListMaps[petType]
-        return selectedList.filter(item => item.includes(searchPetTyping))
+        const selectedList = petTypeToListMaps[petType] || []
+        return selectedList.filter(item => item.includes(searchPetTyping)) || []
     }, [petType, searchPetTyping])
 
-    const renderType = ({ item }: { item: string }) => {
+    const renderType = ({ item, value, onChange }: {
+        item: string
+        value: any
+        onChange: (...event: any[]) => void
+    }) => {
         return (
-            <Controller
-                control={control}
-                render={({ value, onChange }) => (
-                    <ListItem
-                        title={item}
-                        onPress={() => onChange(item)}
-                        titleStyle={{
-                        }}
-                        containerStyle={{
-                            borderRadius: 8,
-                        }}
-                        activeStyle={{
-                            backgroundColor: item === value ? `${theme.colors.primary}33` : 'transparent',
-                        }}
-                    />
-                )}
-                name="petKind"
-                rules={{ required: true, minLength: 1, maxLength: 16, }}
-                defaultValue=""
+            <ListItem
+                title={item}
+                onPress={() => onChange(item)}
+                titleStyle={{
+                }}
+                containerStyle={{
+                    borderRadius: 8,
+                }}
+                activeStyle={{
+                    backgroundColor: item === value ? `${theme.colors.primary}33` : 'transparent',
+                }}
             />
-            
         )
     }
 
-    console.log("petType--------", petType)
+    const isDogCatType = useMemo(() => ['DOG', 'CAT'].includes(petType), [petType])
 
     return (
         <ItemBlock display={openItem === 'PetKind'}>
@@ -74,10 +69,18 @@ export default function PetKind({ petType, control, openItem }: {
                         }}
                         lightTheme={!theme.dark}
                     />
-                    <FlatList
-                        data={searchedPetType}
-                        keyExtractor={type => type}
-                        renderItem={renderType}
+                    <Controller
+                        control={control}
+                        render={({ value, onChange }) => (
+                            <FlatList
+                                data={searchedPetType}
+                                keyExtractor={type => type}
+                                renderItem={({ item }) => renderType({ item, value, onChange })}
+                            />
+                        )}
+                        name="petKind"
+                        rules={{ required: isDogCatType }}
+                        defaultValue=""
                     />
                 </MaxHeightView>
             }

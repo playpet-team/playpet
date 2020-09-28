@@ -13,7 +13,7 @@ import { authActions } from '../../store/authReducer'
 import { DividerBlock, Text } from "../../styles"
 import { currentUser, deviceSize, updateUserPets } from '../../utils'
 import { PetTypes } from "../../utils/product"
-import PetAdditionalType, { DefaultAge, DefaultSize } from './SignInAdditionalInformation/PetAdditionalType'
+import PetAdditionalType from './SignInAdditionalInformation/PetAdditionalType'
 import PetFavorite from "./SignInAdditionalInformation/PetFavorite"
 import PetKind from "./SignInAdditionalInformation/PetKind"
 import PetName from "./SignInAdditionalInformation/PetName"
@@ -38,14 +38,6 @@ export default function SignInAdditionalInformation() {
 
     const methods = useForm();
 
-    const [valid, setValid] = useState<string[]>([])
-    const [petName, setPetname] = useState('')
-    const [petType, setPetType] = useState<PetTypes>('')
-    const [petKind, setPetKind] = useState<string>('')
-    const [size, setSize] = useState(DefaultSize.S)
-    const [age, setAge] = useState(DefaultAge.ADLUT)
-    const [favorite, setFavorite] = useState('')
-
     const [openItem, setOpenItem] = useState<PetItems>('')
 
     const themes = useTheme()
@@ -69,47 +61,19 @@ export default function SignInAdditionalInformation() {
     }, [openItem])
 
     const handleLater = () => {
-        setValid([])
         setVisible(false)
     }
 
     const handleStep = async (data: any) => {
         console.log('data------', data)
         return
-        const errors = checkValid()
-        if (errors.length) {
-            setValid(errors)
-            return
-        }
-        setValid([])
-        await handleUpdatePet()
+        await handleUpdatePet(data)
         setVisible(false)
     }
     
-    const checkValid = () => {
-        const errors = []
-        if (!petName.length) {
-            errors.push('petName')
-        }
-        if (!petType) {
-            errors.push('petType')
-        }
-        if (petType && !petKind) {
-            errors.push('petKind')
-        }
-        if (petType && !size.length) {
-            errors.push('size')
-        }
-        if (petType && !size.length) {
-            errors.push('age')
-        }
-        if (petType && !favorite.length) {
-            errors.push('favorite')
-        }
-        return errors
-    }
-
-    const handleUpdatePet = async () => {
+    const handleUpdatePet = async ({ petName, petType, petKind, size, favorite }: {
+        petName: string; petType: string; petKind: string; size: string; favorite: string
+    }) => {
         const user = currentUser()
         if (!user) {
             return
@@ -129,19 +93,20 @@ export default function SignInAdditionalInformation() {
 
     const getInformationStatus = (type: PetItems) => {
         let status: '' | 'invalid' | 'complete' | 'disabled' = ''
+        // const getValue = methods.getValues(type)
+        // const getError = methods.errors[type]
+        // methods.errors
         switch (type) {
             case 'PetName': {
-                if (!petName.length) {
-                    break
-                }
-                status = valid.includes('petName') ? 'invalid' : 'complete'
+                status = methods.errors['petName'] ? 'invalid' : 'complete'
                 break
             }
             case 'PetType': {
-                if (!petType.length) {
-                    break
-                }
-                status = valid.includes('petType') ? 'invalid' : 'complete'
+                // if (!petType.length) {
+                //     break
+                // }
+                // status = valid.includes('petType') ? 'invalid' : 'complete'
+                status = methods.errors['petType'] ? 'invalid' : 'complete'
                 break
             }
             case 'PetKind': {
@@ -149,24 +114,27 @@ export default function SignInAdditionalInformation() {
                     status = 'disabled'
                     break
                 }
-                if (!PetKind.length) {
-                    break
-                }
-                status = valid.includes('petType') ? 'invalid' : 'complete'
+                // if (!PetKind.length) {
+                //     break
+                // }
+                // status = valid.includes('petType') ? 'invalid' : 'complete'
+                status = methods.errors['petKind'] ? 'invalid' : 'complete'
                 break
             }
             case 'PetAdditionalType': {
-                if (!size && !age) {
+                if (!methods.getValues('size') && !methods.getValues('age')) {
                     break
                 }
-                status = valid.includes('size') || valid.includes('age') ? 'invalid' : 'complete'
+                // status = valid.includes('size') || valid.includes('age') ? 'invalid' : 'complete'
+                status = methods.errors['size'] || methods.errors['age'] ? 'invalid' : 'complete'
                 break
             }
             case 'PetFavorite': {
-                if (!favorite.length) {
+                if (!methods.getValues('favorite')) {
                     break
                 }
-                status = valid.includes('favorite') ? 'invalid' : 'complete'
+                // status = valid.includes('favorite') ? 'invalid' : 'complete'
+                status = methods.errors['favorite'] ? 'invalid' : 'complete'
                 break
             }
             default: {
@@ -186,7 +154,6 @@ export default function SignInAdditionalInformation() {
             isHideCloseButton={true}
             modalJustify="flex-end"
             containerStyle={{
-                // height: DEVICE_HEIGHT,
                 width: DEVICE_WIDTH,
                 borderRadius: 16,
             }}
@@ -211,7 +178,7 @@ export default function SignInAdditionalInformation() {
                             }}
                             status={getInformationStatus('PetName')}
                         >
-                            <Text>아이 이름을 알려주세요</Text>
+                            <Text>{openItem !== 'PetName' && methods.getValues('petName') || '아이 이름을 알려주세요'}</Text>
                         </HandleInformationItem>
                         <PetName
                             control={methods.control}
@@ -229,7 +196,7 @@ export default function SignInAdditionalInformation() {
                             }}
                             status={getInformationStatus('PetType')}
                         >
-                            <Text>어떤 반려동물 인가요?</Text>
+                            <Text>{openItem !== 'PetType' && methods.getValues('petType') || '어떤 반려동물 인가요?'}</Text>
                         </HandleInformationItem>
                         <PetType
                             control={methods.control}
@@ -269,11 +236,8 @@ export default function SignInAdditionalInformation() {
                         </HandleInformationItem>
                         <PetAdditionalType
                             openItem={openItem}
-                            petType={petType}
-                            size={size}
-                            setSize={setSize}
-                            age={age}
-                            setAge={setAge}
+                            control={methods.control}
+                            petType={methods.getValues('petType') as PetTypes}
                         />
                         <DividerBlock marginBottom={8} />
                         <HandleInformationItem
@@ -286,10 +250,10 @@ export default function SignInAdditionalInformation() {
                         >
                             <Text>관심분야를 알려주세요</Text>
                         </HandleInformationItem>
-                        {openItem === 'PetFavorite' && <PetFavorite
-                            favorite={favorite}
-                            setFavorite={setFavorite}
-                        />}
+                        <PetFavorite
+                            openItem={openItem}
+                            control={methods.control}
+                        />
                         <BottomNavigation>
                             <InputLater onPress={handleLater}>
                                 <Text>나중에 하기</Text>
