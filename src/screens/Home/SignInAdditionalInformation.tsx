@@ -29,7 +29,7 @@ export interface Terms {
 
 export type PetItems = '' | 'PetName' | 'PetType' | 'PetKind' | 'PetAdditionalType' | 'PetFavorite'
 
-interface OutputData {
+interface PetInformationData {
     petName: string
     petType: string
     petKind: string
@@ -71,12 +71,12 @@ export default function SignInAdditionalInformation() {
 
     const handleLater = () => setVisible(false)
 
-    const handleStep = async (data: OutputData) => {
+    const handleStep = async (data: PetInformationData) => {
         await handleUpdatePet(data)
         setVisible(false)
     }
     
-    const handleUpdatePet = useCallback(async ({ petName, petType, petKind, size, age, favorite }: OutputData) => {
+    const handleUpdatePet = useCallback(async ({ petName, petType, petKind, size, age, favorite }: PetInformationData) => {
         const user = currentUser()
         if (!user) {
             return
