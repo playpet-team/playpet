@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 import Logo from '../components/Logo';
-import ProductList from '../components/ProductList';
+// import ProductList from '../components/ProductList';
 // import useFirebaseMessage from '../hooks/useFirebaseMessage';
 import useInitialDynamicLink from '../hooks/useInitialDynamicLink';
 import useLanguage from '../hooks/useLanguage';
@@ -30,7 +30,7 @@ export default function Home() {
                     {renderBanner && renderBanner()}
                 </Layout>
                 <DividerBlock marginTop={24} />
-                <ProductList />
+                {/* <ProductList /> */}
                 {/* <DummyCardView /> */}
             </ScrollView>
         </SafeAreaViewBlock>

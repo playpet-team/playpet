@@ -3959,10 +3959,10 @@ expo-store-review@~2.2.0:
   resolved "https://registry.yarnpkg.com/expo-store-review/-/expo-store-review-2.2.0.tgz#99ba2c2f0396bd2553b36cbd077de92f32841ea1"
   integrity sha512-FaLC05g0lHl40DX62iXz+aluV16QCupaNiURS1jW4Idefw5rOUrlV1hPe8SD9TJREbBahcSI9v/hw3ji+xD7sw==
 
-expo-updates@~0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/expo-updates/-/expo-updates-0.3.3.tgz#0855ac8ccdc66e94b5fdbc09e04192570968f20b"
-  integrity sha512-8GIuxhS40Lj5J0fd7Kv8uhbAg6L4AzVVVKz0sdnaO7gO1Db9vSxgYfswb4NS5sXF9NEn/ReTJJJG09PnMdtZJw==
+expo-updates@~0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/expo-updates/-/expo-updates-0.3.5.tgz#cd9aafeb5cbe16399df7d39243d00d330d99e674"
+  integrity sha512-O+W0MfDZPhhCYKFtLL85ifd+YAm3rFKALWzmyKOSGBb/L+8CBPQsbbB3mdvji0V2NCqq0+jrBvSCmNa5LRD41w==
   dependencies:
     "@expo/metro-config" "^0.1.16"
     fbemitter "^2.1.1"

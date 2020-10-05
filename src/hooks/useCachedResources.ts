@@ -1,8 +1,8 @@
-import { Ionicons } from '@expo/vector-icons'
-import * as Font from 'expo-font'
-import { useState, useEffect } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 // import * as SplashScreen from 'expo-splash-screen'
 import * as Sentry from "@sentry/react-native";
+import * as Font from 'expo-font';
+import { useEffect, useState } from 'react';
 
 
 export default function useCachedResources() {
