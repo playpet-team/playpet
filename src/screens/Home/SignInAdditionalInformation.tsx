@@ -21,10 +21,10 @@ import PetType from "./SignInAdditionalInformation/PetType"
 import WelcomeSign from "./SignInAdditionalInformation/WelcomeSign"
 
 export interface Terms {
-    overAgeAgree: boolean;
-    termsOfUseAgree: boolean;
-    personalCollectAgree: boolean;
-    marketingAgree: boolean;
+    overAgeAgree: boolean
+    termsOfUseAgree: boolean
+    personalCollectAgree: boolean
+    marketingAgree: boolean
 }
 
 export type PetItems = '' | 'PetName' | 'PetType' | 'PetKind' | 'PetAdditionalType' | 'PetFavorite'
@@ -46,8 +46,7 @@ export default function SignInAdditionalInformation() {
     const methods = useForm({
         // mode: 'all',
         // reValidateMode: 'onChange'
-    });
-    methods.trigger
+    })
     const [openItem, setOpenItem] = useState<PetItems>('')
     const themes = useTheme()
     const dispatch = useDispatch()
@@ -94,46 +93,46 @@ export default function SignInAdditionalInformation() {
         }
     }, [dispatch])
 
-    const getInformationStatus = useCallback((type: PetItems) => {
-        let status: '' | 'invalid' | 'complete' | 'disabled' = ''
-        switch (type) {
-            case 'PetName': {
-                status = methods.errors['petName'] ? 'invalid' : 'complete'
-                break
-            }
-            case 'PetType': {
-                status = methods.errors['petType'] ? 'invalid' : 'complete'
-                break
-            }
-            case 'PetKind': {
-                // if (['NOT_YET', 'ETC'].includes(methods.getValues('petType'))) {
-                    // status = 'disabled'
-                    // break
-                // }
-                console.log("methods.errors['petKind']---------", methods.errors['petKind'])
-                status = methods.errors['petKind'] ? 'invalid' : 'complete'
-                break
-            }
-            case 'PetAdditionalType': {
-                if (!methods.getValues('size') && !methods.getValues('age')) {
-                    break
-                }
-                status = methods.errors['size'] || methods.errors['age'] ? 'invalid' : 'complete'
-                break
-            }
-            case 'PetFavorite': {
-                if (!methods.getValues('favorite')) {
-                    break
-                }
-                status = methods.errors['favorite'] ? 'invalid' : 'complete'
-                break
-            }
-            default: {
-                break
-            }
-        }
-        return status
-    }, [methods])
+    // const getInformationStatus = useCallback((type: PetItems) => {
+    //     let status: '' | 'invalid' | 'complete' | 'disabled' = ''
+    //     switch (type) {
+    //         case 'PetName': {
+    //             status = methods.errors['petName'] ? 'invalid' : 'complete'
+    //             break
+    //         }
+    //         case 'PetType': {
+    //             status = methods.errors['petType'] ? 'invalid' : 'complete'
+    //             break
+    //         }
+    //         case 'PetKind': {
+    //             // if (['NOT_YET', 'ETC'].includes(methods.getValues('petType'))) {
+    //                 // status = 'disabled'
+    //                 // break
+    //             // }
+    //             console.log("methods.errors['petKind']---------", methods.errors['petKind'])
+    //             status = methods.errors['petKind'] ? 'invalid' : 'complete'
+    //             break
+    //         }
+    //         case 'PetAdditionalType': {
+    //             if (!methods.getValues('size') && !methods.getValues('age')) {
+    //                 break
+    //             }
+    //             status = methods.errors['size'] || methods.errors['age'] ? 'invalid' : 'complete'
+    //             break
+    //         }
+    //         case 'PetFavorite': {
+    //             if (!methods.getValues('favorite')) {
+    //                 break
+    //             }
+    //             status = methods.errors['favorite'] ? 'invalid' : 'complete'
+    //             break
+    //         }
+    //         default: {
+    //             break
+    //         }
+    //     }
+    //     return status
+    // }, [methods])
 
     const handleSetOpenItem = (item: PetItems) => {
         setOpenItem(openItem === item ? '' : item)
