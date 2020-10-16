@@ -258,7 +258,7 @@ export type AuthTapParamList = {
     PaymentSetting: undefined;
     ShippingDestinationSetting: undefined;
     ProfileSetting: undefined;
-    AppLogin: undefined;
+    // AppLogin: undefined;
     AppLoginAgreeTerms: undefined;
 };
 const AuthTapStack = createStackNavigator<AuthTapParamList>();
@@ -293,14 +293,14 @@ function AuthNavigator() {
                 component={ShippingDestinationSetting}
                 options={{ headerTitle: '배송지 관리' }}
             />
-            <AuthTapStack.Screen
+            {/* <AuthTapStack.Screen
                 name="AppLogin"
                 component={AppLogin}
                 options={({ route }) => ({
                     headerShown: false,
                     gestureEnabled: false,
                 })}
-            />
+            /> */}
         </AuthTapStack.Navigator>
     );
 };

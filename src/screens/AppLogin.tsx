@@ -3,10 +3,9 @@ import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from 'react-native-elements';
 import SocialSignIn from './AuthScreen/SocialSignIn';
-import { useNavigation } from '@react-navigation/native';
 
 export default function AppLogin() {
-
+    console.log("hahahahaha");
     return (
         <AppLoginBlock>
             <LinearGradientBlock

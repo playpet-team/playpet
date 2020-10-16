@@ -5,6 +5,7 @@ import * as Sentry from "@sentry/react-native"
 import * as React from 'react'
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance'
 import useAuthStateChanged from '../hooks/useAuthStateChanged'
+import AppLogin from '../screens/AppLogin'
 import { defaultColorPalette } from '../styles/colors'
 import { currentUser } from '../utils'
 import { Crash } from '../utils/system/crash'
@@ -66,16 +67,17 @@ export default function Navigation() {
 
 export type RootStackParamList = {
     Home: undefined
+    AppLogin: undefined
     NotFound: undefined
 }
 
 const RootStack = createStackNavigator<RootStackParamList>()
 
 function RootNavigator() {
+    const user = currentUser()
     React.useEffect(() => {
         Crash.setCrashlyticsCollectionEnabled(true)
         ErrorUtils.setGlobalHandler(Crash.crashError)
-        const user = currentUser()
         if (!user) {
             return
         }
@@ -83,10 +85,37 @@ function RootNavigator() {
 
     }, [])
 
+    console.log("user--------", user);
+
     return (
         <RootStack.Navigator screenOptions={{ headerShown: false }}>
-            <RootStack.Screen name="Home" component={BottomTabNavigator} />
+            {user ?
+                <RootStack.Screen name="Home" component={BottomTabNavigator} />
+                :
+                <RootStack.Screen name="AppLogin" component={AppLoginNavigator} />}
         </RootStack.Navigator>
+    )
+}
+
+export type AppLoginNavigatorTabParamList = {
+    AppLogin: undefined;
+    AppLoginAgreeTerms: undefined;
+};
+const AppLoginNavigatorTapStack = createStackNavigator<AppLoginNavigatorTabParamList>();
+
+const AppLoginNavigator = () => {
+    return (
+        <AppLoginNavigatorTapStack.Navigator
+            initialRouteName="AppLogin"
+        >
+            <AppLoginNavigatorTapStack.Screen
+                name="AppLogin"
+                component={AppLogin}
+                options={{
+                    headerShown: false,
+                }}
+            />
+        </AppLoginNavigatorTapStack.Navigator>
     )
 }
 
