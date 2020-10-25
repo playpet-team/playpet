@@ -4,7 +4,7 @@ import Constants from 'expo-constants'
 import React, { useCallback, useState } from 'react'
 import { Image } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useDispatch } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 import styled from 'styled-components/native'
 import PlaypetModal from '../../components/PlaypetModal'
 import Toast, { ToastParams } from '../../components/Toast'
@@ -21,7 +21,7 @@ export default function SocialSignIn() {
         image: '',
     })
     const { getUidByThirdPartySignIn, isSignUp, loading, Indicator } = initializeSignIn({ toastContent, setToastContent })
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
     const handleSignIn = useCallback(async (method: SignType) => {
         try {
@@ -32,7 +32,11 @@ export default function SocialSignIn() {
         } finally {
             // setLoading(false)
         }
-    }, [dispatch])
+    }, [])
+
+    const handleEmailSignIn = useCallback(() => {
+        console.log('email');
+    }, [])
 
     console.log("---------isSignUps---------", isSignUp)
 
@@ -82,6 +86,18 @@ export default function SocialSignIn() {
                         </SigninText>
                     </SigninButtonInModal>
                 }
+                <SigninButton onPress={() => handleEmailSignIn(SignType.EMAIL)}>
+                    <Image
+                        source={require('../../../assets/icons/kakao_icon.png')}
+                        style={{
+                            width: 20,
+                            height: 20,
+                        }}
+                    />
+                    <SigninText>
+                        이메일로 시작하기
+                    </SigninText>
+                </SigninButton>
                 {modal && Constants.platform?.ios &&
                     <AppleButton
                         buttonStyle={AppleButton.Style.WHITE}
