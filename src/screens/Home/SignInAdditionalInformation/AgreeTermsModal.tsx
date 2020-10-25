@@ -54,7 +54,7 @@ export default function AgreeTermsModal() {
             }))
 
             setModalVisible(false)
-            navigation.navigate('AuthScreen', {
+            navigation.navigate('Home', {
                 isSignUp: true,
             })
 

@@ -5,7 +5,6 @@ import { Text } from 'react-native-elements';
 import SocialSignIn from './AuthScreen/SocialSignIn';
 
 export default function AppLogin() {
-    console.log("hahahahaha");
     return (
         <AppLoginBlock>
             <LinearGradientBlock

@@ -3,27 +3,31 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { Icon } from 'react-native-elements';
 import ProductWebView from '../components/ProductWebView';
-import AppLogin from '../screens/AppLogin';
+// import AppLogin from '../screens/AppLogin';
 import AuthScreen from '../screens/AuthScreen';
 import AppSettings from '../screens/AuthScreen/AppSettings';
 import PaymentSetting from '../screens/AuthScreen/PaymentSetting';
 import ProfileSetting from '../screens/AuthScreen/ProfileSetting';
 import ShippingDestinationSetting from '../screens/AuthScreen/ShippingDestinationSetting';
-import CardFormScreen from '../screens/CardFormScreen';
+// import CardFormScreen from '../screens/CardFormScreen';
 import Home from '../screens/Home';
-import Notifications from '../screens/Notifications';
-import PlayGroundScreen from '../screens/PlayGroundScreen';
-import SubscribeFormScreen from '../screens/SubscribeFormScreen';
+import Order from '../screens/Order';
+import Recommendation from '../screens/Recommendation';
+// import Notifications from '../screens/Notifications';
+// import PlayGroundScreen from '../screens/PlayGroundScreen';
+// import SubscribeFormScreen from '../screens/SubscribeFormScreen';
 import { defaultColorPalette } from '../styles/colors';
 
 
 
 export type BottomTabParamList = {
     Home: undefined;
-    SubscribeForm: undefined;
-    PlayGround: undefined;
-    CardForm: undefined;
-    Notifications: undefined;
+    Order: undefined;
+    Recommendation: undefined;
+    // SubscribeForm: undefined;
+    // PlayGround: undefined;
+    // CardForm: undefined;
+    // Notifications: undefined;
     Auth: undefined;
 };
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -48,6 +52,26 @@ export default function BottomTabNavigator() {
                 }}
             />
             <BottomTab.Screen
+                name="Order"
+                component={OrderNavigator}
+                options={{
+                    tabBarIcon: ({ focused }) => <Icon
+                        name="attach-money"
+                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
+                    />,
+                }}
+            />
+            <BottomTab.Screen
+                name="Recommendation"
+                component={RecommendationNavigator}
+                options={{
+                    tabBarIcon: ({ focused }) => <Icon
+                        name="thumb-up"
+                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
+                    />,
+                }}
+            />
+            {/* <BottomTab.Screen
                 name="PlayGround"
                 component={PlayGroundNavigator}
                 options={{
@@ -56,8 +80,8 @@ export default function BottomTabNavigator() {
                         color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
                     />,
                 }}
-            />
-            <BottomTab.Screen
+            /> */}
+            {/* <BottomTab.Screen
                 name="SubscribeForm"
                 component={SubscribeFormNavigator}
                 options={{
@@ -66,7 +90,7 @@ export default function BottomTabNavigator() {
                         color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
                     />,
                 }}
-            />
+            /> */}
             {/* <BottomTab.Screen
                 name="CardForm"
                 component={CardFormNavigator}
@@ -127,7 +151,7 @@ export type HomeNavigatorTabParamList = {
         userCode: any;
         data: any;
     };
-    AppLoginAgreeTerms: undefined;
+    // AppLoginAgreeTerms: undefined;
 };
 const HomeNavigatorTapStack = createStackNavigator<HomeNavigatorTabParamList>();
 
@@ -175,53 +199,16 @@ function HomeNavigator() {
     );
 }
 
-export type NotificationNavigatorParamList = {
-    Notifications: undefined;
-    NotificationDetail: undefined;
+export type OrderParamList = {
+    OrderScreen: undefined;
 };
-const NotificationNavigatorStack = createStackNavigator<NotificationNavigatorParamList>();
-function NotificationNavigator() {
-    return (
-        <NotificationNavigatorStack.Navigator>
-            <NotificationNavigatorStack.Screen
-                name="Notifications"
-                component={Notifications}
-                options={({ navigation }) => ({
-                    headerTitle: '알림',
-                })}
-            />
-        </NotificationNavigatorStack.Navigator>
-    );
-};
-
-export type CardFormNavigatorParamList = {
-    CardFormNavigator: undefined;
-};
-const CardFormNavigatorStack = createStackNavigator<CardFormNavigatorParamList>();
-function CardFormNavigator() {
-    return (
-        <CardFormNavigatorStack.Navigator>
-            <CardFormNavigatorStack.Screen
-                name="CardFormNavigator"
-                component={CardFormScreen}
-                options={({ navigation }) => ({
-                    headerTitle: '포스트',
-                })}
-            />
-        </CardFormNavigatorStack.Navigator>
-    );
-};
-
-export type BlankTapParamList = {
-    BlankScreen: undefined;
-};
-const BlankTapStack = createStackNavigator<BlankTapParamList>();
-function PlayGroundNavigator() {
+const BlankTapStack = createStackNavigator<OrderParamList>();
+function OrderNavigator() {
     return (
         <BlankTapStack.Navigator>
             <BlankTapStack.Screen
-                name="BlankScreen"
-                component={PlayGroundScreen}
+                name="OrderScreen"
+                component={Order}
                 options={({ navigation }) => ({
                     headerShown: false,
                     headerTitle: '놀이터',
@@ -231,24 +218,99 @@ function PlayGroundNavigator() {
     );
 };
 
-export type SubscribeFormTapParamList = {
-    SubscribeForm: undefined
+export type RecommendationParamList = {
+    RecommendationScreen: undefined;
 };
-const SubscribeFormTapStack = createStackNavigator<SubscribeFormTapParamList>();
-function SubscribeFormNavigator() {
+const RecommendationStack = createStackNavigator<RecommendationParamList>();
+function RecommendationNavigator() {
     return (
-        <SubscribeFormTapStack.Navigator>
-            <SubscribeFormTapStack.Screen
-                name="SubscribeForm"
-                component={SubscribeFormScreen}
+        <RecommendationStack.Navigator>
+            <RecommendationStack.Screen
+                name="RecommendationScreen"
+                component={Recommendation}
                 options={({ navigation }) => ({
                     headerShown: false,
-                    headerTitle: '정기배송',
+                    headerTitle: '놀이터',
                 })}
             />
-        </SubscribeFormTapStack.Navigator>
+        </RecommendationStack.Navigator>
     );
 };
+
+// export type NotificationNavigatorParamList = {
+//     Notifications: undefined;
+//     NotificationDetail: undefined;
+// };
+// const NotificationNavigatorStack = createStackNavigator<NotificationNavigatorParamList>();
+// function NotificationNavigator() {
+//     return (
+//         <NotificationNavigatorStack.Navigator>
+//             <NotificationNavigatorStack.Screen
+//                 name="Notifications"
+//                 component={Notifications}
+//                 options={({ navigation }) => ({
+//                     headerTitle: '알림',
+//                 })}
+//             />
+//         </NotificationNavigatorStack.Navigator>
+//     );
+// };
+
+// export type CardFormNavigatorParamList = {
+//     CardFormNavigator: undefined;
+// };
+// const CardFormNavigatorStack = createStackNavigator<CardFormNavigatorParamList>();
+// function CardFormNavigator() {
+//     return (
+//         <CardFormNavigatorStack.Navigator>
+//             <CardFormNavigatorStack.Screen
+//                 name="CardFormNavigator"
+//                 component={CardFormScreen}
+//                 options={({ navigation }) => ({
+//                     headerTitle: '포스트',
+//                 })}
+//             />
+//         </CardFormNavigatorStack.Navigator>
+//     );
+// };
+
+// export type BlankTapParamList = {
+//     BlankScreen: undefined;
+// };
+// const BlankTapStack = createStackNavigator<BlankTapParamList>();
+// function PlayGroundNavigator() {
+//     return (
+//         <BlankTapStack.Navigator>
+//             <BlankTapStack.Screen
+//                 name="BlankScreen"
+//                 component={PlayGroundScreen}
+//                 options={({ navigation }) => ({
+//                     headerShown: false,
+//                     headerTitle: '놀이터',
+//                 })}
+//             />
+//         </BlankTapStack.Navigator>
+//     );
+// };
+
+// export type SubscribeFormTapParamList = {
+//     SubscribeForm: undefined
+// };
+// const SubscribeFormTapStack = createStackNavigator<SubscribeFormTapParamList>();
+// function SubscribeFormNavigator() {
+//     return (
+//         <SubscribeFormTapStack.Navigator>
+//             <SubscribeFormTapStack.Screen
+//                 name="SubscribeForm"
+//                 component={SubscribeFormScreen}
+//                 options={({ navigation }) => ({
+//                     headerShown: false,
+//                     headerTitle: '정기배송',
+//                 })}
+//             />
+//         </SubscribeFormTapStack.Navigator>
+//     );
+// };
 
 export type AuthTapParamList = {
     AuthScreen: {
@@ -259,7 +321,7 @@ export type AuthTapParamList = {
     ShippingDestinationSetting: undefined;
     ProfileSetting: undefined;
     // AppLogin: undefined;
-    AppLoginAgreeTerms: undefined;
+    // AppLoginAgreeTerms: undefined;
 };
 const AuthTapStack = createStackNavigator<AuthTapParamList>();
 
