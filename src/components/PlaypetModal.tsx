@@ -83,7 +83,7 @@ const Container = styled.View<Pick<Theme, 'colors'> & Pick<ModalProps, 'containe
     height: ${({ containerStyle }) => containerStyle?.height ? `${containerStyle.height}px` : 'auto'};
     padding: ${({ containerStyle }) => containerStyle?.padding ? containerStyle.padding : 16}px;
     background-color: ${({ colors }) => colors.background};
-    border-radius: ${({ containerStyle }) => containerStyle?.borderRadius}px;
+    border-radius: ${({ containerStyle }) => containerStyle?.borderRadius || 0}px;
 `
 
 const PlaypetDialogHeader = styled.View`

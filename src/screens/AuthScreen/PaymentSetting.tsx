@@ -10,7 +10,7 @@ import PlaypetModal from "../../components/PlaypetModal";
 import Toast, { ToastParams } from "../../components/Toast";
 import useLoadingIndicator from "../../hooks/useLoadingIndicator";
 import { Text } from "../../styles";
-import { currentUser } from "../../utils";
+import { addUserCardInformation, currentUser, updateUserShippingDestination } from "../../utils";
 
 function PaymentSetting() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
@@ -27,14 +27,11 @@ function PaymentSetting() {
         description: '',
         image: '',
     })
-    const onSubmit = (data: any) => {
+    const onSubmit = async (data: any) => {
         console.log('data------', data)
         setLoading(true)
         try {
-            // await updateUserShippingDestination(user.uid, {
-            //     ...data,
-            //     shippingLocation: address.shippingLocation,
-            // })
+            await addUserCardInformation(user.uid, data)
         } catch (e) {
             Sentry.captureException(e)
         } finally {
@@ -99,6 +96,7 @@ function PaymentSetting() {
                             />
                         )}
                         name="cardNum"
+                        defaultValue=""
                         rules={{ required: true, minLength: 16, maxLength: 16, }}
                     />
                 </InputCardNumber>

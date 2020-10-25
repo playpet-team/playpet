@@ -10,7 +10,12 @@ import { initialState } from '../../store/authReducer';
 import { ShippingInformation } from './../../hooks/useShippingDestination';
 import { MyPet, Terms } from './../../models/src/user';
 import { firebaseTimeStampToStringStamp } from './../system/index';
-// import { NaverLogin } from '@react-native-seoul/naver-login'
+
+export enum Status {
+    ACTIVE = 'active',
+    DEACTIVE = 'deactive',
+    EXPIRED = 'expired',
+}
 
 export const firebaseNow = () => firestore.Timestamp.now()
 export const currentUser = () => auth().currentUser
@@ -106,6 +111,16 @@ export const getUserShippingDestination = async (uid: string) => {
 export const updateUserShippingDestination = async (uid: string, data: any) => {
     await firestore().collection(Collections.ShippingDestination).add({
         ...data,
+        uid,
+        createdAt: firebaseNow(),
+        updatedAt: firebaseNow(),
+    })
+}
+
+export const addUserCardInformation = async (uid: string, data: any) => {
+    await firestore().collection(Collections.CardInformations).add({
+        ...data,
+        status: Status.ACTIVE,
         uid,
         createdAt: firebaseNow(),
         updatedAt: firebaseNow(),

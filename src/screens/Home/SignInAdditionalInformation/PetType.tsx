@@ -10,8 +10,8 @@ import { PET_TYPE } from "./PetAdditionalType"
 const petSrcMap: any = {
     dog: require('../../../../assets/images/dog_default_thumb.jpg'),
     cat: require('../../../../assets/images/cat_default_thumb.jpg'),
-    etc: require('../../../../assets/images/etc_default_thumb.jpg'),
-    not_yet: require('../../../../assets/images/not_yet_default_thumb.jpg'),
+    // etc: require('../../../../assets/images/etc_default_thumb.jpg'),
+    // not_yet: require('../../../../assets/images/not_yet_default_thumb.jpg'),
 }
 
 export default function PetType({ control, openItem }: {

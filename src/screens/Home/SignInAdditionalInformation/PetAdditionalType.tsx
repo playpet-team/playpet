@@ -6,11 +6,11 @@ import { DividerBlock, Text } from "../../../styles";
 import { PetTypes } from "../../../utils/product";
 import { ItemBlock, PetItems } from "../SignInAdditionalInformation";
 
-export const PET_TYPE: ['DOG', 'CAT', 'ETC', 'NOT_YET'] = [
+export const PET_TYPE: ['DOG', 'CAT'] = [
     'DOG',
     'CAT',
-    'ETC',
-    'NOT_YET',
+    // 'ETC',
+    // 'NOT_YET',
 ]
 export const DefaultSize: { [key: string]: string } = {
     S: '소형(~7kg)',
