@@ -27,6 +27,7 @@ function PaymentSetting() {
         description: '',
         image: '',
     })
+
     const onSubmit = async (data: any) => {
         console.log('data------', data)
         setLoading(true)
@@ -165,7 +166,10 @@ function PaymentSetting() {
                     defaultValue=""
                 />
                 
-                <TouchableOpacity onPress={handleSubmit(onSubmit)} style={{ marginBottom: 16, justifyContent: 'center', alignItems: 'center', }}>
+                <TouchableOpacity
+                    onPress={handleSubmit(onSubmit)}
+                    style={{ marginBottom: 16, justifyContent: 'center', alignItems: 'center', }}
+                >
                     <Text color={theme.colors.primary} size={16} bold>카드등록</Text>
                 </TouchableOpacity>
                 <Text size={12}>카드 정보는 결제 대행사 서버에 안전하게 암호화 되어 저장됩니다</Text>

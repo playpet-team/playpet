@@ -1,7 +1,7 @@
 import { FirebaseTimeStamp } from '../../utils';
 import { PetTypes } from './../../utils/product/index';
 export enum SignType {
-    EMAIL = 'EMAIL',
+    Email = 'EMAIL',
     Google = 'GOOGLE',
     Apple = 'APPLE',
     Facebook = 'FACEBOOK',

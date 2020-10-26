@@ -7,7 +7,6 @@ import { GoogleSignin } from '@react-native-community/google-signin';
 import analytics from '@react-native-firebase/analytics';
 import auth from '@react-native-firebase/auth';
 import KakaoLogins, { KAKAO_AUTH_TYPES } from '@react-native-seoul/kakao-login';
-import { useNavigation } from '@react-navigation/native';
 import * as Sentry from "@sentry/react-native";
 import { useCallback, useEffect, useState } from 'react';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
@@ -32,16 +31,15 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     const [method, setMethod] = useState<SignType>(SignType.None)
     const [token, setToken] = useState<any>(null)
     const [profile, setProfile] = useState<{
-        username: string
+        username?: string
         email: string
-        photo: string
+        password?: string
+        photo?: string
     }>({
         username: '',
         email: '',
-        photo: '',
+        photo: 'https://firebasestorage.googleapis.com/v0/b/playpet-5b432.appspot.com/o/assets%2Ficons%2Fnot_yet.jpg?alt=media&token=7c175393-d7ba-4e32-829c-2a29be57dd0c',
     })
-
-    const navigation = useNavigation()
 
     useEffect(() => {
         if (isSignUp === null) {
@@ -120,7 +118,10 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         }
     }, [token, profile, method])
 
-    const getUidByThirdPartySignIn = useCallback(async (method: SignType) => {
+    const getUidByThirdPartySignIn = useCallback(async (method: SignType, emailInformation?: {
+        email: string;
+        password: string;
+    }) => {
         setLoading(true)
         setMethod(method)
         try {
@@ -168,6 +169,17 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                     // await getNaverProfile(token, setProfile)
                     break
                 }
+                case SignType.Email: {
+                    if (emailInformation) {
+                        setToken('email')
+                        setProfile({
+                            ...profile,
+                            email: emailInformation.email,
+                            password: emailInformation.password,
+                        })
+                    }
+                    break
+                }
                 default: {
                     break
                 }
@@ -202,7 +214,8 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
 
     const postCreateUser = useCallback(async () => {
         try {
-            console.log('a')
+            console.log('a', profile)
+
             const { data: { customTokenForExistUser, customToken, uid, newUser } }:
                 { data: {
                     customTokenForExistUser: string
@@ -223,6 +236,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
             }
         } catch (e) {
             Sentry.captureException(`postCreateUser-${e}`)
+            console.log('error-', e);
             return {}
         }
     }, [profile, method])
