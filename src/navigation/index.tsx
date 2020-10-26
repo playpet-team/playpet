@@ -1,9 +1,10 @@
 import analytics from '@react-native-firebase/analytics'
-import { DefaultTheme, NavigationContainer, NavigationContainerRef, RouteProp } from '@react-navigation/native'
+import { DefaultTheme as DefaultThemeValue, NavigationContainer, NavigationContainerRef, RouteProp } from '@react-navigation/native'
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack'
 import * as Sentry from "@sentry/react-native"
 import * as React from 'react'
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance'
+import { ThemeProvider } from 'styled-components/native'
 import useAuthStateChanged from '../hooks/useAuthStateChanged'
 import AppLogin from '../screens/AppLogin'
 import { defaultColorPalette } from '../styles/colors'
@@ -11,6 +12,23 @@ import { currentUser } from '../utils'
 import { Crash } from '../utils/system/crash'
 import BottomTabNavigator from './BottomTabNavigator'
 import LinkingConfiguration from './LinkingConfiguration'
+
+declare module 'styled-components' {
+  export interface DefaultTheme {
+    dark: boolean
+    colors: {
+        primary: string
+        background: string
+        text: string
+        placeholder: string
+        border: string
+        card: string
+        notification: string
+        white: string
+        grey: string
+    }
+  }
+}
 
 Appearance.getColorScheme()
 
@@ -34,33 +52,38 @@ export default function Navigation() {
             Sentry.captureException(e)
         }
     }, [navigationRef])
+    const themes = colorScheme === 'dark' ? {
+        ...DefaultThemeValue,
+        colors: {
+            ...DefaultThemeValue.colors,
+            ...defaultColorPalette,
+        },
+    } : {
+        ...DefaultThemeValue,
+        colors: {
+            ...DefaultThemeValue.colors,
+            ...defaultColorPalette,
+        }
+    }
 
     return (
         <AppearanceProvider>
-            <NavigationContainer
-                linking={LinkingConfiguration}
-                theme={colorScheme === 'dark' ? {
-                    ...DefaultTheme,
-                    colors: {
-                        ...DefaultTheme.colors,
-                        ...defaultColorPalette,
-                    },
-                } : {
-                        ...DefaultTheme,
-                        colors: {
-                            ...DefaultTheme.colors,
-                            ...defaultColorPalette,
-                        }
-                    }}
-                ref={navigationRef}
-                onReady={() => {
-                    routeNameRef.current = navigationRef.current.getCurrentRoute().name
-                    analytics().logScreenView({ screen_name: routeNameRef.current })
-                }}
-                onStateChange={onChangeScreen}
+            <ThemeProvider
+                theme={themes}
             >
-                <RootNavigator />
-            </NavigationContainer>
+                <NavigationContainer
+                    linking={LinkingConfiguration}
+                    theme={themes}
+                    ref={navigationRef}
+                    onReady={() => {
+                        routeNameRef.current = navigationRef.current.getCurrentRoute().name
+                        analytics().logScreenView({ screen_name: routeNameRef.current })
+                    }}
+                    onStateChange={onChangeScreen}
+                >
+                    <RootNavigator />
+                </NavigationContainer>
+            </ThemeProvider>
         </AppearanceProvider>
     )
 }

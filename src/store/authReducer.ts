@@ -19,7 +19,7 @@ export const initialState: AuthSettings = {
     lastLogin: null,
     createdAt: null,
     updatedAt: null,
-    activePetDocId: '',
+    activePetDocId: null,
     terms: {
         existDoc: true,
         overAgeAgree: false,

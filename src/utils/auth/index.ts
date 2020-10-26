@@ -159,9 +159,9 @@ export const updateUserTerms = async (uid: string, terms: {}) => {
 export const updateUserPets = async (uid: string, petInformation: {}) => {
     try {
         const userDoc = firestore().collection(Collections.Users).doc(uid)
-        const { id } = userDoc.collection('pets').doc()
+        const { id } = userDoc.collection(Collections.UserPets).doc()
     
-        await userDoc.collection('pets').doc(id).set({
+        await userDoc.collection(Collections.UserPets).doc(id).set({
             ...petInformation,
             createdAt: firebaseNow(),
             updatedAt: firebaseNow(),
@@ -196,7 +196,7 @@ export const getPetDoc = async (uid: string, petDocId: string) => {
         const petData = (await firestore()
             .collection(Collections.Users)
             .doc(uid)
-            .collection('pets')
+            .collection(Collections.UserPets)
             .doc(petDocId)
             .get())
             .data() as MyPet

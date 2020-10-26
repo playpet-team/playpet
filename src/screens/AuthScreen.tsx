@@ -23,6 +23,13 @@ export default function AuthScreen() {
     return (
         <ScrollView>
             <ProfileSection />
+            <ProfileInfoBlock>
+                {/* <ProfileName>
+                    <Text>{username}</Text>
+                    <Text>{email}</Text>
+                </ProfileName>
+                <Button onPress={() => navigation.navigate('ProfileSetting')} title="프로필 설정" /> */}
+            </ProfileInfoBlock>
             <Section>
                 <ListItem
                     title='결제 정보'
@@ -87,6 +94,20 @@ const Section = styled.View`
     margin-top: 16px;
 `
 
-const KakaoChannelButton = styled.TouchableOpacity`
+const ProfileInfoBlock = styled.View`
     flex-direction: row;
+`
+
+const ProfileName = styled.View`
+    margin-left: 16px;
+    flex-direction: column;
+    flex: 1;
+`
+
+const AppLoginSection = styled.TouchableOpacity`
+    flex: 1;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 16px;
 `

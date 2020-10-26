@@ -14,6 +14,8 @@ export const defaultColorPalette = {
     placeholder: placeholderColor,
     border: tintColorBorder,
     card: tintColorBackground,
+    white: tintColorDarkText,
+    grey: tintColorText,
 };
 
 export const darkColorPalette = {
@@ -23,4 +25,6 @@ export const darkColorPalette = {
     placeholder: placeholderColor,
     border: tintColorBorder,
     card: tintColorDarkBackground,
+    white: tintColorDarkText,
+    grey: tintColorText,
 };

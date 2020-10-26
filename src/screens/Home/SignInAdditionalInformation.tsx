@@ -66,7 +66,7 @@ export default function SignInAdditionalInformation() {
 
     const handleLater = () => setVisible(false)
 
-    const handleStep = async (data: PetInformationData) => {
+    const handleSubmit = async (data: PetInformationData) => {
         await handleUpdatePet(data)
         setVisible(false)
     }
@@ -192,7 +192,7 @@ export default function SignInAdditionalInformation() {
                             <InputLater onPress={handleLater}>
                                 <Text>나중에 하기</Text>
                             </InputLater>
-                            <SubmitButton onPress={methods.handleSubmit(handleStep)}>
+                            <SubmitButton onPress={methods.handleSubmit(handleSubmit)}>
                                 <Icon
                                     name="keyboard-arrow-right"
                                     size={38}

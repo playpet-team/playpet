@@ -23,7 +23,7 @@ export interface User {
     lastLogin: string | FirebaseTimeStamp | null
     createdAt: string | FirebaseTimeStamp | null
     updatedAt: string | FirebaseTimeStamp | null
-    activePetDocId: string
+    activePetDocId: string | null
     terms: Terms
     activePet: MyPet
 }

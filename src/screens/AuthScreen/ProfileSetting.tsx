@@ -34,10 +34,11 @@ export default function ProfileSetting() {
     const [openAdditionalInformation, setOpenAdditionalInformation] = useState(false);
 
     useEffect(() => {
-        if (activePetDocId && uid) {
-            loadMyPet()
-        }
+        loadMyPet()
         async function loadMyPet() {
+            if (!activePetDocId || !uid) {
+                return
+            }
             console.log("load")
             setLoading(true)
             const petDoc = await getPetDoc(uid, activePetDocId)

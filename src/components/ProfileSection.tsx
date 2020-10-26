@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 import { Avatar, Icon } from 'react-native-elements'
 import { Button, View } from 'react-native'
 import { useSelector } from 'react-redux'
@@ -13,24 +13,12 @@ function ProfileSection() {
         profilePhoto,
         username,
         email,
-        isLogged,
     } = useSelector((state: RootState) => state.auth)
 
-    const navigation = useNavigation()
+    const themes = useTheme();
+    
 
-    if (!isLogged) {
-        return (
-            <AppLoginSection onPress={() => navigation.navigate('AppLogin')}>
-                <Text
-                    bold
-                    size={20}
-                >
-                    {i18n.t('common.loginWithSignUp')}
-                </Text>
-                <Icon name="keyboard-arrow-right" />
-            </AppLoginSection>
-        )
-    }
+    const navigation = useNavigation()
 
     return (
         <ProfileSectionBlock>
@@ -44,18 +32,21 @@ function ProfileSection() {
                         }}
                     />
                 </AvatarBlock>
-                <FollowBlock>
-                    <Text>폴로워 0</Text>
-                    <Text>팔로잉 0</Text>
-                </FollowBlock>
+                <UserInfoBlock>
+                    <Text>{username || '이름을 설정해주세요'}</Text>
+                    <Text>플레이펫 멤버쉽</Text>
+                </UserInfoBlock>
+                <MoreActions>
+                    <MoreButton>
+                        <Text
+                            color={themes.colors.white}
+                            bold
+                        >
+                            더 보기
+                        </Text>
+                    </MoreButton>
+                </MoreActions>
             </ProfileBlock>
-            <ProfileInfoBlock>
-                <ProfileName>
-                    <Text>{username}</Text>
-                    <Text>{email}</Text>
-                </ProfileName>
-                <Button onPress={() => navigation.navigate('ProfileSetting')} title="프로필 설정" />
-            </ProfileInfoBlock>
         </ProfileSectionBlock>
     )
 }
@@ -78,30 +69,21 @@ const ProfileBlock = styled.View`
 const AvatarBlock = styled.View`
     align-items: center;
     justify-content: center;
-    flex: 1;
 `
 
-const FollowBlock = styled.View`
+const UserInfoBlock = styled.View`
+    margin-left: 8px;
     flex: 1;
 `
-
-const ProfileInfoBlock = styled.View`
-    flex-direction: row;
+const MoreActions = styled.View`
 `
-
-const ProfileName = styled.View`
-    margin-left: 16px;
-    flex-direction: column;
-    flex: 1;
-`
-
-const AppLoginSection = styled.TouchableOpacity`
-    flex: 1;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
+const MoreButton = styled.TouchableOpacity`
     padding: 16px;
+    background-color: ${(props) => props.theme.colors.primary};
+    border-radius: 4px;
 `
+
+
 
 // const ProfileText = styled(Text)`
 //     font-size: 16px;
