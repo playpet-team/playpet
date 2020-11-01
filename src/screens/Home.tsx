@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView } from 'react-native-gesture-handler'
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/native'
 import Logo from '../components/Logo'
+import PlaypetModal from '../components/PlaypetModal'
 import ProfileSection from '../components/ProfileSection'
 import useFirebaseMessage from '../hooks/useFirebaseMessage'
 import useInitialDynamicLink from '../hooks/useInitialDynamicLink'
@@ -12,12 +13,16 @@ import useLoadingIndicator from '../hooks/useLoadingIndicator'
 import useRollingBanner from '../hooks/useRollingBanner'
 import { authActions } from '../store/authReducer'
 import { RootState } from '../store/rootReducers'
-import { DividerBlock, Layout } from '../styles'
-import { getPetDoc } from '../utils'
+import { DividerBlock, Layout, Text } from '../styles'
+import { deviceSize, getPetDoc } from '../utils'
 import SignInAdditionalInformation from './Home/SignInAdditionalInformation'
+
+const DEVICE_WIDTH = deviceSize().width
+const DEVICE_HEIGHT = deviceSize().height
 
 export default function Home() {
     const { loading, setLoading } = useLoadingIndicator()
+    const [showFeedBoard, setShowFeedBoard] = useState(false)
     useLanguage()
     // useFirebaseMessage()
     useInitialDynamicLink()
@@ -42,6 +47,10 @@ export default function Home() {
         }
     }, [activePetDocId, uid])
 
+    const openFeedBoard = () => {
+        setShowFeedBoard(true)
+    }
+
     return (
         <SafeAreaViewBlock>
             {/* <Payment /> */}
@@ -59,6 +68,54 @@ export default function Home() {
                 <ProfileSection />
             </ScrollView>
             {activePetDocId === '' && <SignInAdditionalInformation />}
+            {showFeedBoard &&
+                <PlaypetModal
+                    modalVisible={true}
+                    isHideCloseButton={true}
+                    containerStyle={{
+                        width: DEVICE_WIDTH,
+                        height: DEVICE_HEIGHT,
+                    }}
+                >
+                    <FeedBoardBlock>
+                        <Text bold>등록하실 사료를 선택해주세요</Text>
+                        <Text>사료 중에서 가장 엄선한 브랜드만 선별하였습니다</Text>
+                        <GridLayout>
+                            <Item>
+                                <Text>1</Text>
+                            </Item>
+                            <Item>
+                                <Text>1</Text>
+                            </Item>
+                            <Item>
+                                <Text>1</Text>
+                            </Item>
+                            <Item>
+                                <Text>1</Text>
+                            </Item>
+                            <Item>
+                                <Text>1</Text>
+                            </Item>
+                            <Item>
+                                <Text>1</Text>
+                            </Item>
+                            <Item>
+                                <Text>1</Text>
+                            </Item>
+                            <Item>
+                                <Text>1</Text>
+                            </Item>
+                            <Item>
+                                <Text>1</Text>
+                            </Item>
+                        </GridLayout>
+                    </FeedBoardBlock>
+                </PlaypetModal>
+            }
+
+            <TouchableOpacity onPress={openFeedBoard}>
+                <Text>벗흔</Text>
+            </TouchableOpacity>
         </SafeAreaViewBlock>
     )
 }
@@ -69,4 +126,25 @@ const SafeAreaViewBlock = styled(SafeAreaView)`
 
 const HomeBlock = styled.View`
     align-items: center;
+`
+
+const FeedBoardBlock = styled(SafeAreaView)`
+    padding-vertical: 40px;
+    flex-direction: column;
+`
+
+const GridLayout = styled.View`
+    flex-wrap: wrap;
+    flex: 1;
+    flex-direction: row;
+`
+
+const Item = styled.View`
+    flex: 1;
+    margin: 8px 8px 0 0;
+    flex-basis: 110px;
+    height: 110px;
+    border-width: 1px;
+    border-radius: 8px;
+    background-color: ${({ theme }) => theme.colors.grey};
 `

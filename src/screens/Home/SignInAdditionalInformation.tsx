@@ -110,8 +110,14 @@ export default function SignInAdditionalInformation() {
                     setToastContent={setToastContent}
                 />
             }
-            
             <SignInAdditionalInformationBlock>
+                <StepNavigator>
+                    <Text>{'<'}</Text>
+                    <Text>등록해주세요</Text>
+                    <InputLater onPress={handleLater}>
+                        <Text>X</Text>
+                    </InputLater>
+                </StepNavigator>
                 <ScrollView>
                     <FormProvider {...methods} >
                         <WelcomeSign />
@@ -189,9 +195,6 @@ export default function SignInAdditionalInformation() {
                             control={methods.control}
                         />
                         <BottomNavigation>
-                            <InputLater onPress={handleLater}>
-                                <Text>나중에 하기</Text>
-                            </InputLater>
                             <SubmitButton onPress={methods.handleSubmit(handleSubmit)}>
                                 <Icon
                                     name="keyboard-arrow-right"
@@ -266,6 +269,12 @@ const HandleInformationItem = styled.TouchableOpacity<InformationItem>`
 const SignInAdditionalInformationBlock = styled(SafeAreaView)`
     padding-vertical: 40px;
     flex-direction: column;
+`
+
+const StepNavigator = styled.View`
+    justify-content: space-between;
+    padding: 16px;
+    flex-direction: row;
 `
 
 export const ItemBlock = styled.View<{ display: boolean }>`
