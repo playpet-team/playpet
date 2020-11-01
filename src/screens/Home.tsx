@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 import Logo from '../components/Logo'
 import PlaypetModal from '../components/PlaypetModal'
 import ProfileSection from '../components/ProfileSection'
@@ -21,8 +21,10 @@ const DEVICE_WIDTH = deviceSize().width
 const DEVICE_HEIGHT = deviceSize().height
 
 export default function Home() {
+    const [activeFeedItem, setActiveFeedItem] = useState(-1)
     const { loading, setLoading } = useLoadingIndicator()
     const [showFeedBoard, setShowFeedBoard] = useState(false)
+    const theme = useTheme()
     useLanguage()
     // useFirebaseMessage()
     useInitialDynamicLink()
@@ -109,6 +111,26 @@ export default function Home() {
                                 <Text>1</Text>
                             </Item>
                         </GridLayout>
+                        <FeedNavigateBlock>
+                            <BackButton>
+                                <Text
+                                    color={theme.colors.border}
+                                    size={16}
+                                    bold
+                                >
+                                    이전
+                                </Text>
+                            </BackButton>
+                            <NextButton>
+                                <Text
+                                    color={theme.colors.background}
+                                    size={16}
+                                    bold
+                                >
+                                    다음
+                                </Text>
+                            </NextButton>
+                        </FeedNavigateBlock>
                     </FeedBoardBlock>
                 </PlaypetModal>
             }
@@ -131,6 +153,7 @@ const HomeBlock = styled.View`
 const FeedBoardBlock = styled(SafeAreaView)`
     padding-vertical: 40px;
     flex-direction: column;
+    height: 100%;
 `
 
 const GridLayout = styled.View`
@@ -139,7 +162,7 @@ const GridLayout = styled.View`
     flex-direction: row;
 `
 
-const Item = styled.View`
+const Item = styled.TouchableOpacity`
     flex: 1;
     margin: 8px 8px 0 0;
     flex-basis: 110px;
@@ -147,4 +170,27 @@ const Item = styled.View`
     border-width: 1px;
     border-radius: 8px;
     background-color: ${({ theme }) => theme.colors.grey};
+`
+
+const FeedNavigateBlock = styled.View`
+    flex-direction: row;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+`
+
+const Button = styled.TouchableOpacity`
+    padding: 16px;
+    background-color: ${(props) => props.theme.colors.background};
+    align-items: center;
+    justify-content: center;
+`
+
+const NextButton = styled(Button)`
+    flex: 1;
+    background-color: ${(props) => props.theme.colors.primary};
+`
+
+const BackButton = styled(Button)`
+    flex-basis: 120px;
 `
