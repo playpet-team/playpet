@@ -79,19 +79,24 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                     console.log("33")
                     
                     try {
+                        console.log('444', customToken)
                         await signInWithCustomToken(customToken)
+                        console.log('555')
                         putAsyncStorage('customToken', {
                             customToken,
                             email: profile.email,
                             provider: method,
                         })
                         updateUserAuthToken(uid, customToken)
+                        console.log('666')
                         const success = checkUser()
+                        console.log("777", success);
                         if (success) {
                             setIsSignUp(newUser)
                         }
         
                     } catch (e) {
+                        console.error("eee", e);
                         Sentry.captureException(`getCredential-${e}`)
                         if (e.code != "auth/account-exists-with-different-credential") {
                             setToastContent({

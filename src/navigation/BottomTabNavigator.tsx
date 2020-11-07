@@ -137,22 +137,22 @@ export default function BottomTabNavigator() {
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 export type HomeNavigatorTabParamList = {
     HomeNavigator: undefined;
-    ProductWebView: {
-        url: string;
-        title: string;
-    };
-    IamportHome: {
-        type: any;
-        response: any;
-    };
-    Payment: {
-        userCode: any;
-        data: any;
-    };
-    AuthCertification: {
-        userCode: any;
-        data: any;
-    };
+    // ProductWebView: {
+    //     url: string;
+    //     title: string;
+    // };
+    // IamportHome: {
+    //     type: any;
+    //     response: any;
+    // };
+    // Payment: {
+    //     userCode: any;
+    //     data: any;
+    // };
+    // AuthCertification: {
+    //     userCode: any;
+    //     data: any;
+    // };
     // AppLoginAgreeTerms: undefined;
 };
 const HomeNavigatorTapStack = createStackNavigator<HomeNavigatorTabParamList>();
@@ -168,14 +168,14 @@ function HomeNavigator() {
                     headerTitle: '홈',
                 }}
             />
-            <HomeNavigatorTapStack.Screen
+            {/* <HomeNavigatorTapStack.Screen
                 name="ProductWebView"
                 component={ProductWebView}
                 options={({ route }) => ({
                     title: route.params.title,
                     gestureEnabled: false,
                 })}
-            />
+            /> */}
             {/* <HomeNavigatorTapStack.Screen
                 name="Payment"
                 component={Payment}

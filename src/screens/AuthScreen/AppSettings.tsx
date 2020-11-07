@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/react-native"
 import * as Updates from 'expo-updates'
 import i18n from 'i18n-js'
 import React from 'react'
-import { Alert } from 'react-native'
+import { Alert, NativeModules } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,8 +17,58 @@ import { leave, signOut } from '../../utils'
 export default function AppSettings() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
     const { isLogged } = useSelector((state: RootState) => state.auth)
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const navigation = useNavigation()
+
+    const handleLogout = () => {
+        Alert.alert('정말로 로그아웃하시게요?', '', [
+            {
+                text: '취소',
+            },
+            {
+                text: '로그아웃',
+                onPress: async () => {
+                    try {
+                        setLoading(true)
+                        await signOut(SignType.Google)
+                        NativeModules.DevSettings.reload()
+                        // await Updates.reloadAsync()
+                        // navigation.navigate('AppLogin', { screen: 'AppLogin' })
+                    } catch (e) {
+                        Sentry.captureException(e)
+                        alert('로그아웃에 실패하였습니다. 잠시후 다시 시도해 주세요')
+                    } finally {
+                        setLoading(false)
+                    }
+                },
+            },
+        ])
+    }
+
+    const handleLeave = () => {
+        Alert.alert('정말로 탈퇴하시게요?', '', [
+            {
+                text: '취소',
+            },
+            {
+                text: '탈퇴하기',
+                onPress: async () => {
+                    try {
+                        setLoading(true)
+                        await leave()
+                        NativeModules.DevSettings.reload()
+                        // await Updates.reloadAsync()
+                        // navigation.navigate('AppLogin', { screen: 'AppLogin' })
+                    } catch (e) {
+                        Sentry.captureException(e)
+                        alert('회원탈퇴에 실패하였습니다. 잠시후 다시 시도해 주세요')
+                    } finally {
+                        setLoading(false)
+                    }
+                },
+            },
+        ])
+    }
 
     return (
         <ScrollView>
@@ -42,11 +92,11 @@ export default function AppSettings() {
                 <>
                     <ListItem
                         title={i18n.t('common.logout')}
-                        onPress={() => handleLogout(setLoading, dispatch, navigation.navigate)}
+                        onPress={handleLogout}
                     />
                     <ListItem
                         title={i18n.t('common.leave')}
-                        onPress={() => handleLeave(setLoading, dispatch, navigation.navigate)}
+                        onPress={handleLeave}
                     />
                 </>
             }
@@ -58,59 +108,7 @@ export default function AppSettings() {
     )
 }
 
-const handleLogout = (
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    dispatch: React.Dispatch<any>,
-    navigate: Function
-) => {
-    Alert.alert('정말로 로그아웃하시게요?', '', [
-        {
-            text: '취소',
-        },
-        {
-            text: '로그아웃',
-            onPress: async () => {
-                try {
-                    setLoading(true)
-                    await signOut(SignType.Google)
-                    navigate('AuthScreen')
-                } catch (e) {
-                    Sentry.captureException(e)
-                    alert('로그아웃에 실패하였습니다. 잠시후 다시 시도해 주세요')
-                } finally {
-                    setLoading(false)
-                }
-            },
-        },
-    ])
-}
 
-const handleLeave = (
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    dispatch: React.Dispatch<any>,
-    navigate: Function
-) => {
-    Alert.alert('정말로 탈퇴하시게요?', '', [
-        {
-            text: '취소',
-        },
-        {
-            text: '탈퇴하기',
-            onPress: async () => {
-                try {
-                    setLoading(true)
-                    await leave()
-                    navigate('AuthScreen')
-                } catch (e) {
-                    Sentry.captureException(e)
-                    alert('회원탈퇴에 실패하였습니다. 잠시후 다시 시도해 주세요')
-                } finally {
-                    setLoading(false)
-                }
-            },
-        },
-    ])
-}
 
 const Section = styled.View`
     margin-top: 16px;

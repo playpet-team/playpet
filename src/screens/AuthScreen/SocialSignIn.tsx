@@ -31,6 +31,7 @@ export default function SocialSignIn() {
     // const dispatch = useDispatch()
 
     useEffect(() => {
+        console.log("isSignUp------", isSignUp);
         if (isSignUp === false) {
             navigation.navigate('Home')
         }
