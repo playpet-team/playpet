@@ -14,7 +14,7 @@ import { Text } from "../../styles"
 import { currentUser, deviceSize, updateUserPets } from '../../utils'
 import { PetTypes } from "../../utils/product"
 import PetAdditionalType from './SignInAdditionalInformation/PetAdditionalType'
-import PetFavorite from "./SignInAdditionalInformation/PetFavorite"
+// import PetFavorite from "./SignInAdditionalInformation/PetFavorite"
 import PetKind from "./SignInAdditionalInformation/PetKind"
 import PetName from "./SignInAdditionalInformation/PetName"
 import PetType from "./SignInAdditionalInformation/PetType"
@@ -39,10 +39,11 @@ interface PetInformationData {
 }
 const DEVICE_WIDTH = deviceSize().width
 
-export default function SignInAdditionalInformation() {
+export default function SignInAdditionalInformation({ setShowRegistPet }: {
+    setShowRegistPet: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
     const { loading, Indicator } = useLoadingIndicator()
-    const [visible, setVisible] = useState(true)
-    const methods = useForm({})
+    const methods = useForm()
     const [openItem, setOpenItem] = useState<PetItems>('')
     const themes = useTheme()
     const dispatch = useDispatch()
@@ -64,11 +65,11 @@ export default function SignInAdditionalInformation() {
         }
     }, [openItem])
 
-    const handleLater = () => setVisible(false)
+    const handleLater = () => setShowRegistPet(false)
 
     const handleSubmit = async (data: PetInformationData) => {
         await handleUpdatePet(data)
-        setVisible(false)
+        setShowRegistPet(false)
     }
     
     const handleUpdatePet = useCallback(async ({ petName, petType, petKind, size, age, favorite }: PetInformationData) => {
@@ -95,8 +96,8 @@ export default function SignInAdditionalInformation() {
 
     return (
         <PlaypetModal
-            modalVisible={visible}
-            isHideCloseButton={true}
+            modalVisible
+            isHideCloseButton
             modalJustify="flex-end"
             containerStyle={{
                 width: DEVICE_WIDTH,
@@ -113,7 +114,7 @@ export default function SignInAdditionalInformation() {
             <SignInAdditionalInformationBlock>
                 <StepNavigator>
                     <Text>{'<'}</Text>
-                    <Text>등록해주세요</Text>
+                    <Text>반려동물 등록하기</Text>
                     <InputLater onPress={handleLater}>
                         <Text>X</Text>
                     </InputLater>
@@ -180,7 +181,7 @@ export default function SignInAdditionalInformation() {
                             control={methods.control}
                             petType={methods.getValues('petType') as PetTypes}
                         />
-                        <HandleInformationItem
+                        {/* <HandleInformationItem
                             onPress={() => handleSetOpenItem('PetFavorite')}
                             colors={{
                                 border: themes.colors.border,
@@ -189,11 +190,11 @@ export default function SignInAdditionalInformation() {
                             status={methods.errors['favorite'] ? 'invalid' : ''}
                         >
                             <Text>관심분야를 알려주세요</Text>
-                        </HandleInformationItem>
-                        <PetFavorite
+                        </HandleInformationItem> */}
+                        {/* <PetFavorite
                             openItem={openItem}
                             control={methods.control}
-                        />
+                        /> */}
                         <BottomNavigation>
                             <SubmitButton onPress={methods.handleSubmit(handleSubmit)}>
                                 <Icon

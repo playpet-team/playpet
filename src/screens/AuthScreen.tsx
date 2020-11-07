@@ -1,5 +1,6 @@
 import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 import React from 'react'
+import { Button } from 'react-native'
 import { Image } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useSelector } from 'react-redux'
@@ -24,11 +25,7 @@ export default function AuthScreen() {
         <ScrollView>
             <ProfileSection />
             <ProfileInfoBlock>
-                {/* <ProfileName>
-                    <Text>{username}</Text>
-                    <Text>{email}</Text>
-                </ProfileName>
-                <Button onPress={() => navigation.navigate('ProfileSetting')} title="프로필 설정" /> */}
+                <Button onPress={() => navigation.navigate('ProfileSetting')} title="프로필 설정" />
             </ProfileInfoBlock>
             <Section>
                 <ListItem
@@ -68,7 +65,7 @@ export default function AuthScreen() {
                     onPress={() => { }}
                 />
                 <ListItem
-                    title='고객센터'
+                    title='1:1 상담하기'
                     titleStyle={{
                         fontSize: 18,
                         fontWeight: 'bold'

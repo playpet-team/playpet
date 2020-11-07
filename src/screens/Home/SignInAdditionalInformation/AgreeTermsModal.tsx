@@ -54,9 +54,7 @@ export default function AgreeTermsModal() {
             }))
 
             setModalVisible(false)
-            navigation.navigate('Home', {
-                isSignUp: true,
-            })
+            navigation.navigate('Home')
 
         } catch (e) {
             Sentry.captureException(e)

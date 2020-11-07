@@ -2,7 +2,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { Icon } from 'react-native-elements';
+import ManageProducts from '../screens/ManageProducts';
 import ProductWebView from '../components/ProductWebView';
+
 // import AppLogin from '../screens/AppLogin';
 import AuthScreen from '../screens/AuthScreen';
 import AppSettings from '../screens/AuthScreen/AppSettings';
@@ -22,7 +24,7 @@ import { defaultColorPalette } from '../styles/colors';
 
 export type BottomTabParamList = {
     Home: undefined;
-    Order: undefined;
+    ManageProducts: undefined;
     Recommendation: undefined;
     // SubscribeForm: undefined;
     // PlayGround: undefined;
@@ -52,8 +54,8 @@ export default function BottomTabNavigator() {
                 }}
             />
             <BottomTab.Screen
-                name="Order"
-                component={OrderNavigator}
+                name="ManageProducts"
+                component={ManageProductsNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => <Icon
                         name="attach-money"
@@ -200,18 +202,18 @@ function HomeNavigator() {
 }
 
 export type OrderParamList = {
-    OrderScreen: undefined;
+    ManageProducts: undefined;
 };
 const BlankTapStack = createStackNavigator<OrderParamList>();
-function OrderNavigator() {
+function ManageProductsNavigator() {
     return (
         <BlankTapStack.Navigator>
             <BlankTapStack.Screen
-                name="OrderScreen"
-                component={Order}
+                name="ManageProducts"
+                component={ManageProducts}
                 options={({ navigation }) => ({
                     headerShown: false,
-                    headerTitle: '놀이터',
+                    headerTitle: '관리',
                 })}
             />
         </BlankTapStack.Navigator>

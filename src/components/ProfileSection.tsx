@@ -17,20 +17,17 @@ function ProfileSection() {
 
     const themes = useTheme();
     
-
-    const navigation = useNavigation()
-
     return (
         <ProfileSectionBlock>
             <ProfileBlock>
                 <AvatarBlock>
-                    <Avatar
+                    {Boolean(profilePhoto) && <Avatar
                         size="large"
                         rounded
                         source={{
                             uri: profilePhoto,
                         }}
-                    />
+                    />}
                 </AvatarBlock>
                 <UserInfoBlock>
                     <Text>{username || '이름을 설정해주세요'}</Text>
