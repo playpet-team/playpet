@@ -1,6 +1,5 @@
 import firestore from '@react-native-firebase/firestore'
 import { Collections } from '../../models'
-import { ProductItem } from './../../components/ProductListItem'
 
 export const loadProduct = async (PID: string) => {
     return (await firestore()
@@ -9,10 +8,12 @@ export const loadProduct = async (PID: string) => {
         .get()).data() as ProductItem
 }
 
-export const loadProductList = async () => {
+export const loadProductList = async (type = 'DOG') => {
     const productList = await firestore()
         .collection(Collections.Products)
         .where('status', '==', 'active')
+        .where('type', '==', type)
+        .orderBy('desc')
         .get()
 
     return productList.docs.map((product: any) => {
@@ -23,29 +24,28 @@ export const loadProductList = async () => {
     })
 }
 
-
-export type PetTypes = "" | "DOG" | "CAT" | "ETC" | "NOT_YET"
-export interface ProductForm {
-    id: string
-    uid: string
-    title: string
-    status: 'active' | 'deactive'
-    description: string
-    petType: PetTypes
-    ratings: number
-    mallName: string
-    originalCategoery: string
-    tags: string[]
-    category: string
-    url: string
+type Pet = ['DOG', 'CAT']
+type Breed = [
+    "SMALL",
+    "MEDIUM",
+    "LARGE"
+]
+export interface ProductItem {
+    id: string;
+    pet: Pet
+    breed: Breed
+    feedName: string
+    feedKind: string
+    packingUnit: string[]
+    ageGroup: string
+    rawMaterial: string[]
+    particleSize: string
+    individualPacking: boolean
+    allergic: boolean
+    function: string[]
+    expirationDate: string
+    manufacturer: string
+    countryOfOrigin: string
     image: string
-    price: number
-    discountPrice: number
-    hits: number
-    reviewCount: number
-    orderCount: number
-    profits: number
-    createdAt: any
-    updatedAt: any
-    expiredAt: any
+    description: string
 }

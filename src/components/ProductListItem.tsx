@@ -1,100 +1,60 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import styled, { css } from 'styled-components/native';
-import { decimalWonPrice } from '../utils';
+import { GestureResponderEvent } from 'react-native';
+import { Avatar } from 'react-native-elements';
+import styled from 'styled-components/native';
+import { Text } from '../styles';
+import { ProductItem } from '../utils/product';
 
-export interface ProductItem {
-    id: string;
-    image: string;
-    title: string;
-    description: string;
-    price: number;
-    url: string;
+type PickProductItem = Pick<ProductItem, 'feedName' | 'image' | 'description'>
+interface Item extends PickProductItem {
+    isActive: boolean;
+    onPress: (event: GestureResponderEvent) => void;
 }
 function ProductListItem({
+    isActive = false,
+    onPress,
+    feedName,
     image,
-    title,
     description,
-    price,
-    url,
-}: ProductItem) {
-    const navigation = useNavigation();
-    // const { isLogged } = useSelector((state: RootState) => state.auth);
-
-    const handleProduct = () => {
-        // if (!isLogged) {
-        //     alert('로그인이 필요합니다');
-        // }
-        navigation.navigate('ProductWebView', {
-            url,
-            title,
-        });
-    };
-
+}: Item) {
     return (
-        <ProductListItemBlock testID="ProductListItem-block" onPress={handleProduct}>
-            <Image
+        <ProductListItemBlock
+            onPress={onPress}
+            isActive={isActive}
+        >
+            {image && <Avatar
                 source={{ uri: image }}
-                resizeMode="cover"
-            />
-            <Texts type="title">{title}</Texts>
-            <Texts type="description">{description}</Texts>
-            <DescriptionBlock>
-                <Texts></Texts>
-                <Texts type="price">{decimalWonPrice(price)}</Texts>
-            </DescriptionBlock>
+                size="small"
+                rounded
+                containerStyle={{
+                    marginRight: 8,
+                    width: 70,
+                    height: 70,
+                }}
+            />}
+            <Content>
+                <Text bold>{feedName}</Text>
+                <Text>{description}</Text>
+            </Content>
         </ProductListItemBlock>
     )
 };
 
 export default ProductListItem;
 
-const ProductListItemBlock = styled.TouchableOpacity`
-    margin-bottom: 16px;
-    width: 50%;
-    padding-horizontal: 16px;
-    /* border-radius: 8px; */
-`;
-
-interface TextProps {
-    type?: 'title' | 'description' | 'price';
-}
-const Texts = styled.Text<TextProps>`
-    ${({ type }) => {
-        switch (type) {
-            case 'title': {
-                return css`
-                    min-height: 45px;
-                    margin-top: 8px;
-                    font-size: 16px;
-                    font-weight: 600;
-                `;
-            }
-            case 'description': {
-                return css`
-                    margin-top: 4px;
-                `;
-            }
-            case 'price': {
-                return css`
-                    text-align: right;
-                    font-weight: 800;
-                `;
-            }
-        }
-        return;
-    }}
-`;
-
-const DescriptionBlock = styled.View`
-    margin-top: 8px;
-    flex-direction: row;
+const Content = styled.View`
+    /* height: 100px; */
     justify-content: space-between;
-    align-items: center;
-`;
-
-const Image = styled.Image`
-    width: 100%;
-    height: 140px;
+    padding: 8px;
+`
+const ProductListItemBlock = styled.TouchableOpacity<{isActive: boolean}>`
+    padding: 16px;
+    /* flex: 1; */
+    margin-top: 8px;
+    border-width: 2px;
     border-radius: 8px;
-`;
+    flex-direction: row;
+    border-color: ${({ isActive }) => isActive ? '#0559D1' : '#C4C4C4'};
+    background-color: ${({ isActive }) => isActive ? 'rgba(5, 89, 209, 0.1)' : '#fff'};
+`

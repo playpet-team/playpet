@@ -17,7 +17,8 @@ function RegistFeedBoard({ setShowFeedBoard }: {
     setShowFeedBoard: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
     const [step, setStep] = useState<REGIST_FEED_STEPS>(REGIST_FEED_STEPS.BRANDS)
-    const [activeFeedItem, setActiveFeedItem] = useState(-1)
+    const [activeFeedItem, setActiveFeedItem] = useState('')
+    const [activeFeedBrand, setActiveFeedBrand] = useState('')
     const theme = useTheme()
 
     const nextSteps = () => {
@@ -58,8 +59,8 @@ function RegistFeedBoard({ setShowFeedBoard }: {
         >
             <FeedBoardBlock>
                 {step === REGIST_FEED_STEPS.BRANDS && <RegistFeedBrand
-                    activeFeedItem={activeFeedItem}
-                    setActiveFeedItem={setActiveFeedItem}
+                    activeFeedBrand={activeFeedBrand}
+                    setActiveFeedBrand={setActiveFeedBrand}
                 />}
                 {step === REGIST_FEED_STEPS.ITEMS && <RegistFeedItems
                     activeFeedItem={activeFeedItem}

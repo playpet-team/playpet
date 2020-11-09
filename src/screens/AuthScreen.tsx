@@ -11,7 +11,6 @@ import { AuthTapParamList } from '../navigation/BottomTabNavigator'
 import { RootState } from '../store/rootReducers'
 import { DividerBlock } from '../styles'
 import { linkingUrl } from '../utils'
-import SignInAdditionalInformation from './Home/SignInAdditionalInformation'
 
 export default function AuthScreen() {
     const { params } = useRoute<RouteProp<AuthTapParamList, 'AuthScreen'>>();
@@ -80,9 +79,6 @@ export default function AuthScreen() {
                     />}
                 />
             </Section>
-            {(isLogged && params?.isSignUp && isFocus) &&
-                <SignInAdditionalInformation />
-            }
         </ScrollView>
     )
 }

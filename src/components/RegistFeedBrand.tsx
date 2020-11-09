@@ -4,11 +4,11 @@ import { deviceSize } from "../utils"
 import { Text } from '../styles'
 
 function RegistFeedBrand({
-    setActiveFeedItem,
-    activeFeedItem
+    setActiveFeedBrand,
+    activeFeedBrand
 }: {
-    setActiveFeedItem: React.Dispatch<React.SetStateAction<number>>;
-    activeFeedItem: number;
+    setActiveFeedBrand: React.Dispatch<React.SetStateAction<string>>;
+    activeFeedBrand: string;
 }) {
 
     return (
@@ -16,11 +16,11 @@ function RegistFeedBrand({
             <Text bold>등록하실 사료를 선택해주세요</Text>
             <Text>사료 중에서 가장 엄선한 브랜드만 선별하였습니다</Text>
             <GridLayout>
-                {[1, 2, 3, 4, 5].map(item => (
+                {['1', '2', '3', '4', '5'].map(item => (
                     <Item
                         key={item}
-                        onPress={() => setActiveFeedItem(item)}
-                        isActive={activeFeedItem === item}
+                        onPress={() => setActiveFeedBrand(item)}
+                        isActive={activeFeedBrand === item}
                     >
                         <Text>{item}</Text>
                     </Item>

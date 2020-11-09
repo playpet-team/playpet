@@ -1,74 +1,44 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled, { useTheme } from 'styled-components/native'
 import { deviceSize } from "../utils"
 import { Text } from '../styles'
 import { Avatar } from 'react-native-elements';
+import { loadProductList } from "../utils/product";
+import ProductListItem from "./ProductListItem";
+import { ProductItem } from '../utils/product';
 
-const dummyItems = [{
-    id: 0,
-    title: '로얄캐닌 미니 인도어 어덜트',
-    description: '3kg - 1달 용량으로 충분합니다',
-    thumbnail: 'https://contents.lotteon.com/itemimage/LM/88/01/11/51/14/13/0_/00/1/LM8801115114130_001_1.jpg/dims/resizef/824X824',
-}, {
-    id: 1,
-    title: '2로얄캐닌 미니 인도어 어덜트',
-    description: '3kg - 1달 용량으로 충분합니다',
-    thumbnail: 'https://contents.lotteon.com/itemimage/LM/88/01/11/51/14/13/0_/00/1/LM8801115114130_001_1.jpg/dims/resizef/824X824',
-}, {
-    id: 2,
-    title: '3로얄캐닌 미니 인도어 어덜트',
-    description: '3kg - 1달 용량으로 충분합니다',
-    thumbnail: 'https://contents.lotteon.com/itemimage/LM/88/01/11/51/14/13/0_/00/1/LM8801115114130_001_1.jpg/dims/resizef/824X824',
-}, {
-    id: 3,
-    title: '4로얄캐닌 미니 인도어 어덜트',
-    description: '3kg - 1달 용량으로 충분합니다',
-    thumbnail: 'https://contents.lotteon.com/itemimage/LM/88/01/11/51/14/13/0_/00/1/LM8801115114130_001_1.jpg/dims/resizef/824X824',
-}, {
-    id: 4,
-    title: '5로얄캐닌 미니 인도어 어덜트',
-    description: '3kg - 1달 용량으로 충분합니다',
-    thumbnail: 'https://contents.lotteon.com/itemimage/LM/88/01/11/51/14/13/0_/00/1/LM8801115114130_001_1.jpg/dims/resizef/824X824',
-}, {
-    id: 5,
-    title: '6로얄캐닌 미니 인도어 어덜트',
-    description: '3kg - 1달 용량으로 충분합니다',
-    thumbnail: 'https://contents.lotteon.com/itemimage/LM/88/01/11/51/14/13/0_/00/1/LM8801115114130_001_1.jpg/dims/resizef/824X824',
-}]
 function RegistFeedItems({
     setActiveFeedItem,
     activeFeedItem
 }: {
-    setActiveFeedItem: React.Dispatch<React.SetStateAction<number>>;
-    activeFeedItem: number;
+    setActiveFeedItem: React.Dispatch<React.SetStateAction<string>>;
+    activeFeedItem: string;
 }) {
+    const [feeds, setFeeds] = useState<ProductItem[]>([])
+
+    useEffect(() => {
+        async function loadProduct() {
+            const data = await loadProductList('DOG')
+            console.log("data---", data);
+            setFeeds(data)
+        }
+        loadProduct();
+    }, [])
 
     return (
         <RegistFeedItemsBlock>
             <Text bold>등록하실 사료를 선택해주세요</Text>
             <Text>회원님의 정보를 통해 적합한 사료만 노출됩니다</Text>
             <GridLayout>
-                {dummyItems.map(item => (
-                    <Item
-                        key={item.id}
-                        onPress={() => setActiveFeedItem(item.id)}
-                        isActive={activeFeedItem === item.id}
-                    >
-                        <Avatar
-                            source={{ uri: item.thumbnail }}
-                            size="small"
-                            rounded
-                            containerStyle={{
-                                marginRight: 8,
-                                width: 70,
-                                height: 70,
-                            }}
-                        />
-                        <Content>
-                            <Text bold>{item.title}</Text>
-                            <Text>{item.description}</Text>
-                        </Content>
-                    </Item>
+                {feeds.map(({ id, feedName, description, image }) => (
+                    <ProductListItem
+                        key={id}
+                        feedName={feedName}
+                        description={description}
+                        image={image}
+                        onPress={() => setActiveFeedItem(id)}
+                        isActive={activeFeedItem === id}
+                    />
                 ))}
             </GridLayout>
         </RegistFeedItemsBlock>
