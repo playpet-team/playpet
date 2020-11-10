@@ -7,7 +7,7 @@ import styled from "styled-components/native"
 import ListItem from "../../../components/ListItem"
 import { DividerBlock, Text } from "../../../styles"
 import { PetTypes } from "../../../utils/product"
-import { ItemBlock, PetItems } from "../SignInAdditionalInformation"
+import { ItemBlock, PetItems } from "."
 
 export default function PetKind({ petType, control, openItem }: {
     control: Control<Record<string, any>>

@@ -3,7 +3,7 @@ import { Control, Controller, DeepMap, FieldError } from "react-hook-form"
 import { Input } from "react-native-elements"
 import Transition from "../../../components/Transition"
 import { DividerBlock } from "../../../styles"
-import { ItemBlock, PetItems } from "../SignInAdditionalInformation"
+import { ItemBlock, PetItems } from "."
 
 export default function PetName({ control, errors, openItem }: {
     control: Control<Record<string, any>>

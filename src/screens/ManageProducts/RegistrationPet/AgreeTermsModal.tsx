@@ -9,7 +9,7 @@ import useLoadingIndicator from '../../../hooks/useLoadingIndicator';
 import { authActions } from '../../../store/authReducer';
 import { Text } from '../../../styles';
 import { currentUser, updateUserTerms } from '../../../utils';
-import { Terms } from '../SignInAdditionalInformation';
+import { Terms } from '.';
 
 
 export default function AgreeTermsModal() {

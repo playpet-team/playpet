@@ -13,7 +13,7 @@ import PlaypetModal from '../../components/PlaypetModal'
 import Toast, { ToastParams } from '../../components/Toast'
 import { SignType } from '../../models'
 import initializeSignIn from '../../utils/auth/initializeSignIn'
-import AgreeTermsModal from '../Home/SignInAdditionalInformation/AgreeTermsModal'
+import AgreeTermsModal from '../ManageProducts/RegistrationPet/AgreeTermsModal'
 
 export default function SocialSignIn() {
     const { control, handleSubmit, errors } = useForm();

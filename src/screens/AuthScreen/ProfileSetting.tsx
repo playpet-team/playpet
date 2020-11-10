@@ -14,7 +14,7 @@ import { RootState } from '../../store/rootReducers'
 import { DividerBlock, Layout, Text } from '../../styles'
 import { currentUser, firebaseNow, getPetDoc, resetUserActivePetDocId, updateUsername, updateUserProfilePhoto } from '../../utils'
 import { useUploadFirestore } from '../CardFormScreen/useUploadFirestore'
-import SignInAdditionalInformation from '../Home/SignInAdditionalInformation'
+import RegistrationPet from '../ManageProducts/RegistrationPet'
 
 const MAX_USERNAME_LENGTH = 16
 const MIN_USERNAME_LENGTH = 2
@@ -213,7 +213,6 @@ export default function ProfileSetting() {
                     disabled
                 />
             </View>
-            {openAdditionalInformation && <SignInAdditionalInformation />}
         </ProfileSettingBlock>
     )
 }

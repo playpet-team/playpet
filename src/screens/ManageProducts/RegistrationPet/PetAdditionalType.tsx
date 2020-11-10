@@ -4,7 +4,7 @@ import { Control, Controller } from "react-hook-form";
 import styled from "styled-components/native";
 import { DividerBlock, Text } from "../../../styles";
 import { PetTypes } from "../../../utils/product";
-import { ItemBlock, PetItems } from "../SignInAdditionalInformation";
+import { ItemBlock, PetItems } from ".";
 
 export const PET_TYPE: ['DOG', 'CAT'] = [
     'DOG',

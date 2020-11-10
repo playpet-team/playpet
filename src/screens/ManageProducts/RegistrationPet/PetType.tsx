@@ -4,7 +4,7 @@ import { Control, Controller } from "react-hook-form"
 import { Image } from "react-native"
 import styled, { css } from 'styled-components/native'
 import { DividerBlock } from "../../../styles"
-import { ItemBlock, PetItems } from "../SignInAdditionalInformation"
+import { ItemBlock, PetItems } from "."
 import { PET_TYPE } from "./PetAdditionalType"
 
 const petSrcMap: any = {

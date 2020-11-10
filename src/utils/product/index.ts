@@ -23,8 +23,8 @@ export const loadProductList = async (type = 'DOG') => {
         }
     })
 }
-
-type Pet = ['DOG', 'CAT']
+export type PetTypes = "" | "DOG" | "CAT"
+type Pet = PetTypes[]
 type Breed = [
     "SMALL",
     "MEDIUM",

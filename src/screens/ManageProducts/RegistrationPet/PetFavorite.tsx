@@ -4,7 +4,7 @@ import { Control, Controller } from "react-hook-form";
 import styled from "styled-components/native";
 import Transition from "../../../components/Transition";
 import { Text } from "../../../styles";
-import { ItemBlock, PetItems } from "../SignInAdditionalInformation";
+import { ItemBlock, PetItems } from ".";
 import { TypeItem } from './PetAdditionalType';
 
 export const Favorites: { [key: string]: string } = {

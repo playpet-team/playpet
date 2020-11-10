@@ -3,7 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { Icon } from 'react-native-elements';
 import ManageProducts from '../screens/ManageProducts';
-import ProductWebView from '../components/ProductWebView';
+import RegistrationPet from '../screens/ManageProducts/RegistrationPet';
+import RegistFeedBoard from '../screens/ManageProducts/RegistFeedBoard';
 
 // import AppLogin from '../screens/AppLogin';
 import AuthScreen from '../screens/AuthScreen';
@@ -19,6 +20,7 @@ import Recommendation from '../screens/Recommendation';
 // import PlayGroundScreen from '../screens/PlayGroundScreen';
 // import SubscribeFormScreen from '../screens/SubscribeFormScreen';
 import { defaultColorPalette } from '../styles/colors';
+
 
 
 
@@ -201,14 +203,16 @@ function HomeNavigator() {
     );
 }
 
-export type OrderParamList = {
+export type ManageParamList = {
     ManageProducts: undefined;
+    RegistrationPet: undefined;
+    RegistFeedBoard: undefined;
 };
-const BlankTapStack = createStackNavigator<OrderParamList>();
+const ManageStack = createStackNavigator<ManageParamList>();
 function ManageProductsNavigator() {
     return (
-        <BlankTapStack.Navigator>
-            <BlankTapStack.Screen
+        <ManageStack.Navigator>
+            <ManageStack.Screen
                 name="ManageProducts"
                 component={ManageProducts}
                 options={({ navigation }) => ({
@@ -216,7 +220,23 @@ function ManageProductsNavigator() {
                     headerTitle: '관리',
                 })}
             />
-        </BlankTapStack.Navigator>
+            <ManageStack.Screen
+                name="RegistrationPet"
+                component={RegistrationPet}
+                options={({ navigation }) => ({
+                    headerShown: false,
+                    headerTitle: '반려동물 등록',
+                })}
+            />
+            <ManageStack.Screen
+                name="RegistFeedBoard"
+                component={RegistFeedBoard}
+                options={({ navigation }) => ({
+                    headerShown: false,
+                    headerTitle: '반려동물 등록',
+                })}
+            />
+        </ManageStack.Navigator>
     );
 };
 

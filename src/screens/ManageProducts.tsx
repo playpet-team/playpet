@@ -3,13 +3,12 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { useTheme } from 'styled-components/native'
-import RegistFeedBoard from '../components/RegistFeedBoard';
 import useLoadingIndicator from '../hooks/useLoadingIndicator';
 import { authActions } from '../store/authReducer';
 import { RootState } from '../store/rootReducers';
 import { Text } from '../styles';
 import { getPetDoc } from '../utils';
-import SignInAdditionalInformation from './Home/SignInAdditionalInformation';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ManageProducts() {
     const { loading, setLoading } = useLoadingIndicator()
@@ -22,7 +21,8 @@ export default function ManageProducts() {
         activePetDocId,
         activePet,
     } = useSelector((state: RootState) => state.auth)
-
+    
+    const navigation = useNavigation()
     const theme = useTheme();
 
     useEffect(() => {
@@ -42,21 +42,24 @@ export default function ManageProducts() {
         if (!activePetDocId) {
             Alert.alert('반려동물을 먼저 등록해주세요')
         }
-        setShowFeedBoard(true);
+        navigateRegistFeedBoard()
     };
+
+    const navigateRegistrationPet = () => navigation.navigate('RegistrationPet')
+    const navigateRegistFeedBoard = () => navigation.navigate('RegistFeedBoard')
 
     return (
         <ManageProductsBlock>
             <ItemTitle>
                 <Text bold size={16}>반려 동물</Text>
-                <Text onPress={() => setShowRegistPet(true)}>+ 등록하기</Text>
+                <Text onPress={navigateRegistrationPet}>+ 등록하기</Text>
             </ItemTitle>
             
             <ScrollSection>
                 {activePetDocId === '' &&
                     <Text
                         color={theme.colors.text}
-                        onPress={() => setShowRegistPet(true)}
+                        onPress={navigateRegistrationPet}
                     >
                         등록된 반려동물이 없습니다
                     </Text>
@@ -79,12 +82,10 @@ export default function ManageProducts() {
                         color={theme.colors.text}
                         bold
                     >
-                        반려동물을 먼저 등록해주세요
+                        {activePetDocId === '' ? '반려동물을 먼저 등록해주세요' : '등록하기'}
                     </Text>
                 </AddPetButton>
             </ScrollSection>
-            {showRegistPet && <SignInAdditionalInformation setShowRegistPet={setShowRegistPet} />}
-            {showFeedBoard && <RegistFeedBoard setShowFeedBoard={setShowFeedBoard} />}
         </ManageProductsBlock>
     );
 }
