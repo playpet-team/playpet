@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../store/rootReducers'
 import i18n from 'i18n-js'
 import { useNavigation } from '@react-navigation/native'
-import { Text } from '../styles'
+import { DividerBlock, Text } from '../styles'
 
 function ProfileSection() {
     const {
@@ -14,27 +14,33 @@ function ProfileSection() {
         username,
         email,
     } = useSelector((state: RootState) => state.auth)
-
-    const themes = useTheme();
+    const navigation = useNavigation()
+    const themes = useTheme()
     
     return (
         <ProfileSectionBlock>
             <ProfileBlock>
                 <AvatarBlock>
-                    {Boolean(profilePhoto) && <Avatar
-                        size="large"
-                        rounded
-                        source={{
-                            uri: profilePhoto,
-                        }}
-                    />}
+                    {Boolean(profilePhoto) &&
+                        <Avatar
+                            size="medium"
+                            rounded
+                            source={{
+                                uri: profilePhoto,
+                            }}
+                            containerStyle={{
+                                marginRight: 8,
+                            }}
+                        />
+                    }
                 </AvatarBlock>
                 <UserInfoBlock>
-                    <Text>{username || '이름을 설정해주세요'}</Text>
-                    <Text>플레이펫 멤버쉽</Text>
+                    <Text bold>{username || '이름을 설정해주세요'}</Text>
+                    {/* <DividerBlock height={8} /> */}
+                    {/* <Text>플레이펫 멤버쉽</Text> */}
                 </UserInfoBlock>
                 <MoreActions>
-                    <MoreButton>
+                    <MoreButton onPress={() => navigation.navigate('ManageProducts')}>
                         <Text
                             color={themes.colors.white}
                             bold
@@ -77,7 +83,7 @@ const MoreActions = styled.View`
 const MoreButton = styled.TouchableOpacity`
     padding: 16px;
     background-color: ${(props) => props.theme.colors.primary};
-    border-radius: 4px;
+    border-radius: 8px;
 `
 
 

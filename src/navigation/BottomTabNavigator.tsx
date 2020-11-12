@@ -216,7 +216,6 @@ function ManageProductsNavigator() {
                 name="ManageProducts"
                 component={ManageProducts}
                 options={({ navigation }) => ({
-                    headerShown: false,
                     headerTitle: '관리',
                 })}
             />
@@ -224,7 +223,6 @@ function ManageProductsNavigator() {
                 name="RegistrationPet"
                 component={RegistrationPet}
                 options={({ navigation }) => ({
-                    headerShown: false,
                     headerTitle: '반려동물 등록',
                 })}
             />
@@ -232,7 +230,6 @@ function ManageProductsNavigator() {
                 name="RegistFeedBoard"
                 component={RegistFeedBoard}
                 options={({ navigation }) => ({
-                    headerShown: false,
                     headerTitle: '반려동물 등록',
                 })}
             />

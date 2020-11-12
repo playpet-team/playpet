@@ -90,7 +90,7 @@ export default function ManageProducts() {
     );
 }
 
-const ManageProductsBlock = styled(SafeAreaView)`
+const ManageProductsBlock = styled.View`
     padding: 16px;
 `
 

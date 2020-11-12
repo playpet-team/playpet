@@ -69,7 +69,7 @@ export default function RegistrationPet() {
 
     const handleSubmit = async (data: PetInformationData) => {
         await handleUpdatePet(data)
-        navigation.goBack()
+        handleLater()
     }
     
     const handleUpdatePet = useCallback(async ({ petName, petType, petKind, size, age, favorite }: PetInformationData) => {

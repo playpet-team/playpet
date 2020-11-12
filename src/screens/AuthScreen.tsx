@@ -4,12 +4,13 @@ import { Button } from 'react-native'
 import { Image } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useSelector } from 'react-redux'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 import ListItem from '../components/ListItem'
 import ProfileSection from '../components/ProfileSection'
 import { AuthTapParamList } from '../navigation/BottomTabNavigator'
+import { Icon } from "react-native-elements";
 import { RootState } from '../store/rootReducers'
-import { DividerBlock } from '../styles'
+import { DividerBlock, Text } from '../styles'
 import { linkingUrl } from '../utils'
 
 export default function AuthScreen() {
@@ -23,21 +24,26 @@ export default function AuthScreen() {
     return (
         <ScrollView>
             <ProfileSection />
-            <ProfileInfoBlock>
-                <Button onPress={() => navigation.navigate('ProfileSetting')} title="프로필 설정" />
-            </ProfileInfoBlock>
+            <ActionIconsSection />
             <Section>
+                <ListItem
+                    title="프로필 설정"
+                    onPress={() => navigation.navigate('ProfileSetting')}
+                    rightIcon={<Icon name="keyboard-arrow-right" />}
+                />
                 <ListItem
                     title='결제 정보'
                     titleStyle={{
                     }}
                     onPress={() => navigation.navigate('PaymentSetting')}
+                    rightIcon={<Icon name="keyboard-arrow-right" />}
                 />
                 <ListItem
                     title='배송지 관리'
                     titleStyle={{
                     }}
                     onPress={() => navigation.navigate('ShippingDestinationSetting')}
+                    rightIcon={<Icon name="keyboard-arrow-right" />}
                 />
             </Section>
             <DividerBlock
@@ -52,32 +58,18 @@ export default function AuthScreen() {
                     titleStyle={{
                     }}
                     onPress={() => navigation.navigate('AppSettings')}
-                // rightIcon={<Icon name="keyboard-arrow-right" />}
+                    rightIcon={<Icon name="keyboard-arrow-right" />}
                 />
-                <ListItem
+                {/* <ListItem
                     title='공지사항'
                     onPress={() => { }}
-                // rightIcon={<Icon name="keyboard-arrow-right" />}
-                />
-                <ListItem
+                    rightIcon={<Icon name="keyboard-arrow-right" />}
+                /> */}
+                {/* <ListItem
                     title='불편사항 접수'
                     onPress={() => { }}
-                />
-                <ListItem
-                    title='1:1 상담하기'
-                    titleStyle={{
-                        fontSize: 18,
-                        fontWeight: 'bold'
-                    }}
-                    onPress={() => linkingUrl('http://pf.kakao.com/_xhxoBIK')}
-                    rightIcon={<Image
-                        source={require('../../assets/icons/kakao_icon.png')}
-                        style={{
-                            width: 32,
-                            height: 32,
-                        }}
-                    />}
-                />
+                /> */}
+                <ContactUs />
             </Section>
         </ScrollView>
     )
@@ -87,20 +79,111 @@ const Section = styled.View`
     margin-top: 16px;
 `
 
-const ProfileInfoBlock = styled.View`
+const ActionIconsSection = () => {
+    const theme = useTheme()
+    return (
+        <ActionIconsSectionBlock>
+            <ActionIconsBlock disabled>
+                <ActionIcon>
+                    <Icon
+                        name='assignment'
+                        color={theme.colors.border}
+                        size={36}
+                    />
+                </ActionIcon>
+                <Text align='center'>주문내역</Text>
+            </ActionIconsBlock>
+            <ActionIconsBlock disabled>
+                <ActionIcon>
+                    <Icon
+                        name='check-box'
+                        color={theme.colors.border}
+                        size={36}
+                    />
+                </ActionIcon>
+                <Text align='center'>등록용품</Text>
+            </ActionIconsBlock>
+            <ActionIconsBlock onPress={() => linkingUrl('http://pf.kakao.com/_xhxoBIK')}>
+                <ActionIcon>
+                    <Icon
+                        name='chat'
+                        color={theme.colors.primary}
+                        size={36}
+                    />
+                </ActionIcon>
+                <Text align='center'>1:1상담</Text>
+            </ActionIconsBlock>
+        </ActionIconsSectionBlock>
+    )
+}
+
+const ActionIconsSectionBlock = styled.View`
+    margin-top: 16px;
     flex-direction: row;
+    justify-content: space-evenly;
 `
 
-const ProfileName = styled.View`
-    margin-left: 16px;
-    flex-direction: column;
-    flex: 1;
+const ActionIconsBlock = styled.TouchableOpacity`
+    padding: 14px;
 `
 
-const AppLoginSection = styled.TouchableOpacity`
-    flex: 1;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
+const ActionIcon = styled.View`
+    border-radius: 36px;
+    padding: 12px;
+    border-width: 1px;
+    border-color: ${({ theme }) => theme.colors.border};
+    margin-bottom: 8px;
+`
+
+const ContactUs = () => {
+    const theme = useTheme()
+
+    return (
+        <ContactUsBlock>
+            <Text
+                color={theme.colors.text}
+                bold
+                size={16}
+            >
+                플레이펫 고객센터
+            </Text>
+            <DividerBlock height={8} />
+            <Text
+                size={12}
+                color={theme.colors.text}
+            >
+                서비스 이용에 궁금한 사항이 있으신가요?
+            </Text>
+            <DividerBlock height={4} />
+            <Text
+                size={12}
+                color={theme.colors.text}
+            >
+                문의사항을 남겨주시면 최대한 빠르고 정확하게 안내 도와드리겠습니다
+            </Text>
+            <ContactButton onPress={() => linkingUrl('http://pf.kakao.com/_xhxoBIK')}>
+                <Text
+                    align="center"
+                    color="#fff"
+                    bold
+                    size={16}
+                >
+                    1:1 상담하기
+                </Text>
+            </ContactButton>
+        </ContactUsBlock>
+    )
+}
+
+const ContactUsBlock = styled.View`
+    margin-top: 12px;
     padding: 16px;
+    background-color: #eee;
+`
+
+const ContactButton = styled.TouchableOpacity`
+    margin-top: 12px;
+    background-color: ${({ theme }) => theme.colors.primary};
+    padding: 16px;
+    border-radius: 8px;
 `

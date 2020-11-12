@@ -1,25 +1,22 @@
 import React, { useState } from "react"
-import { SafeAreaView } from 'react-native-safe-area-context'
 import styled, { useTheme } from 'styled-components/native'
-import PlaypetModal from '../../components/PlaypetModal'
 import { deviceSize } from "../../utils"
-import { DividerBlock, Layout, Text } from '../../styles'
+import { Text } from '../../styles'
 import RegistFeedBrand from "../../components/RegistFeedBrand"
 import RegistFeedItems from "../../components/RegistFeedItems"
-const DEVICE_WIDTH = deviceSize().width
-const DEVICE_HEIGHT = deviceSize().height
+import { useNavigation } from "@react-navigation/native"
 
 enum REGIST_FEED_STEPS {
     BRANDS = 'BRANDS',
     ITEMS = 'ITEMS'
 }
-function RegistFeedBoard({ setShowFeedBoard }: {
-    setShowFeedBoard: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+function RegistFeedBoard() {
     const [step, setStep] = useState<REGIST_FEED_STEPS>(REGIST_FEED_STEPS.BRANDS)
     const [activeFeedItem, setActiveFeedItem] = useState('')
     const [activeFeedBrand, setActiveFeedBrand] = useState('')
     const theme = useTheme()
+    const navigation = useNavigation()
+    const handleLater = () => navigation.goBack()
 
     const nextSteps = () => {
         switch (step) {
@@ -29,7 +26,7 @@ function RegistFeedBoard({ setShowFeedBoard }: {
             }
             case REGIST_FEED_STEPS.ITEMS: {
                 // TODO DB에 등록
-                setShowFeedBoard(false);
+                handleLater()
                 break;
             }
         }
@@ -38,7 +35,7 @@ function RegistFeedBoard({ setShowFeedBoard }: {
     const prevSteps = () => {
         switch (step) {
             case REGIST_FEED_STEPS.BRANDS: {
-                setShowFeedBoard(false);
+                handleLater()
                 break;
             }
             case REGIST_FEED_STEPS.ITEMS: {
@@ -83,7 +80,7 @@ function RegistFeedBoard({ setShowFeedBoard }: {
 }
 
 const RegistFeedBoardBlock = styled.View`
-    padding-vertical: 40px;
+    /* padding-vertical: 40px; */
     flex-direction: column;
     height: 100%;
 `
