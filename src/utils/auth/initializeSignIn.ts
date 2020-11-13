@@ -1,22 +1,22 @@
+import { signInActions } from './../../store/signInReducer';
 import appleAuth, {
     AppleAuthRequestOperation,
     AppleAuthRequestScope
 } from '@invertase/react-native-apple-authentication';
 import AsyncStorage from '@react-native-community/async-storage';
 import { GoogleSignin } from '@react-native-community/google-signin';
-import analytics from '@react-native-firebase/analytics';
 import auth from '@react-native-firebase/auth';
 import KakaoLogins, { KAKAO_AUTH_TYPES } from '@react-native-seoul/kakao-login';
 import * as Sentry from "@sentry/react-native";
 import { useCallback, useEffect, useState } from 'react';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import { useSelector, useDispatch } from 'react-redux';
 import { currentUser, signInWithCustomToken, updateUserAuthToken } from '.';
 import { Api } from '../../api';
 import { ToastParams } from '../../components/Toast';
 import useLoadingIndicator from '../../hooks/useLoadingIndicator';
 import { SignType } from '../../models';
-
-
+import { RootState } from '../../store/rootReducers';
 
 const DEV_GOOGLE_WEB_CLIENT_ID = '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com'
 const PROD_GOOGLE_WEB_CLIENT_ID = '952410130595-ro7ouus2ia8rtj64guknh8dn91e5o7ns.apps.googleusercontent.com'
@@ -27,119 +27,93 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     setToastContent: React.Dispatch<React.SetStateAction<ToastParams>>
 }) {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
-    const [isSignUp, setIsSignUp] = useState<boolean | null>(null)
-    const [method, setMethod] = useState<SignType>(SignType.None)
-    const [token, setToken] = useState<any>(null)
-    const [profile, setProfile] = useState<{
-        username?: string
-        email: string
-        password?: string
-        photo?: string
-    }>({
-        username: '',
-        email: '',
-        photo: 'https://firebasestorage.googleapis.com/v0/b/playpet-5b432.appspot.com/o/assets%2Ficons%2Fnot_yet.jpg?alt=media&token=7c175393-d7ba-4e32-829c-2a29be57dd0c',
-    })
+    const {
+        method,
+        inputEmail,
+        inputPassword,
+        token,
+        profile,
+    } = useSelector((state: RootState) => state.signIn)
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        if (isSignUp === null) {
-            return
+        if (token !== '' && profile && method !== SignType.None) {
+            trySignIn()
         }
-        if (isSignUp === true) {
-            analytics().logSignUp({ method })
-        }
-        // navigation.goBack()
-    }, [isSignUp])
-
-    useEffect(() => {
-        getCredential()
-        async function getCredential() {
-            if (token && profile && method) {
-                try {
-                    console.log("111")
-                    if (!profile.email) {
-                        setToastContent({
-                            ...toastContent,
-                            visible: true,
-                            title: '이메일 정보를 받아 올수 없습니다. 잠시 후 다시 시도해주세요',
-                        })
-                        setLoading(false)
-                        Sentry.captureException('getCredential-이메일 정보를 받아 올수 없습니다. 잠시 후 다시 시도해주세요')
-                        return
-                    }
-                    console.log("22")
-                    setLoading(true)
-                    const { customToken, uid, newUser } = await postCreateUser()
-                    console.log('customToken, uid, newUser----------', customToken, uid, newUser)
-                    if (!customToken || !uid || typeof newUser !== 'boolean') {
-                        Sentry.captureException(`getCredential-no-information-from-postCreateUser-${uid}-${newUser}`)
-                        setLoading(false)
-                        return
-                    }
-                    console.log("33")
-                    
-                    try {
-                        console.log('444', customToken)
-                        await signInWithCustomToken(customToken)
-                        console.log('555')
-                        putAsyncStorage('customToken', {
-                            customToken,
-                            email: profile.email,
-                            provider: method,
-                        })
-                        updateUserAuthToken(uid, customToken)
-                        console.log('666')
-                        const success = checkUser()
-                        console.log("777", success);
-                        if (success) {
-                            setIsSignUp(newUser)
-                        }
         
-                    } catch (e) {
-                        console.error("eee", e);
-                        Sentry.captureException(`getCredential-${e}`)
-                        if (e.code != "auth/account-exists-with-different-credential") {
-                            setToastContent({
-                                ...toastContent,
-                                visible: true,
-                                title: '로그인에 실패하였습니다',
-                            })
-                        } else {
-                            setToastContent({
-                                ...toastContent,
-                                visible: true,
-                                title: '다른 로그인 방법으로 회원가입을 완료한 계정이 있습니다.',
-                            })
-                        }
-                    } finally {
-                        setLoading(false)
-                    }
-                } catch (e) {
-                    Sentry.captureException(`getCredential-${e}`)
-                } finally {
-                    setLoading(false)
-                }
-            }
-        }
     }, [token, profile, method])
 
-    const getUidByThirdPartySignIn = useCallback(async (method: SignType, emailInformation?: {
-        email: string;
-        password: string;
-    }) => {
+    const trySignIn = async () => {
+        try {
+            if (!profile.email) {
+                rejectSignIn('이메일 정보를 받아 올수 없습니다. 잠시 후 다시 시도해주세요')
+                return
+            }
+            setLoading(true)
+
+            const { customToken, uid, newUser } = await postCreateUser()
+            if (!customToken || !uid || typeof newUser !== 'boolean') {
+                Sentry.captureException(`trySignIn-no-information-from-postCreateUser-${uid}-${newUser}`)
+                setLoading(false)
+                return
+            }
+            
+            try {
+                await signInWithCustomToken(customToken)
+                putAsyncStorage('customToken', {
+                    customToken,
+                    email: profile.email,
+                    provider: method,
+                })
+                updateUserAuthToken(uid, customToken)
+                const success = checkUser()
+                if (success) {
+                    dispatch(signInActions.setIsSignUp(newUser))
+                }
+
+            } catch (e) {
+                console.error("eee", e);
+                Sentry.captureException(`trySignIn-${e}`)
+                if (e.code != "auth/account-exists-with-different-credential") {
+                    rejectSignIn('로그인에 실패하였습니다')
+                } else {
+                    rejectSignIn('다른 로그인 방법으로 회원가입을 완료한 계정이 있습니다.')
+                }
+            } finally {
+                setLoading(false)
+            }
+        } catch (e) {
+            Sentry.captureException(`trySignIn-${e}`)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const rejectSignIn = (title: string) => {
+        setToastContent({
+            ...toastContent,
+            visible: true,
+            title: title,
+        })
+        setLoading(false)
+        Sentry.captureException(`trySignIn-${title}`)
+    }
+
+    const getUidByThirdPartySignIn = useCallback(async () => {
         setLoading(true)
-        setMethod(method)
+        console.log('method', method)
         try {
             switch (method) {
                 case SignType.Google: {
                     await GoogleSignin.hasPlayServices()
                     const userInfo = await GoogleSignin.signIn()
-                    setProfile({
+                    dispatch(signInActions.setProfile({
                         username: userInfo.user.familyName || '' + userInfo.user.givenName || '',
                         email: userInfo.user.email,
                         photo: userInfo.user.photo || '',
-                    })
-                    setToken(getProvider(SignType.Google).credential(userInfo.idToken))
+                    }))
+                    const token = getProvider(SignType.Google).credential(userInfo.idToken)
+                    dispatch(signInActions.setToken(token))
                     break
                 }
                 case SignType.Facebook: {
@@ -155,33 +129,33 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                             title: '페이스북 인증 정보를 받아오는 작업을 실패했습니다',
                         })
                     } else {
-                        setToken(getProvider(SignType.Facebook).credential(data.accessToken))
+                        const token = getProvider(SignType.Facebook).credential(data.accessToken)
+                        dispatch(signInActions.setToken(token))
                     }
                     break
                 }
                 case SignType.Apple: {
-                    const credential = await appleSignIn(setProfile)
-                    credential && setToken(credential)
+                    const response = await appleSignIn()
+                    if (response) {
+                        dispatch(signInActions.setToken(response.token))
+                        
+                    }
                     break
                 }
                 case SignType.Kakao: {
-                    await kakaoLogin(setToken)
-                    await getKakaoProfile(setProfile)
-                    break
-                }
-                case SignType.Naver: {
-                    // await naverLogin(setToken)
-                    // await getNaverProfile(token, setProfile)
+                    const token = await kakaoLogin()
+                    dispatch(signInActions.setToken(token))
+                    const userProfile = await getKakaoProfile()
+                    dispatch(signInActions.setProfile(userProfile))
                     break
                 }
                 case SignType.Email: {
-                    if (emailInformation) {
-                        setToken('email')
-                        setProfile({
-                            ...profile,
-                            email: emailInformation.email,
-                            password: emailInformation.password,
-                        })
+                    if (inputEmail && inputPassword) {
+                        dispatch(signInActions.setToken('email'))
+                        dispatch(signInActions.setProfile({
+                            email: inputEmail,
+                            password: inputPassword,
+                        }))
                     }
                     break
                 }
@@ -190,7 +164,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                 }
             }
         } catch (e) {
-            Sentry.captureException(`getCredential-${e}`)
+            Sentry.captureException(`trySignIn-${e}`)
             setLoading(false)
             setToastContent({
                 ...toastContent,
@@ -219,7 +193,6 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
 
     const postCreateUser = useCallback(async () => {
         try {
-            console.log('a', profile)
 
             const { data: { customTokenForExistUser, customToken, uid, newUser } }:
                 { data: {
@@ -232,7 +205,6 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                 ...profile,
                 method,
             })
-            console.log('bb', newUser, typeof newUser)
     
             return {
                 customToken: customTokenForExistUser || customToken,
@@ -241,25 +213,19 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
             }
         } catch (e) {
             Sentry.captureException(`postCreateUser-${e}`)
-            console.log('error-', e);
             return {}
         }
     }, [profile, method])
 
-    return { getUidByThirdPartySignIn, isSignUp, loading, Indicator }
+    return { getUidByThirdPartySignIn, loading, Indicator }
 }
 
-const appleSignIn = async (setProfile: React.Dispatch<any>) => {
+const appleSignIn = async () => {
     // Start the sign-in request
     try {
         const appleAuthRequestResponse = await appleAuth.performRequest({
             requestedOperation: AppleAuthRequestOperation.LOGIN,
             requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
-        })
-        setProfile({
-            username: appleAuthRequestResponse.fullName,
-            email: appleAuthRequestResponse.email,
-            photo: '',
         })
         // Ensure Apple returned a user identityToken
         if (!appleAuthRequestResponse.identityToken) {
@@ -268,7 +234,13 @@ const appleSignIn = async (setProfile: React.Dispatch<any>) => {
     
         // Create a Firebase credential from the response
         const { identityToken, nonce } = appleAuthRequestResponse
-        return getProvider(SignType.Apple).credential(identityToken, nonce)
+        return {
+            token: getProvider(SignType.Apple).credential(identityToken, nonce),
+            userProfile: {
+                username: appleAuthRequestResponse.fullName,
+                email: appleAuthRequestResponse.email,
+            }
+        }
     } catch (e) {
         Sentry.captureException(e)
     }
@@ -286,60 +258,18 @@ export const putAsyncStorage = async (key: string, putData: AsyncStorageCustomTo
     }
 }
 
-// const naverLogin = async (setToken: React.Dispatch<React.SetStateAction<string | null>>) => {
-//     const ioskeys = {
-//         kConsumerKey: 'qWhQYE6faHywP_zqIz05',
-//         kConsumerSecret: 'B8zVzYH9zZ',
-//         kServiceAppName: 'playpet',
-//         kServiceAppUrlScheme: 'com.playpet.me',
-//     }
-      
-//     const androidkeys = {
-//         kConsumerKey: 'qWhQYE6faHywP_zqIz05',
-//         kConsumerSecret: 'B8zVzYH9zZ',
-//         kServiceAppName: 'playpet',
-//     }
-//     NaverLogin.login(Platform.OS === 'ios' ? ioskeys : androidkeys, (err, token) => {
-//         // setNaverToken(token)
-//         if (token) {
-//             setToken(token.refreshToken)
-//         }
-//     })
-// }
-
-// const getNaverProfile = async (token: string | null, setProfile: React.Dispatch<any>) => {
-//     if (!token) {
-//         return
-//     }
-//     const profileResult = await getProfile(token)
-//     if (!profileResult) {
-//         return
-//     }
-//     if (profileResult.resultcode === "024") {
-//       alert("로그인 실패")
-//       return
-//     }
-    
-//     setProfile({
-//         username: profileResult.response.name,
-//         email: profileResult.response.email,
-//         photo: profileResult.response.profile_image,
-//     })
-// }
-
-const kakaoLogin = async (setToken: React.Dispatch<React.SetStateAction<string | null>>) => {
+const kakaoLogin = async () => {
     const result = await KakaoLogins.login([KAKAO_AUTH_TYPES.Talk])
-    setToken(result.accessToken)
+    return result.accessToken
 }
 
-const getKakaoProfile = async (setProfile: React.Dispatch<any>) => {
+const getKakaoProfile = async () => {
     const result = await KakaoLogins.getProfile()
-    console.log('result', result)
-    setProfile({
+    return {
         username: result.nickname,
         email: result.email,
-        photo: result.profile_image_url || '',
-    })
+        photo: result.profile_image_url || null,
+    }
 }
 
 const getProvider = (providerId: string) => {

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import { addListenerCardLikes, UserAction } from '../utils/cards';
-import { playgroundActions } from './../store/playgroundReducer';
+import { playgroundActions } from '../store/playgroundReducer';
 
 let snapshotListener: any
 function useCardAdditionalInformation() {

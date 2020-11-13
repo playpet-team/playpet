@@ -9,11 +9,12 @@ export const loadProduct = async (PID: string) => {
 }
 
 export const loadProductList = async (type = 'DOG') => {
+    console.log('typeㅌ-------', type);
     const productList = await firestore()
         .collection(Collections.Products)
         .where('status', '==', 'active')
-        .where('type', '==', type)
-        .orderBy('desc')
+        .where('pet', 'array-contains', type)
+        .orderBy('updatedAt', 'desc')
         .get()
 
     return productList.docs.map((product: any) => {

@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import styled, { useTheme } from 'styled-components/native'
-import { deviceSize } from "../../utils"
 import { Text } from '../../styles'
 import RegistFeedBrand from "../../components/RegistFeedBrand"
 import RegistFeedItems from "../../components/RegistFeedItems"

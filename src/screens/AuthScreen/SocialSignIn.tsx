@@ -7,13 +7,17 @@ import { Image, Input } from 'react-native-elements'
 import { Text } from "../../styles";
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation, useTheme } from "@react-navigation/native";
-// import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components/native'
 import PlaypetModal from '../../components/PlaypetModal'
+import analytics from '@react-native-firebase/analytics';
 import Toast, { ToastParams } from '../../components/Toast'
 import { SignType } from '../../models'
 import initializeSignIn from '../../utils/auth/initializeSignIn'
 import AgreeTermsModal from '../ManageProducts/RegistrationPet/AgreeTermsModal'
+import { RootState } from '../../store/rootReducers'
+import { useSelector } from 'react-redux'
+import { signInActions } from '../../store/signInReducer'
 
 export default function SocialSignIn() {
     const { control, handleSubmit, errors } = useForm();
@@ -25,22 +29,35 @@ export default function SocialSignIn() {
         description: '',
         image: '',
     })
-    const theme = useTheme()
-    const { getUidByThirdPartySignIn, isSignUp, loading, Indicator } = initializeSignIn({ toastContent, setToastContent })
+    const {
+        isSignUp,
+        method,
+    } = useSelector((state: RootState) => state.signIn)
+    const { getUidByThirdPartySignIn, loading, Indicator } = initializeSignIn({ toastContent, setToastContent })
+
     const navigation = useNavigation()
-    // const dispatch = useDispatch()
+    const theme = useTheme()
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log("isSignUp------", isSignUp);
+        console.log("isSignUp------", isSignUp)
         if (isSignUp === false) {
             navigation.navigate('Home')
         }
+        if (isSignUp === null) {
+            return
+        }
+        if (isSignUp === true) {
+            analytics().logSignUp({ method })
+        }
     }, [isSignUp])
 
-    const handleSignIn = useCallback(async (method: SignType) => {
+    const handleSignIn = useCallback(async (selectedMethod: SignType) => {
         try {
             // setLoading(true)
-            await getUidByThirdPartySignIn(method)
+            dispatch(signInActions.setMethod(selectedMethod))
+            console.log('selectedMethod', selectedMethod)
+            await getUidByThirdPartySignIn()
         } catch (e) {
             Sentry.captureException(e)
         } finally {
@@ -58,10 +75,10 @@ export default function SocialSignIn() {
 
     const onSubmit = async (data: any) => {
         try {
-            await getUidByThirdPartySignIn(SignType.Email, {
-                email: data.email,
-                password: data.password,
-            })
+            dispatch(signInActions.setInputEmail(data.email))
+            dispatch(signInActions.setInputPassword(data.password))
+            dispatch(signInActions.setMethod(SignType.Email))
+            await getUidByThirdPartySignIn()
         } catch (e) {
             Sentry.captureException(e)
         }

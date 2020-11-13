@@ -36,7 +36,7 @@ export const updateUserAuthToken = async (uid: string, customToken: string) => {
 
 export const getUserAuthToken = async (uid: string) => {
     try {
-        const userData = (await firestore().collection(Collections.AuthTokens).doc(uid).get()).data() as { customToken: string }
+        const userData = (await firestore().collection<{ customToken: string }>(Collections.AuthTokens).doc(uid).get()).data()
         return userData || null
     } catch (e) {
         Sentry.captureException(e)
@@ -60,7 +60,7 @@ export const updateUsername = async (uid: string, username: string) => {
 
 export const getUserDoc = async (uid: string) => {
     try {
-        const userData = (await firestore().collection(Collections.Users).doc(uid).get()).data() as User
+        const userData = (await firestore().collection<User>(Collections.Users).doc(uid).get()).data()
         return userData || null
     } catch (e) {
         Sentry.captureException(e)
@@ -83,7 +83,10 @@ export const getUser = async (uid: string): Promise<User | null> => {
 }
 
 export const getUserTerms = async (uid: string) => {
-    const terms = (await firestore().collection(Collections.Terms).doc(uid).get()).data() as Terms
+    const terms = (await firestore().collection<Terms>(Collections.Terms).doc(uid).get()).data()
+    if (!terms) {
+        return {}
+    }
     return {
         ...terms,
         createdAt: firebaseTimeStampToStringStamp(terms.createdAt),
@@ -93,12 +96,12 @@ export const getUserTerms = async (uid: string) => {
 
 export const getUserShippingDestination = async (uid: string) => {
     const shippingDocs = (await firestore()
-        .collection(Collections.ShippingDestination)
+        .collection<ShippingInformation>(Collections.ShippingDestination)
         .where('uid', '==', uid)
         .orderBy('createdAt', 'desc')
         .get())
     return shippingDocs.docs.map(ship => {
-        const shippingData = ship.data() as ShippingInformation
+        const shippingData = ship.data() 
         return {
             ...shippingData,
             id: ship.id,
@@ -194,12 +197,15 @@ export const resetUserActivePetDocId = async (uid: string) => {
 export const getPetDoc = async (uid: string, petDocId: string) => {
     try {
         const petData = (await firestore()
-            .collection(Collections.Users)
+            .collection<MyPet>(Collections.Users)
             .doc(uid)
             .collection(Collections.UserPets)
             .doc(petDocId)
             .get())
-            .data() as MyPet
+            .data()
+        if (!petData) {
+            return
+        }
         return {
             ...petData,
             createdAt: firebaseTimeStampToStringStamp(petData.createdAt),

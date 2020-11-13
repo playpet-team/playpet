@@ -54,7 +54,7 @@ const slice = createSlice({
         setUsername(state, { payload }) {
             state.username = payload
         },
-        setUserProfilePhoto(state, { payload }) {
+        setUserProfilePhoto(state, { payload }: { payload: string }) {
             state.profilePhoto = payload
         },
         setTerms(state, { payload }) {

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react"
-import styled, { useTheme } from 'styled-components/native'
-import { deviceSize } from "../utils"
+import styled from 'styled-components/native'
 import { Text } from '../styles'
-import { Avatar } from 'react-native-elements';
 import { loadProductList } from "../utils/product";
 import ProductListItem from "./ProductListItem";
 import { ProductItem } from '../utils/product';
@@ -45,29 +43,13 @@ function RegistFeedItems({
     )
 }
 
-const RegistFeedItemsBlock = styled.View`
-  
-`
 
 export default RegistFeedItems
 
-const GridLayout = styled.ScrollView`
-    /* flex: 1; */
-    flex-direction: column;
+const RegistFeedItemsBlock = styled.View`
+    padding: 20px;
 `
 
-const Content = styled.View`
-    /* height: 100px; */
-    justify-content: space-between;
-    padding: 8px;
-`
-const Item = styled.TouchableOpacity<{isActive: boolean}>`
-    padding: 16px;
-    /* flex: 1; */
-    margin-top: 8px;
-    border-width: 2px;
-    border-radius: 8px;
-    flex-direction: row;
-    border-color: ${({ isActive }) => isActive ? '#0559D1' : '#C4C4C4'};
-    background-color: ${({ isActive }) => isActive ? 'rgba(5, 89, 209, 0.1)' : '#fff'};
+const GridLayout = styled.ScrollView`
+    flex-direction: column;
 `

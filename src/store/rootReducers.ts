@@ -1,13 +1,15 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
-import { composeWithDevTools } from 'redux-devtools-extension';
+// import { composeWithDevTools } from 'redux-devtools-extension';
 // 왜 dev tool 이 안깔리는거야!!!!!!!!!
 import auth from './authReducer';
 import playground from './playgroundReducer';
+import signIn from './signInReducer';
 import { useDispatch } from 'react-redux';
 
 const rootReducer = combineReducers({
     auth,
     playground,
+    signIn,
 });
 
 export const store = configureStore({

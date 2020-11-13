@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { GestureResponderEvent } from 'react-native';
 import { Avatar } from 'react-native-elements';
@@ -46,12 +45,12 @@ export default ProductListItem;
 const Content = styled.View`
     /* height: 100px; */
     justify-content: space-between;
-    padding: 8px;
+    /* padding: 8px; */
 `
 const ProductListItemBlock = styled.TouchableOpacity<{isActive: boolean}>`
-    padding: 16px;
+    padding: 16px 20px;
     /* flex: 1; */
-    margin-top: 8px;
+    margin-top: 16px;
     border-width: 2px;
     border-radius: 8px;
     flex-direction: row;

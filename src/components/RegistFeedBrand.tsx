@@ -1,6 +1,5 @@
-import React, { useState } from "react"
-import styled, { useTheme } from 'styled-components/native'
-import { deviceSize } from "../utils"
+import React from "react"
+import styled from 'styled-components/native'
 import { Text } from '../styles'
 
 function RegistFeedBrand({
