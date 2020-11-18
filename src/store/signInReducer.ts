@@ -1,3 +1,4 @@
+import { ToastParams } from './../components/Toast';
 import { AppleAuthRequestResponseFullName } from '@invertase/react-native-apple-authentication';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { createSlice } from "@reduxjs/toolkit";
@@ -17,7 +18,15 @@ export interface Cards {
     showEmailForm: boolean;
     inputEmail: string;
     inputPassword: string;
+    toastContent: ToastParams;
 };
+
+const resetToast = {
+    visible: false,
+    title: '',
+    description: '',
+    image: '',
+}
 export const initialState: Cards = {
     isSignUp: null,
     method: SignType.None,
@@ -31,6 +40,7 @@ export const initialState: Cards = {
     showEmailForm: false,
     inputEmail: '',
     inputPassword: '',
+    toastContent: resetToast,
 };
 
 const slice = createSlice({
@@ -65,7 +75,18 @@ const slice = createSlice({
             }
         }) {
             state.profile = Object.assign(state.profile, payload)
-        }
+        },
+        setToastContent(state, { payload }: {
+            payload: ToastParams
+        }) {
+            state.toastContent = {
+                ...state.toastContent,
+                ...payload,
+            }
+        },
+        resetToastContent(state) {
+            state.toastContent = resetToast
+        },
     },
 });
 

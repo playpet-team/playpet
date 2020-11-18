@@ -97,12 +97,10 @@ export default function RegistrationPet() {
     return (
         <SignInAdditionalInformationBlock>
             {loading && <Indicator />}
-            {toastContent.visible &&
-                <Toast
-                    title={toastContent.title}
-                    setToastContent={setToastContent}
-                />
-            }
+            <Toast
+                visible={toastContent.visible}
+                title={toastContent.title}
+            />
             <ScrollView>
                 <FormProvider {...methods} >
                     <WelcomeSign />

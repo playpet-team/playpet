@@ -22,10 +22,7 @@ const DEV_GOOGLE_WEB_CLIENT_ID = '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.
 const PROD_GOOGLE_WEB_CLIENT_ID = '952410130595-ro7ouus2ia8rtj64guknh8dn91e5o7ns.apps.googleusercontent.com'
 GoogleSignin.configure({ webClientId: __DEV__ ? DEV_GOOGLE_WEB_CLIENT_ID : PROD_GOOGLE_WEB_CLIENT_ID })
 
-export default function initializeSignIn({ toastContent, setToastContent }: {
-    toastContent: ToastParams
-    setToastContent: React.Dispatch<React.SetStateAction<ToastParams>>
-}) {
+export default function initializeSignIn() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
     const {
         method,
@@ -33,6 +30,7 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         inputPassword,
         token,
         profile,
+        toastContent,
     } = useSelector((state: RootState) => state.signIn)
     const dispatch = useDispatch()
 
@@ -90,20 +88,18 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
     }
 
     const rejectSignIn = (title: string) => {
-        setToastContent({
-            ...toastContent,
+        dispatch(signInActions.setToastContent({
             visible: true,
             title: title,
-        })
+        }))
         setLoading(false)
         Sentry.captureException(`trySignIn-${title}`)
     }
 
-    const getUidByThirdPartySignIn = useCallback(async () => {
+    const getUidByThirdPartySignIn = useCallback(async (selectedMethod: SignType) => {
         setLoading(true)
-        console.log('method', method)
         try {
-            switch (method) {
+            switch (selectedMethod) {
                 case SignType.Google: {
                     await GoogleSignin.hasPlayServices()
                     const userInfo = await GoogleSignin.signIn()
@@ -123,11 +119,10 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
                     }
                     const data = await AccessToken.getCurrentAccessToken()
                     if (!data) {
-                        setToastContent({
-                            ...toastContent,
+                        dispatch(signInActions.setToastContent({
                             visible: true,
                             title: '페이스북 인증 정보를 받아오는 작업을 실패했습니다',
-                        })
+                        }))
                     } else {
                         const token = getProvider(SignType.Facebook).credential(data.accessToken)
                         dispatch(signInActions.setToken(token))
@@ -166,11 +161,10 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         } catch (e) {
             Sentry.captureException(`trySignIn-${e}`)
             setLoading(false)
-            setToastContent({
-                ...toastContent,
+            dispatch(signInActions.setToastContent({
                 visible: true,
                 title: '인증 정보를 받아오는 작업을 실패했습니다',
-            })
+            }))
         } finally {
             return toastContent
         }
@@ -181,11 +175,10 @@ export default function initializeSignIn({ toastContent, setToastContent }: {
         const user = currentUser()
         if (!user) {
             Sentry.captureException('checkUser-회원정보를 찾을 수 없습니다')
-            setToastContent({
-                ...toastContent,
+            dispatch(signInActions.setToastContent({
                 visible: true,
                 title: '회원정보를 찾을 수 없습니다',
-            })
+            }))
             return
         }
         return true

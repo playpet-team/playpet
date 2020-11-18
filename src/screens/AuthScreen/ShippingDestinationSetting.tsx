@@ -86,12 +86,10 @@ function ShippingDestinationSetting() {
     return (
         <ShippingDestinationSettingBlock>
             {loading && <Indicator />}
-            {toastContent.visible &&
-                <Toast
-                    title={toastContent.title}
-                    setToastContent={setToastContent}
-                />
-            }
+            <Toast
+                visible={toastContent.visible}
+                title={toastContent.title}
+            />
             {!loading && !visible &&
                 <DestinationInformation>
                     <InformationBlock>

@@ -23,17 +23,18 @@ export default function SocialSignIn() {
     const { control, handleSubmit, errors } = useForm();
     const [showOtherMethods, setShowOtherMethods] = useState(false)
     const [showEmailForm, setShowEmailForm] = useState(false)
-    const [toastContent, setToastContent] = useState<ToastParams>({
-        visible: false,
-        title: '',
-        description: '',
-        image: '',
-    })
+    // const [toastContent, setToastContent] = useState<ToastParams>({
+    //     visible: false,
+    //     title: '',
+    //     description: '',
+    //     image: '',
+    // })
     const {
         isSignUp,
         method,
+        toastContent,
     } = useSelector((state: RootState) => state.signIn)
-    const { getUidByThirdPartySignIn, loading, Indicator } = initializeSignIn({ toastContent, setToastContent })
+    const { getUidByThirdPartySignIn, loading, Indicator } = initializeSignIn()
 
     const navigation = useNavigation()
     const theme = useTheme()
@@ -57,7 +58,7 @@ export default function SocialSignIn() {
             // setLoading(true)
             dispatch(signInActions.setMethod(selectedMethod))
             console.log('selectedMethod', selectedMethod)
-            await getUidByThirdPartySignIn()
+            await getUidByThirdPartySignIn(selectedMethod)
         } catch (e) {
             Sentry.captureException(e)
         } finally {
@@ -73,12 +74,15 @@ export default function SocialSignIn() {
         }, 600)
     }, [])
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: {
+        email: string;
+        password: string;
+    }) => {
         try {
             dispatch(signInActions.setInputEmail(data.email))
             dispatch(signInActions.setInputPassword(data.password))
             dispatch(signInActions.setMethod(SignType.Email))
-            await getUidByThirdPartySignIn()
+            await getUidByThirdPartySignIn(SignType.Email)
         } catch (e) {
             Sentry.captureException(e)
         }
@@ -161,17 +165,13 @@ export default function SocialSignIn() {
         )
     }, [])
 
-    console.log('showEmailForm---', showEmailForm)
-
     return (
         <SigninButtonGroups>
             {loading && <Indicator />}
-            {toastContent.visible &&
-                <Toast
-                    title={toastContent.title}
-                    setToastContent={setToastContent}
-                />
-            }
+            <Toast
+                visible={toastContent.visible}
+                title={toastContent.title}
+            />
             {isSignUp === true && <AgreeTermsModal />}
             <SigninWrapper />
             <TouchableOpacity onPress={() => setShowOtherMethods(!showOtherMethods)}>

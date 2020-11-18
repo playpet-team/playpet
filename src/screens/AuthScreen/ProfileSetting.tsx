@@ -140,12 +140,10 @@ export default function ProfileSetting() {
     return (
         <ProfileSettingBlock>
             {loading && <Indicator />}
-            {toastContent.visible &&
-                <Toast
-                    title={toastContent.title}
-                    setToastContent={setToastContent}
-                />
-            }
+            <Toast
+                visible={toastContent.visible}
+                title={toastContent.title}
+            />
             <ChangePhotoProfileArea onPress={openPicker}>
                 <Avatar
                     size="large"
