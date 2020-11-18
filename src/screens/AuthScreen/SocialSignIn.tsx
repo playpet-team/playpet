@@ -23,12 +23,6 @@ export default function SocialSignIn() {
     const { control, handleSubmit, errors } = useForm();
     const [showOtherMethods, setShowOtherMethods] = useState(false)
     const [showEmailForm, setShowEmailForm] = useState(false)
-    // const [toastContent, setToastContent] = useState<ToastParams>({
-    //     visible: false,
-    //     title: '',
-    //     description: '',
-    //     image: '',
-    // })
     const {
         isSignUp,
         method,
