@@ -3,7 +3,7 @@ import { Control, Controller } from "react-hook-form"
 import { Image } from "react-native"
 import styled, { css, useTheme } from 'styled-components/native'
 import { DividerBlock, Text } from "../../../styles"
-import { ItemBlock } from "."
+import { ItemBlock } from "../RegistrationPet"
 import { PetTypes } from "../../../utils/product"
 import Transition from "../../../components/Transition"
 
@@ -17,7 +17,7 @@ const petSrcMap: any = {
     cat: require('../../../../assets/images/cat_default_thumb.jpg'),
 }
 
-export default function PetType({ petType, setPetType }: {
+export default function PetTypeSection({ petType, setPetType }: {
     petType: PetTypes
     setPetType: React.Dispatch<React.SetStateAction<PetTypes>>
 }) {
@@ -39,28 +39,28 @@ export default function PetType({ petType, setPetType }: {
             </Text>
             <DividerBlock marginBottom={44} />
             <Transition>
-            <PetIcons>
-                {PET_TYPE.map(pet => (
-                    <Pet
-                        key={pet}
-                        onPress={() => setPetType(pet)}
-                        active={petType === pet}
-                    >
-                        <PetThumb source={petSrcMap[pet.toLowerCase()]} />
-                        <DividerBlock marginBottom={30} />
-                        <Text size={20}>{pet === 'DOG' ? '반려견' : '반려묘'}</Text>
-                        <Select active={petType === pet}>
-                            <Text
-                                color={petType === pet ? theme.colors.primary : theme.colors.placeholder}
-                                bold={petType === pet}
-                                size={14}
-                            >
-                                선택
-                            </Text>
-                        </Select>
-                    </Pet>
-                ))}
-            </PetIcons>
+                <PetIcons>
+                    {PET_TYPE.map(pet => (
+                        <Pet
+                            key={pet}
+                            onPress={() => setPetType(pet)}
+                            active={petType === pet}
+                        >
+                            <PetThumb source={petSrcMap[pet.toLowerCase()]} />
+                            <DividerBlock marginBottom={30} />
+                            <Text size={20}>{pet === 'DOG' ? '반려견' : '반려묘'}</Text>
+                            <Select active={petType === pet}>
+                                <Text
+                                    color={petType === pet ? theme.colors.primary : theme.colors.placeholder}
+                                    bold={petType === pet}
+                                    size={14}
+                                >
+                                    선택
+                                </Text>
+                            </Select>
+                        </Pet>
+                    ))}
+                </PetIcons>
             </Transition>
             <DividerBlock marginBottom={8} />
         </ItemBlock>

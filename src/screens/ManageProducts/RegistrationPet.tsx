@@ -14,11 +14,12 @@ import { Text } from "../../styles"
 import { currentUser, updateUserPets } from '../../utils'
 import { PetTypes } from "../../utils/product"
 import { BackButton, NavigateBlock, NextButton } from "./RegistFeedBoard"
-import PetAdditionalType, { PetSize, PetAge } from './RegistrationPet/PetAdditionalType'
 // import PetFavorite from "./SignInAdditionalInformation/PetFavorite"
 // import PetKind from "./RegistrationPet/PetKind"
-import PetName from "./RegistrationPet/PetName"
-import PetType from "./RegistrationPet/PetType"
+import PetNameSection from "./RegistrationPet/PetNameSection"
+import PetTypeSection from "./RegistrationPet/PetTypeSection"
+import PetAgeSection, { PetAge } from './RegistrationPet/PetAgeSection'
+import PetSizeSection, { PetSize } from './RegistrationPet/PetSizeSection'
 import WelcomeSign from "./RegistrationPet/WelcomeSign"
 
 export interface Terms {
@@ -95,8 +96,19 @@ export default function RegistrationPet() {
         return PET_STEPS.findIndex(registStep => step === registStep) || 0
     }, [step])
 
+    const findNextStepIndex = (handleType: 'NEXT' | 'PREV' = 'NEXT') => {
+        const newIndex = handleType === 'NEXT' ? 1 : -1
+        const nextStepIndex = findCurrentStepIndex + newIndex
+
+        if (PET_STEPS[nextStepIndex] === 'PET_SIZE' && petType === 'CAT') {
+            // 한번더 가 / 감 
+            return nextStepIndex + newIndex
+        }
+        return nextStepIndex
+    }
+
     const nextSteps = useCallback(() => {
-        const nextStepIndex = findCurrentStepIndex + 1
+        const nextStepIndex = findNextStepIndex()
         console.log("nextStepIndex", nextStepIndex)
         if (PET_STEPS[nextStepIndex]) {
             setStep(PET_STEPS[nextStepIndex])
@@ -107,9 +119,10 @@ export default function RegistrationPet() {
     }, [step])
 
     const prevSteps = useCallback(() => {
-        const nextStepIndex = findCurrentStepIndex - 1
-        if (PET_STEPS[nextStepIndex]) {
-            setStep(PET_STEPS[nextStepIndex])
+        const prevStepIndex = findNextStepIndex('PREV')
+        console.log("prevStepIndex", prevStepIndex)
+        if (PET_STEPS[prevStepIndex]) {
+            setStep(PET_STEPS[prevStepIndex])
             return
         }
         setStep(PET_STEPS[0])
@@ -122,18 +135,19 @@ export default function RegistrationPet() {
         <RegistrationPetBlock>
             {loading && <Indicator />}
             <ScrollView>
-                {step === 'PET_TYPE' && <PetType
+                {step === 'PET_TYPE' && <PetTypeSection
                     petType={petType}
                     setPetType={setPetType}
                 />}
-                {step === 'PET_NAME' && <PetName
+                {step === 'PET_NAME' && <PetNameSection
                     petName={petName}
                     setPetName={setPetName}
                 />}
-                {step === 'PET_SIZE' && <PetAdditionalType
-                    petType={petType}
+                {(step === 'PET_SIZE' && petType === 'DOG') && <PetSizeSection
                     petSize={petSize}
                     setPetSize={setPetSize}
+                />}
+                {step === 'PET_AGE' && <PetAgeSection
                     petAge={petAge}
                     setPetAge={setPetAge}
                 />}
@@ -231,3 +245,26 @@ const StepNavigator = styled.View`
 `
 
 export const ItemBlock = styled.View``
+
+export const ItemWrapper = styled.View`
+    padding-horizontal: 20px;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+`
+
+export const TypeItem = styled.TouchableOpacity<{ isActive: boolean; primary: string; }>`
+    height: 100px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    border-width: 1px;
+    border-color: ${({ theme }) => theme.colors.border};
+
+    ${({ isActive }) => isActive && css`
+        border-width: 2px;
+        border-color: ${({ theme }) => theme.colors.primary};
+        background-color: rgba(5, 89, 209, 0.1);
+    `}
+`

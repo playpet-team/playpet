@@ -5,7 +5,7 @@ import styled from "styled-components/native";
 import Transition from "../../../components/Transition";
 import { Text } from "../../../styles";
 import { ItemBlock, PetItems } from ".";
-import { TypeItem } from './PetAdditionalType';
+import { TypeItem } from './PetAgeSection';
 
 export const Favorites: { [key: string]: string } = {
     FOOTS: '사료, 간식',
