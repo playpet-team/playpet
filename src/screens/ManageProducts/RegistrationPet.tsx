@@ -1,21 +1,22 @@
-import { useNavigation, useTheme } from "@react-navigation/native"
-import React, { useCallback, useEffect, useState } from 'react'
-import { FormProvider, useForm } from "react-hook-form"
-import { Icon } from "react-native-elements"
+import { useNavigation } from "@react-navigation/native"
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+// import { FormProvider, useForm } from "react-hook-form"
+// import { Icon } from "react-native-elements"
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch } from 'react-redux'
-import styled, { css } from 'styled-components/native'
-import PlaypetModal from '../../components/PlaypetModal'
-import Toast, { ToastParams } from "../../components/Toast"
+import styled, { css, useTheme } from 'styled-components/native'
+// import PlaypetModal from '../../components/PlaypetModal'
+// import Toast, { ToastParams } from "../../components/Toast"
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import { authActions } from '../../store/authReducer'
 import { Text } from "../../styles"
-import { currentUser, deviceSize, updateUserPets } from '../../utils'
+import { currentUser, updateUserPets } from '../../utils'
 import { PetTypes } from "../../utils/product"
-import PetAdditionalType from './RegistrationPet/PetAdditionalType'
+import { BackButton, NavigateBlock, NextButton } from "./RegistFeedBoard"
+import PetAdditionalType, { PetSize, PetAge } from './RegistrationPet/PetAdditionalType'
 // import PetFavorite from "./SignInAdditionalInformation/PetFavorite"
-import PetKind from "./RegistrationPet/PetKind"
+// import PetKind from "./RegistrationPet/PetKind"
 import PetName from "./RegistrationPet/PetName"
 import PetType from "./RegistrationPet/PetType"
 import WelcomeSign from "./RegistrationPet/WelcomeSign"
@@ -27,8 +28,6 @@ export interface Terms {
     marketingAgree: boolean
 }
 
-export type PetItems = '' | 'PetName' | 'PetType' | 'PetKind' | 'PetAdditionalType' | 'PetFavorite'
-
 interface PetInformationData {
     petName: string
     petType: string
@@ -37,40 +36,41 @@ interface PetInformationData {
     age: string
     favorite: string
 }
-const DEVICE_WIDTH = deviceSize().width
 
+type RegistPetStep = 'PET_TYPE' | 'PET_NAME' | 'PET_SIZE' | 'PET_AGE'
+const PET_STEPS: ['PET_TYPE', 'PET_NAME', 'PET_SIZE', 'PET_AGE'] = [
+    'PET_TYPE',
+    'PET_NAME',
+    'PET_SIZE',
+    'PET_AGE',
+]
 export default function RegistrationPet() {
     const { loading, Indicator } = useLoadingIndicator()
-    const methods = useForm()
-    const [openItem, setOpenItem] = useState<PetItems>('')
+    const [step, setStep] = useState<RegistPetStep>(PET_STEPS[0])
+    const [petName, setPetName] = useState<string>('')
+    const [petType, setPetType] = useState<PetTypes>('')
+    const [petSize, setPetSize] = useState<PetSize>('')
+    const [petAge, setPetAge] = useState<PetAge>('')
+
+    // const methods = useForm()
     const themes = useTheme()
     const dispatch = useDispatch()
 
-    const [toastContent, setToastContent] = useState<ToastParams>({
-        visible: false,
-        title: '',
-        description: '',
-        image: '',
-    })
+    // const [toastContent, setToastContent] = useState<ToastParams>({
+    //     visible: false,
+    //     title: '',
+    //     description: '',
+    //     image: '',
+    // })
 
-    useEffect(() => {
-        if (methods.getValues('petType') === '' && ['PetKind', 'PetAdditionalType'].includes(openItem)) {
-            setToastContent({
-                title: '반려동물을 먼저 선택해주세요',
-                visible: true,
-            })
-            setOpenItem('')
-        }
-    }, [openItem])
+    const navigation = useNavigation()
 
-    const navigation = useNavigation();
+    // const handleLater = () => navigation.goBack()
 
-    const handleLater = () => navigation.goBack()
-
-    const handleSubmit = async (data: PetInformationData) => {
-        await handleUpdatePet(data)
-        handleLater()
-    }
+    // const handleSubmit = async (data: PetInformationData) => {
+    //     await handleUpdatePet(data)
+    //     handleLater()
+    // }
     
     const handleUpdatePet = useCallback(async ({ petName, petType, petKind, size, age, favorite }: PetInformationData) => {
         const user = currentUser()
@@ -80,9 +80,10 @@ export default function RegistrationPet() {
         const activePetDocId = await updateUserPets(user.uid, {
             petName,
             petType,
-            petKind,
+            // petKind,
             size,
-            favorite,
+            age,
+            // favorite,
         })
 
         if (activePetDocId) {
@@ -90,105 +91,74 @@ export default function RegistrationPet() {
         }
     }, [dispatch])
 
-    const handleSetOpenItem = (item: PetItems) => {
-        setOpenItem(openItem === item ? '' : item)
-    }
+    const findCurrentStepIndex = useMemo(() => {
+        return PET_STEPS.findIndex(registStep => step === registStep) || 0
+    }, [step])
+
+    const nextSteps = useCallback(() => {
+        const nextStepIndex = findCurrentStepIndex + 1
+        console.log("nextStepIndex", nextStepIndex)
+        if (PET_STEPS[nextStepIndex]) {
+            setStep(PET_STEPS[nextStepIndex])
+            return
+        }
+        setStep(PET_STEPS[0])
+        return
+    }, [step])
+
+    const prevSteps = useCallback(() => {
+        const nextStepIndex = findCurrentStepIndex - 1
+        if (PET_STEPS[nextStepIndex]) {
+            setStep(PET_STEPS[nextStepIndex])
+            return
+        }
+        setStep(PET_STEPS[0])
+        return
+    }, [step])
+
+    const findLastStepName: RegistPetStep = useMemo(() => PET_STEPS[PET_STEPS.length - 1], [])
 
     return (
-        <SignInAdditionalInformationBlock>
+        <RegistrationPetBlock>
             {loading && <Indicator />}
-            <Toast
-                visible={toastContent.visible}
-                title={toastContent.title}
-            />
             <ScrollView>
-                <FormProvider {...methods} >
-                    <WelcomeSign />
-                    <HandleInformationItem
-                        onPress={() => handleSetOpenItem('PetName')}
-                        colors={{
-                            border: themes.colors.border,
-                            primary: themes.colors.primary
-                        }}
-                        status={methods.errors['petName'] ? 'invalid' : ''}
-                    >
-                        <Text>{openItem !== 'PetName' && methods.getValues('petName') || '아이 이름을 알려주세요'}</Text>
-                    </HandleInformationItem>
-                    <PetName
-                        control={methods.control}
-                        errors={methods.errors}
-                        openItem={openItem}
-                    />
-                    <HandleInformationItem
-                        onPress={() => handleSetOpenItem('PetType')}
-                        colors={{
-                            border: themes.colors.border,
-                            primary: themes.colors.primary
-                        }}
-                        status={methods.errors['petType'] ? 'invalid' : ''}
-                    >
-                        <Text>{openItem !== 'PetType' && methods.getValues('petType') || '어떤 반려동물 인가요?'}</Text>
-                    </HandleInformationItem>
-                    <PetType
-                        control={methods.control}
-                        openItem={openItem}
-                    />
-                    <HandleInformationItem
-                        onPress={() => handleSetOpenItem('PetKind')}
-                        colors={{
-                            border: themes.colors.border,
-                            primary: themes.colors.primary,
-                        }}
-                        status={methods.errors['petKind'] ? 'invalid' : ''}
-                    >
-                        <Text>품종을 선택해주세요</Text>
-                    </HandleInformationItem>
-                    <PetKind
-                        openItem={openItem}
-                        control={methods.control}
-                        petType={methods.getValues('petType') as PetTypes}
-                    />
-                    <HandleInformationItem
-                        onPress={() => handleSetOpenItem('PetAdditionalType')}
-                        colors={{
-                            border: themes.colors.border,
-                            primary: themes.colors.primary
-                        }}
-                        status={methods.errors['size'] || methods.errors['age'] ? 'invalid' : ''}
-                    >
-                        <Text>아이 사이즈와 나이를 알려주세요</Text>
-                    </HandleInformationItem>
-                    <PetAdditionalType
-                        openItem={openItem}
-                        control={methods.control}
-                        petType={methods.getValues('petType') as PetTypes}
-                    />
-                    {/* <HandleInformationItem
-                        onPress={() => handleSetOpenItem('PetFavorite')}
-                        colors={{
-                            border: themes.colors.border,
-                            primary: themes.colors.primary
-                        }}
-                        status={methods.errors['favorite'] ? 'invalid' : ''}
-                    >
-                        <Text>관심분야를 알려주세요</Text>
-                    </HandleInformationItem> */}
-                    {/* <PetFavorite
-                        openItem={openItem}
-                        control={methods.control}
-                    /> */}
-                    <BottomNavigation>
-                        <SubmitButton onPress={methods.handleSubmit(handleSubmit)}>
-                            <Icon
-                                name="keyboard-arrow-right"
-                                size={38}
-                                color={themes.colors.primary}
-                            />
-                        </SubmitButton>
-                    </BottomNavigation>
-                </FormProvider>
+                {step === 'PET_TYPE' && <PetType
+                    petType={petType}
+                    setPetType={setPetType}
+                />}
+                {step === 'PET_NAME' && <PetName
+                    petName={petName}
+                    setPetName={setPetName}
+                />}
+                {step === 'PET_SIZE' && <PetAdditionalType
+                    petType={petType}
+                    petSize={petSize}
+                    setPetSize={setPetSize}
+                    petAge={petAge}
+                    setPetAge={setPetAge}
+                />}
             </ScrollView>
-        </SignInAdditionalInformationBlock>
+            <NavigateBlock>
+                <BackButton onPress={prevSteps}>
+                    <Text
+                        color={themes.colors.border}
+                        size={16}
+                        bold
+                    >
+                        이전
+                    </Text>
+                </BackButton>
+                <NextButton onPress={nextSteps}>
+                    <Text
+                        color={themes.colors.background}
+                        size={16}
+                        bold
+                    >
+                        {step === findLastStepName ? '등록' : '다음'}
+                    </Text>
+                </NextButton>
+            </NavigateBlock>
+        </RegistrationPetBlock>
     )
 }
 
@@ -248,8 +218,9 @@ const HandleInformationItem = styled.TouchableOpacity<InformationItem>`
     
 `
 
-const SignInAdditionalInformationBlock = styled(SafeAreaView)`
-    padding-vertical: 40px;
+const RegistrationPetBlock = styled(SafeAreaView)`
+    height: 100%;
+    padding-vertical: 20px;
     flex-direction: column;
 `
 
@@ -259,6 +230,4 @@ const StepNavigator = styled.View`
     flex-direction: row;
 `
 
-export const ItemBlock = styled.View<{ display: boolean }>`
-    display: ${({ display }) => display ? 'flex' : 'none'};
-`
+export const ItemBlock = styled.View``

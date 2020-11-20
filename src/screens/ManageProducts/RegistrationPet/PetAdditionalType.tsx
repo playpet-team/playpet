@@ -4,82 +4,76 @@ import { Control, Controller } from "react-hook-form";
 import styled from "styled-components/native";
 import { DividerBlock, Text } from "../../../styles";
 import { PetTypes } from "../../../utils/product";
-import { ItemBlock, PetItems } from ".";
+import { ItemBlock } from ".";
 
-export const PET_TYPE: ['DOG', 'CAT'] = [
-    'DOG',
-    'CAT',
-    // 'ETC',
-    // 'NOT_YET',
+
+export type PetSize = 'S' | 'M' | 'L' | ''
+export const PetSizes: ['S', 'M', 'L'] = [
+    'S',
+    'M',
+    'L',
 ]
 export const DefaultSize: { [key: string]: string } = {
     S: '소형(~7kg)',
     M: '중형(~20kg)',
     L: '소형(20kg~)',
-} as const
+}
+
+export type PetAge = 'BABY' | 'ADULT' | 'OLD' | ''
+export const PetAges: ['BABY', 'ADULT', 'OLD'] = [
+    'BABY',
+    'ADULT',
+    'OLD',
+]
 export const DefaultAge: { [key: string]: string } = {
     BABY: '5개월 이하',
     ADULT: '5개월 이상',
     OLD: '8세 이상',
-} as const
-export default function PetAdditionalType({ openItem, petType, control }: {
-    openItem: PetItems
+}
+
+export default function PetAdditionalType({ petType, petSize, setPetSize, petAge, setPetAge }: {
     petType: PetTypes
-    control: Control<Record<string, any>>
+    petSize: PetSize
+    setPetSize: React.Dispatch<React.SetStateAction<any>>
+    petAge: PetAge
+    setPetAge: React.Dispatch<React.SetStateAction<any>>
 }) {
     const theme = useTheme();
 
     return (
-        <ItemBlock display={openItem === 'PetAdditionalType'}>
+        <ItemBlock>
             {petType === 'DOG' &&
                 <PetSize>
                     <Label bold size={16}>견종 사이즈</Label>
-                    <Controller
-                        control={control}
-                        render={({ value, onChange }) => (
-                            <ItemWrapper>
-                                {Object.keys(DefaultSize).map(size => (
-                                    <TypeItem
-                                        onPress={() => onChange(size)}
-                                        key={size}
-                                        activeType={value === size}
-                                        primary={theme.colors.primary}
-                                    >
-                                        <Text size={16}>{DefaultSize[size]}</Text>
-                                    </TypeItem>
-                                ))}
-                            </ItemWrapper>
-                        )}
-                        name="size"
-                        rules={{ required: true, }}
-                        defaultValue=""
-                    />
-                    
+                    <ItemWrapper>
+                        {Object.keys(DefaultSize).map(size => (
+                            <TypeItem
+                                onPress={() => setPetSize(size)}
+                                key={size}
+                                activeType={petSize === size}
+                                primary={theme.colors.primary}
+                            >
+                                <Text size={16}>{DefaultSize[size]}</Text>
+                            </TypeItem>
+                        ))}
+                    </ItemWrapper>
                     <DividerBlock marginTop={16} />
                 </PetSize>
             }
             <PetAge>
                 <Label bold size={16}>나이</Label>
-                <Controller
-                    control={control}
-                    render={({ value, onChange }) => (
-                        <ItemWrapper>
-                            {Object.keys(DefaultAge).map(age => (
-                                <TypeItem
-                                    onPress={() => onChange(age)}
-                                    key={age}
-                                    activeType={value === age}
-                                    primary={theme.colors.primary}
-                                >
-                                    <Text size={16}>{DefaultAge[age]}</Text>
-                                </TypeItem>
-                            ))}
-                        </ItemWrapper>
-                    )}
-                    name="age"
-                    rules={{ required: true, }}
-                    defaultValue=""
-                />
+                <ItemWrapper>
+                    {Object.keys(DefaultAge).map(age => (
+                        <TypeItem
+                            onPress={() => setPetAge(age)}
+                            key={age}
+                            activeType={petAge === age}
+                            primary={theme.colors.primary}
+                        >
+                            <Text size={16}>{DefaultAge[age]}</Text>
+                        </TypeItem>
+                    ))}
+                </ItemWrapper>
             </PetAge>
             <DividerBlock marginBottom={8} />
         </ItemBlock>

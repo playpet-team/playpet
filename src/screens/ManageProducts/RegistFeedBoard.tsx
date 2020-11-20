@@ -54,7 +54,7 @@ function RegistFeedBoard() {
                 activeFeedItem={activeFeedItem}
                 setActiveFeedItem={setActiveFeedItem}
             />}
-            <FeedNavigateBlock>
+            <NavigateBlock>
                 <BackButton onPress={prevSteps}>
                     <Text
                         color={theme.colors.border}
@@ -73,7 +73,7 @@ function RegistFeedBoard() {
                         {step === REGIST_FEED_STEPS.ITEMS ? '등록' : '다음'}
                     </Text>
                 </NextButton>
-            </FeedNavigateBlock>
+            </NavigateBlock>
         </RegistFeedBoardBlock>
     )
 }
@@ -86,7 +86,7 @@ const RegistFeedBoardBlock = styled.View`
 
 export default RegistFeedBoard
 
-const FeedNavigateBlock = styled.View`
+export const NavigateBlock = styled.View`
     flex-direction: row;
     position: absolute;
     bottom: 0;
@@ -100,11 +100,11 @@ const Button = styled.TouchableOpacity`
     justify-content: center;
 `
 
-const NextButton = styled(Button)`
+export const NextButton = styled(Button)`
     flex: 1;
     background-color: ${(props) => props.theme.colors.primary};
 `
 
-const BackButton = styled(Button)`
+export const BackButton = styled(Button)`
     flex-basis: 120px;
 `

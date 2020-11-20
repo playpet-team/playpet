@@ -6,29 +6,27 @@ import { DividerBlock, Text } from "../../../styles";
 export default function WelcomeSign() {
     return (
         <WelcomeSignBlock>
-            <Text size={23} bold>
-                가입을 축하드려요
+            <Text size={18} bold>
+                5초만에 등록하기
             </Text>
             <DividerBlock marginTop={24} />
             <Text size={16} align="center">
-                키우시는 반려동물에 대한 정보를{'\n'}
-                적어주시면 아이를 위한 맞춤 정보를 드립니다.
+                양육하는 반려동물의 정보를 등록해주시면{'\n'}
+                정보에 맞는 용품으로 선별해드립니다.
             </Text>
-            <WelcomeImage
-                source={require('../../../../assets/images/welcome.jpg')}
-            />
             <DividerBlock marginBottom={44} />
         </WelcomeSignBlock>
     )
 }
 
 const WelcomeSignBlock = styled.View`
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
 `
 
-const WelcomeImage = styled(Image)`
-    margin-top: 24px;
-    width: 300px;
-    height: 266px;
-`
+// const WelcomeImage = styled(Image)`
+//     margin-top: 24px;
+//     width: 300px;
+//     height: 266px;
+// `
