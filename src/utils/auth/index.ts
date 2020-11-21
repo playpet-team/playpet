@@ -243,14 +243,14 @@ export const resetUserActivePetDocId = async (uid: string) => {
 export const getPetDoc = async (uid: string, petDocId: string) => {
     try {
         const petData = (await firestore()
-            .collection<MyPet>(Collections.Users)
+            .collection(Collections.Users)
             .doc(uid)
             .collection(Collections.UserPets)
             .doc(petDocId)
             .get())
-            .data()
+            .data() as MyPet
         if (!petData) {
-            return
+            return null
         }
         return {
             ...petData,

@@ -29,14 +29,14 @@ export const initialState: AuthSettings = {
         createdAt: null,
         updatedAt: null,
     },
-    activePet: {
-        petName: '',
-        petType: '',
-        petSize: '',
-        petAge: '',
-        createdAt: null,
-        updatedAt: null,
-    },
+    // activePet: {
+    //     petName: '',
+    //     petType: '',
+    //     petSize: '',
+    //     petAge: '',
+    //     createdAt: null,
+    //     updatedAt: null,
+    // },
 }
 
 const slice = createSlice({
@@ -62,9 +62,9 @@ const slice = createSlice({
         setActivePetDocId(state, { payload }: { payload: string }) {
             state.activePetDocId = payload
         },
-        setActivePet(state, { payload }) {
-            state.activePet = payload
-        },
+        // setActivePet(state, { payload }) {
+        //     state.activePet = payload
+        // },
     },
 })
 

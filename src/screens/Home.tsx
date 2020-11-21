@@ -36,9 +36,6 @@ export default function Home() {
                 <DividerBlock marginTop={24} />
                 <ProfileSection />
             </ScrollView>
-            <RegisterFeeds onPress={() => navigation.navigate('ManageProducts')}>
-                <Text>등록하기</Text>
-            </RegisterFeeds>
         </SafeAreaViewBlock>
     )
 }
@@ -49,8 +46,4 @@ const SafeAreaViewBlock = styled(SafeAreaView)`
 
 const HomeBlock = styled.View`
     align-items: center;
-`
-
-const RegisterFeeds = styled.TouchableOpacity`
-
 `

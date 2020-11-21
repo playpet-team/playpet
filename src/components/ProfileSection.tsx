@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled, { useTheme } from 'styled-components/native'
 import { Avatar, Icon } from 'react-native-elements'
 import { Button, View } from 'react-native'
@@ -7,15 +7,33 @@ import { RootState } from '../store/rootReducers'
 import i18n from 'i18n-js'
 import { useNavigation } from '@react-navigation/native'
 import { DividerBlock, Text } from '../styles'
+import { getPetDoc } from '../utils'
+import { MyPet } from '../models'
 
 function ProfileSection() {
     const {
+        uid,
         profilePhoto,
         username,
         email,
+        activePetDocId,
     } = useSelector((state: RootState) => state.auth)
+    const [myPets, setMyPets] = useState<MyPet>()
     const navigation = useNavigation()
     const themes = useTheme()
+
+    useEffect(() => {
+        loadMyPet()
+        async function loadMyPet() {
+            if (!activePetDocId || !uid) {
+                return
+            }
+            const pet = await getPetDoc(uid, activePetDocId)
+            if (pet) {
+                setMyPets(pet)
+            }
+        }
+    }, [activePetDocId, uid])
     
     return (
         <ProfileSectionBlock>
@@ -35,15 +53,19 @@ function ProfileSection() {
                     }
                 </AvatarBlock>
                 <UserInfoBlock>
-                    <Text bold>{username || '이름을 설정해주세요'}</Text>
-                    {/* <DividerBlock height={8} /> */}
-                    {/* <Text>플레이펫 멤버쉽</Text> */}
+                    <Text size={20} bold>{username || '이름을 설정해주세요'}</Text>
+                    {myPets && <DividerBlock height={8} />}
+                    {myPets &&
+                        <Text color={themes.colors.placeholder}>
+                            {myPets.petType === 'DOG' ? '반려견' : '반려묘'}
+                    </Text>}
                 </UserInfoBlock>
                 <MoreActions>
                     <MoreButton onPress={() => navigation.navigate('ManageProducts')}>
                         <Text
-                            color={themes.colors.white}
-                            bold
+                            color={themes.colors.primary}
+                            size={14}
+                            align="center"
                         >
                             더 보기
                         </Text>
@@ -81,9 +103,10 @@ const UserInfoBlock = styled.View`
 const MoreActions = styled.View`
 `
 const MoreButton = styled.TouchableOpacity`
-    padding: 16px;
-    background-color: ${(props) => props.theme.colors.primary};
-    border-radius: 8px;
+    padding: 10px 16px;
+    border-color: ${(props) => props.theme.colors.primary};
+    border-width: 1px;
+    border-radius: 6px;
 `
 
 

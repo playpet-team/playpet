@@ -11,15 +11,16 @@ import { getFeedsDoc, getPetDoc } from '../utils';
 import { useNavigation } from '@react-navigation/native';
 import { sizeNameMap } from './ManageProducts/RegistrationPet/PetSizeSection';
 import { ageNameMap } from './ManageProducts/RegistrationPet/PetAgeSection';
-import { MyFeed } from '../models';
+import { MyFeed, MyPet } from '../models';
 
 export default function ManageProducts() {
     const dispatch = useDispatch()
     const [myFeeds, setMyFeeds] = useState<MyFeed[]>([])
+    const [myPets, setMyPets] = useState<MyPet>()
     const {
         uid,
         activePetDocId,
-        activePet,
+        // activePet,
     } = useSelector((state: RootState) => state.auth)
     
     const navigation = useNavigation()
@@ -32,7 +33,9 @@ export default function ManageProducts() {
                 return
             }
             const pet = await getPetDoc(uid, activePetDocId)
-            dispatch(authActions.setActivePet(pet))
+            if (pet) {
+                setMyPets(pet)
+            }
         }
     }, [activePetDocId, uid])
 
@@ -46,7 +49,6 @@ export default function ManageProducts() {
             setMyFeeds(feeds)
         }
     }, [])
-
 
     const openFeedBoard = () => {
         if (!activePetDocId) {
@@ -74,12 +76,12 @@ export default function ManageProducts() {
                         등록된 반려동물이 없습니다
                     </Text>
                 }
-                {activePet &&
+                {myPets &&
                     <Pet>
-                        <Text>{activePet.petName}</Text>
-                        <Text>{activePet.petType}</Text>
-                        <Text>{activePet.petSize && sizeNameMap[activePet.petSize].title}</Text>
-                        <Text>{activePet.petAge && ageNameMap[activePet.petAge].title}</Text>
+                        <Text>{myPets.petName}</Text>
+                        <Text>{myPets.petType}</Text>
+                        <Text>{myPets.petSize && sizeNameMap[myPets.petSize].title}</Text>
+                        <Text>{myPets.petAge && ageNameMap[myPets.petAge].title}</Text>
                     </Pet>
                 }
             </ScrollSection>

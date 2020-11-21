@@ -27,7 +27,7 @@ export interface User {
     updatedAt: string | FirebaseTimeStamp | null
     activePetDocId: string | null
     terms: Terms
-    activePet: MyPet
+    // activePet: MyPet
 }
 
 export interface Terms {
