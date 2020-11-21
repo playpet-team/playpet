@@ -8,44 +8,59 @@ import { ItemBlock, TypeItem, ItemWrapper } from "../RegistrationPet";
 
 
 export type PetSize = 'S' | 'M' | 'L' | ''
-export const PetSizes: ['S', 'M', 'L'] = [
+export const DefaultPetSizes: ['S', 'M', 'L'] = [
     'S',
     'M',
     'L',
 ]
 
-const sizeNameMap = {
+export const sizeNameMap = {
     '': {
-        title: '아기견',
+        title: '소형견',
         description: '소형(~7kg)',
     },
     S: {
-        title: '아기견',
+        title: '소형견',
         description: '소형(~7kg)',
     },
     M: {
-        title: '성견',
+        title: '중형견',
         description: '중형(~20kg)',
     },
     L: {
-        title: '노령견',
+        title: '대형견',
         description: '대형(20kg~)',
     },
 }
 
-export default function PetSizeSection({ petSize, setPetSize }: {
+export default function PetSizeSection({ petSize, setPetSize, isError }: {
     petSize: PetSize
     setPetSize: React.Dispatch<React.SetStateAction<any>>
+    isError: boolean
 }) {
     const theme = useTheme();
-    console.log('petsize')
 
     return (
         <ItemBlock>
-            <PetSize>
-                <Label bold size={16}>견종 사이즈</Label>
+            <PetSizeBlock>
+                <Text
+                    align="center"
+                    size={18}
+                    bold
+                >
+                    반려동물의 체구를 알려주세요.
+                </Text>
+                <DividerBlock marginTop={16} />
+                <Text
+                    size={16}
+                    align="center"
+                    color={theme.colors.placeholder}
+                >
+                    사료를 선택하기 위한 필수 사항입니다.
+                </Text>
+                <DividerBlock marginTop={30} />
                 <ItemWrapper>
-                    {PetSizes.map(size => (
+                    {DefaultPetSizes.map(size => (
                         <TypeItem
                             onPress={() => setPetSize(size)}
                             key={size}
@@ -53,12 +68,11 @@ export default function PetSizeSection({ petSize, setPetSize }: {
                             primary={theme.colors.primary}
                         >
                             <Text size={16}>{sizeNameMap[size].title}</Text>
-                            <Text size={16}>{sizeNameMap[size].description}</Text>
+                            <Text size={14}>{sizeNameMap[size].description}</Text>
                         </TypeItem>
                     ))}
                 </ItemWrapper>
-                <DividerBlock marginTop={16} />
-            </PetSize>
+            </PetSizeBlock>
             <DividerBlock marginBottom={8} />
         </ItemBlock>
     )
@@ -68,6 +82,8 @@ const Label = styled(Text)`
     width: 100px;
 `
 
-const PetSize = styled.View`
+const PetSizeBlock = styled.View`
+    display: flex;
     align-items: center;
+    flex: 1;
 `

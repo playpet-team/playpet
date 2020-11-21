@@ -1,41 +1,25 @@
 import { useNavigation } from "@react-navigation/native"
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-// import { FormProvider, useForm } from "react-hook-form"
-// import { Icon } from "react-native-elements"
+import React, { useCallback, useMemo, useState } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch } from 'react-redux'
 import styled, { css, useTheme } from 'styled-components/native'
-// import PlaypetModal from '../../components/PlaypetModal'
-// import Toast, { ToastParams } from "../../components/Toast"
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import { authActions } from '../../store/authReducer'
 import { Text } from "../../styles"
 import { currentUser, updateUserPets } from '../../utils'
 import { PetTypes } from "../../utils/product"
 import { BackButton, NavigateBlock, NextButton } from "./RegistFeedBoard"
-// import PetFavorite from "./SignInAdditionalInformation/PetFavorite"
-// import PetKind from "./RegistrationPet/PetKind"
 import PetNameSection from "./RegistrationPet/PetNameSection"
-import PetTypeSection from "./RegistrationPet/PetTypeSection"
-import PetAgeSection, { PetAge } from './RegistrationPet/PetAgeSection'
-import PetSizeSection, { PetSize } from './RegistrationPet/PetSizeSection'
-import WelcomeSign from "./RegistrationPet/WelcomeSign"
+import PetTypeSection, { DefaultPetTypes } from "./RegistrationPet/PetTypeSection"
+import PetAgeSection, { PetAge, DefaultPetAges } from './RegistrationPet/PetAgeSection'
+import PetSizeSection, { PetSize, DefaultPetSizes } from './RegistrationPet/PetSizeSection'
 
 export interface Terms {
     overAgeAgree: boolean
     termsOfUseAgree: boolean
     personalCollectAgree: boolean
     marketingAgree: boolean
-}
-
-interface PetInformationData {
-    petName: string
-    petType: string
-    petKind: string
-    size: string
-    age: string
-    favorite: string
 }
 
 type RegistPetStep = 'PET_TYPE' | 'PET_NAME' | 'PET_SIZE' | 'PET_AGE'
@@ -48,32 +32,18 @@ const PET_STEPS: ['PET_TYPE', 'PET_NAME', 'PET_SIZE', 'PET_AGE'] = [
 export default function RegistrationPet() {
     const { loading, Indicator } = useLoadingIndicator()
     const [step, setStep] = useState<RegistPetStep>(PET_STEPS[0])
+    const [isErrorValidation, setErrorValidation] = useState(false)
     const [petName, setPetName] = useState<string>('')
     const [petType, setPetType] = useState<PetTypes>('')
     const [petSize, setPetSize] = useState<PetSize>('')
     const [petAge, setPetAge] = useState<PetAge>('')
 
-    // const methods = useForm()
     const themes = useTheme()
     const dispatch = useDispatch()
 
-    // const [toastContent, setToastContent] = useState<ToastParams>({
-    //     visible: false,
-    //     title: '',
-    //     description: '',
-    //     image: '',
-    // })
-
     const navigation = useNavigation()
 
-    // const handleLater = () => navigation.goBack()
-
-    // const handleSubmit = async (data: PetInformationData) => {
-    //     await handleUpdatePet(data)
-    //     handleLater()
-    // }
-    
-    const handleUpdatePet = useCallback(async ({ petName, petType, petKind, size, age, favorite }: PetInformationData) => {
+    const handleUpdatePet = useCallback(async () => {
         const user = currentUser()
         if (!user) {
             return
@@ -81,15 +51,14 @@ export default function RegistrationPet() {
         const activePetDocId = await updateUserPets(user.uid, {
             petName,
             petType,
-            // petKind,
-            size,
-            age,
-            // favorite,
+            petSize,
+            petAge,
         })
 
         if (activePetDocId) {
             dispatch(authActions.setActivePetDocId(activePetDocId))
         }
+        navigation.goBack()
     }, [dispatch])
 
     const findCurrentStepIndex = useMemo(() => {
@@ -107,20 +76,52 @@ export default function RegistrationPet() {
         return nextStepIndex
     }
 
-    const nextSteps = useCallback(() => {
+    const checkIsErrorValidation = () => {
+        switch (step) {
+            case 'PET_TYPE': {
+                return petType === '' || !DefaultPetTypes.includes(petType)
+            }
+            case 'PET_NAME': {
+                return petName === '' || petName.length > 16
+            }
+            case 'PET_AGE': {
+                return petAge === '' || !DefaultPetAges .includes(petAge)
+            }
+            case 'PET_SIZE': {
+                return petSize === '' || !DefaultPetSizes .includes(petSize)
+            }
+        }
+    }
+
+    const nextSteps = () => {
         const nextStepIndex = findNextStepIndex()
-        console.log("nextStepIndex", nextStepIndex)
-        if (PET_STEPS[nextStepIndex]) {
+        const stepName = PET_STEPS[nextStepIndex]
+        const isError = checkIsErrorValidation()
+
+        setErrorValidation(isError)
+
+        if (isError) {
+            return
+        }
+        if (findLastStepName === PET_STEPS[findCurrentStepIndex]) {
+            handleUpdatePet()
+            return
+        }
+
+        if (stepName) {
             setStep(PET_STEPS[nextStepIndex])
             return
         }
         setStep(PET_STEPS[0])
         return
-    }, [step])
+    }
 
     const prevSteps = useCallback(() => {
         const prevStepIndex = findNextStepIndex('PREV')
-        console.log("prevStepIndex", prevStepIndex)
+        if (prevStepIndex === -1) {
+            navigation.goBack()
+        }
+
         if (PET_STEPS[prevStepIndex]) {
             setStep(PET_STEPS[prevStepIndex])
             return
@@ -136,18 +137,22 @@ export default function RegistrationPet() {
             {loading && <Indicator />}
             <ScrollView>
                 {step === 'PET_TYPE' && <PetTypeSection
+                    isError={isErrorValidation}
                     petType={petType}
                     setPetType={setPetType}
                 />}
                 {step === 'PET_NAME' && <PetNameSection
+                    isError={isErrorValidation}
                     petName={petName}
                     setPetName={setPetName}
                 />}
                 {(step === 'PET_SIZE' && petType === 'DOG') && <PetSizeSection
+                    isError={isErrorValidation}
                     petSize={petSize}
                     setPetSize={setPetSize}
                 />}
                 {step === 'PET_AGE' && <PetAgeSection
+                    isError={isErrorValidation}
                     petAge={petAge}
                     setPetAge={setPetAge}
                 />}
@@ -176,78 +181,16 @@ export default function RegistrationPet() {
     )
 }
 
-const BottomNavigation = styled.TouchableOpacity`
-    margin-top: 32px;
-    flex-direction: row;
-    justify-content: space-between;
-`
-
-const InputLater = styled.TouchableOpacity`
-    justify-content: flex-start;
-`
-
-const SubmitButton = styled.TouchableOpacity`
-    justify-content: flex-end;
-`
-
-interface InformationItem {
-    colors: {
-        border: string
-        primary: string
-        background?: string
-    }
-    status: '' | 'invalid' | 'complete' | 'disabled'
-}
-const getBorderColorByStatus = ({ colors, status }: InformationItem) => {
-    let color = colors.border
-    switch (status) {
-        case 'invalid': {
-            color = '#ff0000'
-            break
-        }
-        case 'complete': {
-            color = colors.primary
-            break
-        }
-        case 'disabled': {
-            color = 'transparent'
-            break
-        }
-        default: {
-            color = colors.border
-        }
-    }
-    return color
-}
-
-const HandleInformationItem = styled.TouchableOpacity<InformationItem>`
-    margin-top: 8px;
-    border-radius: 8px;
-    border-width: 1px;
-    padding: 16px;
-    border-color: ${({ colors, status }) => getBorderColorByStatus({ colors, status })};
-    ${({ status }) => status === 'disabled' && css`
-        background-color: #e3e3e3;
-    `}
-    
-`
-
 const RegistrationPetBlock = styled(SafeAreaView)`
     height: 100%;
     padding-vertical: 20px;
     flex-direction: column;
 `
 
-const StepNavigator = styled.View`
-    justify-content: space-between;
-    padding: 16px;
-    flex-direction: row;
-`
-
 export const ItemBlock = styled.View``
 
 export const ItemWrapper = styled.View`
-    padding-horizontal: 20px;
+    padding-horizontal: 30px;
     width: 100%;
     flex-direction: column;
     justify-content: center;
@@ -258,7 +201,7 @@ export const TypeItem = styled.TouchableOpacity<{ isActive: boolean; primary: st
     border-radius: 10px;
     align-items: center;
     justify-content: center;
-    margin-top: 16px;
+    margin-top: 8px;
     border-width: 1px;
     border-color: ${({ theme }) => theme.colors.border};
 

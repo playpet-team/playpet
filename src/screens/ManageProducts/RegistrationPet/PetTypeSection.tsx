@@ -7,7 +7,7 @@ import { ItemBlock } from "../RegistrationPet"
 import { PetTypes } from "../../../utils/product"
 import Transition from "../../../components/Transition"
 
-export const PET_TYPE: ['DOG', 'CAT'] = [
+export const DefaultPetTypes: ['DOG', 'CAT'] = [
     'DOG',
     'CAT',
 ]
@@ -17,9 +17,10 @@ const petSrcMap: any = {
     cat: require('../../../../assets/images/cat_default_thumb.jpg'),
 }
 
-export default function PetTypeSection({ petType, setPetType }: {
+export default function PetTypeSection({ petType, setPetType, isError }: {
     petType: PetTypes
     setPetType: React.Dispatch<React.SetStateAction<PetTypes>>
+    isError: boolean
 }) {
     const theme = useTheme()
 
@@ -32,15 +33,15 @@ export default function PetTypeSection({ petType, setPetType }: {
             >
                 5초만에 등록하기
             </Text>
-            <DividerBlock marginTop={24} />
+            <DividerBlock marginTop={16} />
             <Text size={16} align="center">
                 양육하는 반려동물의 정보를 등록해주시면{'\n'}
                 정보에 맞는 용품으로 선별해드립니다.
             </Text>
-            <DividerBlock marginBottom={44} />
+            <DividerBlock marginBottom={32} />
             <Transition>
                 <PetIcons>
-                    {PET_TYPE.map(pet => (
+                    {DefaultPetTypes.map(pet => (
                         <Pet
                             key={pet}
                             onPress={() => setPetType(pet)}
@@ -62,6 +63,13 @@ export default function PetTypeSection({ petType, setPetType }: {
                     ))}
                 </PetIcons>
             </Transition>
+            {isError && petType === '' && <Text
+                align="center"
+                size={13}
+                color={theme.colors.errorColor}
+            >
+                선택해주세요
+            </Text>}
             <DividerBlock marginBottom={8} />
         </ItemBlock>
     )

@@ -6,6 +6,8 @@ export const tintColorDarkText = '#fff';
 export const tintColorBorder = '#999';
 export const tintColorKey = '#0558d1';
 export const mainBgColor = '#fcfaf7';
+export const errorColor = '#f94444';
+
 
 export const defaultColorPalette = {
     primary: tintColorKey,
@@ -16,6 +18,7 @@ export const defaultColorPalette = {
     card: tintColorBackground,
     white: tintColorDarkText,
     grey: tintColorText,
+    errorColor,
 };
 
 export const darkColorPalette = {
@@ -27,4 +30,5 @@ export const darkColorPalette = {
     card: tintColorDarkBackground,
     white: tintColorDarkText,
     grey: tintColorText,
+    errorColor,
 };

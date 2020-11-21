@@ -32,9 +32,8 @@ export const initialState: AuthSettings = {
     activePet: {
         petName: '',
         petType: '',
-        searchPetType: '',
-        size: '',
-        favorite: '',
+        petSize: '',
+        petAge: '',
         createdAt: null,
         updatedAt: null,
     },

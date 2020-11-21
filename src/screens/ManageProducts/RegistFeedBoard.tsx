@@ -1,9 +1,10 @@
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import styled, { useTheme } from 'styled-components/native'
 import { Text } from '../../styles'
 import RegistFeedBrand from "../../components/RegistFeedBrand"
 import RegistFeedItems from "../../components/RegistFeedItems"
 import { useNavigation } from "@react-navigation/native"
+import { currentUser, updateFeedItems } from "../../utils"
 
 enum REGIST_FEED_STEPS {
     BRANDS = 'BRANDS',
@@ -17,6 +18,21 @@ function RegistFeedBoard() {
     const navigation = useNavigation()
     const handleLater = () => navigation.goBack()
 
+    const handleUpdateFeeds = async () => {
+        const user = currentUser()
+        console.log("1", activeFeedItem, activeFeedBrand)
+        if (!user || !activeFeedItem || !activeFeedBrand) {
+            return
+        }
+        console.log("2")
+        updateFeedItems(user.uid, {
+            feedItem: activeFeedItem,
+            feedBrand: activeFeedBrand,
+        })
+
+        navigation.goBack()
+    }
+
     const nextSteps = () => {
         switch (step) {
             case REGIST_FEED_STEPS.BRANDS: {
@@ -25,6 +41,7 @@ function RegistFeedBoard() {
             }
             case REGIST_FEED_STEPS.ITEMS: {
                 // TODO DB에 등록
+                handleUpdateFeeds()
                 handleLater()
                 break;
             }
@@ -79,7 +96,6 @@ function RegistFeedBoard() {
 }
 
 const RegistFeedBoardBlock = styled.View`
-    /* padding-vertical: 40px; */
     flex-direction: column;
     height: 100%;
 `

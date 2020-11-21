@@ -52,9 +52,8 @@ export default function ProfileSetting() {
         dispatch(authActions.setActivePet({
             petName: '',
             petType: '',
-            searchPetType: '',
-            size: '',
-            favorite: '',
+            petSize: '',
+            petAge: '',
             createdAt: null,
             updatedAt: null,
         }))
@@ -194,21 +193,11 @@ export default function ProfileSetting() {
                     value={activePet.petType}
                     disabled
                 />
-                <Input
+                {Boolean(activePet.petSize) && <Input
                     label="품종"
-                    value={activePet.searchPetType}
-                    disabled
-                />
-                {Boolean(activePet.size) && <Input
-                    label="품종"
-                    value={activePet.size}
+                    value={activePet.petSize}
                     disabled
                 />}
-                <Input
-                    label="관심사"
-                    value={activePet.favorite}
-                    disabled
-                />
             </View>
         </ProfileSettingBlock>
     )

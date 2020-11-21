@@ -5,13 +5,13 @@ import { DividerBlock, Text } from "../../../styles";
 import { ItemBlock, TypeItem, ItemWrapper } from "../RegistrationPet";
 
 export type PetAge = 'BABY' | 'ADULT' | 'OLD' | ''
-export const PetAges: ['BABY', 'ADULT', 'OLD'] = [
+export const DefaultPetAges: ['BABY', 'ADULT', 'OLD'] = [
     'BABY',
     'ADULT',
     'OLD',
 ]
 
-const ageNameMap = {
+export const ageNameMap = {
     '': {
         title: '아기견',
         description: '5개월 이하',  
@@ -30,18 +30,34 @@ const ageNameMap = {
     },
 }
 
-export default function PetAgeSection({ petAge, setPetAge }: {
+export default function PetAgeSection({ petAge, setPetAge, isError }: {
     petAge: PetAge
     setPetAge: React.Dispatch<React.SetStateAction<any>>
+    isError: boolean
 }) {
     const theme = useTheme();
 
     return (
         <ItemBlock>
             <PetAgeBlock>
-                <Label bold size={16}>나이</Label>
+                <Text
+                    align="center"
+                    size={18}
+                    bold
+                >
+                    반려동물의 나이를 알려주세요.
+                </Text>
+                <DividerBlock marginTop={16} />
+                <Text
+                    size={16}
+                    align="center"
+                    color={theme.colors.placeholder}
+                >
+                    사료를 선택하기 위한 필수 사항입니다.
+                </Text>
+                <DividerBlock marginTop={30} />
                 <ItemWrapper>
-                    {PetAges.map(age => (
+                    {DefaultPetAges.map(age => (
                         <TypeItem
                             onPress={() => setPetAge(age)}
                             key={age}
@@ -65,7 +81,6 @@ const Label = styled(Text)`
 
 const PetAgeBlock = styled.View`
     display: flex;
-    /* flex-direction: row; */
     align-items: center;
     flex: 1;
 `

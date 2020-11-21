@@ -7,15 +7,15 @@ import useLoadingIndicator from '../hooks/useLoadingIndicator';
 import { authActions } from '../store/authReducer';
 import { RootState } from '../store/rootReducers';
 import { Text } from '../styles';
-import { getPetDoc } from '../utils';
+import { getFeedsDoc, getPetDoc } from '../utils';
 import { useNavigation } from '@react-navigation/native';
+import { sizeNameMap } from './ManageProducts/RegistrationPet/PetSizeSection';
+import { ageNameMap } from './ManageProducts/RegistrationPet/PetAgeSection';
+import { MyFeed } from '../models';
 
 export default function ManageProducts() {
-    const { loading, setLoading } = useLoadingIndicator()
     const dispatch = useDispatch()
-    const [showFeedBoard, setShowFeedBoard] = useState(false);
-    const [showRegistPet, setShowRegistPet] = useState(false);
-    console.log("showRegistPet--", showRegistPet);
+    const [myFeeds, setMyFeeds] = useState<MyFeed[]>([])
     const {
         uid,
         activePetDocId,
@@ -31,12 +31,22 @@ export default function ManageProducts() {
             if (!activePetDocId || !uid) {
                 return
             }
-            setLoading(true)
             const pet = await getPetDoc(uid, activePetDocId)
             dispatch(authActions.setActivePet(pet))
-            setLoading(false)
         }
     }, [activePetDocId, uid])
+
+    useEffect(() => {
+        loadMyFeeds()
+        async function loadMyFeeds() {
+            if (!uid) {
+                return
+            }
+            const feeds = await getFeedsDoc(uid)
+            setMyFeeds(feeds)
+        }
+    }, [])
+
 
     const openFeedBoard = () => {
         if (!activePetDocId) {
@@ -68,7 +78,8 @@ export default function ManageProducts() {
                     <Pet>
                         <Text>{activePet.petName}</Text>
                         <Text>{activePet.petType}</Text>
-                        <Text>{activePet.size}</Text>
+                        <Text>{activePet.petSize && sizeNameMap[activePet.petSize].title}</Text>
+                        <Text>{activePet.petAge && ageNameMap[activePet.petAge].title}</Text>
                     </Pet>
                 }
             </ScrollSection>
@@ -77,14 +88,24 @@ export default function ManageProducts() {
                 <Text onPress={openFeedBoard}>+ 등록하기</Text>
             </ItemTitle>
             <ScrollSection>
-                <AddPetButton onPress={openFeedBoard}>
-                    <Text
-                        color={theme.colors.text}
-                        bold
-                    >
-                        {activePetDocId === '' ? '반려동물을 먼저 등록해주세요' : '등록하기'}
-                    </Text>
-                </AddPetButton>
+                {activePetDocId === '' &&
+                    <AddPetButton onPress={openFeedBoard}>
+                        <Text
+                            color={theme.colors.text}
+                            bold
+                        >
+                            반려동물을 먼저 등록해주세요
+                        </Text>
+                    </AddPetButton>
+                }
+                {myFeeds.map((feed, index) => {
+                    return (
+                        <Pet key={index}>
+                            <Text>{feed.feedBrand}</Text>
+                            <Text>{feed.feedItem}</Text>
+                        </Pet>
+                    )
+                })}
             </ScrollSection>
         </ManageProductsBlock>
     );
@@ -113,7 +134,7 @@ const Pet = styled.View`
     padding: 16px;
 `
 
-const ScrollSection = styled.ScrollView`
+const ScrollSection = styled.View`
     min-height: 200px;
     padding: 16px 0;
 `
