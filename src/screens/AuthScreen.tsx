@@ -18,8 +18,6 @@ export default function AuthScreen() {
     const { isLogged, } = useSelector((state: RootState) => state.auth)
     const navigation = useNavigation()
     const isFocus = useIsFocused()
-    console.log('visible-modal--------', isLogged && params?.isSignUp && isFocus)
-    console.log('isLogged', isLogged)
 
     return (
         <ScrollView>

@@ -15,12 +15,12 @@ function ProfileSection() {
         uid,
         profilePhoto,
         username,
-        email,
         activePetDocId,
     } = useSelector((state: RootState) => state.auth)
     const [myPets, setMyPets] = useState<MyPet>()
     const navigation = useNavigation()
     const themes = useTheme()
+    console.log('uid', uid, username)
 
     useEffect(() => {
         loadMyPet()

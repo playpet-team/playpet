@@ -51,7 +51,12 @@ const PlaypetModal = ({
             >
                 {Boolean(header) &&
                     <PlaypetDialogHeader>
-                        <Text bold>{header}</Text>
+                        <Text
+                            size={16}
+                            bold
+                        >
+                            {header}
+                        </Text>
                         {!isHideCloseButton &&
                             <CloseButton onPress={handleCloseModal}>
                                 <Icon name='close' />

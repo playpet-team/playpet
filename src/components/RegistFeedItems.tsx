@@ -1,41 +1,51 @@
 import React, { useEffect, useState } from "react"
 import styled from 'styled-components/native'
 import { Text } from '../styles'
-import { loadProductList } from "../utils/product";
+import { getProductList } from "../utils/product";
 import ProductListItem from "./ProductListItem";
 import { ProductItem } from '../utils/product';
 
 function RegistFeedItems({
+    activeFeedItem,
     setActiveFeedItem,
-    activeFeedItem
+    setActiveFeedName,
+    setActiveFeedThumbnail,
 }: {
-    setActiveFeedItem: React.Dispatch<React.SetStateAction<string>>;
-    activeFeedItem: string;
+    activeFeedItem: string
+    setActiveFeedItem: React.Dispatch<React.SetStateAction<string>>
+    setActiveFeedName: React.Dispatch<React.SetStateAction<string>>
+    setActiveFeedThumbnail: React.Dispatch<React.SetStateAction<string>>
 }) {
     const [feeds, setFeeds] = useState<ProductItem[]>([])
 
     useEffect(() => {
         async function loadProduct() {
-            const data = await loadProductList('DOG')
+            const data = await getProductList('DOG')
             console.log("data---", data);
             setFeeds(data)
         }
         loadProduct();
     }, [])
 
+    const handleFeed = (feed: ProductItem) => {
+        setActiveFeedItem(feed.id)
+        setActiveFeedName(feed.feedName)
+        setActiveFeedThumbnail(feed.image)
+    }
+
     return (
         <RegistFeedItemsBlock>
             <Text bold>등록하실 사료를 선택해주세요</Text>
             <Text>회원님의 정보를 통해 적합한 사료만 노출됩니다</Text>
             <GridLayout>
-                {feeds.map(({ id, feedName, description, image }) => (
+                {feeds.map((feed) => (
                     <ProductListItem
-                        key={id}
-                        feedName={feedName}
-                        description={description}
-                        image={image}
-                        onPress={() => setActiveFeedItem(id)}
-                        isActive={activeFeedItem === id}
+                        key={feed.id}
+                        feedName={feed.feedName}
+                        description={feed.description}
+                        image={feed.image}
+                        onPress={() => handleFeed(feed)}
+                        isActive={activeFeedItem === feed.id}
                     />
                 ))}
             </GridLayout>

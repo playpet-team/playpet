@@ -1,7 +1,7 @@
 import { PetAge } from './../../screens/ManageProducts/RegistrationPet/PetAgeSection';
 import { PetSize } from './../../screens/ManageProducts/RegistrationPet/PetSizeSection';
 import { FirebaseTimeStamp } from '../../utils';
-import { PetTypes } from './../../utils/product/index';
+import { PetTypes, ProductItem } from './../../utils/product/index';
 export enum SignType {
     Email = 'EMAIL',
     Google = 'GOOGLE',
@@ -51,7 +51,11 @@ export interface MyPet {
 
 export interface MyFeed {
     feedBrand: string
-    feedItem: string
+    feedItem: ProductItem
+    uid: string
+    feedId: string
+    status: 'active' | 'deactive',
+    percentage: number,
     createdAt: string | FirebaseTimeStamp | null
     updatedAt: string | FirebaseTimeStamp | null
 }

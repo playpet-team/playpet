@@ -10,6 +10,8 @@ import useInitialDynamicLink from '../hooks/useInitialDynamicLink'
 import useLanguage from '../hooks/useLanguage'
 import useRollingBanner from '../hooks/useRollingBanner'
 import { DividerBlock, Layout, Text } from '../styles'
+// import { currentUser } from '../utils'
+import FeedSection from './Home/FeedSection'
 
 
 
@@ -35,6 +37,7 @@ export default function Home() {
                 }
                 <DividerBlock marginTop={24} />
                 <ProfileSection />
+                <FeedSection />
             </ScrollView>
         </SafeAreaViewBlock>
     )
