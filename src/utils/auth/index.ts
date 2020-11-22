@@ -180,52 +180,6 @@ export const updateUserPets = async (uid: string, petInformation: {}) => {
     }
 }
 
-export const updateFeedItems = async (uid: string, feedInformation: {
-    feedItem: string
-    feedBrand: string
-}) => {
-    try {
-        console.log('1')
-        const userDoc = firestore().collection(Collections.Users).doc(uid)
-        console.log('1', userDoc)
-        const { id } = userDoc.collection(Collections.UserFeeds).doc()
-        console.log('1', id)
-    
-        await userDoc.collection(Collections.UserFeeds).doc(id).set({
-            ...feedInformation,
-            createdAt: firebaseNow(),
-            updatedAt: firebaseNow(),
-        })
-    } catch (e) {
-        Sentry.captureException(e)
-        return null
-    }
-}
-
-export const getFeedsDoc = async (uid: string) => {
-    try {
-        const feedDocs = (await firestore()
-            .collection(Collections.Users)
-            .doc(uid)
-            .collection(Collections.UserFeeds)
-            .get())
-        if (feedDocs.empty) {
-            return []
-        }
-        return feedDocs.docs.map(doc => {
-            const feedData = doc.data() as MyFeed
-            return {
-                ...feedData,
-                createdAt: firebaseTimeStampToStringStamp(feedData.createdAt),
-                updatedAt: firebaseTimeStampToStringStamp(feedData.updatedAt),
-            }
-        })
-    } catch (e) {
-        Sentry.captureException(e)
-        return []
-    }
-}
-
 export const resetUserActivePetDocId = async (uid: string) => {
     try {
         await firestore()
