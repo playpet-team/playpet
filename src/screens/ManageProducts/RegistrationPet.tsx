@@ -43,11 +43,12 @@ export default function RegistrationPet() {
 
     const navigation = useNavigation()
 
-    const handleUpdatePet = useCallback(async () => {
+    const handleUpdatePet = async () => {
         const user = currentUser()
         if (!user) {
             return
         }
+        console.log("petName", petName)
         const activePetDocId = await updateUserPets(user.uid, {
             petName,
             petType,
@@ -59,7 +60,7 @@ export default function RegistrationPet() {
             dispatch(authActions.setActivePetDocId(activePetDocId))
         }
         navigation.goBack()
-    }, [dispatch])
+    }
 
     const findCurrentStepIndex = useMemo(() => {
         return PET_STEPS.findIndex(registStep => step === registStep) || 0

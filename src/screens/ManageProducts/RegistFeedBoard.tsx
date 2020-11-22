@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import styled, { useTheme } from 'styled-components/native'
 import { Text } from '../../styles'
 import RegistFeedBrand from "../../components/RegistFeedBrand"
 import RegistFeedItems from "../../components/RegistFeedItems"
 import { useNavigation } from "@react-navigation/native"
-import { currentUser, updateFeedItems } from "../../utils"
+import { currentUser, getProductList, ProductItem, updateFeedItems } from "../../utils"
 
 enum REGIST_FEED_STEPS {
     BRANDS = 'BRANDS',
@@ -13,10 +13,24 @@ enum REGIST_FEED_STEPS {
 function RegistFeedBoard() {
     const [step, setStep] = useState<REGIST_FEED_STEPS>(REGIST_FEED_STEPS.BRANDS)
     const [activeFeedItem, setActiveFeedItem] = useState('')
+    const [activeFeedName, setActiveFeedName] = useState('')
+    const [activeFeedThumbnail, setActiveFeedThumbnail] = useState('')
     const [activeFeedBrand, setActiveFeedBrand] = useState('')
+
+    const [feeds, setFeeds] = useState<ProductItem[]>([])
+
     const theme = useTheme()
     const navigation = useNavigation()
     const handleLater = () => navigation.goBack()
+
+    useEffect(() => {
+        async function loadProduct() {
+            const data = await getProductList('DOG')
+            console.log("data---", data);
+            setFeeds(data)
+        }
+        loadProduct();
+    }, [])
 
     const handleUpdateFeeds = async () => {
         const user = currentUser()
@@ -24,9 +38,13 @@ function RegistFeedBoard() {
         if (!user || !activeFeedItem || !activeFeedBrand) {
             return
         }
-        console.log("2")
+        const findFeed = feeds.find(feed => feed.id === activeFeedItem)
+        if (!findFeed) {
+            return
+        }
+        console.log('findFeed', findFeed)
         updateFeedItems(user.uid, {
-            feedItem: activeFeedItem,
+            feedItem: findFeed,
             feedBrand: activeFeedBrand,
         })
 
@@ -70,6 +88,9 @@ function RegistFeedBoard() {
             {step === REGIST_FEED_STEPS.ITEMS && <RegistFeedItems
                 activeFeedItem={activeFeedItem}
                 setActiveFeedItem={setActiveFeedItem}
+                setActiveFeedName={setActiveFeedName}
+                setActiveFeedThumbnail={setActiveFeedThumbnail}
+                
             />}
             <NavigateBlock>
                 <BackButton onPress={prevSteps}>

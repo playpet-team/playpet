@@ -9,6 +9,7 @@ import styled from 'styled-components/native'
 import Toast, { ToastParams } from '../../components/Toast'
 import useImagePicker from '../../hooks/useImagePicker'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
+import { MyPet } from '../../models'
 import { authActions } from '../../store/authReducer'
 import { RootState } from '../../store/rootReducers'
 import { DividerBlock, Layout, Text } from '../../styles'
@@ -20,6 +21,10 @@ const MIN_USERNAME_LENGTH = 2
 
 export default function ProfileSetting() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
+    const [myPets, setMyPets] = useState<MyPet>()
+    const [form, setForm] = useState<ProfileForm>({ uri: '' })
+    const [openAdditionalInformation, setOpenAdditionalInformation] = useState(false)
+
     const {
         profilePhoto,
         username,
@@ -27,10 +32,7 @@ export default function ProfileSetting() {
         method,
         uid,
         activePetDocId,
-        activePet,
     } = useSelector((state: RootState) => state.auth)
-    const [form, setForm] = useState<ProfileForm>({ uri: '' });
-    const [openAdditionalInformation, setOpenAdditionalInformation] = useState(false);
 
     useEffect(() => {
         loadMyPet()
@@ -41,7 +43,9 @@ export default function ProfileSetting() {
             console.log("load")
             setLoading(true)
             const petDoc = await getPetDoc(uid, activePetDocId)
-            dispatch(authActions.setActivePet(petDoc))
+            if (petDoc) {
+                setMyPets(petDoc)
+            }
             setLoading(false)
         }
     }, [activePetDocId, uid])
@@ -49,14 +53,7 @@ export default function ProfileSetting() {
     const resetActivePetDocId = () => {
         resetUserActivePetDocId(uid)
         dispatch(authActions.setActivePetDocId(''))
-        dispatch(authActions.setActivePet({
-            petName: '',
-            petType: '',
-            petSize: '',
-            petAge: '',
-            createdAt: null,
-            updatedAt: null,
-        }))
+        setMyPets(undefined)
         setOpenAdditionalInformation(true)
     }
 
@@ -184,20 +181,24 @@ export default function ProfileSetting() {
                 <DividerBlock marginTop={12} />
                 <TouchableOpacity onPress={resetActivePetDocId}><Text size={16}>동물 정보 초기화하기(개발용)</Text></TouchableOpacity>
                 <DividerBlock marginTop={4} marginBottom={2} />
-                <Input
-                    label="아이 이름"
-                    value={activePet.petName}
-                    disabled
-                />
-                <Input
-                    value={activePet.petType}
-                    disabled
-                />
-                {Boolean(activePet.petSize) && <Input
-                    label="품종"
-                    value={activePet.petSize}
-                    disabled
-                />}
+                {myPets &&
+                <>
+                    <Input
+                        label="아이 이름"
+                        value={myPets.petName}
+                        disabled
+                    />
+                    <Input
+                        value={myPets.petType}
+                        disabled
+                    />
+                    {Boolean(myPets.petSize) && <Input
+                        label="품종"
+                        value={myPets.petSize}
+                        disabled
+                    />}
+                </>
+                }
             </View>
         </ProfileSettingBlock>
     )
