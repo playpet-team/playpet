@@ -48,7 +48,6 @@ export default function RegistrationPet() {
         if (!user) {
             return
         }
-        console.log("petName", petName)
         const activePetDocId = await updateUserPets(user.uid, {
             petName,
             petType,

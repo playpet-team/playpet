@@ -108,7 +108,6 @@ function RootNavigator() {
 
     }, [])
 
-    console.log("user------", user);
 
     return (
         <RootStack.Navigator screenOptions={{ headerShown: false }}>

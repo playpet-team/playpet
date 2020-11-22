@@ -42,9 +42,6 @@ export default function initializeSignIn() {
         
         async function trySignIn() {
             try {
-                console.log('token', token)
-                console.log('profile', profile)
-                console.log('method', method)
                 if (!profile.email) {
                     rejectSignIn('이메일 정보를 받아 올수 없습니다. 잠시 후 다시 시도해주세요')
                     return

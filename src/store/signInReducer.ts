@@ -64,7 +64,6 @@ const slice = createSlice({
         },
         setMethod(state, { payload }: { payload: SignType }) {
             state.method = payload
-            console.log('state', state.method)
         },
         setInputEmail(state, { payload }: { payload: string }) {
             state.inputEmail = payload

@@ -20,7 +20,6 @@ function ProfileSection() {
     const [myPets, setMyPets] = useState<MyPet>()
     const navigation = useNavigation()
     const themes = useTheme()
-    console.log('uid', uid, username)
 
     useEffect(() => {
         loadMyPet()

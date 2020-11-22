@@ -97,7 +97,6 @@ function Card({
     }, [showDetail, onPlayActive])
 
     const shouldPlay = useMemo(() => getReadyPlay && onPlayActive && !showDetail, [getReadyPlay && onPlayActive && !showDetail])
-    console.log("videoUrl", videoUrl)
 
     return (
         <CardTouchable onPress={() => setShowDetail(!showDetail)}>

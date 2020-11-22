@@ -1,40 +1,42 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import * as React from 'react';
-import { Icon } from 'react-native-elements';
-import ManageProducts from '../screens/ManageProducts';
-import RegistrationPet from '../screens/ManageProducts/RegistrationPet';
-import RegistFeedBoard from '../screens/ManageProducts/RegistFeedBoard';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createStackNavigator } from '@react-navigation/stack'
+import * as React from 'react'
+import { Icon } from 'react-native-elements'
+import ManageProducts from '../screens/ManageProducts'
+import RegistrationPet from '../screens/ManageProducts/RegistrationPet'
+import RegistFeedBoard from '../screens/ManageProducts/RegistFeedBoard'
 
-// import AppLogin from '../screens/AppLogin';
-import AuthScreen from '../screens/AuthScreen';
-import AppSettings from '../screens/AuthScreen/AppSettings';
-import PaymentSetting from '../screens/AuthScreen/PaymentSetting';
-import ProfileSetting from '../screens/AuthScreen/ProfileSetting';
-import ShippingDestinationSetting from '../screens/AuthScreen/ShippingDestinationSetting';
-// import CardFormScreen from '../screens/CardFormScreen';
-import Home from '../screens/Home';
-import Order from '../screens/Order';
-import Recommendation from '../screens/Recommendation';
-// import Notifications from '../screens/Notifications';
-// import PlayGroundScreen from '../screens/PlayGroundScreen';
-// import SubscribeFormScreen from '../screens/SubscribeFormScreen';
-import { defaultColorPalette } from '../styles/colors';
+// import AppLogin from '../screens/AppLogin'
+import AuthScreen from '../screens/AuthScreen'
+import AppSettings from '../screens/AuthScreen/AppSettings'
+import PaymentSetting from '../screens/AuthScreen/PaymentSetting'
+import ProfileSetting from '../screens/AuthScreen/ProfileSetting'
+import ShippingDestinationSetting from '../screens/AuthScreen/ShippingDestinationSetting'
+// import CardFormScreen from '../screens/CardFormScreen'
+import Home from '../screens/Home'
+import Order from '../screens/Order'
+import Recommendation from '../screens/Recommendation'
+// import Notifications from '../screens/Notifications'
+// import PlayGroundScreen from '../screens/PlayGroundScreen'
+// import SubscribeFormScreen from '../screens/SubscribeFormScreen'
+import { defaultColorPalette } from '../styles/colors'
 
 
 
 
 export type BottomTabParamList = {
-    Home: undefined;
-    ManageProducts: undefined;
-    Recommendation: undefined;
-    // SubscribeForm: undefined;
-    // PlayGround: undefined;
-    // CardForm: undefined;
-    // Notifications: undefined;
-    Auth: undefined;
-};
-const BottomTab = createBottomTabNavigator<BottomTabParamList>();
+    Home: {
+        needRefresh?: boolean
+    }
+    ManageProducts: undefined
+    Recommendation: undefined
+    // SubscribeForm: undefined
+    // PlayGround: undefined
+    // CardForm: undefined
+    // Notifications: undefined
+    Auth: undefined
+}
+const BottomTab = createBottomTabNavigator<BottomTabParamList>()
 export default function BottomTabNavigator() {
     // const { isNew } = useUserNotifications('isNew')
     return (
@@ -126,38 +128,38 @@ export default function BottomTabNavigator() {
                 }}
             />
         </BottomTab.Navigator>
-    );
+    )
 }
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
-// function TabBarIcon(props: { name: string; color: string }) {
-//     return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+// function TabBarIcon(props: { name: string color: string }) {
+//     return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />
 // }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 export type HomeNavigatorTabParamList = {
-    HomeNavigator: undefined;
+    HomeNavigator: undefined
     // ProductWebView: {
-    //     url: string;
-    //     title: string;
-    // };
+    //     url: string
+    //     title: string
+    // }
     // IamportHome: {
-    //     type: any;
-    //     response: any;
-    // };
+    //     type: any
+    //     response: any
+    // }
     // Payment: {
-    //     userCode: any;
-    //     data: any;
-    // };
+    //     userCode: any
+    //     data: any
+    // }
     // AuthCertification: {
-    //     userCode: any;
-    //     data: any;
-    // };
-    // AppLoginAgreeTerms: undefined;
-};
-const HomeNavigatorTapStack = createStackNavigator<HomeNavigatorTabParamList>();
+    //     userCode: any
+    //     data: any
+    // }
+    // AppLoginAgreeTerms: undefined
+}
+const HomeNavigatorTapStack = createStackNavigator<HomeNavigatorTabParamList>()
 
 function HomeNavigator() {
     return (
@@ -200,15 +202,17 @@ function HomeNavigator() {
                 })}
             /> */}
         </HomeNavigatorTapStack.Navigator>
-    );
+    )
 }
 
 export type ManageParamList = {
-    ManageProducts: undefined;
-    RegistrationPet: undefined;
-    RegistFeedBoard: undefined;
-};
-const ManageStack = createStackNavigator<ManageParamList>();
+    ManageProducts: {
+        needRefresh: boolean
+    }
+    RegistrationPet: undefined
+    RegistFeedBoard: undefined
+}
+const ManageStack = createStackNavigator<ManageParamList>()
 function ManageProductsNavigator() {
     return (
         <ManageStack.Navigator>
@@ -230,17 +234,17 @@ function ManageProductsNavigator() {
                 name="RegistFeedBoard"
                 component={RegistFeedBoard}
                 options={({ navigation }) => ({
-                    headerTitle: '반려동물 등록',
+                    headerTitle: '사료 등록',
                 })}
             />
         </ManageStack.Navigator>
-    );
-};
+    )
+}
 
 export type RecommendationParamList = {
-    RecommendationScreen: undefined;
-};
-const RecommendationStack = createStackNavigator<RecommendationParamList>();
+    RecommendationScreen: undefined
+}
+const RecommendationStack = createStackNavigator<RecommendationParamList>()
 function RecommendationNavigator() {
     return (
         <RecommendationStack.Navigator>
@@ -253,14 +257,14 @@ function RecommendationNavigator() {
                 })}
             />
         </RecommendationStack.Navigator>
-    );
-};
+    )
+}
 
 // export type NotificationNavigatorParamList = {
-//     Notifications: undefined;
-//     NotificationDetail: undefined;
-// };
-// const NotificationNavigatorStack = createStackNavigator<NotificationNavigatorParamList>();
+//     Notifications: undefined
+//     NotificationDetail: undefined
+// }
+// const NotificationNavigatorStack = createStackNavigator<NotificationNavigatorParamList>()
 // function NotificationNavigator() {
 //     return (
 //         <NotificationNavigatorStack.Navigator>
@@ -272,13 +276,13 @@ function RecommendationNavigator() {
 //                 })}
 //             />
 //         </NotificationNavigatorStack.Navigator>
-//     );
-// };
+//     )
+// }
 
 // export type CardFormNavigatorParamList = {
-//     CardFormNavigator: undefined;
-// };
-// const CardFormNavigatorStack = createStackNavigator<CardFormNavigatorParamList>();
+//     CardFormNavigator: undefined
+// }
+// const CardFormNavigatorStack = createStackNavigator<CardFormNavigatorParamList>()
 // function CardFormNavigator() {
 //     return (
 //         <CardFormNavigatorStack.Navigator>
@@ -290,13 +294,13 @@ function RecommendationNavigator() {
 //                 })}
 //             />
 //         </CardFormNavigatorStack.Navigator>
-//     );
-// };
+//     )
+// }
 
 // export type BlankTapParamList = {
-//     BlankScreen: undefined;
-// };
-// const BlankTapStack = createStackNavigator<BlankTapParamList>();
+//     BlankScreen: undefined
+// }
+// const BlankTapStack = createStackNavigator<BlankTapParamList>()
 // function PlayGroundNavigator() {
 //     return (
 //         <BlankTapStack.Navigator>
@@ -309,13 +313,13 @@ function RecommendationNavigator() {
 //                 })}
 //             />
 //         </BlankTapStack.Navigator>
-//     );
-// };
+//     )
+// }
 
 // export type SubscribeFormTapParamList = {
 //     SubscribeForm: undefined
-// };
-// const SubscribeFormTapStack = createStackNavigator<SubscribeFormTapParamList>();
+// }
+// const SubscribeFormTapStack = createStackNavigator<SubscribeFormTapParamList>()
 // function SubscribeFormNavigator() {
 //     return (
 //         <SubscribeFormTapStack.Navigator>
@@ -328,21 +332,21 @@ function RecommendationNavigator() {
 //                 })}
 //             />
 //         </SubscribeFormTapStack.Navigator>
-//     );
-// };
+//     )
+// }
 
 export type AuthTapParamList = {
     AuthScreen: {
-        completeLoginType?: boolean;
-    };
-    AppSettings: undefined;
-    PaymentSetting: undefined;
-    ShippingDestinationSetting: undefined;
-    ProfileSetting: undefined;
-    // AppLogin: undefined;
-    // AppLoginAgreeTerms: undefined;
-};
-const AuthTapStack = createStackNavigator<AuthTapParamList>();
+        completeLoginType?: boolean
+    }
+    AppSettings: undefined
+    PaymentSetting: undefined
+    ShippingDestinationSetting: undefined
+    ProfileSetting: undefined
+    // AppLogin: undefined
+    // AppLoginAgreeTerms: undefined
+}
+const AuthTapStack = createStackNavigator<AuthTapParamList>()
 
 function AuthNavigator() {
     return (
@@ -383,5 +387,5 @@ function AuthNavigator() {
                 })}
             /> */}
         </AuthTapStack.Navigator>
-    );
-};
+    )
+}

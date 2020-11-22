@@ -25,7 +25,6 @@ export default function CardFormScreen() {
     const isFocused = useIsFocused()
 
     useEffect(() => {
-        console.log('videouri 이 뭔가 변했다!!!!!!', videoUri)
         if (videoUri.length > 0) {
             addCardMedia({ uri: videoUri })
             setCameraOn(false)

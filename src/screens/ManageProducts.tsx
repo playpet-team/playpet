@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Alert } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled, { useTheme } from 'styled-components/native'
 import { RootState } from '../store/rootReducers';
 import { Text } from '../styles';
 import { getFeedsDoc, getPetDoc } from '../utils';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { sizeNameMap } from './ManageProducts/RegistrationPet/PetSizeSection';
 import { ageNameMap } from './ManageProducts/RegistrationPet/PetAgeSection';
 import { MyFeed, MyPet } from '../models';
+import { ManageParamList } from '../navigation/BottomTabNavigator';
 
 export default function ManageProducts() {
-    const dispatch = useDispatch()
     const [myFeed, setMyFeed] = useState<MyFeed>()
     const [myPets, setMyPets] = useState<MyPet>()
     const {
@@ -23,21 +23,8 @@ export default function ManageProducts() {
     const navigation = useNavigation()
     const theme = useTheme();
 
-    useEffect(() => {
-        loadMyPet()
-        async function loadMyPet() {
-            if (!activePetDocId || !uid) {
-                return
-            }
-            const pet = await getPetDoc(uid, activePetDocId)
-            console.log('1', pet)
-            if (pet) {
-                console.log('2')
-                setMyPets(pet)
-            }
-        }
-    }, [activePetDocId, uid])
-
+    const { params } = useRoute<RouteProp<ManageParamList, 'ManageProducts'>>();
+    
     useEffect(() => {
         loadMyFeeds()
         async function loadMyFeeds() {
@@ -47,7 +34,20 @@ export default function ManageProducts() {
             const feeds = await getFeedsDoc(uid)
             setMyFeed(feeds)
         }
-    }, [])
+    }, [uid, params])
+
+    useEffect(() => {
+        loadMyPet()
+        async function loadMyPet() {
+            if (!activePetDocId || !uid) {
+                return
+            }
+            const pet = await getPetDoc(uid, activePetDocId)
+            if (pet) {
+                setMyPets(pet)
+            }
+        }
+    }, [activePetDocId, uid])
 
     const openFeedBoard = () => {
         if (!activePetDocId) {
@@ -102,7 +102,7 @@ export default function ManageProducts() {
                 {myFeed &&
                     <Pet>
                         <Text>{myFeed.feedBrand}</Text>
-                        <Text>{myFeed.feedItem}</Text>
+                        <Text>{myFeed.feedItem.feedName}</Text>
                     </Pet>
                 }
             </ScrollSection>

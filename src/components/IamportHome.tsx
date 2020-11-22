@@ -13,16 +13,13 @@ export default function IamportHome() {
     useEffect(() => {
         if (response) {
             const query = queryString.stringify(response);
-            console.log("query", query)
             if (type === "payment") {
-                console.log('-------')
                 setUri(`${domain}/payment/result?${query}`);
             } else {
                 setUri(`${domain}/certification/result?${query}`);
             }
         }
     }, [navigation]);
-    console.log("uri', ", uri)
 
     function onMessage(e: any) {
         try {

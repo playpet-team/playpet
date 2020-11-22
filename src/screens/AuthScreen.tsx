@@ -25,6 +25,23 @@ export default function AuthScreen() {
             <ActionIconsSection />
             <Section>
                 <ListItem
+                    title="공지사항"
+                    onPress={() => navigation.navigate('ProfileSetting')}
+                    rightIcon={<Icon name="keyboard-arrow-right" />}
+                />
+                <ListItem
+                    title="자주 찾는 질문"
+                    onPress={() => navigation.navigate('ProfileSetting')}
+                    rightIcon={<Icon name="keyboard-arrow-right" />}
+                />
+                <ListItem
+                    title='앱 설정'
+                    titleStyle={{
+                    }}
+                    onPress={() => navigation.navigate('AppSettings')}
+                    rightIcon={<Icon name="keyboard-arrow-right" />}
+                />
+                {/* <ListItem
                     title="프로필 설정"
                     onPress={() => navigation.navigate('ProfileSetting')}
                     rightIcon={<Icon name="keyboard-arrow-right" />}
@@ -42,22 +59,22 @@ export default function AuthScreen() {
                     }}
                     onPress={() => navigation.navigate('ShippingDestinationSetting')}
                     rightIcon={<Icon name="keyboard-arrow-right" />}
-                />
+                /> */}
             </Section>
-            <DividerBlock
+            {/* <DividerBlock
                 marginHorizontal={16}
                 backgroundColor="#999"
                 marginTop={16}
                 height={1}
-            />
+            /> */}
             <Section>
-                <ListItem
+                {/* <ListItem
                     title='앱 설정'
                     titleStyle={{
                     }}
                     onPress={() => navigation.navigate('AppSettings')}
                     rightIcon={<Icon name="keyboard-arrow-right" />}
-                />
+                /> */}
                 {/* <ListItem
                     title='공지사항'
                     onPress={() => { }}
@@ -109,7 +126,7 @@ const ActionIconsSection = () => {
                         size={36}
                     />
                 </ActionIcon>
-                <Text align='center'>1:1상담</Text>
+                <Text align='center'>친절상담</Text>
             </ActionIconsBlock>
         </ActionIconsSectionBlock>
     )
@@ -174,7 +191,7 @@ const ContactUs = () => {
 }
 
 const ContactUsBlock = styled.View`
-    margin-top: 12px;
+    /* margin-top: 12px; */
     padding: 16px;
     background-color: #eee;
 `

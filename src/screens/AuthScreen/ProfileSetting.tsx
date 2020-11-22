@@ -40,7 +40,6 @@ export default function ProfileSetting() {
             if (!activePetDocId || !uid) {
                 return
             }
-            console.log("load")
             setLoading(true)
             const petDoc = await getPetDoc(uid, activePetDocId)
             if (petDoc) {

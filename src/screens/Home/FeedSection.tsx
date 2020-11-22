@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
@@ -15,6 +15,7 @@ const DEVICE_WIDTH = deviceSize().width
 
 export default function FeedSection() {
     const navigation = useNavigation()
+    const isFocus = useIsFocused()
     const themes = useTheme()
     const [myFeed, setMyFeed] = useState<MyFeed>()
     const [openStatusModal, setOpenStatusModal] = useState(false)
@@ -25,6 +26,9 @@ export default function FeedSection() {
     } = useSelector((state: RootState) => state.auth)
 
     useEffect(() => {
+        if (!isFocus) {
+            return
+        }
         loadMyFeeds()
         async function loadMyFeeds() {
             if (!uid) {
@@ -33,7 +37,7 @@ export default function FeedSection() {
             const feeds = await getFeedsDoc(uid)
             setMyFeed(feeds)
         }
-    }, [uid])
+    }, [uid, isFocus])
 
     const getFeedImageUrl = (url: string) => {
         if (url) {
@@ -46,12 +50,10 @@ export default function FeedSection() {
 
     const handleStatus = () => {
         if (myFeed) {
-            console.log("myFeed.percentage222", myFeed.percentage)
             setSliderValue(myFeed.percentage)
             setOpenStatusModal(!openStatusModal)
         }
     }
-    console.log('sliderValue', sliderValue)
     return (
         <FeedSectionBlock>
             <Header>

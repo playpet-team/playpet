@@ -64,13 +64,11 @@ function useImagePicker({ setLoading, uploadCallback, updateType = 'video' }: {
         if (response.didCancel || response.error || !response.uri) {
             return
         }
-        console.log('response----', response)
         const { path, uri } = response
         // setLoading(true)
         const tempId = `${uid}_${firebaseNow().seconds}`
         if (updateType === 'video') {
             const { videoThumbnail = '', width = 0, height = 0, isError = false } = await getThumbnail(path, uri)
-            console.log("generate thumbnail")
             // setLoading(false)
             if (isError === true) {
                 return alert('업로드에 실패했습니다')

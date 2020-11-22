@@ -44,12 +44,10 @@ function CameraRecordWrapper({ setVideoUri, setCameraOn, openPicker }: {
         }
         const asset = await MediaLibrary.createAssetAsync(uri);
         if (asset) {
-            console.log('asset')
 
             // setVideoUri('')
             return
         }
-        console.log('no')
     }
 
     const startRecord = async () => {

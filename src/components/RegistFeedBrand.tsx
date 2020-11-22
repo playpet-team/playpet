@@ -1,6 +1,6 @@
 import React from "react"
-import styled from 'styled-components/native'
-import { Text } from '../styles'
+import styled, { useTheme } from 'styled-components/native'
+import { DividerBlock, Text } from '../styles'
 
 function RegistFeedBrand({
     setActiveFeedBrand,
@@ -10,10 +10,24 @@ function RegistFeedBrand({
     activeFeedBrand: string;
 }) {
 
+    const theme = useTheme()
+
     return (
         <RegistFeedBrandBlock>
-            <Text bold>등록하실 사료를 선택해주세요</Text>
-            <Text>사료 중에서 가장 엄선한 브랜드만 선별하였습니다</Text>
+            <Text
+                size={20}
+                align="center"
+                color={theme.colors.text}
+            >
+                등록하실 사료를 선택해주세요
+            </Text>
+            <DividerBlock height={8} />
+            <Text
+                color={theme.colors.placeholder}
+                align="center"
+            >
+                사료 중에서 가장 엄선한 브랜드만 선별하였습니다
+            </Text>
             <GridLayout>
                 {['1', '2', '3', '4', '5'].map(item => (
                     <Item
@@ -21,7 +35,7 @@ function RegistFeedBrand({
                         onPress={() => setActiveFeedBrand(item)}
                         isActive={activeFeedBrand === item}
                     >
-                        <Text>{item}</Text>
+                        {/* <Text>{item}</Text> */}
                     </Item>
                 ))}
             </GridLayout>
@@ -30,12 +44,13 @@ function RegistFeedBrand({
 }
 
 const RegistFeedBrandBlock = styled.View`
-  
+    padding: 20px;
 `
 
 export default RegistFeedBrand
 
 const GridLayout = styled.View`
+    margin-top: 24px;
     flex-wrap: wrap;
     flex: 1;
     flex-direction: row;

@@ -29,7 +29,6 @@ function PaymentSetting() {
     })
 
     const onSubmit = async (data: any) => {
-        console.log('data------', data)
         setLoading(true)
         try {
             await addUserCardInformation(user.uid, data)

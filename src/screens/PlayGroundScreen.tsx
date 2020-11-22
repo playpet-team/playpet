@@ -50,7 +50,6 @@ export default function PlayGroundScreen() {
                 vertical={true}
                 keyExtractor={card => card.id}
                 onScrollIndexChanged={useCallback((slideIndex: number) => {
-                    console.log('slideIndex---', slideIndex)
                     setActiveIndex(slideIndex)
                 }, [])}
             />

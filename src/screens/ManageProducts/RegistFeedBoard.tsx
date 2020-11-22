@@ -13,8 +13,6 @@ enum REGIST_FEED_STEPS {
 function RegistFeedBoard() {
     const [step, setStep] = useState<REGIST_FEED_STEPS>(REGIST_FEED_STEPS.BRANDS)
     const [activeFeedItem, setActiveFeedItem] = useState('')
-    const [activeFeedName, setActiveFeedName] = useState('')
-    const [activeFeedThumbnail, setActiveFeedThumbnail] = useState('')
     const [activeFeedBrand, setActiveFeedBrand] = useState('')
 
     const [feeds, setFeeds] = useState<ProductItem[]>([])
@@ -26,7 +24,6 @@ function RegistFeedBoard() {
     useEffect(() => {
         async function loadProduct() {
             const data = await getProductList('DOG')
-            console.log("data---", data);
             setFeeds(data)
         }
         loadProduct();
@@ -34,7 +31,6 @@ function RegistFeedBoard() {
 
     const handleUpdateFeeds = async () => {
         const user = currentUser()
-        console.log("1", activeFeedItem, activeFeedBrand)
         if (!user || !activeFeedItem || !activeFeedBrand) {
             return
         }
@@ -42,13 +38,14 @@ function RegistFeedBoard() {
         if (!findFeed) {
             return
         }
-        console.log('findFeed', findFeed)
-        updateFeedItems(user.uid, {
+        await updateFeedItems(user.uid, {
             feedItem: findFeed,
             feedBrand: activeFeedBrand,
         })
 
-        navigation.goBack()
+        navigation.navigate('ManageProducts', {
+            needRefresh: true,
+        })
     }
 
     const nextSteps = () => {
@@ -88,8 +85,6 @@ function RegistFeedBoard() {
             {step === REGIST_FEED_STEPS.ITEMS && <RegistFeedItems
                 activeFeedItem={activeFeedItem}
                 setActiveFeedItem={setActiveFeedItem}
-                setActiveFeedName={setActiveFeedName}
-                setActiveFeedThumbnail={setActiveFeedThumbnail}
                 
             />}
             <NavigateBlock>

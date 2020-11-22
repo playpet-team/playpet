@@ -9,7 +9,6 @@ export const getProductItem = async (PID: string) => {
 }
 
 export const getProductList = async (type = 'DOG') => {
-    console.log('typeㅌ-------', type);
     const productList = await firestore()
         .collection(Collections.Products)
         .where('status', '==', 'active')

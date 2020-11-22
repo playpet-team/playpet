@@ -41,7 +41,6 @@ export const getFeedsDoc = async (uid: string) => {
         if (!feedData) {
             return
         }
-        console.log("feedData---", feedData)
         return {
             ...feedData,
             createdAt: firebaseTimeStampToStringStamp(feedData.createdAt),
