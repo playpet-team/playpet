@@ -6,46 +6,28 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Image } from 'react-native-elements'
 // import { Text } from "../../styles";
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useNavigation, useTheme } from "@react-navigation/native";
+// import { useNavigation, useTheme } from "@react-navigation/native";
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components/native'
 import PlaypetModal from '../../components/PlaypetModal'
-import analytics from '@react-native-firebase/analytics';
+// import analytics from '@react-native-firebase/analytics';
 import Toast from '../../components/Toast'
 import { SignType } from '../../models'
 import initializeSignIn from '../../utils/auth/initializeSignIn'
-import AgreeTermsModal from '../ManageProducts/RegistrationPet/AgreeTermsModal'
+// import AgreeTermsModal from '../ManageProducts/RegistrationPet/AgreeTermsModal'
 import { RootState } from '../../store/rootReducers'
 import { useSelector } from 'react-redux'
 import { signInActions } from '../../store/signInReducer'
 
 export default function SocialSignIn() {
-    // const { control, handleSubmit, errors } = useForm();
     const [showOtherMethods, setShowOtherMethods] = useState(false)
-    // const [showEmailForm, setShowEmailForm] = useState(false)
     const {
-        isSignUp,
-        method,
+        // completeLoginType,
         toastContent,
     } = useSelector((state: RootState) => state.signIn)
     const { getUidByThirdPartySignIn, loading, Indicator } = initializeSignIn()
 
-    const navigation = useNavigation()
-    // const theme = useTheme()
     const dispatch = useDispatch()
-
-    useEffect(() => {
-        console.log("isSignUp------", isSignUp)
-        if (isSignUp === false) {
-            navigation.navigate('Home')
-        }
-        if (isSignUp === null) {
-            return
-        }
-        if (isSignUp === true) {
-            analytics().logSignUp({ method })
-        }
-    }, [isSignUp])
 
     const handleSignIn = useCallback(async (selectedMethod: SignType) => {
         try {
@@ -68,21 +50,21 @@ export default function SocialSignIn() {
     //     }, 600)
     // }, [])
 
-    const onSubmit = async (data: {
-        email: string;
-        password: string;
-    }) => {
-        try {
-            dispatch(signInActions.setInputEmail(data.email))
-            dispatch(signInActions.setInputPassword(data.password))
-            dispatch(signInActions.setMethod(SignType.Email))
-            await getUidByThirdPartySignIn(SignType.Email)
-        } catch (e) {
-            Sentry.captureException(e)
-        }
-    }
+    // const onSubmit = async (data: {
+    //     email: string;
+    //     password: string;
+    // }) => {
+    //     try {
+    //         dispatch(signInActions.setInputEmail(data.email))
+    //         dispatch(signInActions.setInputPassword(data.password))
+    //         dispatch(signInActions.setMethod(SignType.Email))
+    //         await getUidByThirdPartySignIn(SignType.Email)
+    //     } catch (e) {
+    //         Sentry.captureException(e)
+    //     }
+    // }
 
-    console.log("---------isSignUps---------", isSignUp)
+    // console.log("---------isSignUps---------", completeLoginType)
 
     const SigninWrapper = useCallback(({ modal }: { modal?: boolean }) => {
         return (
@@ -164,7 +146,6 @@ export default function SocialSignIn() {
                 visible={toastContent.visible}
                 title={toastContent.title}
             />
-            {isSignUp === true && <AgreeTermsModal />}
             <SigninWrapper />
             <TouchableOpacity onPress={() => setShowOtherMethods(!showOtherMethods)}>
                 <SigninOtherMethodsText>다른 방법으로 로그인 하기</SigninOtherMethodsText>
@@ -249,9 +230,9 @@ const SigninButton = styled.TouchableOpacity`
     justify-content: center;
 `
 
-const SigninButtonInModal = styled(SigninButton)`
-    margin-top: 0;
-`
+// const SigninButtonInModal = styled(SigninButton)`
+//     margin-top: 0;
+// `
 
 const SigninOtherMethodsText = styled.Text`
     margin-top: 16px;
@@ -266,6 +247,6 @@ const SigninText = styled.Text`
     color: #000;
 `
 
-const InputEmailForm = styled.View`
-    flex-direction: row;
-`
+// const InputEmailForm = styled.View`
+//     flex-direction: row;
+// `

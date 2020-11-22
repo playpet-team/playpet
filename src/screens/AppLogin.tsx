@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from 'react-native-elements';
 import SocialSignIn from './AuthScreen/SocialSignIn';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/rootReducers';
+import { useNavigation } from '@react-navigation/native';
+import analytics from '@react-native-firebase/analytics';
 
 export default function AppLogin() {
+    const {
+        completeLoginType,
+        method,
+    } = useSelector((state: RootState) => state.signIn)
+    const navigation = useNavigation()
+
+    useEffect(() => {
+        if (completeLoginType === '') {
+            return
+        }
+
+        if (completeLoginType === 'signUp') {
+            analytics().logSignUp({ method })
+        }
+        navigation.navigate('Home')
+        
+    }, [completeLoginType])
+
     return (
         <AppLoginBlock>
             <LinearGradientBlock

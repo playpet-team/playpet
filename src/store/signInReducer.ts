@@ -1,25 +1,27 @@
-import { ToastParams } from './../components/Toast';
-import { AppleAuthRequestResponseFullName } from '@invertase/react-native-apple-authentication';
-import { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { createSlice } from "@reduxjs/toolkit";
-import { SignType } from "../models";
+import { ToastParams } from './../components/Toast'
+import { AppleAuthRequestResponseFullName } from '@invertase/react-native-apple-authentication'
+import { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import { createSlice } from "@reduxjs/toolkit"
+import { SignType } from "../models"
 
-export interface Cards {
-    isSignUp: boolean | null;
-    method: SignType;
-    token: string | FirebaseAuthTypes.AuthCredential;
+type CompleteLoginTypes = '' | 'signIn' | 'signUp'
+export interface SignIn {
+    completeLoginType: CompleteLoginTypes
+    completeAuthentication: boolean
+    method: SignType
+    token: string | FirebaseAuthTypes.AuthCredential
     profile: {
         username?: string | AppleAuthRequestResponseFullName
         email: string
         password?: string
         photo?: string    
-    };
-    showOtherMethods: boolean;
-    showEmailForm: boolean;
-    inputEmail: string;
-    inputPassword: string;
-    toastContent: ToastParams;
-};
+    }
+    showOtherMethods: boolean
+    showEmailForm: boolean
+    inputEmail: string
+    inputPassword: string
+    toastContent: ToastParams
+}
 
 const resetToast = {
     visible: false,
@@ -27,8 +29,9 @@ const resetToast = {
     description: '',
     image: '',
 }
-export const initialState: Cards = {
-    isSignUp: null,
+export const initialState: SignIn = {
+    completeLoginType: '',
+    completeAuthentication: false,
     method: SignType.None,
     token: '',
     profile: {
@@ -41,7 +44,7 @@ export const initialState: Cards = {
     inputEmail: '',
     inputPassword: '',
     toastContent: resetToast,
-};
+}
 
 const slice = createSlice({
     name: 'signIn',
@@ -50,8 +53,11 @@ const slice = createSlice({
         // signIn(state) {
         //     state.isLogged = true
         // },
-        setIsSignUp(state, { payload }: { payload: boolean }) {
-            state.isSignUp = payload
+        setCompleteLoginType(state, { payload }: { payload: CompleteLoginTypes }) {
+            state.completeLoginType = payload
+        },
+        setCompleteAuthentication(state, { payload }: { payload: boolean }) {
+            state.completeAuthentication = payload
         },
         setToken(state, { payload }: { payload: string | FirebaseAuthTypes.AuthCredential }) {
             state.token = payload
@@ -61,10 +67,10 @@ const slice = createSlice({
             console.log('state', state.method)
         },
         setInputEmail(state, { payload }: { payload: string }) {
-            state.inputEmail = payload;
+            state.inputEmail = payload
         },
         setInputPassword(state, { payload }: { payload: string }) {
-            state.inputPassword = payload;
+            state.inputPassword = payload
         },
         setProfile(state, { payload }: {
             payload: {
@@ -88,7 +94,7 @@ const slice = createSlice({
             state.toastContent = resetToast
         },
     },
-});
+})
 
-export const signInActions = slice.actions;
-export default slice.reducer;
+export const signInActions = slice.actions
+export default slice.reducer

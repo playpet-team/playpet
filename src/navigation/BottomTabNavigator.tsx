@@ -333,7 +333,7 @@ function RecommendationNavigator() {
 
 export type AuthTapParamList = {
     AuthScreen: {
-        isSignUp?: boolean;
+        completeLoginType?: boolean;
     };
     AppSettings: undefined;
     PaymentSetting: undefined;

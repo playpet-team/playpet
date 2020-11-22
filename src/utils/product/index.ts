@@ -1,14 +1,14 @@
 import firestore from '@react-native-firebase/firestore'
 import { Collections } from '../../models'
 
-export const loadProduct = async (PID: string) => {
+export const getProductItem = async (PID: string) => {
     return (await firestore()
-        .collection(Collections.Products)
+        .collection<ProductItem>(Collections.Products)
         .doc(PID)
-        .get()).data() as ProductItem
+        .get()).data()
 }
 
-export const loadProductList = async (type = 'DOG') => {
+export const getProductList = async (type = 'DOG') => {
     console.log('typeㅌ-------', type);
     const productList = await firestore()
         .collection(Collections.Products)
@@ -24,6 +24,7 @@ export const loadProductList = async (type = 'DOG') => {
         }
     })
 }
+
 export type PetTypes = "" | "DOG" | "CAT"
 type Pet = PetTypes[]
 type Breed = [

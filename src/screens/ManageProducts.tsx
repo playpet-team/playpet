@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { useTheme } from 'styled-components/native'
-import useLoadingIndicator from '../hooks/useLoadingIndicator';
-import { authActions } from '../store/authReducer';
 import { RootState } from '../store/rootReducers';
 import { Text } from '../styles';
 import { getFeedsDoc, getPetDoc } from '../utils';
@@ -15,7 +12,7 @@ import { MyFeed, MyPet } from '../models';
 
 export default function ManageProducts() {
     const dispatch = useDispatch()
-    const [myFeeds, setMyFeeds] = useState<MyFeed[]>([])
+    const [myFeed, setMyFeed] = useState<MyFeed>()
     const [myPets, setMyPets] = useState<MyPet>()
     const {
         uid,
@@ -33,7 +30,9 @@ export default function ManageProducts() {
                 return
             }
             const pet = await getPetDoc(uid, activePetDocId)
+            console.log('1', pet)
             if (pet) {
+                console.log('2')
                 setMyPets(pet)
             }
         }
@@ -46,7 +45,7 @@ export default function ManageProducts() {
                 return
             }
             const feeds = await getFeedsDoc(uid)
-            setMyFeeds(feeds)
+            setMyFeed(feeds)
         }
     }, [])
 
@@ -100,14 +99,12 @@ export default function ManageProducts() {
                         </Text>
                     </AddPetButton>
                 }
-                {myFeeds.map((feed, index) => {
-                    return (
-                        <Pet key={index}>
-                            <Text>{feed.feedBrand}</Text>
-                            <Text>{feed.feedItem}</Text>
-                        </Pet>
-                    )
-                })}
+                {myFeed &&
+                    <Pet>
+                        <Text>{myFeed.feedBrand}</Text>
+                        <Text>{myFeed.feedItem}</Text>
+                    </Pet>
+                }
             </ScrollSection>
         </ManageProductsBlock>
     );

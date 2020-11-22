@@ -12,10 +12,12 @@ import { useEffect, useState } from 'react'
 function useAuthStateChanged() {
     const [isLogged, setIsLogged] = useState(false)
     const dispatch = useDispatch()
+    console.log('------123123123--', isLogged)
 
     useEffect(() => {
         const onAuthStateChanged = async (user: FirebaseAuthTypes.User | null) => {
             if (user) {
+                console.log("--------user")
                 const userData = await getUser(user.uid)
                 if (!userData) {
                     signOut()
@@ -28,6 +30,7 @@ function useAuthStateChanged() {
                 dispatch(authActions.signIn())
                 setIsLogged(true)
             } else {
+                console.log("--------no user")
                 dispatch(authActions.signOut())
                 await AsyncStorage.clear()
                 // NativeModules.DevSettings.reload()
@@ -35,7 +38,7 @@ function useAuthStateChanged() {
         }
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged)
         return subscriber
-    }, [])
+    }, [isLogged])
 
     return { isLogged }
 }

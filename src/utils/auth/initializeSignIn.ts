@@ -1,22 +1,22 @@
-import { signInActions } from './../../store/signInReducer';
+import { signInActions } from './../../store/signInReducer'
 import appleAuth, {
     AppleAuthRequestOperation,
     AppleAuthRequestScope
-} from '@invertase/react-native-apple-authentication';
-import AsyncStorage from '@react-native-community/async-storage';
-import { GoogleSignin } from '@react-native-community/google-signin';
-import auth from '@react-native-firebase/auth';
-import KakaoLogins, { KAKAO_AUTH_TYPES } from '@react-native-seoul/kakao-login';
-import * as Sentry from "@sentry/react-native";
-import { useCallback, useEffect, useState } from 'react';
-import { AccessToken, LoginManager } from 'react-native-fbsdk';
-import { useSelector, useDispatch } from 'react-redux';
-import { currentUser, signInWithCustomToken, updateUserAuthToken } from '.';
-import { Api } from '../../api';
-import { ToastParams } from '../../components/Toast';
-import useLoadingIndicator from '../../hooks/useLoadingIndicator';
-import { SignType } from '../../models';
-import { RootState } from '../../store/rootReducers';
+} from '@invertase/react-native-apple-authentication'
+import AsyncStorage from '@react-native-community/async-storage'
+import { GoogleSignin } from '@react-native-community/google-signin'
+import auth from '@react-native-firebase/auth'
+import KakaoLogins, { KAKAO_AUTH_TYPES } from '@react-native-seoul/kakao-login'
+import * as Sentry from "@sentry/react-native"
+import { useCallback, useEffect, useState } from 'react'
+// import { AccessToken, LoginManager } from 'react-native-fbsdk'
+import { useSelector, useDispatch } from 'react-redux'
+import { currentUser, signInWithCustomToken, updateUserAuthToken } from '.'
+import { Api } from '../../api'
+// import { ToastParams } from '../../components/Toast'
+import useLoadingIndicator from '../../hooks/useLoadingIndicator'
+import { SignType } from '../../models'
+import { RootState } from '../../store/rootReducers'
 
 const DEV_GOOGLE_WEB_CLIENT_ID = '386527552204-t1igisdgp2nm4q6aoel7a2j3pqdq05t6.apps.googleusercontent.com'
 const PROD_GOOGLE_WEB_CLIENT_ID = '952410130595-ro7ouus2ia8rtj64guknh8dn91e5o7ns.apps.googleusercontent.com'
@@ -26,66 +26,70 @@ export default function initializeSignIn() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
     const {
         method,
-        inputEmail,
-        inputPassword,
+        // inputEmail,
+        // inputPassword,
         token,
         profile,
         toastContent,
+        completeAuthentication,
     } = useSelector((state: RootState) => state.signIn)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (token !== '' && profile && method !== SignType.None) {
+        if (completeAuthentication) {
             trySignIn()
         }
         
-    }, [token, profile, method])
-
-    const trySignIn = async () => {
-        try {
-            if (!profile.email) {
-                rejectSignIn('이메일 정보를 받아 올수 없습니다. 잠시 후 다시 시도해주세요')
-                return
-            }
-            setLoading(true)
-
-            const { customToken, uid, newUser } = await postCreateUser()
-            if (!customToken || !uid || typeof newUser !== 'boolean') {
-                Sentry.captureException(`trySignIn-no-information-from-postCreateUser-${uid}-${newUser}`)
-                setLoading(false)
-                return
-            }
-            
+        async function trySignIn() {
             try {
-                await signInWithCustomToken(customToken)
-                putAsyncStorage('customToken', {
-                    customToken,
-                    email: profile.email,
-                    provider: method,
-                })
-                updateUserAuthToken(uid, customToken)
-                const success = checkUser()
-                if (success) {
-                    dispatch(signInActions.setIsSignUp(newUser))
+                console.log('token', token)
+                console.log('profile', profile)
+                console.log('method', method)
+                if (!profile.email) {
+                    rejectSignIn('이메일 정보를 받아 올수 없습니다. 잠시 후 다시 시도해주세요')
+                    return
                 }
-
+                setLoading(true)
+    
+                const { customToken, uid, newUser } = await postCreateUser()
+                if (!customToken || !uid || typeof newUser !== 'boolean') {
+                    Sentry.captureException(`trySignIn-no-information-from-postCreateUser-${uid}-${newUser}`)
+                    setLoading(false)
+                    return
+                }
+                
+                try {
+                    await signInWithCustomToken(customToken)
+                    putAsyncStorage('customToken', {
+                        customToken,
+                        email: profile.email,
+                        provider: method,
+                    })
+                    updateUserAuthToken(uid, customToken)
+                    const success = checkUser()
+                    if (success) {
+                        dispatch(signInActions.setCompleteLoginType(newUser ? 'signUp' : 'signIn'))
+                    }
+    
+                } catch (e) {
+                    console.error("eee", e)
+                    Sentry.captureException(`trySignIn-${e}`)
+                    if (e.code != "auth/account-exists-with-different-credential") {
+                        rejectSignIn('로그인에 실패하였습니다')
+                    } else {
+                        rejectSignIn('다른 로그인 방법으로 회원가입을 완료한 계정이 있습니다.')
+                    }
+                } finally {
+                    setLoading(false)
+                }
             } catch (e) {
-                console.error("eee", e);
                 Sentry.captureException(`trySignIn-${e}`)
-                if (e.code != "auth/account-exists-with-different-credential") {
-                    rejectSignIn('로그인에 실패하였습니다')
-                } else {
-                    rejectSignIn('다른 로그인 방법으로 회원가입을 완료한 계정이 있습니다.')
-                }
             } finally {
                 setLoading(false)
             }
-        } catch (e) {
-            Sentry.captureException(`trySignIn-${e}`)
-        } finally {
-            setLoading(false)
         }
-    }
+    }, [completeAuthentication])
+
 
     const rejectSignIn = (title: string) => {
         dispatch(signInActions.setToastContent({
@@ -110,31 +114,33 @@ export default function initializeSignIn() {
                     }))
                     const token = getProvider(SignType.Google).credential(userInfo.idToken)
                     dispatch(signInActions.setToken(token))
+                    dispatch(signInActions.setCompleteAuthentication(true))
                     break
                 }
-                case SignType.Facebook: {
-                    const result = await LoginManager.logInWithPermissions(['public_profile', 'email'])
-                    if (result.isCancelled) {
-                        break
-                    }
-                    const data = await AccessToken.getCurrentAccessToken()
-                    if (!data) {
-                        dispatch(signInActions.setToastContent({
-                            visible: true,
-                            title: '페이스북 인증 정보를 받아오는 작업을 실패했습니다',
-                        }))
-                    } else {
-                        const token = getProvider(SignType.Facebook).credential(data.accessToken)
-                        dispatch(signInActions.setToken(token))
-                    }
-                    break
-                }
+                // case SignType.Facebook: {
+                //     const result = await LoginManager.logInWithPermissions(['public_profile', 'email'])
+                //     if (result.isCancelled) {
+                //         break
+                //     }
+                //     const data = await AccessToken.getCurrentAccessToken()
+                //     if (!data) {
+                //         dispatch(signInActions.setToastContent({
+                //             visible: true,
+                //             title: '페이스북 인증 정보를 받아오는 작업을 실패했습니다',
+                //         }))
+                //     } else {
+                //         const token = getProvider(SignType.Facebook).credential(data.accessToken)
+                //         dispatch(signInActions.setToken(token))
+                //     }
+                //     break
+                // }
                 case SignType.Apple: {
                     const response = await appleSignIn()
                     if (response) {
                         dispatch(signInActions.setToken(response.token))
                         
                     }
+                    dispatch(signInActions.setCompleteAuthentication(true))
                     break
                 }
                 case SignType.Kakao: {
@@ -142,18 +148,19 @@ export default function initializeSignIn() {
                     dispatch(signInActions.setToken(token))
                     const userProfile = await getKakaoProfile()
                     dispatch(signInActions.setProfile(userProfile))
+                    dispatch(signInActions.setCompleteAuthentication(true))
                     break
                 }
-                case SignType.Email: {
-                    if (inputEmail && inputPassword) {
-                        dispatch(signInActions.setToken('email'))
-                        dispatch(signInActions.setProfile({
-                            email: inputEmail,
-                            password: inputPassword,
-                        }))
-                    }
-                    break
-                }
+                // case SignType.Email: {
+                //     if (inputEmail && inputPassword) {
+                //         dispatch(signInActions.setToken('email'))
+                //         dispatch(signInActions.setProfile({
+                //             email: inputEmail,
+                //             password: inputPassword,
+                //         }))
+                //     }
+                //     break
+                // }
                 default: {
                     break
                 }
