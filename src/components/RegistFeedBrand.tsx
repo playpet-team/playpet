@@ -3,11 +3,11 @@ import styled, { useTheme } from 'styled-components/native'
 import { DividerBlock, Text } from '../styles'
 
 function RegistFeedBrand({
-    setActiveFeedBrand,
-    activeFeedBrand
+    setActiveFeedBrandId,
+    activeFeedBrandId
 }: {
-    setActiveFeedBrand: React.Dispatch<React.SetStateAction<string>>;
-    activeFeedBrand: string;
+    setActiveFeedBrandId: React.Dispatch<React.SetStateAction<string>>;
+    activeFeedBrandId: string;
 }) {
 
     const theme = useTheme()
@@ -32,8 +32,8 @@ function RegistFeedBrand({
                 {['1', '2', '3', '4', '5'].map(item => (
                     <Item
                         key={item}
-                        onPress={() => setActiveFeedBrand(item)}
-                        isActive={activeFeedBrand === item}
+                        onPress={() => setActiveFeedBrandId(item)}
+                        isActive={activeFeedBrandId === item}
                     >
                         {/* <Text>{item}</Text> */}
                     </Item>

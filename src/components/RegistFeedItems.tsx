@@ -6,11 +6,11 @@ import ProductListItem from "./ProductListItem";
 import { ProductItem } from '../utils/product';
 
 function RegistFeedItems({
-    activeFeedItem,
-    setActiveFeedItem,
+    activeFeedItemId,
+    setActiveFeedItemId,
 }: {
-    activeFeedItem: string
-    setActiveFeedItem: React.Dispatch<React.SetStateAction<string>>
+    activeFeedItemId: string
+    setActiveFeedItemId: React.Dispatch<React.SetStateAction<string>>
 }) {
     const [feeds, setFeeds] = useState<ProductItem[]>([])
 
@@ -23,7 +23,7 @@ function RegistFeedItems({
     }, [])
 
     const handleFeed = (feed: ProductItem) => {
-        setActiveFeedItem(feed.id)
+        setActiveFeedItemId(feed.id)
     }
 
     const theme = useTheme()
@@ -51,7 +51,7 @@ function RegistFeedItems({
                         description={feed.description}
                         image={feed.image}
                         onPress={() => handleFeed(feed)}
-                        isActive={activeFeedItem === feed.id}
+                        isActive={activeFeedItemId === feed.id}
                     />
                 ))}
             </GridLayout>

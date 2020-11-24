@@ -8,14 +8,15 @@ import { MyFeed } from './../../models/src/user';
 import { firebaseTimeStampToStringStamp } from './../system/index';
 
 export const updateFeedItems = async (uid: string, feedInformation: {
-    feedItem: ProductItem
-    feedBrand: string
+    feedItemId: string
+    feedBrandId: string
 }) => {
     try {
         await firestore().collection(Collections.Management).doc(uid).set({
             uid,
-            feedId: feedInformation.feedItem.id,
-            ...feedInformation,
+            feedItemId: feedInformation.feedItemId,
+            feedBrandId: feedInformation.feedBrandId,
+            // ...feedInformation,
             status: 'active',
             percentage: 100,
             createdAt: firebaseNow(),
@@ -41,8 +42,18 @@ export const getFeedsDoc = async (uid: string) => {
         if (!feedData) {
             return
         }
+        const productData = (await firestore()
+        .collection<ProductItem>(Collections.Products)
+        .doc(feedData.feedItemId)
+        .get()).data()
+
+        if (!productData) {
+            return
+        }
+
         return {
             ...feedData,
+            feedItem: productData,
             createdAt: firebaseTimeStampToStringStamp(feedData.createdAt),
             updatedAt: firebaseTimeStampToStringStamp(feedData.updatedAt),
         }

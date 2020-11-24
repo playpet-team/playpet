@@ -50,10 +50,10 @@ export interface MyPet {
 }
 
 export interface MyFeed {
-    feedBrand: string
-    feedItem: ProductItem
+    feedBrandId: string
     uid: string
-    feedId: string
+    feedItemId: string
+    feedItem: ProductItem
     status: 'active' | 'deactive',
     percentage: number,
     createdAt: string | FirebaseTimeStamp | null

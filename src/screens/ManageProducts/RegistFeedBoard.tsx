@@ -12,8 +12,8 @@ enum REGIST_FEED_STEPS {
 }
 function RegistFeedBoard() {
     const [step, setStep] = useState<REGIST_FEED_STEPS>(REGIST_FEED_STEPS.BRANDS)
-    const [activeFeedItem, setActiveFeedItem] = useState('')
-    const [activeFeedBrand, setActiveFeedBrand] = useState('')
+    const [activeFeedItemId, setActiveFeedItemId] = useState('')
+    const [activeFeedBrandId, setActiveFeedBrandId] = useState('')
 
     const [feeds, setFeeds] = useState<ProductItem[]>([])
 
@@ -31,16 +31,16 @@ function RegistFeedBoard() {
 
     const handleUpdateFeeds = async () => {
         const user = currentUser()
-        if (!user || !activeFeedItem || !activeFeedBrand) {
+        if (!user || !activeFeedItemId || !activeFeedBrandId) {
             return
         }
-        const findFeed = feeds.find(feed => feed.id === activeFeedItem)
-        if (!findFeed) {
-            return
-        }
+        // const findFeed = feeds.find(feed => feed.id === activeFeedItemId)
+        // if (!findFeed) {
+        //     return
+        // }
         await updateFeedItems(user.uid, {
-            feedItem: findFeed,
-            feedBrand: activeFeedBrand,
+            feedItemId: activeFeedItemId,
+            feedBrandId: activeFeedBrandId,
         })
 
         navigation.navigate('ManageProducts', {
@@ -79,12 +79,12 @@ function RegistFeedBoard() {
     return (
         <RegistFeedBoardBlock>
             {step === REGIST_FEED_STEPS.BRANDS && <RegistFeedBrand
-                activeFeedBrand={activeFeedBrand}
-                setActiveFeedBrand={setActiveFeedBrand}
+                activeFeedBrandId={activeFeedBrandId}
+                setActiveFeedBrandId={setActiveFeedBrandId}
             />}
             {step === REGIST_FEED_STEPS.ITEMS && <RegistFeedItems
-                activeFeedItem={activeFeedItem}
-                setActiveFeedItem={setActiveFeedItem}
+                activeFeedItemId={activeFeedItemId}
+                setActiveFeedItemId={setActiveFeedItemId}
                 
             />}
             <NavigateBlock>

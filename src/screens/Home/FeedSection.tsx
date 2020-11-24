@@ -6,12 +6,10 @@ import styled, { useTheme } from 'styled-components/native'
 import { MyFeed } from '../../models'
 import PlaypetModal from '../../components/PlaypetModal'
 import { RootState } from '../../store/rootReducers'
-import { Slider } from 'react-native-elements';
 
 import { DividerBlock, Layout, Text } from '../../styles'
 import { deviceSize, getFeedsDoc, getProductItem } from '../../utils'
-
-const DEVICE_WIDTH = deviceSize().width
+import FeedModal, { getFeedStatusSrcMap } from './FeedModal'
 
 export default function FeedSection() {
     const navigation = useNavigation()
@@ -50,10 +48,11 @@ export default function FeedSection() {
 
     const handleStatus = () => {
         if (myFeed) {
-            setSliderValue(myFeed.percentage)
-            setOpenStatusModal(!openStatusModal)
+          setSliderValue(myFeed.percentage);
+          setOpenStatusModal(!openStatusModal);
         }
-    }
+      };
+
     return (
         <FeedSectionBlock>
             <Header>
@@ -70,57 +69,56 @@ export default function FeedSection() {
             </Header>
             <Main>
                 {myFeed && 
-                    <FeedBlock>
+                    <FeedBlock
+                        style={{
+                            shadowColor: "#000",
+                            shadowOffset: {
+                                width: 0,
+                                height: 2,
+                            },
+                            shadowOpacity: 0.25,
+                            shadowRadius: 3.84,
+                            elevation: 5,
+                        }}
+                    >
                         <FeedHeader>
                             <Image source={getFeedImageUrl(myFeed.feedItem.image || '')} />
                             <Text size={16} bold>{myFeed.feedItem.feedName || '사료이름'}</Text>
                         </FeedHeader>
+                        <DividerBlock
+                            marginTop={20}
+                            marginBottom={24}
+                            height={1}
+                            backgroundColor="#eee"
+                        />
                         <FeedStatus onPress={handleStatus}>
-                            <FeedPercentageImage
-                                source={require('../../../assets/images/feed_100.jpg')}
-                                resizeMode="contain"
-                            />
+                            <FeedPercentageFullImageWrapper>
+                                <FeedPercentageFullImage
+                                    source={getFeedStatusSrcMap("feed", sliderValue)}
+                                    resizeMode="contain"
+                                />
+                                <FeedPercentageFullBoxImage
+                                    source={getFeedStatusSrcMap("box", sliderValue)}
+                                    resizeMode="contain"
+                                />
+                            </FeedPercentageFullImageWrapper>
                             <DividerBlock height={8} />
                             <StatusDescription>
                                 <Text size={16}>현재 사료량</Text>
-                                <Text bold size={32}>{myFeed.percentage}%</Text>
+                                <DividerBlock marginTop={10} />
+                                <Text bold size={32}>{sliderValue}%</Text>
                             </StatusDescription>
                         </FeedStatus>
                     </FeedBlock>
                 }
             </Main>
             <DividerBlock marginTop={24} />
-            <PlaypetModal
-                modalVisible={openStatusModal}
-                setModalVisible={setOpenStatusModal}
-                containerStyle={{
-                    width: DEVICE_WIDTH,
-                }}
-                header="사료량 조절"
-            >
-                <FeedStatusModal>
-                    <StatusDescription>
-                        <Text bold size={65}>{sliderValue}%</Text>
-                    </StatusDescription>
-                    <FeedPercentageFullImage
-                        source={require('../../../assets/images/feed_100.jpg')}
-                        resizeMode="contain"
-                    />
-                    <Slider
-                        value={sliderValue}
-                        onValueChange={setSliderValue}
-                        maximumValue={100}
-                        minimumValue={0}
-                        step={1}
-                        thumbStyle={{ backgroundColor: themes.colors.primary }}
-                        minimumTrackTintColor={themes.colors.primary}
-                        maximumTrackTintColor={themes.colors.border}
-                        style={{
-                            width: '80%',
-                        }}
-                    />
-                </FeedStatusModal>
-            </PlaypetModal>
+            {openStatusModal && <FeedModal
+                setOpenStatusModal={setOpenStatusModal}
+                setSliderValue={setSliderValue}
+                sliderValue={sliderValue}
+            />}
+            
         </FeedSectionBlock>
     )
 }
@@ -148,8 +146,10 @@ const FeedBlock = styled.View`
     flex-direction: column;
     padding: 24px;
     border-radius: 14px;
-    border-color: ${({ theme }) => theme.colors.border};
-    border-width: 1px;
+    /* border-color: ${({ theme }) => theme.colors.border}; */
+    /* border-width: 1px; */
+    margin-top: 20px;
+    background-color: ${({ theme }) => theme.colors.white};
 
 `
 
@@ -161,8 +161,9 @@ const Image = styled.Image`
 `
 
 const FeedStatus = styled.TouchableOpacity`
-    padding: 18px;
+    /* padding: 18px; */
     flex-direction: row;
+    /* align-items: center; */
 
 `
 
@@ -170,27 +171,32 @@ const FeedHeader = styled.View`
     flex-direction :row;
 `
 
-const FeedPercentageImage = styled.Image`
-    width: 120px;
-    height: 200px;
-`
+const FeedPercentageFullImageWrapper = styled.View`
+  margin: 48px 0;
+  width: 150px;
+  height: 100px;
+  position: relative;
+`;
 
 const FeedPercentageFullImage = styled.Image`
-    margin: 24px 0;
-    width: 250px;
-    height: 400px;
+  width: 150px;
+  height: 200px;
+  position: absolute;
+  top: -50px;
+  left: 0;
+`;
+
+const FeedPercentageFullBoxImage = styled.Image`
+    width: 150px;
+    height: 200px;
+    position: absolute;
+    top: -50px;
+    left: 0;
 `
 
-const StatusDescription = styled.View`
+export const StatusDescription = styled.View`
     /* flex: 1; */
+    margin-left: 32px;
     flex-direction: column;
-    align-items: center;
-`
-
-const FeedStatusModal = styled.View`
-    flex-direction: column;
-    padding: 24px;
-    align-items: center;
-    /* flex: 1; */
-    /* height: 500px; */
+    /* align-items: center; */
 `
