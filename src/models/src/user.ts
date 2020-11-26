@@ -43,8 +43,10 @@ export interface Terms {
 export interface MyPet {
     petName: string
     petType: PetTypes
+    petKind: string
     petSize: PetSize
     petAge: PetAge
+    petThumbnail?: string
     createdAt: string | FirebaseTimeStamp | null
     updatedAt: string | FirebaseTimeStamp | null
 }

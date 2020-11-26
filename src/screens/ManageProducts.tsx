@@ -79,6 +79,7 @@ export default function ManageProducts() {
                     <Pet>
                         <Text>{myPets.petName}</Text>
                         <Text>{myPets.petType}</Text>
+                        <Text>{myPets.petKind || ''}</Text>
                         <Text>{myPets.petSize && sizeNameMap[myPets.petSize].title}</Text>
                         <Text>{myPets.petAge && ageNameMap[myPets.petAge].title}</Text>
                     </Pet>
@@ -101,7 +102,6 @@ export default function ManageProducts() {
                 }
                 {myFeed &&
                     <Pet>
-                        <Text>{myFeed.feedBrand}</Text>
                         <Text>{myFeed.feedItem.feedName}</Text>
                     </Pet>
                 }

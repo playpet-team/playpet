@@ -1,3 +1,6 @@
+import { PetAge } from './../../screens/ManageProducts/RegistrationPet/PetAgeSection';
+import { PetSize } from './../../screens/ManageProducts/RegistrationPet/PetSizeSection';
+import { PetTypes } from './../product/index';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -159,7 +162,13 @@ export const updateUserTerms = async (uid: string, terms: {}) => {
     docRef.set(setParams, { merge: true })
 }
 
-export const updateUserPets = async (uid: string, petInformation: {}) => {
+export const updateUserPets = async (uid: string, petInformation: {
+    petName: string
+    petType: PetTypes
+    petKind: string
+    petSize: PetSize
+    petAge: PetAge
+}) => {
     try {
         const userDoc = firestore().collection(Collections.Users).doc(uid)
         const { id } = userDoc.collection(Collections.UserPets).doc()

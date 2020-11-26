@@ -28,6 +28,18 @@ export const updateFeedItems = async (uid: string, feedInformation: {
     }
 }
 
+export const updateFeedPercentage = async (uid: string, percentage: number) => {
+    try {
+        await firestore().collection(Collections.Management).doc(uid).update({
+            percentage,
+            updatedAt: firebaseNow(),
+        })
+    } catch (e) {
+        Sentry.captureException(e)
+        return null
+    }
+}
+
 export const getFeedsDoc = async (uid: string) => {
     try {
         const feedDocs = (await firestore()
