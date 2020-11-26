@@ -31,8 +31,8 @@ export default function AppSettings() {
                     try {
                         setLoading(true)
                         await signOut(SignType.Google)
-                        NativeModules.DevSettings.reload()
-                        // await Updates.reloadAsync()
+                        // NativeModules.DevSettings.reload()
+                        await Updates.reloadAsync()
                         // navigation.navigate('AppLogin', { screen: 'AppLogin' })
                     } catch (e) {
                         Sentry.captureException(e)
@@ -56,8 +56,8 @@ export default function AppSettings() {
                     try {
                         setLoading(true)
                         await leave()
-                        NativeModules.DevSettings.reload()
-                        // await Updates.reloadAsync()
+                        // NativeModules.DevSettings.reload()
+                        await Updates.reloadAsync()
                         // navigation.navigate('AppLogin', { screen: 'AppLogin' })
                     } catch (e) {
                         Sentry.captureException(e)
