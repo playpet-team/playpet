@@ -17,7 +17,7 @@ export default function FeedSection() {
     const themes = useTheme()
     const [myFeed, setMyFeed] = useState<MyFeed>()
     const [openStatusModal, setOpenStatusModal] = useState(false)
-    const [sliderValue, setSliderValue] = useState(0)
+    const [sliderValue, setSliderValue] = useState(-1)
 
     const {
         uid,
@@ -33,6 +33,10 @@ export default function FeedSection() {
                 return
             }
             const feeds = await getFeedsDoc(uid)
+            if (!feeds) {
+                return
+            }
+            setSliderValue(feeds.percentage || 100);
             setMyFeed(feeds)
         }
     }, [uid, isFocus])
@@ -48,8 +52,7 @@ export default function FeedSection() {
 
     const handleStatus = () => {
         if (myFeed) {
-          setSliderValue(myFeed.percentage);
-          setOpenStatusModal(!openStatusModal);
+            setOpenStatusModal(!openStatusModal);
         }
       };
 
@@ -104,9 +107,15 @@ export default function FeedSection() {
                             </FeedPercentageFullImageWrapper>
                             <DividerBlock height={8} />
                             <StatusDescription>
-                                <Text size={16}>현재 사료량</Text>
+                                {/* <Text size={16}>현재 사료량</Text> */}
                                 <DividerBlock marginTop={10} />
-                                <Text bold size={32}>{sliderValue}%</Text>
+                                <Text
+                                    bold
+                                    size={20}
+                                    color={getFeedStatusSrcMap("color", sliderValue)}
+                                >
+                                    {getFeedStatusSrcMap('wording', sliderValue)}
+                                </Text>
                             </StatusDescription>
                         </FeedStatus>
                     </FeedBlock>
@@ -162,8 +171,8 @@ const Image = styled.Image`
 
 const FeedStatus = styled.TouchableOpacity`
     /* padding: 18px; */
-    flex-direction: row;
-    /* align-items: center; */
+    flex-direction: column;
+    align-items: center;
 
 `
 

@@ -11,23 +11,33 @@ const DEVICE_WIDTH = deviceSize().width;
 const feedStatusSrcMap = {
     0: {
         box: require('../../../assets/images/feeds_status/feed_box_0.png'),
-        feed: require('../../../assets/images/feeds_status/feed_0.png')
+        feed: require('../../../assets/images/feeds_status/feed_0.png'),
+        wording: '사료가 없어요! 사료를 채워주세요!',
+        color: '#ff4444'
     },
     25: {
         box: require('../../../assets/images/feeds_status/feed_box_25.png'),
-        feed: require('../../../assets/images/feeds_status/feed_25.png')
+        feed: require('../../../assets/images/feeds_status/feed_25.png'),
+        wording: '거의 다 떨어져가요ㅜㅜ',
+        color: '#333'
     } ,
     50: {
         box: require('../../../assets/images/feeds_status/feed_box_50.png'),
-        feed: require('../../../assets/images/feeds_status/feed_50.png')
+        feed: require('../../../assets/images/feeds_status/feed_50.png'),
+        wording: '아직 괜찮아요',
+        color: '#333'
     } ,
     75: {
         box: require('../../../assets/images/feeds_status/feed_box_75.png'),
-        feed: require('../../../assets/images/feeds_status/feed_75.png')
+        feed: require('../../../assets/images/feeds_status/feed_75.png'),
+        wording: '아직 넉넉해요',
+        color: '#333'
     } ,
     100: {
         box: require('../../../assets/images/feeds_status/feed_box_100.png'),
-        feed: require('../../../assets/images/feeds_status/feed_100.png')
+        feed: require('../../../assets/images/feeds_status/feed_100.png'),
+        wording: '가득찼어요! 당분간은 걱정마세요',
+        color: '#000'
     } ,
 }
 
@@ -50,7 +60,7 @@ const getFeedStep = (sliderValue: number) => {
     return feedStatusSrcMap[0];
 }
 
-export const getFeedStatusSrcMap = (type: "feed" | "box", sliderValue: number) => getFeedStep(sliderValue)[type]
+export const getFeedStatusSrcMap = (type: 'feed' | 'box' | 'wording' | 'color', sliderValue: number) => getFeedStep(sliderValue)[type]
 
 function FeedModal({
     setOpenStatusModal,

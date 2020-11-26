@@ -1,13 +1,19 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Text } from 'react-native-elements';
 import SocialSignIn from './AuthScreen/SocialSignIn';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import { useNavigation } from '@react-navigation/native';
 import analytics from '@react-native-firebase/analytics';
+import { Video } from 'expo-av';
+import { deviceSize } from '../utils';
+import { Text } from '../styles';
+import Logo from '../components/Logo';
 
+const DEVICE_WIDTH = deviceSize().width
+const DEVICE_HEIGHT = deviceSize().height
+const videoUrl = 'https://firebasestorage.googleapis.com/v0/b/playpet-production.appspot.com/o/assets%2Fvideos%2Fapp_login_c.mp4?alt=media&token=b9aad0b6-9001-433d-98f1-e93085a6d0bf'
 export default function AppLogin() {
     const {
         completeLoginType,
@@ -29,29 +35,41 @@ export default function AppLogin() {
 
     return (
         <AppLoginBlock>
-            <LinearGradientBlock
+            {/* <LinearGradientBlock
                 colors={['#F52053', '#FF5A5A']}
                 start={[0, 0]}
                 end={[1, 1]}
-            />
-            <MainTitleBlock><Text>누구든 반려동물을 사랑할수 있습니다</Text></MainTitleBlock>
-            <SigninBlock>
-                <SocialSignIn />
-                {/* <LookAround> */}
-                {/* <Button
-                        title="돌아가기"
-                        onPress={() => navigation.navigate('Home')}
-                        buttonStyle={{
-                            backgroundColor: 'transparent',
-                            justifyContent: 'flex-end',
-                        }}
-                        titleStyle={{
-                            color: '#fff',
-                            fontSize: 15,
-                        }}
-                    /> */}
-                {/* </LookAround> */}
-            </SigninBlock>
+            /> */}
+            <BackgroundVideo>
+                <Video
+                    isMuted
+                    shouldPlay
+                    source={{ uri: videoUrl }}
+                    isLooping={true}
+                    resizeMode={Video.RESIZE_MODE_COVER}
+                    style={{
+                        width: DEVICE_WIDTH,
+                        height: DEVICE_HEIGHT,
+                    }}
+                />
+                <AnimatedOverlayBackground />
+            </BackgroundVideo>
+            <MainSection>
+                <MainTitleBlock>
+                    {/* <Logo /> */}
+                    <Text
+                        color="#fff"
+                        bold
+                        size={24}
+                    >
+                        반려동물 사료관리 필수앱
+                    </Text>
+                </MainTitleBlock>
+                <SigninBlock>
+                    <SocialSignIn />
+                </SigninBlock>
+            </MainSection>
+            
         </AppLoginBlock>
     )
 };
@@ -60,25 +78,36 @@ const AppLoginBlock = styled.View`
     flex: 1;
 `;
 
-const LinearGradientBlock = styled(LinearGradient)`
+const MainSection = styled.View`
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
+    z-index: 3;
+    display: flex;
+    width: 100%;
     height: 100%;
-`;
+`
+
+const BackgroundVideo = styled.View`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+`
+
+const AnimatedOverlayBackground = styled.View`
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+`
 
 const MainTitleBlock = styled.View`
     align-items: center;
     justify-content: center;
-    flex: 1.2;
+    flex: 3;
 `;
 
 const SigninBlock = styled.View`
     flex: 1;
-`;
-
-const LookAround = styled.View`
-    padding: 16px;
-    margin: 16px;
 `;
