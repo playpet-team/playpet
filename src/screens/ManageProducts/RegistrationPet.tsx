@@ -35,6 +35,7 @@ export default function RegistrationPet() {
     const [isErrorValidation, setErrorValidation] = useState(false)
     const [petName, setPetName] = useState<string>('')
     const [petType, setPetType] = useState<PetTypes>('')
+    const [petKind, setPetKind] = useState<string>('')
     const [petSize, setPetSize] = useState<PetSize>('')
     const [petAge, setPetAge] = useState<PetAge>('')
 
@@ -51,6 +52,7 @@ export default function RegistrationPet() {
         const activePetDocId = await updateUserPets(user.uid, {
             petName,
             petType,
+            petKind,
             petSize,
             petAge,
         })
@@ -144,7 +146,10 @@ export default function RegistrationPet() {
                 {step === 'PET_NAME' && <PetNameSection
                     isError={isErrorValidation}
                     petName={petName}
+                    petType={petType}
                     setPetName={setPetName}
+                    petKind={petKind}
+                    setPetKind={setPetKind}
                 />}
                 {(step === 'PET_SIZE' && petType === 'DOG') && <PetSizeSection
                     isError={isErrorValidation}

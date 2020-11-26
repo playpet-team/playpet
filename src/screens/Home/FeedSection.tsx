@@ -3,26 +3,52 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
 import styled, { useTheme } from 'styled-components/native'
-import { MyFeed } from '../../models'
+import { MyFeed, MyPet } from '../../models'
 import PlaypetModal from '../../components/PlaypetModal'
 import { RootState } from '../../store/rootReducers'
 
 import { DividerBlock, Layout, Text } from '../../styles'
-import { deviceSize, getFeedsDoc, getProductItem } from '../../utils'
+import { deviceSize, getFeedsDoc, getPetDoc, getProductItem, updateFeedPercentage } from '../../utils'
 import FeedModal, { getFeedStatusSrcMap } from './FeedModal'
+import PetProfileSection from '../../components/PetProfileSection'
 
 export default function FeedSection() {
     const navigation = useNavigation()
     const isFocus = useIsFocused()
     const themes = useTheme()
     const [myFeed, setMyFeed] = useState<MyFeed>()
+    const [myPets, setMyPets] = useState<MyPet>()
     const [openStatusModal, setOpenStatusModal] = useState(false)
     const [sliderValue, setSliderValue] = useState(-1)
 
     const {
         uid,
+        activePetDocId,
     } = useSelector((state: RootState) => state.auth)
 
+    useEffect(() => {
+        if (openStatusModal || !sliderValue || !myFeed?.percentage) {
+            return
+        }
+        if (sliderValue !== myFeed.percentage) {
+            console.log('-aeunoheunhoen', sliderValue, myFeed.percentage)
+            updateFeedPercentage(uid, sliderValue)
+        }
+    }, [openStatusModal])
+
+    useEffect(() => {
+        loadMyPet()
+        async function loadMyPet() {
+            if (!activePetDocId || !uid) {
+                return
+            }
+            const pet = await getPetDoc(uid, activePetDocId)
+            if (pet) {
+                setMyPets(pet)
+            }
+        }
+    }, [activePetDocId, uid])
+    
     useEffect(() => {
         if (!isFocus) {
             return
@@ -41,20 +67,11 @@ export default function FeedSection() {
         }
     }, [uid, isFocus])
 
-    const getFeedImageUrl = (url: string) => {
-        if (url) {
-            return {
-                uri: url
-            }
-        }
-        return require('../../../assets/images/dog_default_thumb.jpg')
-    }
-
     const handleStatus = () => {
         if (myFeed) {
             setOpenStatusModal(!openStatusModal);
         }
-      };
+    };
 
     return (
         <FeedSectionBlock>
@@ -85,8 +102,11 @@ export default function FeedSection() {
                         }}
                     >
                         <FeedHeader>
-                            <Image source={getFeedImageUrl(myFeed.feedItem.image || '')} />
-                            <Text size={16} bold>{myFeed.feedItem.feedName || '사료이름'}</Text>
+                            <PetProfileSection
+                                thumbnail={myPets?.petThumbnail || ''}
+                                feedName={myFeed.feedItem.feedName}
+                                petKind={myPets?.petKind || ''}
+                            />
                         </FeedHeader>
                         <DividerBlock
                             marginTop={20}
