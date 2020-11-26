@@ -69,7 +69,10 @@ export default function SocialSignIn() {
     const SigninWrapper = useCallback(({ modal }: { modal?: boolean }) => {
         return (
             <>
-                {!modal && <SigninButton onPress={() => handleSignIn(SignType.Kakao)}>
+                {!modal && <SigninButton
+                    onPress={() => handleSignIn(SignType.Kakao)}
+                    type="kakao"
+                >
                     <Image
                         source={require('../../../assets/icons/kakao_icon.png')}
                         style={{
@@ -220,11 +223,15 @@ const SigninButtonGroups = styled.View`
     width: 100%;
     padding-horizontal: 16px;
 `
-const SigninButton = styled.TouchableOpacity`
+
+type SigninType = 'kakao' | 'google'
+const SigninButton = styled.TouchableOpacity<{ type?: SigninType}>`
     flex-direction: row;
     margin-top: 8px;
     border-radius: 8px;
-    background-color: #fff;
+    ${({ type }) => type === 'kakao' && `
+        background-color: #F9E000;
+    `};
     padding: 16px;
     align-items: center;
     justify-content: center;
@@ -238,6 +245,7 @@ const SigninOtherMethodsText = styled.Text`
     margin-top: 16px;
     color: #fff;
     text-align: center;
+    font-weight: bold;
 `
 
 const SigninText = styled.Text`
