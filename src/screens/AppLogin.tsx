@@ -80,7 +80,6 @@ export default function AppLogin() {
             >
                 <Video
                     ref={videoRef}
-                    posterSource={require('../../assets/images/app_login_snap.jpg')}
                     isMuted
                     shouldPlay
                     source={{ uri: videoUrl }}
