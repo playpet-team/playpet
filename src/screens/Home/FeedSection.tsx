@@ -10,7 +10,7 @@ import { RootState } from '../../store/rootReducers'
 import { DividerBlock, Layout, Text } from '../../styles'
 import { deviceSize, getFeedsDoc, getPetDoc, getProductItem, updateFeedPercentage } from '../../utils'
 import FeedModal, { getFeedStatusSrcMap } from './FeedModal'
-import PetProfileSection from '../../components/PetProfileSection'
+import FeedProfileSection from '../../components/FeedProfileSection'
 
 export default function FeedSection() {
     const navigation = useNavigation()
@@ -102,7 +102,7 @@ export default function FeedSection() {
                         }}
                     >
                         <FeedHeader>
-                            <PetProfileSection
+                            <FeedProfileSection
                                 thumbnail={myPets?.petThumbnail || ''}
                                 feedName={myFeed.feedItem.feedName}
                                 petKind={myPets?.petKind || ''}

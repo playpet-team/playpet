@@ -1,7 +1,6 @@
-import { useTheme } from "@react-navigation/native";
 import React from "react";
 import { Control, Controller } from "react-hook-form";
-import styled from "styled-components/native";
+import styled, { useTheme } from "styled-components/native";
 import { DividerBlock, Text } from "../../../styles";
 import { PetTypes } from "../../../utils/product";
 import { ItemBlock, TypeItem, ItemWrapper } from "../RegistrationPet";

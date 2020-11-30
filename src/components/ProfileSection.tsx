@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import styled, { useTheme } from 'styled-components/native'
-import { Avatar, Icon } from 'react-native-elements'
-import { Button, View } from 'react-native'
+import { Avatar } from 'react-native-elements'
 import { useSelector } from 'react-redux'
+import { ageNameMap } from '../screens/ManageProducts/RegistrationPet/PetAgeSection'
+import { sizeNameMap } from '../screens/ManageProducts/RegistrationPet/PetSizeSection'
 import { RootState } from '../store/rootReducers'
-import i18n from 'i18n-js'
 import { useNavigation } from '@react-navigation/native'
 import { DividerBlock, Text } from '../styles'
 import { getPetDoc } from '../utils'
@@ -51,14 +51,20 @@ function ProfileSection() {
                         />
                     }
                 </AvatarBlock>
-                <UserInfoBlock>
-                    <Text size={20} bold>{username || '이름을 설정해주세요'}</Text>
-                    {myPets && <DividerBlock height={8} />}
-                    {myPets &&
+                {myPets &&
+                    <UserInfoBlock>
+                        <InfoHeader>
+                            <Text size={20} bold>{myPets.petName || '이름을 설정해주세요'}</Text>
+                            <Text padding="0 0 0 8px" color={themes.colors.placeholder}>
+                                {myPets.petType === 'DOG' ? '반려견' : '반려묘'}
+                            </Text>
+                        </InfoHeader>
+                        <DividerBlock height={8} />
                         <Text color={themes.colors.placeholder}>
-                            {myPets.petType === 'DOG' ? '반려견' : '반려묘'}
-                    </Text>}
-                </UserInfoBlock>
+                            {ageNameMap[myPets.petAge].title} | {sizeNameMap[myPets.petSize].title}
+                        </Text>
+                    </UserInfoBlock>
+                }
                 <MoreActions>
                     <MoreButton onPress={() => navigation.navigate('ManageProducts')}>
                         <Text
@@ -88,6 +94,11 @@ const ProfileBlock = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: center;
+`
+
+const InfoHeader = styled.View`
+    flex-direction: row;
+    align-items: center;
 `
 
 const AvatarBlock = styled.View`

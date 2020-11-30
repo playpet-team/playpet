@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Alert } from 'react-native';
 import { useSelector } from 'react-redux';
+import { Input } from 'react-native-elements'
 import styled, { useTheme } from 'styled-components/native'
 import { RootState } from '../store/rootReducers';
 import { Text } from '../styles';
@@ -10,7 +11,7 @@ import { sizeNameMap } from './ManageProducts/RegistrationPet/PetSizeSection';
 import { ageNameMap } from './ManageProducts/RegistrationPet/PetAgeSection';
 import { MyFeed, MyPet } from '../models';
 import { ManageParamList } from '../navigation/BottomTabNavigator';
-import PetProfileSection from '../components/PetProfileSection';
+import FeedProfileSection from '../components/FeedProfileSection';
 
 export default function ManageProducts() {
     const [myFeed, setMyFeed] = useState<MyFeed>()
@@ -61,11 +62,44 @@ export default function ManageProducts() {
     const navigateRegistrationPet = () => navigation.navigate('RegistrationPet')
     const navigateRegistFeedBoard = () => navigation.navigate('RegistFeedBoard')
 
+    const DisplayInputField = useCallback(({
+        label,
+        value,
+    }: {
+        label: string
+        value: string
+    }) => {
+        if (!myPets) {
+            return null
+        }
+        return (
+            <Input
+                label={label}
+                value={value}
+                errorStyle={{
+                    display: 'none'
+                }}
+                labelStyle={{
+                    fontSize: 14,
+                    color: theme.colors.text,
+                }}
+                containerStyle={{
+                    paddingHorizontal: 0,
+                    marginBottom: 8,
+                }}
+                inputContainerStyle={{
+                    borderBottomWidth: 0,
+                }}
+                disabled
+            />
+        )
+    }, [myPets])
+
     return (
         <ManageProductsBlock>
             <ItemTitle>
                 <Text bold size={16}>반려 동물</Text>
-                <Text onPress={navigateRegistrationPet}>+ 등록하기</Text>
+                <Text onPress={navigateRegistrationPet}>{myPets ? '수정하기' : '+ 등록하기'}</Text>
             </ItemTitle>
             
             <Section>
@@ -79,11 +113,26 @@ export default function ManageProducts() {
                 }
                 {myPets &&
                     <Pet>
-                        <Text>{myPets.petName}</Text>
-                        <Text>{myPets.petType}</Text>
-                        <Text>{myPets.petKind || ''}</Text>
-                        <Text>{myPets.petSize && sizeNameMap[myPets.petSize].title}</Text>
-                        <Text>{myPets.petAge && ageNameMap[myPets.petAge].title}</Text>
+                        <DisplayInputField
+                            label="이름"
+                            value={myPets.petName}
+                        />
+                        <DisplayInputField
+                            label="반려종"
+                            value={myPets.petType === 'DOG' ? '반려견' : '반려묘'}
+                        />
+                        <DisplayInputField
+                            label="품종"
+                            value={myPets.petKind}
+                        />
+                        <DisplayInputField
+                            label="나이"
+                            value={ageNameMap[myPets.petAge].title}
+                        />
+                        {Boolean(myPets.petSize) && <DisplayInputField
+                            label="크기"
+                            value={sizeNameMap[myPets.petSize].title}
+                        />}
                     </Pet>
                 }
             </Section>
@@ -104,7 +153,7 @@ export default function ManageProducts() {
                 }
                 {myFeed &&
                     <Pet>
-                        <PetProfileSection
+                        <FeedProfileSection
                             thumbnail={myFeed.feedItem.image || ''}
                             feedName={myFeed.feedItem.feedName}
                             unit={myFeed.feedPackingUnit}

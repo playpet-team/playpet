@@ -8,7 +8,7 @@ import { getPetDoc } from '../utils'
 import { MyPet } from '../models'
 import { Image } from 'react-native'
 
-function PetProfileSection({
+function FeedProfileSection({
     thumbnail,
     feedName,
     petKind,
@@ -19,17 +19,13 @@ function PetProfileSection({
     petKind?: string
     unit?: string
 }) {
-    console.log('feedName--', feedName);
     const themes = useTheme()
 
     const getFeedImageUrl = useMemo(() => {
         console.log("thumbnail---", thumbnail)
-        // if (thumbnail) {
         return {
             uri: thumbnail || 'https://firebasestorage.googleapis.com/v0/b/playpet-5b432.appspot.com/o/assets%2Ficons%2Ffeed_100.jpg?alt=media&token=74cf86b9-d323-4068-8487-4a161a73b094'
         }
-        // }
-        // return require('../../assets/images/dog_default_thumb.jpg')
     }, [thumbnail])
     
     return (
@@ -61,7 +57,7 @@ function PetProfileSection({
     )
 }
 
-export default PetProfileSection
+export default FeedProfileSection
 
 const ProfileSectionBlock = styled.View`
     flex-direction: column;
