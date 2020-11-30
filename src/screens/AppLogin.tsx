@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import SocialSignIn from './AuthScreen/SocialSignIn';
@@ -6,13 +6,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import { useNavigation } from '@react-navigation/native';
 import analytics from '@react-native-firebase/analytics';
-import { Video } from 'expo-av';
+import { AVPlaybackStatus, Video } from 'expo-av';
 import { deviceSize } from '../utils';
 import { Text } from '../styles';
+import Animated, { Easing, interpolate, Value } from 'react-native-reanimated'
 import Logo from '../components/Logo';
+import Transition from '../components/Transition';
+import { Image } from 'react-native';
 
 const DEVICE_WIDTH = deviceSize().width
-const DEVICE_HEIGHT = deviceSize().height
 const videoUrl = 'https://firebasestorage.googleapis.com/v0/b/playpet-production.appspot.com/o/assets%2Fvideos%2Fapp_login_c.mp4?alt=media&token=b9aad0b6-9001-433d-98f1-e93085a6d0bf'
 export default function AppLogin() {
     const {
@@ -20,6 +22,32 @@ export default function AppLogin() {
         method,
     } = useSelector((state: RootState) => state.signIn)
     const navigation = useNavigation()
+    const bounceValue = useRef(new Value(0)).current
+    const [getReadyPlay, setGetReadyPlay] = useState(false)
+    const [firstRender, setFirstRender] = useState(false)
+    const videoRef = useRef<Video>(null)
+
+    useEffect(() => {
+        videoRef.current?.setOnPlaybackStatusUpdate(trackingVideoStatus)
+    }, [])
+    
+    useEffect(() => {
+        if (getReadyPlay) {
+            setFirstRender(true)
+            Animated.timing(
+                bounceValue,
+                {
+                    toValue: 1,
+                    duration: 1000,
+                    easing: Easing.inOut(Easing.ease)
+                }
+            ).start()
+        }
+    }, [getReadyPlay])
+
+    const trackingVideoStatus = (status: AVPlaybackStatus) => {
+        setGetReadyPlay(status.isLoaded)
+    }
 
     useEffect(() => {
         if (completeLoginType === '') {
@@ -33,6 +61,8 @@ export default function AppLogin() {
         
     }, [completeLoginType])
 
+    console.log('isVideoRendered.current', firstRender)
+
     return (
         <AppLoginBlock>
             {/* <LinearGradientBlock
@@ -40,8 +70,17 @@ export default function AppLogin() {
                 start={[0, 0]}
                 end={[1, 1]}
             /> */}
-            <BackgroundVideo>
+            <BackgroundVideo
+                style={{
+                    opacity: interpolate(bounceValue, {
+                        inputRange: [0, 1],
+                        outputRange: [0, 1],
+                    }),
+                }}
+            >
                 <Video
+                    ref={videoRef}
+                    posterSource={require('../../assets/images/app_login_snap.jpg')}
                     isMuted
                     shouldPlay
                     source={{ uri: videoUrl }}
@@ -54,28 +93,37 @@ export default function AppLogin() {
                 />
                 <AnimatedOverlayBackground />
             </BackgroundVideo>
-            <MainSection>
+            {firstRender && <MainSection>
                 <MainTitleBlock>
-                    {/* <Logo /> */}
-                    <Text
-                        color="#fff"
-                        bold
-                        size={24}
+                    <Transition
+                        type="fade-top"
+                        duration={900}
                     >
-                        반려동물 사료관리 필수앱
-                    </Text>
+                        <Text
+                            color="#fff"
+                            bold
+                            size={24}
+                        >
+                            반려동물 사료관리 필수앱
+                        </Text>
+                    </Transition>
                 </MainTitleBlock>
                 <SigninBlock>
-                    <SocialSignIn />
+                    <Transition
+                        type="fade-top"
+                        duration={1150}
+                    >
+                        <SocialSignIn />
+                    </Transition>
                 </SigninBlock>
-            </MainSection>
-            
+            </MainSection>}
         </AppLoginBlock>
     )
 };
 
 const AppLoginBlock = styled.View`
     flex: 1;
+    background-color: #111;
 `;
 
 const MainSection = styled.View`
@@ -86,7 +134,7 @@ const MainSection = styled.View`
     height: 100%;
 `
 
-const BackgroundVideo = styled.View`
+const BackgroundVideo = styled(Animated.View)`
     width: 100%;
     height: 100%;
     position: absolute;
@@ -99,7 +147,7 @@ const AnimatedOverlayBackground = styled.View`
     z-index: 2;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.35);
 `
 
 const MainTitleBlock = styled.View`

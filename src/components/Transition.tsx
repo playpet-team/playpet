@@ -2,9 +2,14 @@ import React, { useEffect, useMemo, useRef } from "react";
 import Animated, { Easing, interpolate, Value } from 'react-native-reanimated';
 import styled from "styled-components/native";
 
-export default function Transition({ children, type = 'fade-left' }: {
+export default function Transition({
+    children,
+    type = 'fade-left',
+    duration = 500,
+}: {
     children: JSX.Element
     type?: string
+    duration?: number
 }) {
     const value = useRef(new Value(0)).current
 
@@ -58,7 +63,7 @@ export default function Transition({ children, type = 'fade-left' }: {
             value,
             {
                 toValue: 1,
-                duration: 500,
+                duration: duration,
                 easing: Easing.inOut(Easing.ease)
             }
         ).start()
