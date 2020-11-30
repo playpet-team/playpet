@@ -6,20 +6,16 @@ import ManageProducts from '../screens/ManageProducts'
 import RegistrationPet from '../screens/ManageProducts/RegistrationPet'
 import RegistFeedBoard from '../screens/ManageProducts/RegistFeedBoard'
 
-// import AppLogin from '../screens/AppLogin'
 import AuthScreen from '../screens/AuthScreen'
 import AppSettings from '../screens/AuthScreen/AppSettings'
 import PaymentSetting from '../screens/AuthScreen/PaymentSetting'
 import ProfileSetting from '../screens/AuthScreen/ProfileSetting'
 import ShippingDestinationSetting from '../screens/AuthScreen/ShippingDestinationSetting'
-// import CardFormScreen from '../screens/CardFormScreen'
 import Home from '../screens/Home'
-import Order from '../screens/Order'
-import Recommendation from '../screens/Recommendation'
-// import Notifications from '../screens/Notifications'
-// import PlayGroundScreen from '../screens/PlayGroundScreen'
-// import SubscribeFormScreen from '../screens/SubscribeFormScreen'
+// import Recommendation from '../screens/Recommendation'
 import { defaultColorPalette } from '../styles/colors'
+import useUserNotifications from '../hooks/useUserNotifications'
+import Notifications from '../screens/Notifications'
 
 
 
@@ -29,16 +25,12 @@ export type BottomTabParamList = {
         needRefresh?: boolean
     }
     ManageProducts: undefined
-    Recommendation: undefined
-    // SubscribeForm: undefined
-    // PlayGround: undefined
-    // CardForm: undefined
-    // Notifications: undefined
+    Notifications: undefined
     Auth: undefined
 }
 const BottomTab = createBottomTabNavigator<BottomTabParamList>()
 export default function BottomTabNavigator() {
-    // const { isNew } = useUserNotifications('isNew')
+    const { isNew } = useUserNotifications('isNew')
     return (
         <BottomTab.Navigator
             initialRouteName="Home"
@@ -68,46 +60,6 @@ export default function BottomTabNavigator() {
                 }}
             />
             <BottomTab.Screen
-                name="Recommendation"
-                component={RecommendationNavigator}
-                options={{
-                    tabBarIcon: ({ focused }) => <Icon
-                        name="thumb-up"
-                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
-                    />,
-                }}
-            />
-            {/* <BottomTab.Screen
-                name="PlayGround"
-                component={PlayGroundNavigator}
-                options={{
-                    tabBarIcon: ({ focused }) => <Icon
-                        name="check-box-outline-blank"
-                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
-                    />,
-                }}
-            /> */}
-            {/* <BottomTab.Screen
-                name="SubscribeForm"
-                component={SubscribeFormNavigator}
-                options={{
-                    tabBarIcon: ({ focused }) => <Icon
-                        name="add"
-                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
-                    />,
-                }}
-            /> */}
-            {/* <BottomTab.Screen
-                name="CardForm"
-                component={CardFormNavigator}
-                options={{
-                    tabBarIcon: ({ focused }) => <Icon
-                        name="add"
-                        color={focused ? defaultColorPalette.primary : defaultColorPalette.border}
-                    />,
-                }}
-            /> */}
-            {/* <BottomTab.Screen
                 name="Notifications"
                 component={NotificationNavigator}
                 options={{
@@ -116,7 +68,7 @@ export default function BottomTabNavigator() {
                         color={focused || isNew ? defaultColorPalette.primary : defaultColorPalette.border}
                     />,
                 }}
-            /> */}
+            />
             <BottomTab.Screen
                 name="Auth"
                 component={AuthNavigator}
@@ -131,31 +83,11 @@ export default function BottomTabNavigator() {
     )
 }
 
-// You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
-// function TabBarIcon(props: { name: string color: string }) {
-//     return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />
-// }
-
-// Each tab has its own navigation stack, you can read more about this pattern here:
-// https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 export type HomeNavigatorTabParamList = {
     HomeNavigator: undefined
     // ProductWebView: {
     //     url: string
     //     title: string
-    // }
-    // IamportHome: {
-    //     type: any
-    //     response: any
-    // }
-    // Payment: {
-    //     userCode: any
-    //     data: any
-    // }
-    // AuthCertification: {
-    //     userCode: any
-    //     data: any
     // }
     // AppLoginAgreeTerms: undefined
 }
@@ -177,27 +109,6 @@ function HomeNavigator() {
                 component={ProductWebView}
                 options={({ route }) => ({
                     title: route.params.title,
-                    gestureEnabled: false,
-                })}
-            /> */}
-            {/* <HomeNavigatorTapStack.Screen
-                name="Payment"
-                component={Payment}
-                options={({ route }) => ({
-                    gestureEnabled: false,
-                })}
-            />
-            <HomeNavigatorTapStack.Screen
-                name="IamportHome"
-                component={IamportHome}
-                options={({ route }) => ({
-                    gestureEnabled: false,
-                })}
-            />
-            <HomeNavigatorTapStack.Screen
-                name="AuthCertification"
-                component={AuthCertification}
-                options={({ route }) => ({
                     gestureEnabled: false,
                 })}
             /> */}
@@ -241,99 +152,43 @@ function ManageProductsNavigator() {
     )
 }
 
-export type RecommendationParamList = {
-    RecommendationScreen: undefined
+// export type RecommendationParamList = {
+//     RecommendationScreen: undefined
+// }
+// const RecommendationStack = createStackNavigator<RecommendationParamList>()
+// function RecommendationNavigator() {
+//     return (
+//         <RecommendationStack.Navigator>
+//             <RecommendationStack.Screen
+//                 name="RecommendationScreen"
+//                 component={Recommendation}
+//                 options={({ navigation }) => ({
+//                     headerShown: false,
+//                     headerTitle: '추천',
+//                 })}
+//             />
+//         </RecommendationStack.Navigator>
+//     )
+// }
+
+export type NotificationNavigatorParamList = {
+    Notifications: undefined
+    NotificationDetail: undefined
 }
-const RecommendationStack = createStackNavigator<RecommendationParamList>()
-function RecommendationNavigator() {
+const NotificationNavigatorStack = createStackNavigator<NotificationNavigatorParamList>()
+function NotificationNavigator() {
     return (
-        <RecommendationStack.Navigator>
-            <RecommendationStack.Screen
-                name="RecommendationScreen"
-                component={Recommendation}
+        <NotificationNavigatorStack.Navigator>
+            <NotificationNavigatorStack.Screen
+                name="Notifications"
+                component={Notifications}
                 options={({ navigation }) => ({
-                    headerShown: false,
-                    headerTitle: '놀이터',
+                    headerTitle: '알림',
                 })}
             />
-        </RecommendationStack.Navigator>
+        </NotificationNavigatorStack.Navigator>
     )
 }
-
-// export type NotificationNavigatorParamList = {
-//     Notifications: undefined
-//     NotificationDetail: undefined
-// }
-// const NotificationNavigatorStack = createStackNavigator<NotificationNavigatorParamList>()
-// function NotificationNavigator() {
-//     return (
-//         <NotificationNavigatorStack.Navigator>
-//             <NotificationNavigatorStack.Screen
-//                 name="Notifications"
-//                 component={Notifications}
-//                 options={({ navigation }) => ({
-//                     headerTitle: '알림',
-//                 })}
-//             />
-//         </NotificationNavigatorStack.Navigator>
-//     )
-// }
-
-// export type CardFormNavigatorParamList = {
-//     CardFormNavigator: undefined
-// }
-// const CardFormNavigatorStack = createStackNavigator<CardFormNavigatorParamList>()
-// function CardFormNavigator() {
-//     return (
-//         <CardFormNavigatorStack.Navigator>
-//             <CardFormNavigatorStack.Screen
-//                 name="CardFormNavigator"
-//                 component={CardFormScreen}
-//                 options={({ navigation }) => ({
-//                     headerTitle: '포스트',
-//                 })}
-//             />
-//         </CardFormNavigatorStack.Navigator>
-//     )
-// }
-
-// export type BlankTapParamList = {
-//     BlankScreen: undefined
-// }
-// const BlankTapStack = createStackNavigator<BlankTapParamList>()
-// function PlayGroundNavigator() {
-//     return (
-//         <BlankTapStack.Navigator>
-//             <BlankTapStack.Screen
-//                 name="BlankScreen"
-//                 component={PlayGroundScreen}
-//                 options={({ navigation }) => ({
-//                     headerShown: false,
-//                     headerTitle: '놀이터',
-//                 })}
-//             />
-//         </BlankTapStack.Navigator>
-//     )
-// }
-
-// export type SubscribeFormTapParamList = {
-//     SubscribeForm: undefined
-// }
-// const SubscribeFormTapStack = createStackNavigator<SubscribeFormTapParamList>()
-// function SubscribeFormNavigator() {
-//     return (
-//         <SubscribeFormTapStack.Navigator>
-//             <SubscribeFormTapStack.Screen
-//                 name="SubscribeForm"
-//                 component={SubscribeFormScreen}
-//                 options={({ navigation }) => ({
-//                     headerShown: false,
-//                     headerTitle: '정기배송',
-//                 })}
-//             />
-//         </SubscribeFormTapStack.Navigator>
-//     )
-// }
 
 export type AuthTapParamList = {
     AuthScreen: {
@@ -343,8 +198,6 @@ export type AuthTapParamList = {
     PaymentSetting: undefined
     ShippingDestinationSetting: undefined
     ProfileSetting: undefined
-    // AppLogin: undefined
-    // AppLoginAgreeTerms: undefined
 }
 const AuthTapStack = createStackNavigator<AuthTapParamList>()
 
@@ -378,14 +231,6 @@ function AuthNavigator() {
                 component={ShippingDestinationSetting}
                 options={{ headerTitle: '배송지 관리' }}
             />
-            {/* <AuthTapStack.Screen
-                name="AppLogin"
-                component={AppLogin}
-                options={({ route }) => ({
-                    headerShown: false,
-                    gestureEnabled: false,
-                })}
-            /> */}
         </AuthTapStack.Navigator>
     )
 }
