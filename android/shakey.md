@@ -6,6 +6,6 @@ SHA-256: 50:C5:32:F9:B3:8C:3F:71:09:84:A4:A4:44:54:3A:A4:85:22:36:9C:AA:76:83:66
 
 hash key password
 // debug
-ga0RGNYHvNM5d0SLGQfpQWAPGJ8=
+JNiSaKvQifAFlUvnhzvlgCVe14U=
 // release
 825WLc8hckqxKJHUemgsXht2Kxw=

@@ -1,8 +1,5 @@
 import { signInActions } from './../../store/signInReducer'
-import appleAuth, {
-    AppleAuthRequestOperation,
-    AppleAuthRequestScope
-} from '@invertase/react-native-apple-authentication'
+import { appleAuth } from '@invertase/react-native-apple-authentication';
 import AsyncStorage from '@react-native-community/async-storage'
 import { GoogleSignin } from '@react-native-community/google-signin'
 import auth from '@react-native-firebase/auth'
@@ -69,7 +66,7 @@ export default function initializeSignIn() {
                     }
     
                 } catch (e) {
-                    console.error("eee", e)
+                    console.log("eee", e)
                     Sentry.captureException(`trySignIn-${e}`)
                     if (e.code != "auth/account-exists-with-different-credential") {
                         rejectSignIn('로그인에 실패하였습니다')
@@ -221,8 +218,8 @@ const appleSignIn = async () => {
     // Start the sign-in request
     try {
         const appleAuthRequestResponse = await appleAuth.performRequest({
-            requestedOperation: AppleAuthRequestOperation.LOGIN,
-            requestedScopes: [AppleAuthRequestScope.EMAIL, AppleAuthRequestScope.FULL_NAME],
+            requestedOperation: appleAuth.Operation.LOGIN,
+            requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
         })
         // Ensure Apple returned a user identityToken
         if (!appleAuthRequestResponse.identityToken) {

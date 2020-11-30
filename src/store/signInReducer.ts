@@ -1,5 +1,5 @@
 import { ToastParams } from './../components/Toast'
-import { AppleAuthRequestResponseFullName } from '@invertase/react-native-apple-authentication'
+import { AppleRequestResponseFullName } from '@invertase/react-native-apple-authentication'
 import { FirebaseAuthTypes } from '@react-native-firebase/auth'
 import { createSlice } from "@reduxjs/toolkit"
 import { SignType } from "../models"
@@ -11,7 +11,7 @@ export interface SignIn {
     method: SignType
     token: string | FirebaseAuthTypes.AuthCredential
     profile: {
-        username?: string | AppleAuthRequestResponseFullName
+        username?: string | AppleRequestResponseFullName
         email: string
         password?: string
         photo?: string    
@@ -73,7 +73,7 @@ const slice = createSlice({
         },
         setProfile(state, { payload }: {
             payload: {
-                username?: AppleAuthRequestResponseFullName | string | null
+                username?: AppleRequestResponseFullName | string | null
                 email?: string | null
                 password?: string
                 photo?: string | null  

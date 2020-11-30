@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/react-native"
 import Constants from 'expo-constants'
 import React, { useCallback, useEffect, useState } from 'react'
 // import { Controller, useForm } from 'react-hook-form'
-import { Image } from 'react-native-elements'
+// import { Image } from 'react-native-elements'
 // import { Text } from "../../styles";
 import { TouchableOpacity } from 'react-native-gesture-handler'
 // import { useNavigation, useTheme } from "@react-navigation/native";
@@ -18,6 +18,7 @@ import initializeSignIn from '../../utils/auth/initializeSignIn'
 import { RootState } from '../../store/rootReducers'
 import { useSelector } from 'react-redux'
 import { signInActions } from '../../store/signInReducer'
+import { Image } from 'react-native'
 
 export default function SocialSignIn() {
     const [showOtherMethods, setShowOtherMethods] = useState(false)
@@ -150,9 +151,9 @@ export default function SocialSignIn() {
                 title={toastContent.title}
             />
             <SigninWrapper />
-            <TouchableOpacity onPress={() => setShowOtherMethods(!showOtherMethods)}>
+            {(__DEV__ || Constants.platform?.ios) && <TouchableOpacity onPress={() => setShowOtherMethods(!showOtherMethods)}>
                 <SigninOtherMethodsText>다른 방법으로 로그인 하기</SigninOtherMethodsText>
-            </TouchableOpacity>
+            </TouchableOpacity>}
             <PlaypetModal
                 modalVisible={showOtherMethods}
                 setModalVisible={() => setShowOtherMethods(false)}

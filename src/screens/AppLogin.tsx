@@ -49,7 +49,7 @@ export default function AppLogin() {
                     resizeMode={Video.RESIZE_MODE_COVER}
                     style={{
                         width: DEVICE_WIDTH,
-                        height: DEVICE_HEIGHT,
+                        height: '100%',
                     }}
                 />
                 <AnimatedOverlayBackground />

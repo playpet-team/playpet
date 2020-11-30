@@ -26,6 +26,7 @@ public class BasePackageList {
         new expo.modules.sharing.SharingPackage(),
         new expo.modules.splashscreen.SplashScreenPackage(),
         new expo.modules.sqlite.SQLitePackage(),
+        new expo.modules.storereview.StoreReviewPackage(),
         new expo.modules.updates.UpdatesPackage(),
         new expo.modules.videothumbnails.VideoThumbnailsPackage(),
         new expo.modules.webbrowser.WebBrowserPackage()
