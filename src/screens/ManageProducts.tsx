@@ -10,6 +10,7 @@ import { sizeNameMap } from './ManageProducts/RegistrationPet/PetSizeSection';
 import { ageNameMap } from './ManageProducts/RegistrationPet/PetAgeSection';
 import { MyFeed, MyPet } from '../models';
 import { ManageParamList } from '../navigation/BottomTabNavigator';
+import PetProfileSection from '../components/PetProfileSection';
 
 export default function ManageProducts() {
     const [myFeed, setMyFeed] = useState<MyFeed>()
@@ -55,6 +56,7 @@ export default function ManageProducts() {
         }
         navigateRegistFeedBoard()
     };
+    console.log("myFeed", myFeed)
 
     const navigateRegistrationPet = () => navigation.navigate('RegistrationPet')
     const navigateRegistFeedBoard = () => navigation.navigate('RegistFeedBoard')
@@ -66,7 +68,7 @@ export default function ManageProducts() {
                 <Text onPress={navigateRegistrationPet}>+ 등록하기</Text>
             </ItemTitle>
             
-            <ScrollSection>
+            <Section>
                 {activePetDocId === '' &&
                     <Text
                         color={theme.colors.text}
@@ -84,12 +86,12 @@ export default function ManageProducts() {
                         <Text>{myPets.petAge && ageNameMap[myPets.petAge].title}</Text>
                     </Pet>
                 }
-            </ScrollSection>
+            </Section>
             <ItemTitle>
                 <Text bold size={16}>사료</Text>
                 <Text onPress={openFeedBoard}>+ 등록하기</Text>
             </ItemTitle>
-            <ScrollSection>
+            <Section>
                 {activePetDocId === '' &&
                     <AddPetButton onPress={openFeedBoard}>
                         <Text
@@ -102,10 +104,14 @@ export default function ManageProducts() {
                 }
                 {myFeed &&
                     <Pet>
-                        <Text>{myFeed.feedItem.feedName}</Text>
+                        <PetProfileSection
+                            thumbnail={myFeed.feedItem.image || ''}
+                            feedName={myFeed.feedItem.feedName}
+                            unit={myFeed.feedPackingUnit}
+                        />
                     </Pet>
                 }
-            </ScrollSection>
+            </Section>
         </ManageProductsBlock>
     );
 }
@@ -133,7 +139,7 @@ const Pet = styled.View`
     padding: 16px;
 `
 
-const ScrollSection = styled.View`
+const Section = styled.View`
     min-height: 200px;
     padding: 16px 0;
 `

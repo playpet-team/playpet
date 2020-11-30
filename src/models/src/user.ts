@@ -54,6 +54,7 @@ export interface MyPet {
 export interface MyFeed {
     feedBrandId: string
     uid: string
+    feedPackingUnit?: string
     feedItemId: string
     feedItem: ProductItem
     status: 'active' | 'deactive',

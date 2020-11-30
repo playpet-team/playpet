@@ -10,12 +10,14 @@ import { firebaseTimeStampToStringStamp } from './../system/index';
 export const updateFeedItems = async (uid: string, feedInformation: {
     feedItemId: string
     feedBrandId: string
+    feedPackingUnit: string
 }) => {
     try {
         await firestore().collection(Collections.Management).doc(uid).set({
             uid,
             feedItemId: feedInformation.feedItemId,
             feedBrandId: feedInformation.feedBrandId,
+            feedPackingUnit: feedInformation.feedPackingUnit,
             // ...feedInformation,
             status: 'active',
             percentage: 100,

@@ -8,9 +8,13 @@ import { ProductItem } from '../utils/product';
 function RegistFeedItems({
     activeFeedItemId,
     setActiveFeedItemId,
+    activeFeedPackingUnit,
+    setActiveFeedPackingUnit,
 }: {
     activeFeedItemId: string
     setActiveFeedItemId: React.Dispatch<React.SetStateAction<string>>
+    activeFeedPackingUnit: string
+    setActiveFeedPackingUnit: React.Dispatch<React.SetStateAction<string>>
 }) {
     const [feeds, setFeeds] = useState<ProductItem[]>([])
 
@@ -24,6 +28,11 @@ function RegistFeedItems({
 
     const handleFeed = (feed: ProductItem) => {
         setActiveFeedItemId(feed.id)
+        setActiveFeedPackingUnit('')
+    }
+
+    const handlePackingUnit = (unit: string) => {
+        setActiveFeedPackingUnit(unit)
     }
 
     const theme = useTheme()
@@ -47,11 +56,15 @@ function RegistFeedItems({
                 {feeds.map((feed) => (
                     <ProductListItem
                         key={feed.id}
+                        packingUnit={feed.packingUnit}
                         feedName={feed.feedName}
                         description={feed.description}
                         image={feed.image}
                         onPress={() => handleFeed(feed)}
+                        handlePackingUnit={handlePackingUnit}
                         isActive={activeFeedItemId === feed.id}
+                        activeFeedPackingUnit={activeFeedPackingUnit}
+                        setActiveFeedPackingUnit={setActiveFeedPackingUnit}
                     />
                 ))}
             </GridLayout>

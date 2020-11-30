@@ -5,17 +5,24 @@ import styled from 'styled-components/native';
 import { Text } from '../styles';
 import { ProductItem } from '../utils/product';
 
-type PickProductItem = Pick<ProductItem, 'feedName' | 'image' | 'description'>
+type PickProductItem = Pick<ProductItem, 'feedName' | 'image' | 'description' | 'packingUnit'>
 interface Item extends PickProductItem {
-    isActive: boolean;
-    onPress: (event: GestureResponderEvent) => void;
+    isActive: boolean
+    onPress: (event: GestureResponderEvent) => void
+    handlePackingUnit: (unit: string) => void
+    activeFeedPackingUnit: string
+    setActiveFeedPackingUnit: React.Dispatch<React.SetStateAction<string>>
 }
 function ProductListItem({
     isActive = false,
     onPress,
+    handlePackingUnit,
     feedName,
     image,
     description,
+    packingUnit,
+    activeFeedPackingUnit,
+    setActiveFeedPackingUnit
 }: Item) {
     return (
         <ProductListItemBlock
@@ -35,6 +42,20 @@ function ProductListItem({
             <Content>
                 <Text bold>{feedName}</Text>
                 <Text>{description}</Text>
+                {(isActive && packingUnit.length) &&
+                    <UnitBlock>
+                        {packingUnit.map(unit =>
+                            <Unit key={unit}>
+                                <Chip
+                                    isActive={activeFeedPackingUnit === unit}
+                                    onPress={() => handlePackingUnit(unit)}
+                                >
+                                    <Text>{unit}</Text>
+                                </Chip>
+                            </Unit>
+                        )}
+                    </UnitBlock>
+                }
             </Content>
         </ProductListItemBlock>
     )
@@ -56,4 +77,21 @@ const ProductListItemBlock = styled.TouchableOpacity<{isActive: boolean}>`
     flex-direction: row;
     border-color: ${({ isActive }) => isActive ? '#0559D1' : '#C4C4C4'};
     background-color: ${({ isActive }) => isActive ? 'rgba(5, 89, 209, 0.1)' : '#fff'};
+`
+
+const UnitBlock = styled.View`
+    flex-wrap: wrap;
+    flex-direction: row;
+`
+
+const Unit = styled.View`
+    margin-right: 8px;
+`
+
+const Chip = styled.TouchableOpacity<{isActive: boolean}>`
+    padding: 8px;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: ${({ theme }) => theme.colors.border};
+    background-color: ${({ isActive, theme }) => isActive ? theme.colors.primary : 'transparent'};
 `

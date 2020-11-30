@@ -1,8 +1,8 @@
 import React from "react"
+import { Image } from "react-native"
 import styled from "styled-components/native"
 import useUserNotifications from "../hooks/useUserNotifications"
 import { Text } from "../styles"
-import { Image } from "react-native-elements"
 
 function Notifications() {
     const notifications = useUserNotifications('listener')

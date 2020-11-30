@@ -13,6 +13,7 @@ enum REGIST_FEED_STEPS {
 function RegistFeedBoard() {
     const [step, setStep] = useState<REGIST_FEED_STEPS>(REGIST_FEED_STEPS.BRANDS)
     const [activeFeedItemId, setActiveFeedItemId] = useState('')
+    const [activeFeedPackingUnit, setActiveFeedPackingUnit] = useState('')
     const [activeFeedBrandId, setActiveFeedBrandId] = useState('')
 
     const [feeds, setFeeds] = useState<ProductItem[]>([])
@@ -41,6 +42,7 @@ function RegistFeedBoard() {
         await updateFeedItems(user.uid, {
             feedItemId: activeFeedItemId,
             feedBrandId: activeFeedBrandId,
+            feedPackingUnit: activeFeedPackingUnit,
         })
 
         navigation.navigate('ManageProducts', {
@@ -51,7 +53,9 @@ function RegistFeedBoard() {
     const nextSteps = () => {
         switch (step) {
             case REGIST_FEED_STEPS.BRANDS: {
-                setStep(REGIST_FEED_STEPS.ITEMS);
+                if (activeFeedBrandId) {
+                    setStep(REGIST_FEED_STEPS.ITEMS);
+                }
                 break;
             }
             case REGIST_FEED_STEPS.ITEMS: {
@@ -85,6 +89,8 @@ function RegistFeedBoard() {
             {step === REGIST_FEED_STEPS.ITEMS && <RegistFeedItems
                 activeFeedItemId={activeFeedItemId}
                 setActiveFeedItemId={setActiveFeedItemId}
+                activeFeedPackingUnit={activeFeedPackingUnit}
+                setActiveFeedPackingUnit={setActiveFeedPackingUnit}
                 
             />}
             <NavigateBlock>
