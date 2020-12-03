@@ -88,7 +88,7 @@ const Unit = styled.View`
     margin-right: 8px;
 `
 
-const Chip = styled.TouchableOpacity<{isActive: boolean}>`
+const Chip = styled.TouchableOpacity<{isActive?: boolean}>`
     padding: 8px;
     border-radius: 8px;
     border-width: 1px;

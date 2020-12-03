@@ -14,7 +14,7 @@ function ProfileSection() {
     const {
         uid,
         profilePhoto,
-        username,
+        isLogged,
         activePetDocId,
     } = useSelector((state: RootState) => state.auth)
     const [myPets, setMyPets] = useState<MyPet>()
@@ -33,6 +33,10 @@ function ProfileSection() {
             }
         }
     }, [activePetDocId, uid])
+
+    if (!uid) {
+        return null
+    }
     
     return (
         <ProfileSectionBlock>

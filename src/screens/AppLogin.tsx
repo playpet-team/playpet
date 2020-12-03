@@ -38,7 +38,7 @@ export default function AppLogin() {
                 bounceValue,
                 {
                     toValue: 1,
-                    duration: 1000,
+                    duration: 750,
                     easing: Easing.inOut(Easing.ease)
                 }
             ).start()
@@ -65,11 +65,6 @@ export default function AppLogin() {
 
     return (
         <AppLoginBlock>
-            {/* <LinearGradientBlock
-                colors={['#F52053', '#FF5A5A']}
-                start={[0, 0]}
-                end={[1, 1]}
-            /> */}
             <BackgroundVideo
                 style={{
                     opacity: interpolate(bounceValue, {
@@ -96,7 +91,7 @@ export default function AppLogin() {
                 <MainTitleBlock>
                     <Transition
                         type="fade-top"
-                        duration={900}
+                        duration={600}
                     >
                         <Text
                             color="#fff"

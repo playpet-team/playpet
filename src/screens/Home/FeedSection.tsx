@@ -73,6 +73,8 @@ export default function FeedSection() {
         }
     };
 
+    console.log("sliderValue", sliderValue)
+
     return (
         <FeedSectionBlock>
             <Header>
@@ -105,16 +107,16 @@ export default function FeedSection() {
                             <FeedProfileSection
                                 thumbnail={myPets?.petThumbnail || ''}
                                 feedName={myFeed.feedItem.feedName}
-                                petKind={myPets?.petKind || ''}
+                                unit={myFeed.feedPackingUnit}
                             />
                         </FeedHeader>
-                        <DividerBlock
+                        {/* <DividerBlock
                             marginTop={20}
                             marginBottom={24}
                             height={1}
                             backgroundColor="#eee"
-                        />
-                        <FeedStatus onPress={handleStatus}>
+                        /> */}
+                        <FeedStatus>
                             <FeedPercentageFullImageWrapper>
                                 <FeedPercentageFullImage
                                     source={getFeedStatusSrcMap("feed", sliderValue)}
@@ -129,15 +131,30 @@ export default function FeedSection() {
                             <StatusDescription>
                                 {/* <Text size={16}>현재 사료량</Text> */}
                                 <DividerBlock marginTop={10} />
-                                <Text
-                                    bold
-                                    size={20}
-                                    color={getFeedStatusSrcMap("color", sliderValue)}
-                                >
-                                    {getFeedStatusSrcMap('wording', sliderValue)}
-                                </Text>
+                                {getFeedStatusSrcMap('wording', sliderValue).map((tag: string, i: number) => {
+                                    return (
+                                        <Chip key={i}>
+                                            <Text
+                                                size={16}
+                                                color={getFeedStatusSrcMap("color", sliderValue)}
+                                            >
+                                                {getFeedStatusSrcMap('wording', sliderValue)}
+                                            </Text>
+                                        </Chip>
+                                    )
+                                })}
                             </StatusDescription>
+                            <DividerBlock height={24} />
                         </FeedStatus>
+                        <FeedFillUp onPress={handleStatus}>
+                            <Text
+                                color={themes.colors.white}
+                                bold
+                                size={16}
+                            >
+                                채우기
+                            </Text>
+                        </FeedFillUp>
                     </FeedBlock>
                 }
             </Main>
@@ -173,7 +190,7 @@ const Main = styled.View`
 
 const FeedBlock = styled.View`
     flex-direction: column;
-    padding: 24px;
+    padding-top: 24px;
     border-radius: 14px;
     /* border-color: ${({ theme }) => theme.colors.border}; */
     /* border-width: 1px; */
@@ -182,14 +199,7 @@ const FeedBlock = styled.View`
 
 `
 
-const Image = styled.Image`
-    width: 50px;
-    height: 50px;
-    margin-right: 16px;
-    border-radius: 8px;
-`
-
-const FeedStatus = styled.TouchableOpacity`
+const FeedStatus = styled.View`
     /* padding: 18px; */
     flex-direction: column;
     align-items: center;
@@ -198,6 +208,7 @@ const FeedStatus = styled.TouchableOpacity`
 
 const FeedHeader = styled.View`
     flex-direction :row;
+    padding-horizontal: 24px;
 `
 
 const FeedPercentageFullImageWrapper = styled.View`
@@ -225,7 +236,25 @@ const FeedPercentageFullBoxImage = styled.Image`
 
 export const StatusDescription = styled.View`
     /* flex: 1; */
-    margin-left: 32px;
-    flex-direction: column;
+    /* margin-left: 32px; */
+    flex-wrap: wrap;
+    /* flex-direction: column; */
     /* align-items: center; */
+`
+export const FeedFillUp = styled.TouchableOpacity`
+    padding: 16px;
+    align-items: center;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    justify-content: center;
+    background-color: ${({ theme }) => theme.colors.primary};
+    width: 100%;
+`
+
+const Chip = styled.TouchableOpacity`
+    padding: 8px;
+    border-radius: 8px;
+    /* border-width: 1px; */
+    /* border-color: ${({ theme }) => theme.colors.border}; */
+    background-color: #eee;
 `
