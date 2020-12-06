@@ -75,12 +75,7 @@ export default function PetAgeSection({ petAge, setPetAge, isError }: {
     )
 }
 
-const Label = styled(Text)`
-    width: 100px;
-`
-
 const PetAgeBlock = styled.View`
     display: flex;
     align-items: center;
-    flex: 1;
 `

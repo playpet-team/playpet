@@ -1,39 +1,61 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import styled, { useTheme } from 'styled-components/native'
 import { DividerBlock, Text } from '../styles'
 import { getProductList } from "../utils/product";
 import ProductListItem from "./ProductListItem";
 import { ProductItem } from '../utils/product';
+import useMyPet from "../hooks/useMyPet";
+import useLoadingIndicator from "../hooks/useLoadingIndicator";
+import { ActivityIndicator } from "react-native";
+import * as Sentry from "@sentry/react-native";
 
 function RegistFeedItems({
     activeFeedItemId,
     setActiveFeedItemId,
-    activeFeedPackingUnit,
-    setActiveFeedPackingUnit,
+    setFeedPackingUnits,
 }: {
     activeFeedItemId: string
     setActiveFeedItemId: React.Dispatch<React.SetStateAction<string>>
-    activeFeedPackingUnit: string
-    setActiveFeedPackingUnit: React.Dispatch<React.SetStateAction<string>>
+    setFeedPackingUnits: React.Dispatch<React.SetStateAction<string[]>>
 }) {
     const [feeds, setFeeds] = useState<ProductItem[]>([])
 
+    const { myPets } = useMyPet()
+    const { loading, setLoading, Indicator } = useLoadingIndicator()
+
     useEffect(() => {
         async function loadProduct() {
-            const data = await getProductList('DOG')
-            setFeeds(data)
+            if (!myPets) {
+                return
+            }
+            try {
+                setLoading(true)
+                const data = await getProductList()
+                if (data) {
+                    setFeeds(data)
+                }
+            } catch (e) {
+                Sentry.captureException(e)
+            } finally {
+                setLoading(false)
+            }
         }
         loadProduct();
-    }, [])
+    }, [myPets])
 
     const handleFeed = (feed: ProductItem) => {
         setActiveFeedItemId(feed.id)
-        setActiveFeedPackingUnit('')
+        setFeedPackingUnits(feed.packingUnit)
     }
 
-    const handlePackingUnit = (unit: string) => {
-        setActiveFeedPackingUnit(unit)
-    }
+    const filteredFeeds = useMemo(() => {
+        if (!myPets || !feeds) {
+            return []
+        }
+        return feeds
+            .filter(feed => feed.pet.includes(myPets.petType))
+            .filter(feed => feed.size.includes(myPets.petSize))
+    }, [myPets, feeds])
 
     const theme = useTheme()
 
@@ -52,22 +74,21 @@ function RegistFeedItems({
             >
                 회원님의 정보를 통해 적합한 사료만 노출됩니다
             </Text>
+            <DividerBlock height={16} />
             <GridLayout>
-                {feeds.map((feed) => (
+                {filteredFeeds.map((feed) => (
                     <ProductListItem
                         key={feed.id}
-                        packingUnit={feed.packingUnit}
                         feedName={feed.feedName}
                         description={feed.description}
                         image={feed.image}
                         onPress={() => handleFeed(feed)}
-                        handlePackingUnit={handlePackingUnit}
                         isActive={activeFeedItemId === feed.id}
-                        activeFeedPackingUnit={activeFeedPackingUnit}
-                        setActiveFeedPackingUnit={setActiveFeedPackingUnit}
                     />
                 ))}
+            <DividerBlock height={120} />
             </GridLayout>
+            {loading && <Indicator />}
         </RegistFeedItemsBlock>
     )
 }
@@ -80,6 +101,6 @@ const RegistFeedItemsBlock = styled.View`
 `
 
 const GridLayout = styled.ScrollView`
-    margin-top: 24px;
+    /* margin-top: 24px; */
     flex-direction: column;
 `

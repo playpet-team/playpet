@@ -17,13 +17,13 @@ export default function FeedSection() {
     const isFocus = useIsFocused()
     const themes = useTheme()
     const [myFeed, setMyFeed] = useState<MyFeed>()
-    const [myPets, setMyPets] = useState<MyPet>()
+    // const [myPets, setMyPets] = useState<MyPet>()
     const [openStatusModal, setOpenStatusModal] = useState(false)
     const [sliderValue, setSliderValue] = useState(-1)
 
     const {
         uid,
-        activePetDocId,
+        // activePetDocId,
     } = useSelector((state: RootState) => state.auth)
 
     useEffect(() => {
@@ -31,23 +31,22 @@ export default function FeedSection() {
             return
         }
         if (sliderValue !== myFeed.percentage) {
-            console.log('-aeunoheunhoen', sliderValue, myFeed.percentage)
             updateFeedPercentage(uid, sliderValue)
         }
     }, [openStatusModal])
 
-    useEffect(() => {
-        loadMyPet()
-        async function loadMyPet() {
-            if (!activePetDocId || !uid) {
-                return
-            }
-            const pet = await getPetDoc(uid, activePetDocId)
-            if (pet) {
-                setMyPets(pet)
-            }
-        }
-    }, [activePetDocId, uid])
+    // useEffect(() => {
+    //     loadMyPet()
+    //     async function loadMyPet() {
+    //         if (!activePetDocId || !uid) {
+    //             return
+    //         }
+    //         const pet = await getPetDoc(uid, activePetDocId)
+    //         if (pet) {
+    //             setMyPets(pet)
+    //         }
+    //     }
+    // }, [activePetDocId, uid])
     
     useEffect(() => {
         if (!isFocus) {
@@ -59,6 +58,8 @@ export default function FeedSection() {
                 return
             }
             const feeds = await getFeedsDoc(uid)
+            console.log('feeds-------', feeds);
+            console.log('feeds?.feedPackingUnit-------', feeds?.feedPackingUnit);
             if (!feeds) {
                 return
             }
@@ -72,8 +73,6 @@ export default function FeedSection() {
             setOpenStatusModal(!openStatusModal);
         }
     };
-
-    console.log("sliderValue", sliderValue)
 
     return (
         <FeedSectionBlock>
@@ -105,7 +104,7 @@ export default function FeedSection() {
                     >
                         <FeedHeader>
                             <FeedProfileSection
-                                thumbnail={myPets?.petThumbnail || ''}
+                                image={myFeed.feedItem.image || ''}
                                 feedName={myFeed.feedItem.feedName}
                                 unit={myFeed.feedPackingUnit}
                             />

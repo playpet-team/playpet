@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react'
 function useAuthStateChanged() {
     const [isLogged, setIsLogged] = useState(false)
     const dispatch = useDispatch()
-    console.log('------123123123--', isLogged)
 
     useEffect(() => {
         const onAuthStateChanged = async (user: FirebaseAuthTypes.User | null) => {

@@ -7,33 +7,28 @@ import { DividerBlock, Text } from '../styles'
 import { getPetDoc } from '../utils'
 import { MyPet } from '../models'
 import { Image } from 'react-native'
+import { feedImagesMap } from './ProductListItem'
 
 function FeedProfileSection({
-    thumbnail,
+    image,
     feedName,
     petKind,
     unit,
 }: {
-    thumbnail: string
+    image: string
     feedName?: string
     petKind?: string
     unit?: string
 }) {
+    console.log("unit", unit);
     const themes = useTheme()
 
-    const getFeedImageUrl = useMemo(() => {
-        console.log("thumbnail---", thumbnail)
-        return {
-            uri: thumbnail || 'https://firebasestorage.googleapis.com/v0/b/playpet-5b432.appspot.com/o/assets%2Ficons%2Ffeed_100.jpg?alt=media&token=74cf86b9-d323-4068-8487-4a161a73b094'
-        }
-    }, [thumbnail])
-    
     return (
         <ProfileSectionBlock>
             <ProfileBlock>
                 <AvatarBlock>
                     <Image
-                        source={getFeedImageUrl}
+                        source={feedImagesMap[image]}
                         style={{
                             width: 45,
                             height: 45,
@@ -45,10 +40,10 @@ function FeedProfileSection({
                 <UserInfoBlock>
                     <Text size={16} bold>{feedName}</Text>
                     <DividerBlock height={8} />
-                    {petKind && <Text color={themes.colors.placeholder}>
+                    {Boolean(petKind) && <Text color={themes.colors.placeholder}>
                         {petKind}
                     </Text>}
-                    {unit && <Text color={themes.colors.placeholder}>
+                    {Boolean(unit) && <Text color={themes.colors.placeholder}>
                         {unit}
                     </Text>}
                 </UserInfoBlock>
@@ -67,6 +62,7 @@ const ProfileSectionBlock = styled.View`
 const ProfileBlock = styled.View`
     flex-direction: row;
     align-items: center;
+
 `
 
 const AvatarBlock = styled.View`

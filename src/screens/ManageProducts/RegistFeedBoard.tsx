@@ -5,40 +5,30 @@ import RegistFeedBrand from "../../components/RegistFeedBrand"
 import RegistFeedItems from "../../components/RegistFeedItems"
 import { useNavigation } from "@react-navigation/native"
 import { currentUser, getProductList, ProductItem, updateFeedItems } from "../../utils"
+import RegistFeedCapacity from "../../components/RegistFeedCapacity"
 
 enum REGIST_FEED_STEPS {
     BRANDS = 'BRANDS',
-    ITEMS = 'ITEMS'
+    ITEMS = 'ITEMS',
+    CAPACITY = 'CAPACITY',
 }
 function RegistFeedBoard() {
     const [step, setStep] = useState<REGIST_FEED_STEPS>(REGIST_FEED_STEPS.BRANDS)
     const [activeFeedItemId, setActiveFeedItemId] = useState('')
+    const [feedPackingUnits, setFeedPackingUnits] = useState<string[]>([])
     const [activeFeedPackingUnit, setActiveFeedPackingUnit] = useState('')
     const [activeFeedBrandId, setActiveFeedBrandId] = useState('')
-
-    const [feeds, setFeeds] = useState<ProductItem[]>([])
-
     const theme = useTheme()
     const navigation = useNavigation()
     const handleLater = () => navigation.goBack()
-
-    useEffect(() => {
-        async function loadProduct() {
-            const data = await getProductList('DOG')
-            setFeeds(data)
-        }
-        loadProduct();
-    }, [])
-
+    console.log('activeFeedPackingUnit------', activeFeedPackingUnit)
+    
     const handleUpdateFeeds = async () => {
         const user = currentUser()
-        if (!user || !activeFeedItemId || !activeFeedBrandId) {
+        console.log('activeFeedPackingUnit------update-', activeFeedPackingUnit)
+        if (!user) {
             return
         }
-        // const findFeed = feeds.find(feed => feed.id === activeFeedItemId)
-        // if (!findFeed) {
-        //     return
-        // }
         await updateFeedItems(user.uid, {
             feedItemId: activeFeedItemId,
             feedBrandId: activeFeedBrandId,
@@ -59,6 +49,13 @@ function RegistFeedBoard() {
                 break;
             }
             case REGIST_FEED_STEPS.ITEMS: {
+                if (activeFeedBrandId) {
+                    setStep(REGIST_FEED_STEPS.CAPACITY);
+                }
+                break;
+            }
+            case REGIST_FEED_STEPS.CAPACITY: {
+                console.log('?')
                 // TODO DB에 등록
                 handleUpdateFeeds()
                 handleLater()
@@ -77,6 +74,10 @@ function RegistFeedBoard() {
                 setStep(REGIST_FEED_STEPS.BRANDS);
                 break;
             }
+            case REGIST_FEED_STEPS.CAPACITY: {
+                setStep(REGIST_FEED_STEPS.ITEMS);
+                break;
+            }
         }
     }
 
@@ -89,9 +90,12 @@ function RegistFeedBoard() {
             {step === REGIST_FEED_STEPS.ITEMS && <RegistFeedItems
                 activeFeedItemId={activeFeedItemId}
                 setActiveFeedItemId={setActiveFeedItemId}
+                setFeedPackingUnits={setFeedPackingUnits}
+            />}
+            {step === REGIST_FEED_STEPS.CAPACITY && <RegistFeedCapacity
+                feedPackingUnits={feedPackingUnits}
                 activeFeedPackingUnit={activeFeedPackingUnit}
                 setActiveFeedPackingUnit={setActiveFeedPackingUnit}
-                
             />}
             <NavigateBlock>
                 <BackButton onPress={prevSteps}>
@@ -109,7 +113,7 @@ function RegistFeedBoard() {
                         size={16}
                         bold
                     >
-                        {step === REGIST_FEED_STEPS.ITEMS ? '등록' : '다음'}
+                        {step === REGIST_FEED_STEPS.CAPACITY ? '등록' : '다음'}
                     </Text>
                 </NextButton>
             </NavigateBlock>

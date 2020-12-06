@@ -113,10 +113,10 @@ export default function ManageProducts() {
                 }
                 {myPets &&
                     <Pet>
-                        <DisplayInputField
+                        {/* <DisplayInputField
                             label="이름"
                             value={myPets.petName}
-                        />
+                        /> */}
                         <DisplayInputField
                             label="반려종"
                             value={myPets.petType === 'DOG' ? '반려견' : '반려묘'}
@@ -154,7 +154,7 @@ export default function ManageProducts() {
                 {myFeed &&
                     <Pet>
                         <FeedProfileSection
-                            thumbnail={myFeed.feedItem.image || ''}
+                            image={myFeed.feedItem.image || ''}
                             feedName={myFeed.feedItem.feedName}
                             unit={myFeed.feedPackingUnit}
                         />

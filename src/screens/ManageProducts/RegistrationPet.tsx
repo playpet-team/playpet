@@ -83,9 +83,9 @@ export default function RegistrationPet() {
             case 'PET_TYPE': {
                 return petType === '' || !DefaultPetTypes.includes(petType)
             }
-            case 'PET_NAME': {
-                return petName === '' || petName.length > 16
-            }
+            // case 'PET_NAME': {
+            //     return petName === '' || petName.length > 16
+            // }
             case 'PET_AGE': {
                 return petAge === '' || !DefaultPetAges .includes(petAge)
             }
@@ -99,6 +99,7 @@ export default function RegistrationPet() {
         const nextStepIndex = findNextStepIndex()
         const stepName = PET_STEPS[nextStepIndex]
         const isError = checkIsErrorValidation()
+        console.log("isError", isError)
 
         setErrorValidation(isError)
 
@@ -133,35 +134,34 @@ export default function RegistrationPet() {
     }, [step])
 
     const findLastStepName: RegistPetStep = useMemo(() => PET_STEPS[PET_STEPS.length - 1], [])
+    console.log('petKind---', petKind)
 
     return (
         <RegistrationPetBlock>
             {loading && <Indicator />}
-            <ScrollView>
-                {step === 'PET_TYPE' && <PetTypeSection
-                    isError={isErrorValidation}
-                    petType={petType}
-                    setPetType={setPetType}
-                />}
-                {step === 'PET_NAME' && <PetNameSection
-                    isError={isErrorValidation}
-                    petName={petName}
-                    petType={petType}
-                    setPetName={setPetName}
-                    petKind={petKind}
-                    setPetKind={setPetKind}
-                />}
-                {(step === 'PET_SIZE' && petType === 'DOG') && <PetSizeSection
-                    isError={isErrorValidation}
-                    petSize={petSize}
-                    setPetSize={setPetSize}
-                />}
-                {step === 'PET_AGE' && <PetAgeSection
-                    isError={isErrorValidation}
-                    petAge={petAge}
-                    setPetAge={setPetAge}
-                />}
-            </ScrollView>
+            {step === 'PET_TYPE' && <PetTypeSection
+                isError={isErrorValidation}
+                petType={petType}
+                setPetType={setPetType}
+            />}
+            {step === 'PET_NAME' && <PetNameSection
+                isError={isErrorValidation}
+                petName={petName}
+                petType={petType}
+                setPetName={setPetName}
+                petKind={petKind}
+                setPetKind={setPetKind}
+            />}
+            {(step === 'PET_SIZE' && petType === 'DOG') && <PetSizeSection
+                isError={isErrorValidation}
+                petSize={petSize}
+                setPetSize={setPetSize}
+            />}
+            {step === 'PET_AGE' && <PetAgeSection
+                isError={isErrorValidation}
+                petAge={petAge}
+                setPetAge={setPetAge}
+            />}
             <NavigateBlock>
                 <BackButton onPress={prevSteps}>
                     <Text
@@ -188,7 +188,7 @@ export default function RegistrationPet() {
 
 const RegistrationPetBlock = styled(SafeAreaView)`
     height: 100%;
-    padding-vertical: 20px;
+    /* padding-vertical: 20px; */
     flex-direction: column;
 `
 

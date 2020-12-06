@@ -1,4 +1,4 @@
-import { ProductItem } from './../product/index';
+import { ProductItem, getProductList } from './../product/index';
 import { firebaseNow } from './../auth/index';
 import firestore from '@react-native-firebase/firestore';
 import * as Sentry from "@sentry/react-native";
@@ -13,6 +13,7 @@ export const updateFeedItems = async (uid: string, feedInformation: {
     feedPackingUnit: string
 }) => {
     try {
+        console.log('feedPackingUnit------', feedInformation.feedPackingUnit)
         await firestore().collection(Collections.Management).doc(uid).set({
             uid,
             feedItemId: feedInformation.feedItemId,
@@ -56,20 +57,27 @@ export const getFeedsDoc = async (uid: string) => {
         if (!feedData) {
             return
         }
-        const productData = (await firestore()
-        .collection<ProductItem>(Collections.Products)
-        .doc(feedData.feedItemId)
-        .get()).data()
 
-        if (!productData) {
+        const feeds = await getProductList()
+        if (!feeds) {
+            return
+        }
+        const findItem = feeds.find((feed) => feed.id ===feedData.feedItemId)
+
+        // const productData = (await firestore()
+        //     .collection<ProductItem>(Collections.Products)
+        //     .doc(feedData.feedItemId)
+        //     .get()).data()
+
+        if (!findItem) {
             return
         }
 
         return {
             ...feedData,
-            feedItem: productData,
-            createdAt: firebaseTimeStampToStringStamp(feedData.createdAt),
-            updatedAt: firebaseTimeStampToStringStamp(feedData.updatedAt),
+            feedItem: findItem,
+            // createdAt: firebaseTimeStampToStringStamp(feedData.createdAt),
+            // updatedAt: firebaseTimeStampToStringStamp(feedData.updatedAt),
         }
         // return feedDocs.docs.map(doc => {
         //     const feedData = doc.data() as MyFeed

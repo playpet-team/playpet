@@ -1,7 +1,8 @@
 import React, { useMemo } from "react"
 import { Control, Controller, DeepMap, FieldError } from "react-hook-form"
+import { TouchableOpacityComponent } from "react-native"
 import { Input } from "react-native-elements"
-import { FlatList } from "react-native-gesture-handler"
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler"
 import { useTheme } from "styled-components"
 import styled from "styled-components/native"
 import ListItem from "../../../components/ListItem"
@@ -27,18 +28,16 @@ export default function PetNameSection({ petName, setPetName, petType, isError, 
 
     const renderType = (item: string) => {
         return (
-            <ListItem
-                title={item}
+            <TouchableOpacity
                 onPress={() => setPetKind(item)}
-                titleStyle={{
-                }}
-                containerStyle={{
-                    borderRadius: 8,
-                }}
-                activeStyle={{
+                style={{
                     backgroundColor: item === petKind ? `${theme.colors.primary}33` : 'transparent',
+                    padding: 16,
+                    borderRadius: 4,
                 }}
-            />
+            >
+                <Text size={15}>{item}</Text>
+            </TouchableOpacity>
         )
     }
 
@@ -50,10 +49,10 @@ export default function PetNameSection({ petName, setPetName, petType, isError, 
                     size={18}
                     bold
                 >
-                    반려동물의 이름과 종류를 알려주세요
+                    반려동물의 종류를 알려주세요
                 </Text>
-                <DividerBlock marginTop={32} />
-                <Input
+                {/* <DividerBlock marginTop={32} /> */}
+                {/* <Input
                     maxLength={16}
                     containerStyle={{
                         paddingHorizontal: 20,
@@ -63,7 +62,7 @@ export default function PetNameSection({ petName, setPetName, petType, isError, 
                     onChangeText={setPetName}
                     errorMessage={isError && !petName ? '이름을 입력해주세요' : ''}
                 />
-                <DividerBlock marginBottom={24} />
+                <DividerBlock marginBottom={24} /> */}
                 <PetListBlock>
                     <FlatList
                         data={listByPetType}

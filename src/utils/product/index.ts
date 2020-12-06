@@ -1,5 +1,9 @@
+import AsyncStorage from '@react-native-community/async-storage'
+import { PetSize } from './../../screens/ManageProducts/RegistrationPet/PetSizeSection';
+import { Api } from './../../api/index';
 import firestore from '@react-native-firebase/firestore'
 import { Collections } from '../../models'
+import * as Sentry from "@sentry/react-native";
 
 export const getProductItem = async (PID: string) => {
     return (await firestore()
@@ -8,33 +12,37 @@ export const getProductItem = async (PID: string) => {
         .get()).data()
 }
 
-export const getProductList = async (type = 'DOG') => {
-    const productList = await firestore()
-        .collection(Collections.Products)
-        .where('status', '==', 'active')
-        .where('pet', 'array-contains', type)
-        .orderBy('updatedAt', 'desc')
-        .get()
-
-    return productList.docs.map((product: any) => {
-        return {
-            ...product.data() as ProductItem,
-            id: product.id as string,
+export const getProductList = async () => {
+    try {
+        const feedSheet = await AsyncStorage.getItem('feedSheet')
+        if (feedSheet) {
+            console.log('storage sheet')
+            return JSON.parse(feedSheet) as ProductItem[]
         }
-    })
+        const { data: { feeds, status  } }:
+            { data: {
+                feeds: ProductItem[]
+                status: string
+            }}
+            = await Api.post('/get-sheet')
+        await AsyncStorage.setItem('feedSheet', JSON.stringify(feeds))
+        return feeds
+    } catch (e) {
+        Sentry.captureException(e)
+    }
 }
 
 export type PetTypes = "" | "DOG" | "CAT"
-type Pet = PetTypes[]
-type Breed = [
-    "SMALL",
-    "MEDIUM",
-    "LARGE"
-]
+// type Pet = PetTypes[]
+type Size =
+    | "SMALL"
+    | "MEDIUM"
+    | "LARGE"
 export interface ProductItem {
     id: string;
-    pet: Pet
-    breed: Breed
+    pet: PetTypes
+    size: Size
+    brand: string
     feedName: string
     feedKind: string
     packingUnit: string[]

@@ -77,12 +77,8 @@ export default function PetSizeSection({ petSize, setPetSize, isError }: {
     )
 }
 
-const Label = styled(Text)`
-    width: 100px;
-`
-
 const PetSizeBlock = styled.View`
     display: flex;
     align-items: center;
-    flex: 1;
+    /* flex: 1; */
 `
