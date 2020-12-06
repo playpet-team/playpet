@@ -37,7 +37,7 @@ const RegistFeedCapacityBlock = styled.View`
     padding: 20px;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
 `
 
 const Chip = styled.TouchableOpacity<{isActive?: boolean}>`

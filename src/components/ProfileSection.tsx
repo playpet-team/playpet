@@ -69,7 +69,7 @@ function ProfileSection() {
                         </Text>
                     </UserInfoBlock>
                 }
-                <MoreActions>
+                {/* <MoreActions>
                     <MoreButton onPress={() => navigation.navigate('ManageProducts')}>
                         <Text
                             color={themes.colors.primary}
@@ -79,7 +79,7 @@ function ProfileSection() {
                             더 보기
                         </Text>
                     </MoreButton>
-                </MoreActions>
+                </MoreActions> */}
             </ProfileBlock>
         </ProfileSectionBlock>
     )

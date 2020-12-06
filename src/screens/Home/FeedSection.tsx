@@ -80,11 +80,12 @@ export default function FeedSection() {
                 <Text size={20}>사료</Text>
                 <MoreButton onPress={() => navigation.navigate('ManageProducts')}>
                     <Text
+                        bold
                         color={themes.colors.primary}
-                        size={14}
+                        size={16}
                         align="center"
                     >
-                        등록하기 {'>'}
+                        등록하기
                     </Text>
                 </MoreButton>
             </Header>
@@ -156,6 +157,7 @@ export default function FeedSection() {
                         </FeedFillUp>
                     </FeedBlock>
                 }
+                {!myFeed && <Text>사료가 없습니다</Text>}
             </Main>
             <DividerBlock marginTop={24} />
             {openStatusModal && <FeedModal

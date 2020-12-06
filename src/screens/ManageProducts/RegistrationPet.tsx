@@ -11,6 +11,7 @@ import { currentUser, updateUserPets } from '../../utils'
 import { PetTypes } from "../../utils/product"
 import { BackButton, NavigateBlock, NextButton } from "./RegistFeedBoard"
 import PetNameSection from "./RegistrationPet/PetNameSection"
+import PetKindSection from "./RegistrationPet/PetKindSection"
 import PetTypeSection, { DefaultPetTypes } from "./RegistrationPet/PetTypeSection"
 import PetAgeSection, { PetAge, DefaultPetAges } from './RegistrationPet/PetAgeSection'
 import PetSizeSection, { PetSize, DefaultPetSizes } from './RegistrationPet/PetSizeSection'
@@ -22,10 +23,11 @@ export interface Terms {
     marketingAgree: boolean
 }
 
-type RegistPetStep = 'PET_TYPE' | 'PET_NAME' | 'PET_SIZE' | 'PET_AGE'
-const PET_STEPS: ['PET_TYPE', 'PET_NAME', 'PET_SIZE', 'PET_AGE'] = [
+type RegistPetStep = 'PET_TYPE' | 'PET_NAME' | 'PET_KIND' | 'PET_SIZE' | 'PET_AGE'
+const PET_STEPS: ['PET_TYPE', 'PET_NAME', 'PET_KIND', 'PET_SIZE', 'PET_AGE'] = [
     'PET_TYPE',
     'PET_NAME',
+    'PET_KIND',
     'PET_SIZE',
     'PET_AGE',
 ]
@@ -83,9 +85,12 @@ export default function RegistrationPet() {
             case 'PET_TYPE': {
                 return petType === '' || !DefaultPetTypes.includes(petType)
             }
-            // case 'PET_NAME': {
-            //     return petName === '' || petName.length > 16
-            // }
+            case 'PET_NAME': {
+                return petName === '' || petName.length > 16
+            }
+            case 'PET_KIND': {
+                return petKind === ''
+            }
             case 'PET_AGE': {
                 return petAge === '' || !DefaultPetAges .includes(petAge)
             }
@@ -147,8 +152,10 @@ export default function RegistrationPet() {
             {step === 'PET_NAME' && <PetNameSection
                 isError={isErrorValidation}
                 petName={petName}
-                petType={petType}
                 setPetName={setPetName}
+            />}
+            {step === 'PET_KIND' && <PetKindSection
+                petType={petType}
                 petKind={petKind}
                 setPetKind={setPetKind}
             />}

@@ -86,7 +86,6 @@ function RegistFeedItems({
                         isActive={activeFeedItemId === feed.id}
                     />
                 ))}
-            <DividerBlock height={120} />
             </GridLayout>
             {loading && <Indicator />}
         </RegistFeedItemsBlock>
@@ -97,6 +96,7 @@ function RegistFeedItems({
 export default RegistFeedItems
 
 const RegistFeedItemsBlock = styled.View`
+    margin-bottom: 100px;
     padding: 20px;
 `
 
