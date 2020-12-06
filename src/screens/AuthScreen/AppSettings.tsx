@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import * as Sentry from "@sentry/react-native"
 import * as Updates from 'expo-updates'
@@ -32,6 +33,7 @@ export default function AppSettings() {
                         setLoading(true)
                         await signOut(SignType.Google)
                         // NativeModules.DevSettings.reload()
+                        await AsyncStorage.clear()
                         await Updates.reloadAsync()
                         // navigation.navigate('AppLogin', { screen: 'AppLogin' })
                     } catch (e) {
@@ -57,6 +59,7 @@ export default function AppSettings() {
                         setLoading(true)
                         await leave()
                         // NativeModules.DevSettings.reload()
+                        await AsyncStorage.clear()
                         await Updates.reloadAsync()
                         // navigation.navigate('AppLogin', { screen: 'AppLogin' })
                     } catch (e) {
