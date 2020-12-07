@@ -5,17 +5,18 @@ import { Input } from 'react-native-elements'
 import styled, { useTheme } from 'styled-components/native'
 import { RootState } from '../store/rootReducers';
 import { Text } from '../styles';
-import { getFeedsDoc, getPetDoc } from '../utils';
+import { getFeedsDoc } from '../utils';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { sizeNameMap } from './ManageProducts/RegistrationPet/PetSizeSection';
 import { ageNameMap } from './ManageProducts/RegistrationPet/PetAgeSection';
 import { MyFeed, MyPet } from '../models';
 import { ManageParamList } from '../navigation/BottomTabNavigator';
 import FeedProfileSection from '../components/FeedProfileSection';
+import useMyPet from '../hooks/useMyPet';
+import Indicator from '../components/Indicator';
 
 export default function ManageProducts() {
     const [myFeed, setMyFeed] = useState<MyFeed>()
-    const [myPets, setMyPets] = useState<MyPet>()
     const {
         uid,
         activePetDocId,
@@ -38,19 +39,8 @@ export default function ManageProducts() {
         }
     }, [uid, params])
 
-    useEffect(() => {
-        loadMyPet()
-        async function loadMyPet() {
-            if (!activePetDocId || !uid) {
-                return
-            }
-            const pet = await getPetDoc(uid, activePetDocId)
-            if (pet) {
-                setMyPets(pet)
-            }
-        }
-    }, [activePetDocId, uid])
-
+    const { myPets } = useMyPet()
+    
     const openFeedBoard = () => {
         if (!activePetDocId) {
             Alert.alert('반려동물을 먼저 등록해주세요')
@@ -95,6 +85,10 @@ export default function ManageProducts() {
             />
         )
     }, [myPets])
+
+    if (!myPets) {
+        return <Indicator />
+    }
 
     return (
         <ManageProductsBlock>

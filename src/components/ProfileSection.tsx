@@ -5,44 +5,32 @@ import { useSelector } from 'react-redux'
 import { ageNameMap } from '../screens/ManageProducts/RegistrationPet/PetAgeSection'
 import { sizeNameMap } from '../screens/ManageProducts/RegistrationPet/PetSizeSection'
 import { RootState } from '../store/rootReducers'
-import { useNavigation } from '@react-navigation/native'
+import useLoadingIndicator from '../hooks/useLoadingIndicator'
 import { DividerBlock, Text } from '../styles'
 import { getPetDoc } from '../utils'
 import { MyPet } from '../models'
+import * as Sentry from "@sentry/react-native";
+import { ActivityIndicator } from 'react-native'
+import useMyPet from '../hooks/useMyPet'
 
 function ProfileSection() {
     const {
         uid,
         profilePhoto,
         email,
-        activePetDocId,
     } = useSelector((state: RootState) => state.auth)
-    const [myPets, setMyPets] = useState<MyPet>()
-    const navigation = useNavigation()
     const themes = useTheme()
-
-    useEffect(() => {
-        loadMyPet()
-        async function loadMyPet() {
-            if (!activePetDocId || !uid) {
-                return
-            }
-            const pet = await getPetDoc(uid, activePetDocId)
-            if (pet) {
-                setMyPets(pet)
-            }
-        }
-    }, [activePetDocId, uid])
+    const { myPets } = useMyPet()
 
     if (!uid) {
         return null
     }
-    
+
     return (
         <ProfileSectionBlock>
             <ProfileBlock>
                 <AvatarBlock>
-                    {Boolean(profilePhoto) &&
+                    {Boolean(profilePhoto) ?
                         <Avatar
                             size="medium"
                             rounded
@@ -53,10 +41,10 @@ function ProfileSection() {
                                 marginRight: 8,
                             }}
                         />
-                    }
+                    : <ActivityIndicator />}
                 </AvatarBlock>
                 <UserInfoBlock>
-                    {<>
+                    {myPets ? <>
                         <InfoHeader>
                             <Text size={18} bold>{myPets?.petName || email}</Text>
                             {myPets?.petType && <Text padding="0 0 0 8px" color={themes.colors.placeholder}>
@@ -67,7 +55,7 @@ function ProfileSection() {
                         {myPets && <Text color={themes.colors.placeholder}>
                             {ageNameMap[myPets.petAge].title} | {sizeNameMap[myPets.petSize].title}
                         </Text>}
-                    </>}
+                    </>: <ActivityIndicator />}
                 </UserInfoBlock>
                 {/* <MoreActions>
                     <MoreButton onPress={() => navigation.navigate('ManageProducts')}>
