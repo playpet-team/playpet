@@ -14,7 +14,7 @@ function ProfileSection() {
     const {
         uid,
         profilePhoto,
-        isLogged,
+        email,
         activePetDocId,
     } = useSelector((state: RootState) => state.auth)
     const [myPets, setMyPets] = useState<MyPet>()
@@ -55,20 +55,20 @@ function ProfileSection() {
                         />
                     }
                 </AvatarBlock>
-                {myPets &&
-                    <UserInfoBlock>
+                <UserInfoBlock>
+                    {<>
                         <InfoHeader>
-                            <Text size={20} bold>{myPets.petName || '이름을 설정해주세요'}</Text>
-                            <Text padding="0 0 0 8px" color={themes.colors.placeholder}>
+                            <Text size={18} bold>{myPets?.petName || email}</Text>
+                            {myPets?.petType && <Text padding="0 0 0 8px" color={themes.colors.placeholder}>
                                 {myPets.petType === 'DOG' ? '반려견' : '반려묘'}
-                            </Text>
+                            </Text>}
                         </InfoHeader>
                         <DividerBlock height={8} />
-                        <Text color={themes.colors.placeholder}>
+                        {myPets && <Text color={themes.colors.placeholder}>
                             {ageNameMap[myPets.petAge].title} | {sizeNameMap[myPets.petSize].title}
-                        </Text>
-                    </UserInfoBlock>
-                }
+                        </Text>}
+                    </>}
+                </UserInfoBlock>
                 {/* <MoreActions>
                     <MoreButton onPress={() => navigation.navigate('ManageProducts')}>
                         <Text

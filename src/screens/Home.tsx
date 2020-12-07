@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -9,18 +8,22 @@ import ProfileSection from '../components/ProfileSection'
 import useInitialDynamicLink from '../hooks/useInitialDynamicLink'
 import useLanguage from '../hooks/useLanguage'
 import useRollingBanner from '../hooks/useRollingBanner'
-import { DividerBlock, Layout, Text } from '../styles'
-// import { currentUser } from '../utils'
+import { DividerBlock, Layout } from '../styles'
 import FeedSection from './Home/FeedSection'
+import AgreeTermsModal from './AgreeTermsModal'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store/rootReducers'
 
 
 
 export default function Home() {
-    const navigation = useNavigation();
     useLanguage()
-    // useFirebaseMessage()
     useInitialDynamicLink()
     const { renderBanner } = useRollingBanner()
+    const {
+        agreeTerms = true,
+    } = useSelector((state: RootState) => state.auth)
+    console.log("agreeTerms--", agreeTerms)
 
     return (
         <SafeAreaViewBlock>
@@ -39,6 +42,7 @@ export default function Home() {
                 <ProfileSection />
                 <FeedSection />
             </ScrollView>
+            {!agreeTerms && <AgreeTermsModal />}
         </SafeAreaViewBlock>
     )
 }

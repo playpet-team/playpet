@@ -160,6 +160,11 @@ export const updateUserTerms = async (uid: string, terms: {}) => {
         ...((await docRef.get()).exists ? {} : { createdAt: firebaseNow() })
     }
     docRef.set(setParams, { merge: true })
+
+    firestore().collection(Collections.Users).doc(uid).update({
+        agreeTerms: true,
+        updatedAt: firebaseNow(),
+    })
 }
 
 export const updateUserPets = async (uid: string, petInformation: {

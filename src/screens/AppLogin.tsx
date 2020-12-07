@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components/native';
-import { LinearGradient } from 'expo-linear-gradient';
 import SocialSignIn from './AuthScreen/SocialSignIn';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
@@ -10,9 +9,7 @@ import { AVPlaybackStatus, Video } from 'expo-av';
 import { deviceSize } from '../utils';
 import { Text } from '../styles';
 import Animated, { Easing, interpolate, Value } from 'react-native-reanimated'
-import Logo from '../components/Logo';
 import Transition from '../components/Transition';
-import { Image } from 'react-native';
 
 const DEVICE_WIDTH = deviceSize().width
 const videoUrl = 'https://firebasestorage.googleapis.com/v0/b/playpet-production.appspot.com/o/assets%2Fvideos%2Fapp_login_c.mp4?alt=media&token=b9aad0b6-9001-433d-98f1-e93085a6d0bf'
@@ -53,15 +50,15 @@ export default function AppLogin() {
         if (completeLoginType === '') {
             return
         }
-
+        
         if (completeLoginType === 'signUp') {
             analytics().logSignUp({ method })
         }
-        navigation.navigate('Home')
-        
+        console.log('home-----???????????---------', completeLoginType)
+        navigation.navigate('Home', {
+            isSignUp: completeLoginType === 'signUp'
+        })
     }, [completeLoginType])
-
-    console.log('isVideoRendered.current', firstRender)
 
     return (
         <AppLoginBlock>

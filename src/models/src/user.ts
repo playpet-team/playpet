@@ -22,6 +22,7 @@ export interface User {
     birthDate: string
     phoneNumber: string
     profilePhoto: string
+    agreeTerms: boolean
     lastLogin: string | FirebaseTimeStamp | null
     createdAt: string | FirebaseTimeStamp | null
     updatedAt: string | FirebaseTimeStamp | null

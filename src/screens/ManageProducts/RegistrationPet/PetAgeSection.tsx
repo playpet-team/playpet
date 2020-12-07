@@ -1,7 +1,7 @@
-import { useTheme } from "@react-navigation/native";
 import React from "react";
-import styled, { css } from "styled-components/native";
+import styled, { css, useTheme } from "styled-components/native";
 import { DividerBlock, Text } from "../../../styles";
+import { PetTypes } from "../../../utils";
 import { ItemBlock, TypeItem, ItemWrapper } from "../RegistrationPet";
 
 export type PetAge = 'BABY' | 'ADULT' | 'OLD' | ''
@@ -13,27 +13,27 @@ export const DefaultPetAges: ['BABY', 'ADULT', 'OLD'] = [
 
 export const ageNameMap = {
     '': {
-        title: '아기견',
+        title: '아기',
         description: '5개월 이하',  
     },
     BABY: {
-        title: '아기견',
+        title: '아기',
         description: '5개월 이하',
     },
     ADULT: {
-        title: '성견',
+        title: '성',
         description: '5개월 이상',
     },
     OLD: {
-        title: '노령견',
+        title: '노령',
         description: '8세 이상',
     },
 }
 
-export default function PetAgeSection({ petAge, setPetAge, isError }: {
+export default function PetAgeSection({ petType, petAge, setPetAge }: {
+    petType: PetTypes
     petAge: PetAge
     setPetAge: React.Dispatch<React.SetStateAction<any>>
-    isError: boolean
 }) {
     const theme = useTheme();
 
@@ -64,7 +64,7 @@ export default function PetAgeSection({ petAge, setPetAge, isError }: {
                             isActive={petAge === age}
                             primary={theme.colors.primary}
                         >
-                            <Text size={16}>{ageNameMap[age].title}</Text>
+                            <Text size={16}>{ageNameMap[age].title}{petType === 'DOG' ? '견' : '묘'}</Text>
                             <Text size={14}>{ageNameMap[age].description}</Text>
                         </TypeItem>
                     ))}

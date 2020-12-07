@@ -16,12 +16,13 @@ export const initialState: AuthSettings = {
     birthDate: '',
     phoneNumber: '',
     profilePhoto: '',
+    agreeTerms: true,
     lastLogin: null,
     createdAt: null,
     updatedAt: null,
     activePetDocId: null,
     terms: {
-        existDoc: true,
+        existDoc: false,
         overAgeAgree: false,
         termsOfUseAgree: false,
         personalCollectAgree: false,
@@ -49,6 +50,9 @@ const slice = createSlice({
         signOut: () => initialState,
         setUser(state, { payload }) {
             state = Object.assign(state, payload)
+        },
+        updateAgreeTerms(state, { payload }: { payload: boolean }) {
+            state.agreeTerms = payload
         },
         setUsername(state, { payload }) {
             state.username = payload

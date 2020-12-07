@@ -21,9 +21,7 @@ import Notifications from '../screens/Notifications'
 
 
 export type BottomTabParamList = {
-    Home: {
-        needRefresh?: boolean
-    }
+    Home: undefined
     ManageProducts: undefined
     Notifications: undefined
     Auth: undefined
@@ -84,7 +82,10 @@ export default function BottomTabNavigator() {
 }
 
 export type HomeNavigatorTabParamList = {
-    HomeNavigator: undefined
+    HomeNavigator: {
+        needRefresh?: boolean
+        isSignUp?: boolean
+    }
     // ProductWebView: {
     //     url: string
     //     title: string

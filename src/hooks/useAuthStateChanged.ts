@@ -32,11 +32,10 @@ function useAuthStateChanged() {
                 console.log("--------no user")
                 dispatch(authActions.signOut())
                 await AsyncStorage.clear()
-                // NativeModules.DevSettings.reload()
             }
         }
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged)
-        return subscriber
+        return () => subscriber()
     }, [isLogged])
 
     return { isLogged }

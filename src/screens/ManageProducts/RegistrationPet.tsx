@@ -160,12 +160,11 @@ export default function RegistrationPet() {
                 setPetKind={setPetKind}
             />}
             {(step === 'PET_SIZE' && petType === 'DOG') && <PetSizeSection
-                isError={isErrorValidation}
                 petSize={petSize}
                 setPetSize={setPetSize}
             />}
             {step === 'PET_AGE' && <PetAgeSection
-                isError={isErrorValidation}
+                petType={petType}
                 petAge={petAge}
                 setPetAge={setPetAge}
             />}

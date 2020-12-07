@@ -54,6 +54,7 @@ export default function ManageProducts() {
     const openFeedBoard = () => {
         if (!activePetDocId) {
             Alert.alert('반려동물을 먼저 등록해주세요')
+            return
         }
         navigateRegistFeedBoard()
     };
@@ -113,10 +114,10 @@ export default function ManageProducts() {
                 }
                 {myPets &&
                     <Pet>
-                        {/* <DisplayInputField
+                        <DisplayInputField
                             label="이름"
                             value={myPets.petName}
-                        /> */}
+                        />
                         <DisplayInputField
                             label="반려종"
                             value={myPets.petType === 'DOG' ? '반려견' : '반려묘'}

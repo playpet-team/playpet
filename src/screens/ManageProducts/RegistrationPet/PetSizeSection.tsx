@@ -32,10 +32,9 @@ export const sizeNameMap = {
     },
 }
 
-export default function PetSizeSection({ petSize, setPetSize, isError }: {
+export default function PetSizeSection({ petSize, setPetSize }: {
     petSize: PetSize
     setPetSize: React.Dispatch<React.SetStateAction<any>>
-    isError: boolean
 }) {
     const theme = useTheme();
 

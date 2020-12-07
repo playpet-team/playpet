@@ -28,6 +28,7 @@ export const Text = styled.Text<TextProps>`
 interface DividerProps {
     padding?: string;
     marginHorizontal?: number
+    marginVertical?: number
     marginTop?: number;
     marginBottom?: number;
     backgroundColor?: string;
@@ -39,6 +40,9 @@ export const DividerBlock = styled.View<DividerProps>`
     `}
     ${({ marginHorizontal }) => marginHorizontal && css`
         margin-horizontal: ${marginHorizontal}px;
+    `}
+    ${({ marginVertical }) => marginVertical && css`
+        margin-vertical: ${marginVertical}px;
     `}
     ${({ marginTop }) => marginTop && css`
         margin-top: ${marginTop}px;
@@ -53,6 +57,8 @@ export const DividerBlock = styled.View<DividerProps>`
         height: ${height}px;
     `}
 `;
+
+export const Spacer = styled.View`flex: 1;`
 
 interface layoutProps {
     flexDirection?: 'row' | 'column';

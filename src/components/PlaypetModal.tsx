@@ -10,13 +10,7 @@ interface ModalProps {
     setModalVisible?: Function
     children: ReactNode
     isHideCloseButton?: boolean
-    containerStyle?: {
-        width?: number | string
-        height?: number | string
-        padding?: string
-        flex?: number
-        borderRadius?: number
-    }
+    containerStyle?: { [key: string]: any }
     modalJustify?: 'center' | 'flex-end' | 'flex-start'
     header?: string
 }
