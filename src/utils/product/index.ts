@@ -25,7 +25,9 @@ export const getProductList = async () => {
                 status: string
             }}
             = await Api.post('/get-sheet')
-        await AsyncStorage.setItem('feedSheet', JSON.stringify(feeds))
+        if (feeds) {
+            await AsyncStorage.setItem('feedSheet', JSON.stringify(feeds))
+        }
         return feeds
     } catch (e) {
         Sentry.captureException(e)
