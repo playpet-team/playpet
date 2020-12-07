@@ -9,6 +9,7 @@ import styled from 'styled-components/native'
 import Toast, { ToastParams } from '../../components/Toast'
 import useImagePicker from '../../hooks/useImagePicker'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
+import useMyPet from '../../hooks/useMyPet'
 import { MyPet } from '../../models'
 import { authActions } from '../../store/authReducer'
 import { RootState } from '../../store/rootReducers'
@@ -21,40 +22,14 @@ const MIN_USERNAME_LENGTH = 2
 
 export default function ProfileSetting() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
-    const [myPets, setMyPets] = useState<MyPet>()
     const [form, setForm] = useState<ProfileForm>({ uri: '' })
-    const [openAdditionalInformation, setOpenAdditionalInformation] = useState(false)
-
     const {
         profilePhoto,
         username,
         email,
         method,
         uid,
-        activePetDocId,
     } = useSelector((state: RootState) => state.auth)
-
-    useEffect(() => {
-        loadMyPet()
-        async function loadMyPet() {
-            if (!activePetDocId || !uid) {
-                return
-            }
-            setLoading(true)
-            const petDoc = await getPetDoc(uid, activePetDocId)
-            if (petDoc) {
-                setMyPets(petDoc)
-            }
-            setLoading(false)
-        }
-    }, [activePetDocId, uid])
-
-    const resetActivePetDocId = () => {
-        resetUserActivePetDocId(uid)
-        dispatch(authActions.setActivePetDocId(''))
-        setMyPets(undefined)
-        setOpenAdditionalInformation(true)
-    }
 
     // input username
     const usernameRef = useRef<Input | null>(null)
@@ -176,29 +151,6 @@ export default function ProfileSetting() {
                     disabled
                 />
             </Layout>
-            <View>
-                <DividerBlock marginTop={12} />
-                <TouchableOpacity onPress={resetActivePetDocId}><Text size={16}>동물 정보 초기화하기(개발용)</Text></TouchableOpacity>
-                <DividerBlock marginTop={4} marginBottom={2} />
-                {myPets &&
-                <>
-                    <Input
-                        label="아이 이름"
-                        value={myPets.petName}
-                        disabled
-                    />
-                    <Input
-                        value={myPets.petType}
-                        disabled
-                    />
-                    {Boolean(myPets.petSize) && <Input
-                        label="품종"
-                        value={myPets.petSize}
-                        disabled
-                    />}
-                </>
-                }
-            </View>
         </ProfileSettingBlock>
     )
 }
