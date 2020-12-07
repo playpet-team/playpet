@@ -83,14 +83,14 @@ export default function AppSettings() {
                     name="keyboard-arrow-right"
                 />}
             />
-            <ListItem
+            {/* <ListItem
                 title='캐시 데이터 지우기'
                 onPress={() => { }}
             />
             <ListItem
                 title='동영상 자동재생'
                 onPress={() => { }}
-            />
+            /> */}
             {isLogged &&
                 <>
                     <ListItem
