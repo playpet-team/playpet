@@ -12,10 +12,12 @@ import PaymentSetting from '../screens/AuthScreen/PaymentSetting'
 import ProfileSetting from '../screens/AuthScreen/ProfileSetting'
 import ShippingDestinationSetting from '../screens/AuthScreen/ShippingDestinationSetting'
 import Home from '../screens/Home'
-// import Recommendation from '../screens/Recommendation'
 import { defaultColorPalette } from '../styles/colors'
 import useUserNotifications from '../hooks/useUserNotifications'
 import Notifications from '../screens/Notifications'
+import ContentWebView from '../components/ContentWebView'
+import NoticeList from '../screens/AuthScreen/NoticeList'
+import QnAList from '../screens/AuthScreen/QnAList'
 
 
 
@@ -81,15 +83,17 @@ export default function BottomTabNavigator() {
     )
 }
 
+interface ContentWebView {
+    url: string
+    title: string
+}
+
 export type HomeNavigatorTabParamList = {
     HomeNavigator: {
         needRefresh?: boolean
         isSignUp?: boolean
-    }
-    // ProductWebView: {
-    //     url: string
-    //     title: string
-    // }
+    },
+    ContentWebView: ContentWebView
     // AppLoginAgreeTerms: undefined
 }
 const HomeNavigatorTapStack = createStackNavigator<HomeNavigatorTabParamList>()
@@ -105,14 +109,14 @@ function HomeNavigator() {
                     headerTitle: '홈',
                 }}
             />
-            {/* <HomeNavigatorTapStack.Screen
-                name="ProductWebView"
-                component={ProductWebView}
+            <HomeNavigatorTapStack.Screen
+                name="ContentWebView"
+                component={ContentWebView}
                 options={({ route }) => ({
                     title: route.params.title,
                     gestureEnabled: false,
                 })}
-            /> */}
+            />
         </HomeNavigatorTapStack.Navigator>
     )
 }
@@ -153,25 +157,6 @@ function ManageProductsNavigator() {
     )
 }
 
-// export type RecommendationParamList = {
-//     RecommendationScreen: undefined
-// }
-// const RecommendationStack = createStackNavigator<RecommendationParamList>()
-// function RecommendationNavigator() {
-//     return (
-//         <RecommendationStack.Navigator>
-//             <RecommendationStack.Screen
-//                 name="RecommendationScreen"
-//                 component={Recommendation}
-//                 options={({ navigation }) => ({
-//                     headerShown: false,
-//                     headerTitle: '추천',
-//                 })}
-//             />
-//         </RecommendationStack.Navigator>
-//     )
-// }
-
 export type NotificationNavigatorParamList = {
     Notifications: undefined
     NotificationDetail: undefined
@@ -199,6 +184,9 @@ export type AuthTapParamList = {
     PaymentSetting: undefined
     ShippingDestinationSetting: undefined
     ProfileSetting: undefined
+    NoticeList: undefined
+    QnAList: undefined
+    ContentWebView: ContentWebView
 }
 const AuthTapStack = createStackNavigator<AuthTapParamList>()
 
@@ -218,6 +206,16 @@ function AuthNavigator() {
                 options={{ headerTitle: '앱 세팅' }}
             />
             <AuthTapStack.Screen
+                name="NoticeList"
+                component={NoticeList}
+                options={{ headerTitle: '공지사항' }}
+            />
+            <AuthTapStack.Screen
+                name="QnAList"
+                component={QnAList}
+                options={{ headerTitle: '자주묻는 질문' }}
+            />
+            <AuthTapStack.Screen
                 name="ProfileSetting"
                 component={ProfileSetting}
                 options={{ headerTitle: '회원 정보' }}
@@ -231,6 +229,14 @@ function AuthNavigator() {
                 name="ShippingDestinationSetting"
                 component={ShippingDestinationSetting}
                 options={{ headerTitle: '배송지 관리' }}
+            />
+            <AuthTapStack.Screen
+                name="ContentWebView"
+                component={ContentWebView}
+                options={({ route }) => ({
+                    title: route.params.title,
+                    gestureEnabled: false,
+                })}
             />
         </AuthTapStack.Navigator>
     )

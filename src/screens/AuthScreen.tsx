@@ -22,16 +22,16 @@ export default function AuthScreen() {
     return (
         <ScrollView>
             <ProfileSection />
-            <ActionIconsSection />
+            {/* <ActionIconsSection /> */}
             <Section>
                 <ListItem
                     title="공지사항"
-                    onPress={() => navigation.navigate('ProfileSetting')}
+                    onPress={() => navigation.navigate('NoticeList')}
                     rightIcon={<Icon name="keyboard-arrow-right" />}
                 />
                 <ListItem
                     title="자주 찾는 질문"
-                    onPress={() => navigation.navigate('ProfileSetting')}
+                    onPress={() => navigation.navigate('QnAList')}
                     rightIcon={<Icon name="keyboard-arrow-right" />}
                 />
                 <ListItem

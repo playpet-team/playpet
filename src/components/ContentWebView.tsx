@@ -5,8 +5,8 @@ import { WebView } from 'react-native-webview';
 import { HomeNavigatorTabParamList } from '../navigation/BottomTabNavigator';
 
 
-function ProductWebView() {
-    const { params } = useRoute<RouteProp<HomeNavigatorTabParamList, 'ProductWebView'>>();
+function ContentWebView() {
+    const { params } = useRoute<RouteProp<HomeNavigatorTabParamList, 'ContentWebView'>>();
     useEffect(() => {
         analytics().logViewItem({
             items: [{
@@ -22,4 +22,4 @@ function ProductWebView() {
     );
 };
 
-export default ProductWebView;
+export default ContentWebView;
