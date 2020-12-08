@@ -1,6 +1,6 @@
-import * as Updates from 'expo-updates';
-import { useEffect, useState } from 'react';
-import { UpdateEventType } from 'expo-updates';
+import * as Updates from 'expo-updates'
+import { useEffect, useState } from 'react'
+import { UpdateEventType } from 'expo-updates'
 
 export default function useUpdater(forceUpdate = true) {
     const [available, setAvailable] = useState(false)
@@ -14,16 +14,16 @@ export default function useUpdater(forceUpdate = true) {
         const responseListener = updateListener(setAvailable)
         setListener(responseListener)
 
-        fetchUpdate()
-        async function fetchUpdate() {
-            if (!available) {
-                return
-            }
-            await Updates.fetchUpdateAsync();
-            if (forceUpdate) {
-                reloadUpdatedApp()
-            }
-        }
+        // fetchUpdate()
+        // async function fetchUpdate() {
+        //     if (!available) {
+        //         return
+        //     }
+        //     await Updates.fetchUpdateAsync()
+        //     if (forceUpdate) {
+        //         reloadUpdatedApp()
+        //     }
+        // }
     }, [available])
 
     return {
@@ -32,7 +32,13 @@ export default function useUpdater(forceUpdate = true) {
 }
 
 const updateListener = (setAvailable: React.Dispatch<React.SetStateAction<boolean>>) => {
-    return Updates.addListener(({ type }) => setAvailable(type === UpdateEventType.UPDATE_AVAILABLE))
+    return Updates.addListener(async ({ type }) => {
+        alert(`type-${type}`)
+        if (type === UpdateEventType.UPDATE_AVAILABLE) {
+            await Updates.fetchUpdateAsync()
+        }
+        setAvailable(type === UpdateEventType.UPDATE_AVAILABLE)
+    })
 }
 
-const reloadUpdatedApp = () => Updates.reloadAsync()
+// const reloadUpdatedApp = () => Updates.reloadAsync()
