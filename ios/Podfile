@@ -99,6 +99,8 @@ target 'playpet' do
 
   pod 'IamportReactNative', :path => '../node_modules/iamport-react-native'
 
+  pod 'react-native-video', :path => '../node_modules/react-native-video'
+
   post_install do |installer|
     flipper_post_install(installer)
   end
