@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store/rootReducers';
 import { useNavigation } from '@react-navigation/native';
 import analytics from '@react-native-firebase/analytics';
-import { AVPlaybackStatus, Video } from 'expo-av';
+import Video from 'react-native-video';
 import { deviceSize } from '../utils';
 import { Text } from '../styles';
 import Animated, { Easing, interpolate, Value } from 'react-native-reanimated'
@@ -20,17 +20,9 @@ export default function AppLogin() {
     } = useSelector((state: RootState) => state.signIn)
     const navigation = useNavigation()
     const bounceValue = useRef(new Value(0)).current
-    const [getReadyPlay, setGetReadyPlay] = useState(false)
-    const [firstRender, setFirstRender] = useState(false)
-    const videoRef = useRef<Video>(null)
-
-    useEffect(() => {
-        videoRef.current?.setOnPlaybackStatusUpdate(trackingVideoStatus)
-    }, [])
+    const videoRef = useRef<any>(null)
     
     useEffect(() => {
-        if (getReadyPlay) {
-            setFirstRender(true)
             Animated.timing(
                 bounceValue,
                 {
@@ -39,12 +31,7 @@ export default function AppLogin() {
                     easing: Easing.inOut(Easing.ease)
                 }
             ).start()
-        }
-    }, [getReadyPlay])
-
-    const trackingVideoStatus = (status: AVPlaybackStatus) => {
-        setGetReadyPlay(status.isLoaded)
-    }
+    }, [])
 
     useEffect(() => {
         if (completeLoginType === '') {
@@ -72,19 +59,16 @@ export default function AppLogin() {
             >
                 <Video
                     ref={videoRef}
-                    isMuted
-                    shouldPlay
                     source={{ uri: videoUrl }}
-                    isLooping={true}
-                    resizeMode={Video.RESIZE_MODE_COVER}
+                    repeat
+                    resizeMode="cover"
                     style={{
                         width: DEVICE_WIDTH,
                         height: '100%',
                     }}
                 />
-                <AnimatedOverlayBackground />
             </BackgroundVideo>
-            {firstRender && <MainSection>
+            <MainSection>
                 <MainTitleBlock>
                     <Transition
                         type="fade-top"
@@ -107,7 +91,7 @@ export default function AppLogin() {
                         <SocialSignIn />
                     </Transition>
                 </SigninBlock>
-            </MainSection>}
+            </MainSection>
         </AppLoginBlock>
     )
 };
@@ -128,6 +112,8 @@ const MainSection = styled.View`
 const BackgroundVideo = styled(Animated.View)`
     width: 100%;
     height: 100%;
+    top: 0;
+    left: 0;
     position: absolute;
     z-index: 1;
 `

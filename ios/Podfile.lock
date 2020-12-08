@@ -775,6 +775,11 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.1.9):
     - React-Core
+  - react-native-video (5.1.0-alpha8):
+    - React
+    - react-native-video/Video (= 5.1.0-alpha8)
+  - react-native-video/Video (5.1.0-alpha8):
+    - React
   - react-native-viewpager (4.2.1):
     - React-Core
   - react-native-webview (11.0.0):
@@ -999,6 +1004,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-video (from `../node_modules/react-native-video`)
   - "react-native-viewpager (from `../node_modules/@react-native-community/viewpager`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -1191,6 +1197,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-video:
+    :path: "../node_modules/react-native-video"
   react-native-viewpager:
     :path: "../node_modules/@react-native-community/viewpager"
   react-native-webview:
@@ -1380,6 +1388,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: c6d75c4ab2cf46f9289f341242b219cb3c1180d3
   react-native-netinfo: 0212ce8604e88edf686f1481b925b17a42a52449
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
+  react-native-video: dbb8df4f0bbdf80de6797c90fcad8bc12b19401d
   react-native-viewpager: 40876e00dbd7bcee4c627cf5a9640e6593a019b4
   react-native-webview: 6b7950628616679d81bdd75747e50cf6de9b5a5f
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
