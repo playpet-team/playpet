@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useState } from "react"
 import styled, { useTheme } from 'styled-components/native'
 import { Text } from '../../styles'
 import RegistFeedBrand from "../../components/RegistFeedBrand"
 import RegistFeedItems from "../../components/RegistFeedItems"
 import { useNavigation } from "@react-navigation/native"
-import { currentUser, getProductList, ProductItem, updateFeedItems } from "../../utils"
+import { currentUser, updateFeedItems } from "../../utils"
 import RegistFeedCapacity from "../../components/RegistFeedCapacity"
 
 enum REGIST_FEED_STEPS {
@@ -21,11 +21,9 @@ function RegistFeedBoard() {
     const theme = useTheme()
     const navigation = useNavigation()
     const handleLater = () => navigation.goBack()
-    console.log('activeFeedPackingUnit------', activeFeedPackingUnit)
     
     const handleUpdateFeeds = async () => {
         const user = currentUser()
-        console.log('activeFeedPackingUnit------update-', activeFeedPackingUnit)
         if (!user) {
             return
         }
@@ -55,7 +53,6 @@ function RegistFeedBoard() {
                 break;
             }
             case REGIST_FEED_STEPS.CAPACITY: {
-                console.log('?')
                 // TODO DB에 등록
                 handleUpdateFeeds()
                 handleLater()

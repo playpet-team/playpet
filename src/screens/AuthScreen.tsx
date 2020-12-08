@@ -7,9 +7,12 @@ import ProfileSection from '../components/ProfileSection'
 import { Icon } from "react-native-elements";
 import { DividerBlock, Text } from '../styles'
 import { linkingUrl } from '../utils'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store/rootReducers'
 
 export default function AuthScreen() {
     const navigation = useNavigation()
+    const { availableUpdates } = useSelector((state: RootState) => state.auth)
 
     return (
         <ScrollView>
@@ -31,7 +34,14 @@ export default function AuthScreen() {
                     titleStyle={{
                     }}
                     onPress={() => navigation.navigate('AppSettings')}
-                    rightIcon={<Icon name="keyboard-arrow-right" />}
+                    rightIcon={availableUpdates ? 
+                        <Icon
+                            name="new-releases"
+                            color="#ff0000"
+                        />
+                        :
+                        <Icon name="keyboard-arrow-right" />
+                    }
                 />
                 {/* <ListItem
                     title="프로필 설정"

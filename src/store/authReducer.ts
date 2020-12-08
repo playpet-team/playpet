@@ -3,8 +3,10 @@ import { SignType, User } from '../models'
 
 interface AuthSettings extends User {
     isLogged: boolean
+    availableUpdates: boolean
 }
 export const initialState: AuthSettings = {
+    availableUpdates: false,
     isLogged: false,
     uid: '',
     method: SignType.None,
@@ -44,6 +46,9 @@ const slice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
+        setAvailableUpdates(state, { payload }: { payload: boolean }) {
+            state.availableUpdates = payload
+        },
         signIn(state) {
             state.isLogged = true
         },

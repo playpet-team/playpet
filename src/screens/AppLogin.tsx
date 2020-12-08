@@ -41,7 +41,6 @@ export default function AppLogin() {
         if (completeLoginType === 'signUp') {
             analytics().logSignUp({ method })
         }
-        console.log('home-----???????????---------', completeLoginType)
         navigation.navigate('Home')
     }, [completeLoginType])
 

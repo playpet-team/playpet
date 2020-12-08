@@ -6,6 +6,7 @@ import * as React from 'react'
 import { Appearance, AppearanceProvider, useColorScheme } from 'react-native-appearance'
 import { ThemeProvider } from 'styled-components/native'
 import useAuthStateChanged from '../hooks/useAuthStateChanged'
+import useUpdater from '../hooks/useUpdater'
 import AppLogin from '../screens/AppLogin'
 import { defaultColorPalette } from '../styles/colors'
 import { currentUser } from '../utils'
@@ -65,6 +66,8 @@ export default function Navigation() {
             ...defaultColorPalette,
         }
     }
+    
+    useUpdater()
 
     return (
         <AppearanceProvider>

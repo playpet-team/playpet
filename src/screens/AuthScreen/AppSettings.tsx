@@ -7,12 +7,13 @@ import { Alert, NativeModules } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 import ListItem from '../../components/ListItem'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
-import useUpdater from '../../hooks/useUpdater'
+// import useUpdater from '../../hooks/useUpdater'
 import { SignType } from '../../models'
 import { RootState } from '../../store/rootReducers'
+import { Text } from '../../styles'
 import { leave, signOut } from '../../utils'
 
 const updatesReload = async () => {
@@ -21,8 +22,9 @@ const updatesReload = async () => {
 
 export default function AppSettings() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
-    const { isLogged } = useSelector((state: RootState) => state.auth)
-    const { available } = useUpdater()
+    const { isLogged, availableUpdates } = useSelector((state: RootState) => state.auth)
+    const theme = useTheme()
+    // const { available } = useUpdater()
 
     const handleAction = useCallback(async (method: 'logout' | 'leave') => {
         try {
@@ -91,20 +93,22 @@ export default function AppSettings() {
                     />
                 </>
             }
-            <ListItem
-                title={`앱버전 v${Updates.manifest.version}`}
-                onPress={() => { }}
-            />
-            {available && <ListItem
+            <VersionText>
+                {`앱버전 v${Updates.manifest.version || ''}`}
+            </VersionText>
+            {availableUpdates && <ListItem
                 title='최신버전으로 재실행'
                 onPress={updatesReload}
+                titleStyle={{
+                    fontWeight: 'bold',
+                    color: theme.colors.primary,
+                }}
             />}
         </ScrollView>
     )
 }
 
-
-
-const Section = styled.View`
-    margin-top: 16px;
+const VersionText = styled.Text`
+    padding: 16px;
+    font-size: 15px;
 `
