@@ -7,8 +7,8 @@ import { ListDate, ListTitle, WebViewList } from './NoticeList';
 
 const QnAs = [
     {
-        title: '[공지] 반려동물은 무엇을 먹나요?',
-        url: 'https://blog.naver.com/playpetdev/222166508158',
+        title: '[질문] 해병대 vs UDT',
+        url: 'https://blog.naver.com/playpet_official/222166616338',
         created: '2020/12/03',
     },
 ]

@@ -6,14 +6,14 @@ import { Text } from '../../styles';
 
 const Notices = [
     {
-        title: '[공지] 플레이펫 출시',
-        url: 'https://blog.naver.com/playpetdev/222166499325',
-        created: '2020/11/29',
+        title: '[공지사항]플레이펫 베타 앱 서비스 출시!',
+        url: 'https://blog.naver.com/playpet_official/222166619346',
+        created: '2020/12/4',
     },
     {
-        title: '[이벤트] 신규 가입자에게 100억 쏜다',
-        url: 'https://blog.naver.com/playpetdev/222166507300',
-        created: '2020/12/4',
+        title: '[이벤트]플레이펫 베타 출시 이벤트! ~21/2/31 마감',
+        url: 'https://blog.naver.com/playpet_official/222166624418',
+        created: '2020/11/29',
     },
 ]
 
