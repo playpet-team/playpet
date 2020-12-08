@@ -6,7 +6,6 @@ import Logo from '../components/Logo'
 
 import ProfileSection from '../components/ProfileSection'
 import useInitialDynamicLink from '../hooks/useInitialDynamicLink'
-import useLanguage from '../hooks/useLanguage'
 import useRollingBanner from '../hooks/useRollingBanner'
 import { DividerBlock, Layout } from '../styles'
 import FeedSection from './Home/FeedSection'
@@ -14,16 +13,12 @@ import AgreeTermsModal from './AgreeTermsModal'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/rootReducers'
 
-
-
 export default function Home() {
-    useLanguage()
     useInitialDynamicLink()
     const { renderBanner } = useRollingBanner()
     const {
         agreeTerms = true,
     } = useSelector((state: RootState) => state.auth)
-    console.log("agreeTerms--", agreeTerms)
 
     return (
         <SafeAreaViewBlock>

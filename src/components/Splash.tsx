@@ -1,12 +1,5 @@
 import React from 'react';
 import styled from 'styled-components/native';
-const SplashBlock = styled.View`
-    flex: 1;
-`;
-const ImageBlock = styled.Image`
-    width: 100%;
-    height: 100%;
-`;
 
 export default function Splash() {
     return (
@@ -15,3 +8,7 @@ export default function Splash() {
         </SplashBlock>
     );
 };
+
+const SplashBlock = styled.View`
+    flex: 1;
+`;

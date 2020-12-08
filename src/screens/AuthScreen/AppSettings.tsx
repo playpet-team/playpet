@@ -2,8 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import * as Sentry from "@sentry/react-native"
 import * as Updates from 'expo-updates'
-import i18n from 'i18n-js'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Alert, NativeModules } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -11,15 +10,40 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/native'
 import ListItem from '../../components/ListItem'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
+import useUpdater from '../../hooks/useUpdater'
 import { SignType } from '../../models'
 import { RootState } from '../../store/rootReducers'
 import { leave, signOut } from '../../utils'
 
+const updatesReload = async () => {
+    await Updates.reloadAsync()
+}
+
 export default function AppSettings() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
     const { isLogged } = useSelector((state: RootState) => state.auth)
-    // const dispatch = useDispatch()
-    const navigation = useNavigation()
+    const { available } = useUpdater()
+
+    const handleAction = useCallback(async (method: 'logout' | 'leave') => {
+        try {
+            setLoading(true)
+            if (method === 'logout') {
+                await signOut(SignType.Google)
+            } else {
+                await leave()
+            }
+            await AsyncStorage.clear()
+            await Updates.reloadAsync()
+        } catch (e) {
+            Sentry.captureException(e)
+            if (method === 'logout') {
+            } else {
+            }
+            alert(`${method === 'logout' ? '로그아웃' : '탈퇴'}에 실패하였습니다. 잠시후 다시 시도해 주세요`)
+        } finally {
+            setLoading(false)
+        }
+    }, [setLoading])
 
     const handleLogout = () => {
         Alert.alert('정말로 로그아웃하시게요?', '', [
@@ -28,21 +52,7 @@ export default function AppSettings() {
             },
             {
                 text: '로그아웃',
-                onPress: async () => {
-                    try {
-                        setLoading(true)
-                        await signOut(SignType.Google)
-                        // NativeModules.DevSettings.reload()
-                        await AsyncStorage.clear()
-                        await Updates.reloadAsync()
-                        // navigation.navigate('AppLogin', { screen: 'AppLogin' })
-                    } catch (e) {
-                        Sentry.captureException(e)
-                        alert('로그아웃에 실패하였습니다. 잠시후 다시 시도해 주세요')
-                    } finally {
-                        setLoading(false)
-                    }
-                },
+                onPress: () => handleAction('logout'),
             },
         ])
     }
@@ -54,21 +64,7 @@ export default function AppSettings() {
             },
             {
                 text: '탈퇴하기',
-                onPress: async () => {
-                    try {
-                        setLoading(true)
-                        await leave()
-                        // NativeModules.DevSettings.reload()
-                        await AsyncStorage.clear()
-                        await Updates.reloadAsync()
-                        // navigation.navigate('AppLogin', { screen: 'AppLogin' })
-                    } catch (e) {
-                        Sentry.captureException(e)
-                        alert('회원탈퇴에 실패하였습니다. 잠시후 다시 시도해 주세요')
-                    } finally {
-                        setLoading(false)
-                    }
-                },
+                onPress: () => handleAction('leave'),
             },
         ])
     }
@@ -77,28 +73,20 @@ export default function AppSettings() {
         <ScrollView>
             {loading && <Indicator />}
             <ListItem
-                title={i18n.t('settings.settingPush')}
+                title='푸시 설정'
                 onPress={() => { }}
                 rightIcon={<Icon
                     name="keyboard-arrow-right"
                 />}
             />
-            {/* <ListItem
-                title='캐시 데이터 지우기'
-                onPress={() => { }}
-            />
-            <ListItem
-                title='동영상 자동재생'
-                onPress={() => { }}
-            /> */}
             {isLogged &&
                 <>
                     <ListItem
-                        title={i18n.t('common.logout')}
+                        title='로그아웃'
                         onPress={handleLogout}
                     />
                     <ListItem
-                        title={i18n.t('common.leave')}
+                        title='회원탈퇴'
                         onPress={handleLeave}
                     />
                 </>
@@ -107,6 +95,10 @@ export default function AppSettings() {
                 title={`앱버전 v${Updates.manifest.version}`}
                 onPress={() => { }}
             />
+            {available && <ListItem
+                title='최신버전으로 재실행'
+                onPress={updatesReload}
+            />}
         </ScrollView>
     )
 }

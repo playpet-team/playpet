@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components/native';
 import SocialSignIn from './AuthScreen/SocialSignIn';
 import { useSelector } from 'react-redux';
@@ -42,9 +42,7 @@ export default function AppLogin() {
             analytics().logSignUp({ method })
         }
         console.log('home-----???????????---------', completeLoginType)
-        navigation.navigate('Home', {
-            isSignUp: completeLoginType === 'signUp'
-        })
+        navigation.navigate('Home')
     }, [completeLoginType])
 
     return (

@@ -1,5 +1,5 @@
-import { RootState } from './../../store/rootReducers';
-import { firebaseNow } from "../../utils"
+import { RootState } from '../store/rootReducers';
+import { firebaseNow } from "../utils"
 import { firebase } from '@react-native-firebase/storage'
 import { useSelector } from "react-redux"
 import { useState } from 'react';

@@ -5,7 +5,7 @@ import useUserNotifications from "../hooks/useUserNotifications"
 import { Text } from "../styles"
 
 function Notifications() {
-    const notifications = useUserNotifications('listener')
+    const notifications = useUserNotifications()
     return (
         <NotificationsBlock>
             <Image

@@ -1,23 +1,15 @@
-import { RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
-import { Button } from 'react-native'
-import { Image } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
-import { useSelector } from 'react-redux'
 import styled, { useTheme } from 'styled-components/native'
 import ListItem from '../components/ListItem'
 import ProfileSection from '../components/ProfileSection'
-import { AuthTapParamList } from '../navigation/BottomTabNavigator'
 import { Icon } from "react-native-elements";
-import { RootState } from '../store/rootReducers'
 import { DividerBlock, Text } from '../styles'
 import { linkingUrl } from '../utils'
 
 export default function AuthScreen() {
-    const { params } = useRoute<RouteProp<AuthTapParamList, 'AuthScreen'>>();
-    const { isLogged, } = useSelector((state: RootState) => state.auth)
     const navigation = useNavigation()
-    const isFocus = useIsFocused()
 
     return (
         <ScrollView>
@@ -44,13 +36,6 @@ export default function AuthScreen() {
                 {/* <ListItem
                     title="프로필 설정"
                     onPress={() => navigation.navigate('ProfileSetting')}
-                    rightIcon={<Icon name="keyboard-arrow-right" />}
-                />
-                <ListItem
-                    title='결제 정보'
-                    titleStyle={{
-                    }}
-                    onPress={() => navigation.navigate('PaymentSetting')}
                     rightIcon={<Icon name="keyboard-arrow-right" />}
                 />
                 <ListItem

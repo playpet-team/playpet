@@ -1,12 +1,12 @@
 import analytics from '@react-native-firebase/analytics';
-import { useIsFocused, useTheme } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Modal, View } from "react-native";
 import { Avatar, Button, Icon, Image } from 'react-native-elements';
 import Animated, { interpolate, Value } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import useShare from '../../hooks/useShare';
 import { playgroundActions } from "../../store/playgroundReducer";
 import { RootState } from '../../store/rootReducers';

@@ -2,7 +2,15 @@ import React from 'react';
 import { ImageSourcePropType } from 'react-native';
 import { Avatar, ListItem as List } from 'react-native-elements';
 
-export default function ListItem({ title, onPress, titleStyle, containerStyle, rightIcon, activeStyle, avatarSource = null }: {
+export default function ListItem({
+    title,
+    onPress,
+    titleStyle,
+    containerStyle,
+    rightIcon,
+    activeStyle,
+    avatarSource = null
+}: {
     title: string;
     onPress: () => void;
     titleStyle?: object;

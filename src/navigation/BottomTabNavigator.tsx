@@ -8,7 +8,6 @@ import RegistFeedBoard from '../screens/ManageProducts/RegistFeedBoard'
 
 import AuthScreen from '../screens/AuthScreen'
 import AppSettings from '../screens/AuthScreen/AppSettings'
-import PaymentSetting from '../screens/AuthScreen/PaymentSetting'
 import ProfileSetting from '../screens/AuthScreen/ProfileSetting'
 import ShippingDestinationSetting from '../screens/AuthScreen/ShippingDestinationSetting'
 import Home from '../screens/Home'
@@ -181,7 +180,6 @@ export type AuthTapParamList = {
         completeLoginType?: boolean
     }
     AppSettings: undefined
-    PaymentSetting: undefined
     ShippingDestinationSetting: undefined
     ProfileSetting: undefined
     NoticeList: undefined
@@ -219,11 +217,6 @@ function AuthNavigator() {
                 name="ProfileSetting"
                 component={ProfileSetting}
                 options={{ headerTitle: '회원 정보' }}
-            />
-            <AuthTapStack.Screen
-                name="PaymentSetting"
-                component={PaymentSetting}
-                options={{ headerTitle: '결제 정보' }}
             />
             <AuthTapStack.Screen
                 name="ShippingDestinationSetting"

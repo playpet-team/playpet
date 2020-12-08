@@ -1,8 +1,6 @@
-import analytics from '@react-native-firebase/analytics';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import React, { useEffect } from 'react';
-import styled, { useTheme } from 'styled-components/native'
-import { Text } from '../../styles';
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import styled from 'styled-components/native'
 import { ListDate, ListTitle, WebViewList } from './NoticeList';
 
 const QnAs = [

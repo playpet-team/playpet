@@ -20,7 +20,6 @@ function FeedProfileSection({
     petKind?: string
     unit?: string
 }) {
-    console.log("unit", unit);
     const themes = useTheme()
 
     return (

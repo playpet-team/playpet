@@ -15,7 +15,7 @@ import { authActions } from '../../store/authReducer'
 import { RootState } from '../../store/rootReducers'
 import { DividerBlock, Layout, Text } from '../../styles'
 import { currentUser, firebaseNow, getPetDoc, resetUserActivePetDocId, updateUsername, updateUserProfilePhoto } from '../../utils'
-import { useUploadFirestore } from '../CardFormScreen/useUploadFirestore'
+import { useUploadFirestore } from '../../hooks/useUploadFirestore'
 
 const MAX_USERNAME_LENGTH = 16
 const MIN_USERNAME_LENGTH = 2
