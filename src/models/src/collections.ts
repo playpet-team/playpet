@@ -1,7 +1,6 @@
 export enum Collections {
     Users = 'users',
     UserPets = 'pets',
-    UserFeeds = 'feeds',
     Management = 'management',
     Terms = 'terms',
     AuthTokens = 'authTokens',
