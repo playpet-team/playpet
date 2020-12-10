@@ -1,32 +1,56 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native'
-import { ListDate, ListTitle, WebViewList } from './NoticeList';
-
-const QnAs = [
-    {
-        title: '[질문] 해병대 vs UDT',
-        url: 'https://blog.naver.com/playpet_official/222166616338',
-        created: '2020/12/03',
-    },
-]
+import useLoadingIndicator from '../../hooks/useLoadingIndicator';
+import { getNotices, Notice } from '../../utils/system/getNotices';
+import { ListDate, ListTitle, WebViewList, NoList } from './NoticeList';
+import * as Sentry from "@sentry/react-native";
+import moment from 'moment';
 
 function QnAList() {
     const navigation = useNavigation()
+    const { loading, setLoading, Indicator } = useLoadingIndicator()
+    const [notices, setNotices] = useState<Notice[]>([])
+
+    useEffect(() => {
+        loadNotices();
+        console.log("11")
+        async function loadNotices() {
+            try {
+                setLoading(true)
+                console.log("22")
+                const data = await getNotices('qna')
+                console.log("33", data)
+                if (data) {
+                    setNotices(data)
+                }
+            } catch (e) {
+                Sentry.captureException(e)
+            } finally {
+                setLoading(false)
+            }
+        }
+    }, [])
 
     return (
         <QnAListBlock>
-            {QnAs.map((qna, index) =>
+            {notices.map((notice, index) =>
                 <WebViewList
                     key={index}
-                    onPress={() => navigation.navigate('ContentWebView', qna)}
+                    onPress={() => navigation.navigate('ContentWebView', notice)}
                 >
-                    <ListTitle>{qna.title}</ListTitle>
+                    <ListTitle>{notice.title}</ListTitle>
                     <ListDate>
-                        {qna.created}
+                        {moment(notice.createdAt.toDate()).format('YYYY년 MM월 DD일')}
                     </ListDate>
                 </WebViewList>
             )}
+            {loading && <Indicator />}
+            {(!loading && !notices.length) &&
+                <NoList>
+                    <ListTitle>등록된 QnA가 없습니다</ListTitle>
+                </NoList>
+            }
         </QnAListBlock>
     );
 };

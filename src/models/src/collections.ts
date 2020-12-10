@@ -2,6 +2,7 @@ export enum Collections {
     Users = 'users',
     UserPets = 'pets',
     Management = 'management',
+    Notices = 'notices',
     Terms = 'terms',
     AuthTokens = 'authTokens',
     Playground = 'playground',
