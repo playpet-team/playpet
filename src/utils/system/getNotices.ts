@@ -20,6 +20,7 @@ export const getNotices = async (type: NoticeType) => {
             .collection(Collections.Notices)
             .where('type', '==', type)
             .where('status', '==', 'active')
+            .orderBy('updatedAt', 'desc')
             .get()
 
         console.log("notices", notices.size)
@@ -28,6 +29,7 @@ export const getNotices = async (type: NoticeType) => {
         }
         return []
     } catch (e) {
+        console.log('???', e)
         Sentry.captureException(e)
         return []
     }

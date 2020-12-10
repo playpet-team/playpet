@@ -20,7 +20,7 @@ function ProfileSection() {
         email,
     } = useSelector((state: RootState) => state.auth)
     const themes = useTheme()
-    const { myPets } = useMyPet()
+    const { myPets, loading } = useMyPet()
 
     if (!uid) {
         return null
@@ -44,7 +44,7 @@ function ProfileSection() {
                     : <ActivityIndicator />}
                 </AvatarBlock>
                 <UserInfoBlock>
-                    {myPets ? <>
+                    {myPets && <>
                         <InfoHeader>
                             <Text size={18} bold>{myPets.petName || email}</Text>
                             {myPets.petType && <Text padding="0 0 0 8px" color={themes.colors.placeholder}>
@@ -55,7 +55,13 @@ function ProfileSection() {
                         {myPets && <Text color={themes.colors.placeholder}>
                             {ageNameMap[myPets.petAge].title} | {sizeNameMap[myPets.petKind.size].title}
                         </Text>}
-                    </>: <ActivityIndicator />}
+                    </>}
+                    {!myPets &&
+                        <InfoHeader>
+                            <Text size={18} bold>{email}</Text>
+                        </InfoHeader>
+                    }
+                    {loading && <ActivityIndicator />}
                 </UserInfoBlock>
                 {/* <MoreActions>
                     <MoreButton onPress={() => navigation.navigate('ManageProducts')}>

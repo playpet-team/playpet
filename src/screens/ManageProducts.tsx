@@ -39,7 +39,7 @@ export default function ManageProducts() {
         }
     }, [uid, params])
 
-    const { myPets } = useMyPet()
+    const { myPets, loading } = useMyPet()
     
     const openFeedBoard = () => {
         if (!activePetDocId) {
@@ -86,7 +86,7 @@ export default function ManageProducts() {
         )
     }, [myPets])
 
-    if (!myPets) {
+    if (loading) {
         return <Indicator />
     }
     console.log('myPets---', myPets)
