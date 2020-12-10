@@ -172,6 +172,7 @@ export const updateUserPets = async (uid: string, petInformation: {
     petName: string
     petType: PetTypes
     petKind: PetInformation
+    petWeight: string
     petAge: PetAge
 }) => {
     try {

@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css, useTheme } from "styled-components/native";
 import { DividerBlock, Text } from "../../../styles";
 import { PetTypes } from "../../../utils";
-import { ItemBlock, TypeItem, ItemWrapper } from "../RegistrationPet";
+import { ItemBlock, TypeItem, ItemWrapper, RegistPetStep } from "../RegistrationPet";
 
 export type PetAge = 'BABY' | 'ADULT' | 'OLD' | ''
 export const DefaultPetAges: ['BABY', 'ADULT', 'OLD'] = [
@@ -30,10 +30,11 @@ export const ageNameMap = {
     },
 }
 
-export default function PetAgeSection({ petType, petAge, setPetAge }: {
+export default function PetAgeSection({ petType, petAge, setPetAge, isError }: {
     petType: PetTypes
     petAge: PetAge
     setPetAge: React.Dispatch<React.SetStateAction<any>>
+    isError: RegistPetStep | ''
 }) {
     const theme = useTheme();
 

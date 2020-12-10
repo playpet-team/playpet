@@ -2,12 +2,12 @@ import React from "react"
 import { Input } from "react-native-elements"
 import Transition from "../../../components/Transition"
 import { DividerBlock, Text } from "../../../styles"
-import { ItemBlock } from "../RegistrationPet"
+import { ItemBlock, RegistPetStep } from "../RegistrationPet"
 
 export default function PetNameSection({ petName, setPetName, isError }: {
     petName: string
     setPetName: React.Dispatch<React.SetStateAction<string>>
-    isError: boolean
+    isError: RegistPetStep | ''
 }) {
     return (
         <Transition>
@@ -28,7 +28,7 @@ export default function PetNameSection({ petName, setPetName, isError }: {
                     placeholder="예) 바오, 순철이, 나옹이"
                     value={petName}
                     onChangeText={setPetName}
-                    errorMessage={isError && !petName ? '이름을 입력해주세요' : ''}
+                    errorMessage={isError === 'PET_NAME' && !petName ? '이름을 입력해주세요' : ''}
                 />
             </ItemBlock>
         </Transition>

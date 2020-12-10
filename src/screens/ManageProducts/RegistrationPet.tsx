@@ -13,9 +13,12 @@ import { BackButton, NavigateBlock, NextButton } from "./RegistFeedBoard"
 import PetNameSection from "./RegistrationPet/PetNameSection"
 import PetKindSection from "./RegistrationPet/PetKindSection"
 import PetTypeSection, { DefaultPetTypes } from "./RegistrationPet/PetTypeSection"
+import PetWeightSection from "./RegistrationPet/PetWeightSection"
 import PetAgeSection, { PetAge, DefaultPetAges } from './RegistrationPet/PetAgeSection'
 import { PetInformation } from "../../models"
 
+// 숫자와 쩜(.)만 허용, 쩜은 반드시 숫자에 감싸져있어야하는 규칙
+const weightRegExp = /^\d+(\.\d+)*$/g
 export interface Terms {
     overAgeAgree: boolean
     termsOfUseAgree: boolean
@@ -23,20 +26,22 @@ export interface Terms {
     marketingAgree: boolean
 }
 
-type RegistPetStep = 'PET_TYPE' | 'PET_NAME' | 'PET_KIND' | 'PET_AGE'
-const PET_STEPS: ['PET_TYPE', 'PET_NAME', 'PET_KIND', 'PET_AGE'] = [
+export type RegistPetStep = 'PET_TYPE' | 'PET_NAME' | 'PET_KIND' | 'PET_WEIGHT' | 'PET_AGE'
+const PET_STEPS: ['PET_TYPE', 'PET_NAME', 'PET_KIND', 'PET_WEIGHT', 'PET_AGE'] = [
     'PET_TYPE',
     'PET_NAME',
     'PET_KIND',
+    'PET_WEIGHT',
     'PET_AGE',
 ]
 export default function RegistrationPet() {
     const { loading, Indicator } = useLoadingIndicator()
     const [step, setStep] = useState<RegistPetStep>(PET_STEPS[0])
-    const [isErrorValidation, setErrorValidation] = useState(false)
+    const [isErrorValidation, setErrorValidation] = useState<RegistPetStep | ''>('')
     const [petName, setPetName] = useState<string>('')
     const [petType, setPetType] = useState<PetTypes>('')
     const [petKind, setPetKind] = useState<PetInformation | null>(null)
+    const [petWeight, setPetWeight] = useState('')
     const [petAge, setPetAge] = useState<PetAge>('')
 
     const themes = useTheme()
@@ -52,6 +57,7 @@ export default function RegistrationPet() {
         const activePetDocId = await updateUserPets(user.uid, {
             petName,
             petType,
+            petWeight,
             petKind,
             petAge,
         })
@@ -68,30 +74,48 @@ export default function RegistrationPet() {
 
     const findNextStepIndex = (handleType: 'NEXT' | 'PREV' = 'NEXT') => {
         const newIndex = handleType === 'NEXT' ? 1 : -1
-        const nextStepIndex = findCurrentStepIndex + newIndex
-
-        if (PET_STEPS[nextStepIndex] === 'PET_KIND' && petType === 'CAT') {
-            // 한번더 가 / 감 
-            return nextStepIndex + newIndex
-        }
-        return nextStepIndex
+        return findCurrentStepIndex + newIndex
     }
 
     const checkIsErrorValidation = () => {
+        console.log('step-----------', step)
         switch (step) {
             case 'PET_TYPE': {
-                return petType === '' || !DefaultPetTypes.includes(petType)
+                console.log("petType111---", petType)
+                if (petType === '' || !DefaultPetTypes.includes(petType)) {
+                    console.log("petType222---", petType)
+                    return step
+                }
+                break
             }
             case 'PET_NAME': {
-                return petName === '' || petName.length > 16
+                if (petName === '' || petName.length > 16) {
+                    return step
+                }
+                break
             }
             case 'PET_KIND': {
-                return petKind === null
+                if (petKind === null) {
+                    return step
+                }
+                break
+            }
+            case 'PET_WEIGHT': {
+                if (petWeight === '' || (petWeight.match(weightRegExp) === null)) {
+                    setPetWeight('')
+                    return step
+                }
+                break
             }
             case 'PET_AGE': {
-                return petAge === '' || !DefaultPetAges .includes(petAge)
+                if (petAge === '' || !DefaultPetAges .includes(petAge)) {
+                    return step
+                }
+                break
             }
         }
+        console.log('?????????????')
+        return ''
     }
 
     const nextSteps = () => {
@@ -148,11 +172,18 @@ export default function RegistrationPet() {
                 setPetName={setPetName}
             />}
             {step === 'PET_KIND' && <PetKindSection
+                isError={isErrorValidation}
                 petType={petType}
                 petKind={petKind}
                 setPetKind={setPetKind}
             />}
+            {step === 'PET_WEIGHT' && <PetWeightSection
+                isError={isErrorValidation}
+                petWeight={petWeight}
+                setPetWeight={setPetWeight}
+            />}
             {step === 'PET_AGE' && <PetAgeSection
+                isError={isErrorValidation}
                 petType={petType}
                 petAge={petAge}
                 setPetAge={setPetAge}

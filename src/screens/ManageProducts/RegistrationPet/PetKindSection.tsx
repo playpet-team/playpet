@@ -6,15 +6,16 @@ import Transition from "../../../components/Transition"
 import { Collections, PetInformation } from "../../../models"
 import { Text } from "../../../styles"
 import { PetTypes } from "../../../utils"
-import { ItemBlock } from "../RegistrationPet"
+import { ItemBlock, RegistPetStep } from "../RegistrationPet"
 import firestore from '@react-native-firebase/firestore'
 import useLoadingIndicator from "../../../hooks/useLoadingIndicator"
 import * as Sentry from "@sentry/react-native";
 
-export default function PetKindSection({ petType, petKind, setPetKind }: {
+export default function PetKindSection({ petType, petKind, setPetKind, isError }: {
     petType: PetTypes
     petKind: PetInformation | null
     setPetKind: React.Dispatch<React.SetStateAction<PetInformation | null>>
+    isError: RegistPetStep | ''
 }) {
     const theme = useTheme()
     const [petList, setPetList] = useState<PetInformation[]>([])

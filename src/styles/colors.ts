@@ -18,7 +18,7 @@ export const defaultColorPalette = {
     card: tintColorBackground,
     white: tintColorDarkText,
     grey: tintColorText,
-    errorColor,
+    error: errorColor,
 };
 
 export const darkColorPalette = {
@@ -30,5 +30,5 @@ export const darkColorPalette = {
     card: tintColorDarkBackground,
     white: tintColorDarkText,
     grey: tintColorText,
-    errorColor,
+    error: errorColor,
 };

@@ -3,7 +3,7 @@ import { Control, Controller } from "react-hook-form"
 import { Image } from "react-native"
 import styled, { css, useTheme } from 'styled-components/native'
 import { DividerBlock, Text } from "../../../styles"
-import { ItemBlock } from "../RegistrationPet"
+import { ItemBlock, RegistPetStep } from "../RegistrationPet"
 import { PetTypes } from "../../../utils/product"
 import Transition from "../../../components/Transition"
 
@@ -20,7 +20,7 @@ const petSrcMap: any = {
 export default function PetTypeSection({ petType, setPetType, isError }: {
     petType: PetTypes
     setPetType: React.Dispatch<React.SetStateAction<PetTypes>>
-    isError: boolean
+    isError: RegistPetStep | ''
 }) {
     const theme = useTheme()
 
@@ -63,10 +63,10 @@ export default function PetTypeSection({ petType, setPetType, isError }: {
                     ))}
                 </PetIcons>
             </Transition>
-            {isError && petType === '' && <Text
+            {isError === 'PET_TYPE' && petType === '' && <Text
                 align="center"
                 size={13}
-                color={theme.colors.errorColor}
+                color={theme.colors.background}
             >
                 선택해주세요
             </Text>}
