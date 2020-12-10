@@ -1,3 +1,4 @@
+import { PetInformation } from './../../models/src/pet';
 import { PetAge } from './../../screens/ManageProducts/RegistrationPet/PetAgeSection';
 import { PetSize } from './../../screens/ManageProducts/RegistrationPet/PetSizeSection';
 import { PetTypes } from './../product/index';
@@ -170,8 +171,7 @@ export const updateUserTerms = async (uid: string, terms: {}) => {
 export const updateUserPets = async (uid: string, petInformation: {
     petName: string
     petType: PetTypes
-    petKind: string
-    petSize: PetSize
+    petKind: PetInformation
     petAge: PetAge
 }) => {
     try {

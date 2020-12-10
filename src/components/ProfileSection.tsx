@@ -46,14 +46,14 @@ function ProfileSection() {
                 <UserInfoBlock>
                     {myPets ? <>
                         <InfoHeader>
-                            <Text size={18} bold>{myPets?.petName || email}</Text>
-                            {myPets?.petType && <Text padding="0 0 0 8px" color={themes.colors.placeholder}>
+                            <Text size={18} bold>{myPets.petName || email}</Text>
+                            {myPets.petType && <Text padding="0 0 0 8px" color={themes.colors.placeholder}>
                                 {myPets.petType === 'DOG' ? '반려견' : '반려묘'}
                             </Text>}
                         </InfoHeader>
                         <DividerBlock height={8} />
                         {myPets && <Text color={themes.colors.placeholder}>
-                            {ageNameMap[myPets.petAge].title} | {sizeNameMap[myPets.petSize].title}
+                            {ageNameMap[myPets.petAge].title} | {sizeNameMap[myPets.petKind.size].title}
                         </Text>}
                     </>: <ActivityIndicator />}
                 </UserInfoBlock>

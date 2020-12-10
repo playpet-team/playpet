@@ -14,7 +14,7 @@ import PetNameSection from "./RegistrationPet/PetNameSection"
 import PetKindSection from "./RegistrationPet/PetKindSection"
 import PetTypeSection, { DefaultPetTypes } from "./RegistrationPet/PetTypeSection"
 import PetAgeSection, { PetAge, DefaultPetAges } from './RegistrationPet/PetAgeSection'
-import PetSizeSection, { PetSize, DefaultPetSizes } from './RegistrationPet/PetSizeSection'
+import { PetInformation } from "../../models"
 
 export interface Terms {
     overAgeAgree: boolean
@@ -23,12 +23,11 @@ export interface Terms {
     marketingAgree: boolean
 }
 
-type RegistPetStep = 'PET_TYPE' | 'PET_NAME' | 'PET_KIND' | 'PET_SIZE' | 'PET_AGE'
-const PET_STEPS: ['PET_TYPE', 'PET_NAME', 'PET_KIND', 'PET_SIZE', 'PET_AGE'] = [
+type RegistPetStep = 'PET_TYPE' | 'PET_NAME' | 'PET_KIND' | 'PET_AGE'
+const PET_STEPS: ['PET_TYPE', 'PET_NAME', 'PET_KIND', 'PET_AGE'] = [
     'PET_TYPE',
     'PET_NAME',
     'PET_KIND',
-    'PET_SIZE',
     'PET_AGE',
 ]
 export default function RegistrationPet() {
@@ -37,8 +36,7 @@ export default function RegistrationPet() {
     const [isErrorValidation, setErrorValidation] = useState(false)
     const [petName, setPetName] = useState<string>('')
     const [petType, setPetType] = useState<PetTypes>('')
-    const [petKind, setPetKind] = useState<string>('')
-    const [petSize, setPetSize] = useState<PetSize>('')
+    const [petKind, setPetKind] = useState<PetInformation | null>(null)
     const [petAge, setPetAge] = useState<PetAge>('')
 
     const themes = useTheme()
@@ -48,14 +46,13 @@ export default function RegistrationPet() {
 
     const handleUpdatePet = async () => {
         const user = currentUser()
-        if (!user) {
+        if (!user || !petKind) {
             return
         }
         const activePetDocId = await updateUserPets(user.uid, {
             petName,
             petType,
             petKind,
-            petSize,
             petAge,
         })
 
@@ -73,7 +70,7 @@ export default function RegistrationPet() {
         const newIndex = handleType === 'NEXT' ? 1 : -1
         const nextStepIndex = findCurrentStepIndex + newIndex
 
-        if (PET_STEPS[nextStepIndex] === 'PET_SIZE' && petType === 'CAT') {
+        if (PET_STEPS[nextStepIndex] === 'PET_KIND' && petType === 'CAT') {
             // 한번더 가 / 감 
             return nextStepIndex + newIndex
         }
@@ -89,13 +86,10 @@ export default function RegistrationPet() {
                 return petName === '' || petName.length > 16
             }
             case 'PET_KIND': {
-                return petKind === ''
+                return petKind === null
             }
             case 'PET_AGE': {
                 return petAge === '' || !DefaultPetAges .includes(petAge)
-            }
-            case 'PET_SIZE': {
-                return petSize === '' || !DefaultPetSizes .includes(petSize)
             }
         }
     }
@@ -139,7 +133,6 @@ export default function RegistrationPet() {
     }, [step])
 
     const findLastStepName: RegistPetStep = useMemo(() => PET_STEPS[PET_STEPS.length - 1], [])
-    console.log('petKind---', petKind)
 
     return (
         <RegistrationPetBlock>
@@ -158,10 +151,6 @@ export default function RegistrationPet() {
                 petType={petType}
                 petKind={petKind}
                 setPetKind={setPetKind}
-            />}
-            {(step === 'PET_SIZE' && petType === 'DOG') && <PetSizeSection
-                petSize={petSize}
-                setPetSize={setPetSize}
             />}
             {step === 'PET_AGE' && <PetAgeSection
                 petType={petType}

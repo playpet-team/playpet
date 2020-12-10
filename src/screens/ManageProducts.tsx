@@ -89,6 +89,7 @@ export default function ManageProducts() {
     if (!myPets) {
         return <Indicator />
     }
+    console.log('myPets---', myPets)
 
     return (
         <ManageProductsBlock>
@@ -118,7 +119,7 @@ export default function ManageProducts() {
                         />
                         <DisplayInputField
                             label="품종"
-                            value={myPets.petKind}
+                            value={myPets.petKind.name}
                         />
                         <DisplayInputField
                             label="나이"

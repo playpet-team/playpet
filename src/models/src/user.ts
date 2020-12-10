@@ -1,3 +1,4 @@
+import { PetInformation } from './pet';
 import { PetAge } from './../../screens/ManageProducts/RegistrationPet/PetAgeSection';
 import { PetSize } from './../../screens/ManageProducts/RegistrationPet/PetSizeSection';
 import { FirebaseTimeStamp } from '../../utils';
@@ -44,7 +45,7 @@ export interface Terms {
 export interface MyPet {
     petName: string
     petType: PetTypes
-    petKind: string
+    petKind: PetInformation
     petSize: PetSize
     petAge: PetAge
     petThumbnail?: string

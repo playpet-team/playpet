@@ -31,6 +31,7 @@ function RegistFeedItems({
             try {
                 setLoading(true)
                 const data = await getProductList()
+                console.log('data--------', data)
                 if (data) {
                     setFeeds(data)
                 }
@@ -52,6 +53,7 @@ function RegistFeedItems({
         if (!myPets || !feeds) {
             return []
         }
+        console.log("myPets-", myPets)
         return feeds
             .filter(feed => feed.pet.includes(myPets.petType))
             .filter(feed => feed.size.includes(myPets.petSize))
