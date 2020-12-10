@@ -13,33 +13,13 @@ export default function useUpdater(forceUpdate = false) {
         AppState.addEventListener('change', changeAppState);
         return () => {}
     }, [])
-    
-    // useEffect(() => {
-    //     if (!available) {
-    //         return
-    //     }
-    //     fetchUpdate()
-    //     async function fetchUpdate() {
-    //         await Updates.fetchUpdateAsync()
-    //         if (forceUpdate) {
-    //             reloadUpdatedApp()
-    //         }
-    //         // else {
-    //         //     Alert.alert('새로운 업데이트가 있습니다', '지금 바로 업데이트하세요!', [
-    //         //         {
-    //         //             text: '업데이트',
-    //         //             onPress: reloadUpdatedApp,
-    //         //         },
-    //         //     ])
-    //         // }
-    //     }
-    // }, [available, forceUpdate])
 
     const checkUpdateAsync = async () => {
         if (__DEV__) {
             return false
         }
         const update = await Updates.checkForUpdateAsync();
+        await Updates.fetchUpdateAsync()
         dispatch(authActions.setAvailableUpdates(update.isAvailable))
         // setAvailable(update.isAvailable)
     }
@@ -51,9 +31,3 @@ export default function useUpdater(forceUpdate = false) {
         beforeAppState = nextAppState
     }
 }
-
-// const updateListener = (setAvailable: React.Dispatch<React.SetStateAction<boolean>>) => {
-//     return Updates.addListener(async ({ type }) => setAvailable(type === UpdateEventType.UPDATE_AVAILABLE))
-// }
-
-const reloadUpdatedApp = () => Updates.reloadAsync()
