@@ -9,6 +9,7 @@ export interface Notice {
     description: string
     link: string
     title: string
+    status: 'active' | 'deactive'
     type: NoticeType
     updatedAt: Timestamp
 }
@@ -18,7 +19,9 @@ export const getNotices = async (type: NoticeType) => {
         const notices = await firestore()
             .collection(Collections.Notices)
             .where('type', '==', type)
+            .where('status', '==', 'active')
             .get()
+
         console.log("notices", notices.size)
         if (notices.size > 0) {
             return notices.docs.map((notice: any) => (notice.data() as Notice))
