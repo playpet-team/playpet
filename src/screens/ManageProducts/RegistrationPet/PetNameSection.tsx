@@ -17,7 +17,7 @@ export default function PetNameSection({ petName, setPetName, isError }: {
                     size={18}
                     bold
                 >
-                    반려동물의 이름을 알려주세요
+                    우리아이 이름을 알려주세요
                 </Text>
                 <DividerBlock marginTop={32} />
                 <Input

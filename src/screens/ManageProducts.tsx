@@ -125,9 +125,9 @@ export default function ManageProducts() {
                             label="나이"
                             value={ageNameMap[myPets.petAge].title}
                         />
-                        {Boolean(myPets.petSize) && <DisplayInputField
+                        {Boolean(myPets.petKind.size) && <DisplayInputField
                             label="크기"
-                            value={sizeNameMap[myPets.petSize].title}
+                            value={sizeNameMap[myPets.petKind.size].title}
                         />}
                     </Pet>
                 }

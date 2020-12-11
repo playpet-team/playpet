@@ -56,7 +56,7 @@ function RegistFeedItems({
         console.log("myPets-", myPets)
         return feeds
             .filter(feed => feed.pet.includes(myPets.petType))
-            .filter(feed => feed.size.includes(myPets.petSize))
+            .filter(feed => feed.size.includes(myPets.petKind.size))
     }, [myPets, feeds])
 
     const theme = useTheme()

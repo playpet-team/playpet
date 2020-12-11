@@ -1,49 +1,105 @@
 import analytics from '@react-native-firebase/analytics'
 import * as Sentry from "@sentry/react-native"
-import React, { useEffect, useRef, useState } from 'react'
-import { View } from 'react-native'
-import { Avatar, Icon, Input } from 'react-native-elements'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { Button } from 'react-native'
+import { Avatar, BottomSheet, Icon, Input, ListItem } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from 'styled-components/native'
+import styled, { useTheme } from 'styled-components/native'
 import Toast, { ToastParams } from '../../components/Toast'
 import useImagePicker from '../../hooks/useImagePicker'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import useMyPet from '../../hooks/useMyPet'
-import { MyPet } from '../../models'
 import { authActions } from '../../store/authReducer'
 import { RootState } from '../../store/rootReducers'
 import { DividerBlock, Layout, Text } from '../../styles'
-import { currentUser, firebaseNow, getPetDoc, resetUserActivePetDocId, updateUsername, updateUserProfilePhoto } from '../../utils'
+import { currentUser, firebaseNow, updatePetInformation, updateUserProfilePhoto } from '../../utils'
 import { useUploadFirestore } from '../../hooks/useUploadFirestore'
+import { ageNameMap, DefaultPetAges, PetAge } from '../ManageProducts/RegistrationPet/PetAgeSection'
+import { sizeNameMap } from '../ManageProducts/RegistrationPet/PetSizeSection'
+import { useNavigation } from '@react-navigation/native'
 
 const MAX_USERNAME_LENGTH = 16
 const MIN_USERNAME_LENGTH = 2
+const updateUserProfile = (key: 'displayName' | 'photoURL', value: string) => {
+    const user = currentUser()
+    if (!user) {
+        return
+    }
+    user.updateProfile({
+        [key]: value
+    })
+}
 
 export default function ProfileSetting() {
     const { loading, setLoading, Indicator } = useLoadingIndicator()
     const [form, setForm] = useState<ProfileForm>({ uri: '' })
     const {
         profilePhoto,
-        username,
         email,
-        method,
         uid,
+        activePetDocId,
     } = useSelector((state: RootState) => state.auth)
-
-    // input username
-    const usernameRef = useRef<Input | null>(null)
-    const [value, setValue] = useState(username)
+    const { myPets, loading: petLoading  } = useMyPet()
+    const weightRef = useRef<Input | null>(null)
     const [editMode, setEditMode] = useState(false)
-
-    useEffect(() => {
-        if (editMode && usernameRef.current) {
-            usernameRef.current?.focus()
-        }
-    }, [editMode])
+    const [inputAge, setInputAge] = useState<PetAge>(myPets?.petAge || '')
+    const [visibleBottomSheet, setVisibleBottomSheet] = useState(false)
+    const [inputWeight, setInputWeight] = useState<string>(myPets?.petWeight || '')
 
     const { upload } = useUploadFirestore()
     const dispatch = useDispatch()
+    const theme = useTheme()
+
+    const navigation = useNavigation()
+    navigation.setOptions({
+        headerRight: () => (
+          <Button
+            onPress={() => editMode ? submit() : setEditMode(true)}
+            title={editMode ? '완료' : '수정'}
+        />
+        )
+    })
+
+    const [toastContent, setToastContent] = useState<ToastParams>({
+        visible: false,
+        title: '',
+        description: '',
+        image: '',
+    })
+
+    const submit = () => {
+        setEditMode(false)
+        if (!myPets || !activePetDocId) {
+            return
+        }
+        if (
+            myPets.petWeight !== inputWeight
+            || myPets.petAge !== inputAge
+        ) {
+            updatePetInformation(uid, {
+                activePetDocId,
+                petWeight: inputWeight,
+                petAge: inputAge,
+            })
+            console.log("변한게 생겼다")
+            setToastContent({
+                visible: true,
+                title: '수정 되었습니다',
+            })
+        }
+    }
+
+    useEffect(() => {
+        if (myPets?.petWeight) {
+            setInputWeight(myPets.petWeight)
+        }
+    }, [myPets])
+    
+    useEffect(() => {
+        if (editMode && weightRef.current) {
+            weightRef.current?.focus()
+        }
+    }, [editMode])
 
     // 프로필 변경용
     const uploadCallback = (form: ProfileForm) => setForm(form)
@@ -51,36 +107,6 @@ export default function ProfileSetting() {
         updateType: 'photo',
         setLoading,
         uploadCallback,
-    })
-
-    const handleEditUsername = () => {
-        if (!editMode) {
-            setEditMode(true)
-            return
-        }
-        const isOK = validator(value, 'username')
-        if (!isOK) {
-            return setToastContent({
-                title: `닉네임은 ${MIN_USERNAME_LENGTH}자이상 ${MAX_USERNAME_LENGTH}자 이하여야 합니다`,
-                visible: true
-            })
-        }
-        updateUsername(uid, value)
-        updateUserProfile('displayName', value)
-        dispatch(authActions.setUsername(value))
-        setEditMode(false)
-        analytics().logEvent('change_nickname')
-        return setToastContent({
-            title: '닉네임 변경 완료!',
-            visible: true
-        })
-    }
-
-    const [toastContent, setToastContent] = useState<ToastParams>({
-        visible: false,
-        title: '',
-        description: '',
-        image: '',
     })
 
     useEffect(() => {
@@ -107,13 +133,27 @@ export default function ProfileSetting() {
 
     }, [form])
 
+    const list = useMemo(() => ([
+        { title: ageNameMap[DefaultPetAges[0]].description, onPress: () => {
+            setInputAge('BABY')
+            setVisibleBottomSheet(false)
+        }},
+        { title: ageNameMap[DefaultPetAges[1]].description, onPress: () => {
+            setInputAge('ADULT')
+            setVisibleBottomSheet(false)
+        }},
+        { title: ageNameMap[DefaultPetAges[2]].description, onPress: () => {
+            setInputAge('OLD')
+            setVisibleBottomSheet(false)
+        }},
+        {
+          title: '취소',
+          onPress: () => setVisibleBottomSheet(false)
+        },
+    ]), [])
+
     return (
         <ProfileSettingBlock>
-            {loading && <Indicator />}
-            <Toast
-                visible={toastContent.visible}
-                title={toastContent.title}
-            />
             <ChangePhotoProfileArea onPress={openPicker}>
                 <Avatar
                     size="large"
@@ -122,61 +162,95 @@ export default function ProfileSetting() {
                         uri: profilePhoto,
                     }}
                 />
-                <Text padding="8px 0">프로필 사진 변경</Text>
+                <DividerBlock height={8} />
             </ChangePhotoProfileArea>
             <Layout>
                 <Input
                     label="이메일"
                     value={email}
                     disabled
+                    inputContainerStyle={{
+                        marginBottom: 12,
+                    }}
+                    errorStyle={{ display: 'none' }}
                 />
             </Layout>
             <Layout>
-                <Input
-                    ref={usernameRef}
-                    label="닉네임"
-                    value={value}
-                    onChangeText={(text: string) => setValue(text)}
-                    disabled={!editMode}
-                    rightIcon={<Icon
-                        name={editMode ? 'check' : 'edit'}
-                        onPress={handleEditUsername}
-                    />}
-                />
+                {!myPets ?
+                    <Text>아직 반려동물 등록이 안되었어요</Text>
+                    :
+                    <>
+                        <Input
+                            inputContainerStyle={{
+                                marginBottom: 12,
+                            }}
+                            errorStyle={{ display: 'none' }}
+                            label="반려종"
+                            value={myPets.petType === 'DOG' ? '강아지' : '고양이'}
+                            disabled
+                        />
+                        <Input
+                            inputContainerStyle={{
+                                marginBottom: 12,
+                            }}
+                            errorStyle={{ display: 'none' }}
+                            label="아이 이름"
+                            value={myPets.petName}
+                            disabled
+                        />
+                        <Input
+                            ref={weightRef}
+                            inputContainerStyle={{
+                                marginBottom: 12,
+                            }}
+                            errorStyle={{ display: 'none' }}
+                            label="체중 (kg)"
+                            value={inputWeight}
+                            onChangeText={(text: string) => setInputWeight(text)}
+                            disabled={!editMode}
+                        />
+                        <Input
+                            inputContainerStyle={{
+                                width: '100%',
+                                marginBottom: 12,
+                            }}
+                            errorStyle={{ display: 'none' }}
+                            label="나이"
+                            value={ageNameMap[inputAge].description}
+                            disabled
+                            rightIcon={editMode && <Icon
+                                name='edit'
+                                onPress={() => setVisibleBottomSheet(true)}
+                            />}
+                        />
+                        <Input
+                            inputContainerStyle={{
+                                marginBottom: 12,
+                            }}
+                            errorStyle={{ display: 'none' }}
+                            label="사이즈"
+                            value={sizeNameMap[myPets.petKind.size].title}
+                            disabled
+                        />
+                    </>
+                }
             </Layout>
-            <Layout>
-                <Input
-                    label="로그인방법"
-                    value={method}
-                    disabled
-                />
-            </Layout>
+            <BottomSheet isVisible={visibleBottomSheet} modalProps={{}}>
+                {list.map((l, i) => (
+                    <ListItem key={i}>
+                    <ListItem.Content>
+                        <ListItem.Title onPress={l.onPress}>{l.title}</ListItem.Title>
+                    </ListItem.Content>
+                    </ListItem>
+                ))}
+            </BottomSheet>
+            {(loading && petLoading) && <Indicator />}
+            <Toast
+                visible={toastContent.visible}
+                title={toastContent.title}
+            />
         </ProfileSettingBlock>
     )
-}
-
-const updateUserProfile = (key: 'displayName' | 'photoURL', value: string) => {
-    const user = currentUser()
-    if (!user) {
-        return
-    }
-    user.updateProfile({
-        [key]: value
-    })
-}
-
-const validator = (value: string, type: 'username') => {
-    let isOK = false
-    switch (type) {
-        case 'username': {
-            isOK = MAX_USERNAME_LENGTH > value.length && MIN_USERNAME_LENGTH < value.length
-            break
-        }
-            defalut: {
-
-            }
-    }
-    return isOK
 }
 
 export interface ProfileForm {
@@ -190,4 +264,11 @@ const ChangePhotoProfileArea = styled.TouchableOpacity`
     flex-direction: column;
     align-items: center;
     margin-bottom: 16px;
+`
+
+const Submit = styled.TouchableOpacity`
+    flex: 1;
+    padding: 12px;
+    align-items: center;
+    justify-content: center;
 `

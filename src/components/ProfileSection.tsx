@@ -12,8 +12,11 @@ import { MyPet } from '../models'
 import * as Sentry from "@sentry/react-native";
 import { ActivityIndicator } from 'react-native'
 import useMyPet from '../hooks/useMyPet'
+import { useNavigation } from '@react-navigation/native'
 
-function ProfileSection() {
+function ProfileSection({ moreBtn = false }: {
+    moreBtn: boolean
+}) {
     const {
         uid,
         profilePhoto,
@@ -21,6 +24,7 @@ function ProfileSection() {
     } = useSelector((state: RootState) => state.auth)
     const themes = useTheme()
     const { myPets, loading } = useMyPet()
+    const navigation = useNavigation()
 
     if (!uid) {
         return null
@@ -63,17 +67,19 @@ function ProfileSection() {
                     }
                     {loading && <ActivityIndicator />}
                 </UserInfoBlock>
-                {/* <MoreActions>
-                    <MoreButton onPress={() => navigation.navigate('ManageProducts')}>
-                        <Text
-                            color={themes.colors.primary}
-                            size={14}
-                            align="center"
-                        >
-                            더 보기
-                        </Text>
-                    </MoreButton>
-                </MoreActions> */}
+                {moreBtn &&
+                    <MoreActions>
+                        <MoreButton onPress={() => navigation.navigate('ProfileSetting')}>
+                            <Text
+                                color={themes.colors.primary}
+                                size={14}
+                                align="center"
+                            >
+                                더 보기
+                            </Text>
+                        </MoreButton>
+                    </MoreActions>
+                }
             </ProfileBlock>
         </ProfileSectionBlock>
     )

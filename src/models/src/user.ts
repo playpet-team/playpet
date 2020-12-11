@@ -46,8 +46,8 @@ export interface MyPet {
     petName: string
     petType: PetTypes
     petKind: PetInformation
-    petSize: PetSize
     petAge: PetAge
+    petWeight: string
     petThumbnail?: string
     createdAt: string | FirebaseTimeStamp | null
     updatedAt: string | FirebaseTimeStamp | null

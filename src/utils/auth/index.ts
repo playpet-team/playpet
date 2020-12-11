@@ -1,19 +1,19 @@
-import { PetInformation } from './../../models/src/pet';
-import { PetAge } from './../../screens/ManageProducts/RegistrationPet/PetAgeSection';
-import { PetSize } from './../../screens/ManageProducts/RegistrationPet/PetSizeSection';
-import { PetTypes } from './../product/index';
-import { GoogleSignin } from '@react-native-community/google-signin';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import KakaoLogins from '@react-native-seoul/kakao-login';
-import * as Sentry from "@sentry/react-native";
-import { LoginManager } from 'react-native-fbsdk';
-import { Api } from '../../api';
-import { Collections, SignType, User } from '../../models';
-import { initialState } from '../../store/authReducer';
-import { ShippingInformation } from './../../hooks/useShippingDestination';
-import { MyFeed, MyPet, Terms } from './../../models/src/user';
-import { firebaseTimeStampToStringStamp } from './../system/index';
+import { PetInformation } from './../../models/src/pet'
+import { PetAge } from './../../screens/ManageProducts/RegistrationPet/PetAgeSection'
+import { PetSize } from './../../screens/ManageProducts/RegistrationPet/PetSizeSection'
+import { PetTypes } from './../product/index'
+import { GoogleSignin } from '@react-native-community/google-signin'
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
+import KakaoLogins from '@react-native-seoul/kakao-login'
+import * as Sentry from "@sentry/react-native"
+import { LoginManager } from 'react-native-fbsdk'
+import { Api } from '../../api'
+import { Collections, SignType, User } from '../../models'
+import { initialState } from '../../store/authReducer'
+import { ShippingInformation } from './../../hooks/useShippingDestination'
+import { MyFeed, MyPet, Terms } from './../../models/src/user'
+import { firebaseTimeStampToStringStamp } from './../system/index'
 
 export enum Status {
     ACTIVE = 'active',
@@ -53,6 +53,27 @@ export const updateUserProfilePhoto = async (uid: string, profilePhoto: string) 
         profilePhoto,
         updatedAt: firebaseNow(),
     })
+}
+
+export const updatePetInformation = async (uid: string, petInformation: {
+    activePetDocId: string
+    petAge?: PetAge
+    petWeight?: string
+}) => {
+    try {
+        await firestore()
+            .collection(Collections.Users)
+            .doc(uid)
+            .collection(Collections.UserPets)
+            .doc(petInformation.activePetDocId)
+            .update({
+                petAge: petInformation.petAge,
+                petWeight: petInformation.petWeight,
+                updatedAt: firebaseNow(),
+            })
+    } catch (e) {
+        Sentry.captureException(e)
+    }
 }
 
 export const updateUsername = async (uid: string, username: string) => {
@@ -185,6 +206,7 @@ export const updateUserPets = async (uid: string, petInformation: {
             updatedAt: firebaseNow(),
         })
         await userDoc.update({
+            username: petInformation.petName,
             activePetDocId: id,
             updatedAt: firebaseNow(),
         })
@@ -262,7 +284,7 @@ export const signOut = async (type: SignType = SignType.None) => {
             }
             case SignType.Naver: {
                 // NaverLogin.logout()
-                break;
+                break
             }
         }
         await auth().signOut()

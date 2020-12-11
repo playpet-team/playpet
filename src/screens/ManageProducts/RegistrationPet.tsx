@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import React, { useCallback, useMemo, useState } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled, { css, useTheme } from 'styled-components/native'
 import useLoadingIndicator from '../../hooks/useLoadingIndicator'
 import { authActions } from '../../store/authReducer'
@@ -16,6 +16,7 @@ import PetTypeSection, { DefaultPetTypes } from "./RegistrationPet/PetTypeSectio
 import PetWeightSection from "./RegistrationPet/PetWeightSection"
 import PetAgeSection, { PetAge, DefaultPetAges } from './RegistrationPet/PetAgeSection'
 import { PetInformation } from "../../models"
+import { RootState } from "../../store/rootReducers"
 
 // 숫자와 쩜(.)만 허용, 쩜은 반드시 숫자에 감싸져있어야하는 규칙
 const weightRegExp = /^\d+(\.\d+)*$/g
@@ -35,10 +36,11 @@ const PET_STEPS: ['PET_TYPE', 'PET_NAME', 'PET_KIND', 'PET_WEIGHT', 'PET_AGE'] =
     'PET_AGE',
 ]
 export default function RegistrationPet() {
+    const { username } = useSelector((state: RootState) => state.auth)
     const { loading, Indicator } = useLoadingIndicator()
     const [step, setStep] = useState<RegistPetStep>(PET_STEPS[0])
     const [isErrorValidation, setErrorValidation] = useState<RegistPetStep | ''>('')
-    const [petName, setPetName] = useState<string>('')
+    const [petName, setPetName] = useState<string>(username)
     const [petType, setPetType] = useState<PetTypes>('')
     const [petKind, setPetKind] = useState<PetInformation | null>(null)
     const [petWeight, setPetWeight] = useState('')
@@ -64,6 +66,7 @@ export default function RegistrationPet() {
 
         if (activePetDocId) {
             dispatch(authActions.setActivePetDocId(activePetDocId))
+            dispatch(authActions.setUsername(petName))
         }
         navigation.goBack()
     }
@@ -78,12 +81,9 @@ export default function RegistrationPet() {
     }
 
     const checkIsErrorValidation = () => {
-        console.log('step-----------', step)
         switch (step) {
             case 'PET_TYPE': {
-                console.log("petType111---", petType)
                 if (petType === '' || !DefaultPetTypes.includes(petType)) {
-                    console.log("petType222---", petType)
                     return step
                 }
                 break
@@ -114,7 +114,6 @@ export default function RegistrationPet() {
                 break
             }
         }
-        console.log('?????????????')
         return ''
     }
 
@@ -122,7 +121,6 @@ export default function RegistrationPet() {
         const nextStepIndex = findNextStepIndex()
         const stepName = PET_STEPS[nextStepIndex]
         const isError = checkIsErrorValidation()
-        console.log("isError", isError)
 
         setErrorValidation(isError)
 

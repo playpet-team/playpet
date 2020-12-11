@@ -16,7 +16,15 @@ export default function AuthScreen() {
 
     return (
         <ScrollView>
-            <ProfileSection />
+            <ProfileSection moreBtn />
+            <Section>
+                <ListItem
+                    title="비만도 확인하기"
+                    onPress={() => navigation.navigate('NoticeList')}
+                    rightIcon={<Icon name="keyboard-arrow-right" />}
+                />
+            </Section>
+            <DividerBlock height={16} />
             {/* <ActionIconsSection /> */}
             <Section>
                 <ListItem
