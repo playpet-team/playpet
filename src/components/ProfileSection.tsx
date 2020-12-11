@@ -57,7 +57,7 @@ function ProfileSection({ moreBtn = false }: {
                         </InfoHeader>
                         <DividerBlock height={8} />
                         {myPets && <Text color={themes.colors.placeholder}>
-                            {ageNameMap[myPets.petAge].title} | {sizeNameMap[myPets.petKind.size].title}
+                            {ageNameMap[myPets.petAge].title}{myPets.petType === 'DOG' ? '견' : '묘'} | {sizeNameMap[myPets.petKind.size].title}
                         </Text>}
                     </>}
                     {!myPets &&
