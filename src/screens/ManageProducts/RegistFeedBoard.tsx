@@ -6,18 +6,24 @@ import RegistFeedItems from "../../components/RegistFeedItems"
 import { useNavigation } from "@react-navigation/native"
 import { currentUser, updateFeedItems } from "../../utils"
 import RegistFeedCapacity from "../../components/RegistFeedCapacity"
+import RegistFeedRecommandedAmount from "../../components/RegistFeedRecommandedAmount"
+import RegistFeedLastBuyAt from "../../components/RegistFeedLastBuyAt"
 
 enum REGIST_FEED_STEPS {
     BRANDS = 'BRANDS',
     ITEMS = 'ITEMS',
     CAPACITY = 'CAPACITY',
+    RECOMMANDED_AMOUNT = 'RECOMMANDED_AMOUNT',
+    LAST_BUY_AT = 'LAST_BUY_AT',
 }
 function RegistFeedBoard() {
     const [step, setStep] = useState<REGIST_FEED_STEPS>(REGIST_FEED_STEPS.BRANDS)
+    const [activeFeedBrandId, setActiveFeedBrandId] = useState('')
     const [activeFeedItemId, setActiveFeedItemId] = useState('')
     const [feedPackingUnits, setFeedPackingUnits] = useState<string[]>([])
     const [activeFeedPackingUnit, setActiveFeedPackingUnit] = useState('')
-    const [activeFeedBrandId, setActiveFeedBrandId] = useState('')
+    const [activeFeedRecommanedAmount, setActiveFeedRecommanedAmount] = useState(0)
+    const [activeFeedLastBuyAt, setActiveFeedLastBuyAt] = useState(-1)
     const theme = useTheme()
     const navigation = useNavigation()
     const handleLater = () => navigation.goBack()
@@ -53,6 +59,18 @@ function RegistFeedBoard() {
                 break;
             }
             case REGIST_FEED_STEPS.CAPACITY: {
+                if (activeFeedBrandId) {
+                    setStep(REGIST_FEED_STEPS.RECOMMANDED_AMOUNT);
+                }
+                break;
+            }
+            case REGIST_FEED_STEPS.RECOMMANDED_AMOUNT: {
+                if (activeFeedBrandId) {
+                    setStep(REGIST_FEED_STEPS.LAST_BUY_AT);
+                }
+                break;
+            }
+            case REGIST_FEED_STEPS.LAST_BUY_AT: {
                 // TODO DB에 등록
                 handleUpdateFeeds()
                 handleLater()
@@ -75,6 +93,14 @@ function RegistFeedBoard() {
                 setStep(REGIST_FEED_STEPS.ITEMS);
                 break;
             }
+            case REGIST_FEED_STEPS.RECOMMANDED_AMOUNT: {
+                setStep(REGIST_FEED_STEPS.CAPACITY);
+                break;
+            }
+            case REGIST_FEED_STEPS.LAST_BUY_AT: {
+                setStep(REGIST_FEED_STEPS.RECOMMANDED_AMOUNT);
+                break;
+            }
         }
     }
 
@@ -94,6 +120,14 @@ function RegistFeedBoard() {
                 activeFeedPackingUnit={activeFeedPackingUnit}
                 setActiveFeedPackingUnit={setActiveFeedPackingUnit}
             />}
+            {step === REGIST_FEED_STEPS.RECOMMANDED_AMOUNT && <RegistFeedRecommandedAmount
+                activeFeedRecommanedAmount={activeFeedRecommanedAmount}
+                setActiveFeedRecommanedAmount={setActiveFeedRecommanedAmount}
+            />}
+            {step === REGIST_FEED_STEPS.LAST_BUY_AT && <RegistFeedLastBuyAt
+                activeFeedLastBuyAt={activeFeedLastBuyAt}
+                setActiveFeedLastBuyAt={setActiveFeedLastBuyAt}
+            />}
             <NavigateBlock>
                 <BackButton onPress={prevSteps}>
                     <Text
@@ -110,7 +144,7 @@ function RegistFeedBoard() {
                         size={16}
                         bold
                     >
-                        {step === REGIST_FEED_STEPS.CAPACITY ? '등록' : '다음'}
+                        {step === REGIST_FEED_STEPS.LAST_BUY_AT ? '등록' : '다음'}
                     </Text>
                 </NextButton>
             </NavigateBlock>

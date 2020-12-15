@@ -37,7 +37,6 @@ export default function ProfileSetting() {
         profilePhoto,
         email,
         uid,
-        activePetDocId,
     } = useSelector((state: RootState) => state.auth)
     const { myPets, loading: petLoading  } = useMyPet()
     const weightRef = useRef<Input | null>(null)
@@ -67,20 +66,24 @@ export default function ProfileSetting() {
         image: '',
     })
 
-    const submit = () => {
+    const submit = async () => {
         setEditMode(false)
-        if (!myPets || !activePetDocId) {
+        if (!myPets) {
             return
         }
         if (
             myPets.petWeight !== inputWeight
             || myPets.petAge !== inputAge
         ) {
-            updatePetInformation(uid, {
-                activePetDocId,
+            const activePetDocId = await updatePetInformation(uid, {
+                ...myPets,
                 petWeight: inputWeight,
                 petAge: inputAge,
             })
+            if (!activePetDocId) {
+                return
+            }
+            dispatch(authActions.setActivePetDocId(activePetDocId))
             console.log("변한게 생겼다")
             setToastContent({
                 visible: true,

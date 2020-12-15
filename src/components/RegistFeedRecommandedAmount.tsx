@@ -3,53 +3,54 @@ import styled, { css, useTheme } from 'styled-components/native'
 import { DividerBlock, Text } from '../styles'
 import * as Sentry from "@sentry/react-native";
 
-function RegistFeedCapacity({
-    feedPackingUnits,
-    activeFeedPackingUnit,
-    setActiveFeedPackingUnit,
+function RegistFeedRecommandedAmount({
+    activeFeedRecommanedAmount,
+    setActiveFeedRecommanedAmount,
 }: {
-    feedPackingUnits: string[]
-    activeFeedPackingUnit: string
-    setActiveFeedPackingUnit: React.Dispatch<React.SetStateAction<string>>
+    activeFeedRecommanedAmount: number
+    setActiveFeedRecommanedAmount: React.Dispatch<React.SetStateAction<number>>
 }) {
-    if (!feedPackingUnits.length) {
-        return null
-    }
     const theme = useTheme()
 
     return (
-        <RegistFeedCapacityBlock>
+        <RegistFeedRecommandedAmountBlock>
             <Text
                 size={20}
             >
-                등록하실 사료의 용량을 선택해주세요
+                등록하실 사료의 하루 급여량을 선택해주세요
             </Text>
             <DividerBlock height={8} />
             <Text
                 color={theme.colors.placeholder}
             >
-                회원님의 정보를 통해 적합한 사료만 노출됩니다.
+                일일 사료 급여량에 따라서 사료 재고량이 감소합니다
             </Text>
             <DividerBlock height={30} />
+            <Text
+                color={theme.colors.placeholder}
+            >
+                해당 사료의 추천 하루 권장 급여량
+            </Text>
+            <DividerBlock height={8} />
             <UnitsBlock>
-            {feedPackingUnits.map(unit =>
-                <Chip
-                    key={unit}
-                    isActive={activeFeedPackingUnit === unit}
-                    onPress={() => setActiveFeedPackingUnit(unit)}
-                >
-                    <Text>{unit}</Text>
-                </Chip>
-            )}
+                {[].map(unit =>
+                    <Chip
+                        key={unit}
+                        isActive={activeFeedRecommanedAmount === unit}
+                        onPress={() => setActiveFeedRecommanedAmount(unit)}
+                    >
+                        <Text>{unit}</Text>
+                    </Chip>
+                )}
             </UnitsBlock>
-        </RegistFeedCapacityBlock>
+        </RegistFeedRecommandedAmountBlock>
     )
 }
 
 
-export default RegistFeedCapacity
+export default RegistFeedRecommandedAmount
 
-const RegistFeedCapacityBlock = styled.View`
+const RegistFeedRecommandedAmountBlock = styled.View`
     padding: 20px;
 `
 

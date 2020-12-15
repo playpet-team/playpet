@@ -55,24 +55,21 @@ export const updateUserProfilePhoto = async (uid: string, profilePhoto: string) 
     })
 }
 
-export const updatePetInformation = async (uid: string, petInformation: {
-    activePetDocId: string
-    petAge?: PetAge
-    petWeight?: string
-}) => {
+export const updatePetInformation = async (uid: string, petInformation: MyPet) => {
     try {
-        await firestore()
+        const newDoc =  await firestore()
             .collection(Collections.Users)
             .doc(uid)
             .collection(Collections.UserPets)
-            .doc(petInformation.activePetDocId)
-            .update({
-                petAge: petInformation.petAge,
-                petWeight: petInformation.petWeight,
+            .add({
+                ...petInformation,
+                createdAt: firebaseNow(),
                 updatedAt: firebaseNow(),
             })
+        return newDoc.id
     } catch (e) {
         Sentry.captureException(e)
+        return null
     }
 }
 
@@ -198,9 +195,9 @@ export const updateUserPets = async (uid: string, petInformation: {
 }) => {
     try {
         const userDoc = firestore().collection(Collections.Users).doc(uid)
-        const { id } = userDoc.collection(Collections.UserPets).doc()
+        // const { id } = userDoc.collection(Collections.UserPets).doc()
     
-        await userDoc.collection(Collections.UserPets).doc(id).set({
+        const { id } = await userDoc.collection(Collections.UserPets).add({
             ...petInformation,
             createdAt: firebaseNow(),
             updatedAt: firebaseNow(),
