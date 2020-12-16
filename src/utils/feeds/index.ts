@@ -11,15 +11,14 @@ export const updateFeedItems = async (uid: string, feedInformation: {
     feedItemId: string
     feedBrandId: string
     feedPackingUnit: string
+    feedRecommanedAmount: number
+    feedLastBuyAt: number
 }) => {
     try {
         console.log('feedPackingUnit------', feedInformation.feedPackingUnit)
         await firestore().collection(Collections.Management).doc(uid).set({
             uid,
-            feedItemId: feedInformation.feedItemId,
-            feedBrandId: feedInformation.feedBrandId,
-            feedPackingUnit: feedInformation.feedPackingUnit,
-            // ...feedInformation,
+            ...feedInformation,
             status: 'active',
             percentage: 100,
             createdAt: firebaseNow(),

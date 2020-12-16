@@ -18,12 +18,15 @@ enum REGIST_FEED_STEPS {
 }
 function RegistFeedBoard() {
     const [step, setStep] = useState<REGIST_FEED_STEPS>(REGIST_FEED_STEPS.BRANDS)
+
     const [activeFeedBrandId, setActiveFeedBrandId] = useState('')
     const [activeFeedItemId, setActiveFeedItemId] = useState('')
-    const [feedPackingUnits, setFeedPackingUnits] = useState<string[]>([])
     const [activeFeedPackingUnit, setActiveFeedPackingUnit] = useState('')
     const [activeFeedRecommanedAmount, setActiveFeedRecommanedAmount] = useState(0)
     const [activeFeedLastBuyAt, setActiveFeedLastBuyAt] = useState(-1)
+
+    const [feedPackingUnits, setFeedPackingUnits] = useState<string[]>([])
+
     const theme = useTheme()
     const navigation = useNavigation()
     const handleLater = () => navigation.goBack()
@@ -37,6 +40,8 @@ function RegistFeedBoard() {
             feedItemId: activeFeedItemId,
             feedBrandId: activeFeedBrandId,
             feedPackingUnit: activeFeedPackingUnit,
+            feedRecommanedAmount: activeFeedRecommanedAmount,
+            feedLastBuyAt: activeFeedLastBuyAt,
         })
 
         navigation.navigate('ManageProducts', {

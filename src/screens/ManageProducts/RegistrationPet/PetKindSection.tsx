@@ -4,12 +4,13 @@ import { useTheme } from "styled-components"
 import styled from "styled-components/native"
 import Transition from "../../../components/Transition"
 import { Collections, PetInformation } from "../../../models"
-import { Text } from "../../../styles"
+import { DividerBlock, Text } from "../../../styles"
 import { PetTypes } from "../../../utils"
 import { ItemBlock, RegistPetStep } from "../RegistrationPet"
 import firestore from '@react-native-firebase/firestore'
 import useLoadingIndicator from "../../../hooks/useLoadingIndicator"
 import * as Sentry from "@sentry/react-native";
+import { Input } from "react-native-elements"
 
 export default function PetKindSection({ petType, petKind, setPetKind, isError }: {
     petType: PetTypes
@@ -17,10 +18,10 @@ export default function PetKindSection({ petType, petKind, setPetKind, isError }
     setPetKind: React.Dispatch<React.SetStateAction<PetInformation | null>>
     isError: RegistPetStep | ''
 }) {
+    const [searchInputName, setSearchInputName] = useState('')
     const theme = useTheme()
     const [petList, setPetList] = useState<PetInformation[]>([])
     const { loading, setLoading, Indicator } = useLoadingIndicator()
-    // const listByPetType = useMemo(() => petTypeToListMaps[petType] || [], [petType])
 
     useEffect(() => {
         loadPetInformation()
@@ -38,7 +39,6 @@ export default function PetKindSection({ petType, petKind, setPetKind, isError }
                     setPetList(pets)
                 }
             } catch (e) {
-                console.log("ererer-", e)
                 Sentry.captureException(e)
             } finally {
                 setLoading(false)
@@ -62,6 +62,14 @@ export default function PetKindSection({ petType, petKind, setPetKind, isError }
         )
     }
 
+    const searchByPetList = useMemo(() => {
+        if (searchInputName) {
+            return petList.filter(item => item.name.indexOf(searchInputName) > -1)
+        }
+        return petList
+    }, [searchInputName, petList])
+
+
     return (
         <Transition>
             <ItemBlock>
@@ -73,9 +81,18 @@ export default function PetKindSection({ petType, petKind, setPetKind, isError }
                 >
                     반려동물의 종류를 알려주세요
                 </Text>
+                <DividerBlock height={8} />
+                <Input
+                    containerStyle={{
+                        paddingHorizontal: 20,
+                    }}
+                    placeholder="푸들"
+                    value={searchInputName}
+                    onChangeText={setSearchInputName}
+                />
                 <PetListBlock>
                     <FlatList
-                        data={petList}
+                        data={searchByPetList}
                         keyExtractor={item => item.id}
                         renderItem={({ item }) => renderType(item)}
                     />
