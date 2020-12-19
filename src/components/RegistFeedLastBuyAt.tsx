@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react"
 import styled, { css, useTheme } from 'styled-components/native'
 import { DividerBlock, Text } from '../styles'
 import * as Sentry from "@sentry/react-native";
+import { Chip } from "./RegistFeedCapacity";
 
 type BUY = 0 | 7 | 14 | 21 | 28 | -1
 const buyItems: {
@@ -86,26 +87,15 @@ const RegistFeedLastBuyAtBlock = styled.View`
 `
 
 const UnitsBlock = styled.View`
-    padding-horizontal: 20px;
-    /* flex-wrap: wrap; */
-    /* flex-direction: row; */
-    /* justify-content: space-around; */
+    /* padding-horizontal: 20px; */
 `
 
-const Chip = styled.TouchableOpacity<{isActive?: boolean}>`
-    /* padding: 30px; */
-    margin-top: 8px;
-    padding: 12px;
-    align-items: center;
-    justify-content: center;
-    /* flex-basis: 110px; */
-    /* height: 110px; */
-    border-radius: 8px;
-    /* ${({ isActive, theme }) => isActive && css`
-        border-width: 2px;
-        border-color: ${theme.colors.primary}
-    `}; */
-    border-width: 2px;
-    border-color: ${({ isActive, theme }) => isActive ? theme.colors.primary : '#e9e9e9'};
-    /* background-color: ${({ isActive, theme }) => isActive ? '#E6EEFA' : '#e9e9e9'}; */
-`
+// const Chip = styled.TouchableOpacity<{isActive?: boolean}>`
+//     margin-top: 8px;
+//     padding: 12px;
+//     align-items: center;
+//     justify-content: center;
+//     border-radius: 8px;
+//     border-width: 2px;
+//     border-color: ${({ isActive, theme }) => isActive ? theme.colors.primary : '#e9e9e9'};
+// `

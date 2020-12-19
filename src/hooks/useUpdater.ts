@@ -1,16 +1,15 @@
-import { authActions } from './../store/authReducer';
-import { useDispatch } from 'react-redux';
-import { Alert, AppState, AppStateStatus } from 'react-native';
+import { authActions } from './../store/authReducer'
+import { useDispatch } from 'react-redux'
+import { AppState, AppStateStatus } from 'react-native'
 import * as Updates from 'expo-updates'
-import { useCallback, useEffect, useState } from 'react'
-import { UpdateEventType } from 'expo-updates'
+import { useEffect } from 'react'
 
 let beforeAppState = ''
-export default function useUpdater(forceUpdate = false) {
+export default function useUpdater() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        AppState.addEventListener('change', changeAppState);
+        AppState.addEventListener('change', changeAppState)
         return () => {}
     }, [])
 
@@ -18,10 +17,9 @@ export default function useUpdater(forceUpdate = false) {
         if (__DEV__) {
             return false
         }
-        const update = await Updates.checkForUpdateAsync();
+        const update = await Updates.checkForUpdateAsync()
         await Updates.fetchUpdateAsync()
         dispatch(authActions.setAvailableUpdates(update.isAvailable))
-        // setAvailable(update.isAvailable)
     }
 
     const changeAppState = async (nextAppState: AppStateStatus) => {

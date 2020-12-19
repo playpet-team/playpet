@@ -46,6 +46,7 @@ function RegistFeedBoard() {
 
         navigation.navigate('ManageProducts', {
             needRefresh: true,
+            pushModal: true,
         })
     }
 

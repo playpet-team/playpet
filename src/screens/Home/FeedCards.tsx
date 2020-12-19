@@ -12,7 +12,7 @@ import { deviceSize, getFeedsDoc, getPetDoc, getProductItem, updateFeedPercentag
 import FeedModal, { getFeedStatusSrcMap } from './FeedModal'
 import FeedProfileSection from '../../components/FeedProfileSection'
 import NoFeed from './NoFeed'
-import { FeedFillUp, StatusDescription } from './FeedSection'
+import { StatusDescription } from './FeedSection'
 
 function FeedCards({ myFeed }: {
     myFeed: MyFeed | undefined
@@ -55,14 +55,14 @@ function FeedCards({ myFeed }: {
     return (
         <FeedCardsBlock
             style={{
-                shadowColor: "#000",
-                shadowOffset: {
-                    width: 0,
-                    height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-                elevation: 5,
+                // shadowColor: "#000",
+                // shadowOffset: {
+                //     width: 0,
+                //     height: 2,
+                // },
+                // shadowOpacity: 0.25,
+                // shadowRadius: 3.84,
+                // elevation: 5,
             }}
         >
             <FeedHeader>
@@ -83,9 +83,9 @@ function FeedCards({ myFeed }: {
                         resizeMode="contain"
                     />
                 </FeedPercentageFullImageWrapper>
-                <DividerBlock height={8} />
+                {/* <DividerBlock height={8} /> */}
                 <StatusDescription>
-                    <DividerBlock marginTop={10} />
+                    {/* <DividerBlock marginTop={10} /> */}
                     {getFeedStatusSrcMap('wording', sliderValue).map((tag: string, i: number) => {
                         return (
                             <Chip key={i}>
@@ -103,11 +103,11 @@ function FeedCards({ myFeed }: {
             </FeedStatus>
             <FeedFillUp onPress={handleStatus}>
                 <Text
-                    color={themes.colors.white}
+                    color={themes.colors.primary}
                     bold
                     size={16}
                 >
-                    채우기
+                    사료 채우기
                 </Text>
             </FeedFillUp>
             {openStatusModal && <FeedModal
@@ -125,17 +125,17 @@ const FeedCardsBlock = styled.View`
     flex-direction: column;
     padding-top: 24px;
     border-radius: 14px;
-    /* border-color: ${({ theme }) => theme.colors.border}; */
-    /* border-width: 1px; */
     margin-top: 20px;
     background-color: ${({ theme }) => theme.colors.white};
+    border-width: 1px;
+    border-color: #e9e9e9;
 
 `
 
 const FeedStatus = styled.View`
-    /* padding: 18px; */
-    flex-direction: column;
-    align-items: center;
+    padding-horizontal: 24px;
+    margin-top: 24px;
+    flex-direction: row;
 
 `
 
@@ -145,23 +145,25 @@ const FeedHeader = styled.View`
 `
 
 const FeedPercentageFullImageWrapper = styled.View`
-  margin: 48px 0;
-  width: 150px;
-  height: 100px;
-  position: relative;
+    margin-right: 24px;
+    /* margin-top: 48px; */
+    width: 75px;
+    height: 130px;
+    top: 48px;
+    position: relative;
 `;
 
 const FeedPercentageFullImage = styled.Image`
-  width: 150px;
-  height: 200px;
-  position: absolute;
-  top: -50px;
-  left: 0;
+    width: 75px;
+    height: 110px;
+    position: absolute;
+    top: -50px;
+    left: 0;
 `;
 
 const FeedPercentageFullBoxImage = styled.Image`
-    width: 150px;
-    height: 200px;
+    width: 75px;
+    height: 110px;
     position: absolute;
     top: -50px;
     left: 0;
@@ -170,8 +172,20 @@ const FeedPercentageFullBoxImage = styled.Image`
 
 const Chip = styled.TouchableOpacity`
     padding: 8px;
-    border-radius: 8px;
+    border-radius: 12px;
     /* border-width: 1px; */
     /* border-color: ${({ theme }) => theme.colors.border}; */
     background-color: #eee;
+`
+
+const FeedFillUp = styled.TouchableOpacity`
+    padding: 16px;
+    align-items: center;
+    border-top-width: 1px;
+    border-top-color: #e9e9e9;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    justify-content: center;
+    /* background-color: ${({ theme }) => theme.colors.primary}; */
+    width: 100%;
 `

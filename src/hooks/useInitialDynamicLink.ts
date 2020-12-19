@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import dynamicLinks from '@react-native-firebase/dynamic-links'
 
-
 export default function useInitialDynamicLink() {
     useEffect(() => {
         dynamicLinks()

@@ -1,11 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React from 'react'
 import styled, { useTheme } from 'styled-components/native'
-import { Avatar } from 'react-native-elements'
-import { useSelector } from 'react-redux'
-import { RootState } from '../store/rootReducers'
 import { DividerBlock, Text } from '../styles'
-import { getPetDoc } from '../utils'
-import { MyPet } from '../models'
 import { Image } from 'react-native'
 import { feedImagesMap } from './ProductListItem'
 
@@ -37,14 +32,26 @@ function FeedProfileSection({
                     />
                 </AvatarBlock>
                 <UserInfoBlock>
-                    <Text size={16} bold>{feedName}</Text>
+                    <Text
+                        size={16}
+                        bold
+                        style={{
+                            width: '80%',
+                        }}
+                    >
+                        {feedName}
+                    </Text>
                     <DividerBlock height={8} />
-                    {Boolean(petKind) && <Text color={themes.colors.placeholder}>
-                        {petKind}
-                    </Text>}
-                    {Boolean(unit) && <Text color={themes.colors.placeholder}>
-                        {unit}
-                    </Text>}
+                    {Boolean(petKind) &&
+                        <Text color={themes.colors.placeholder}>
+                            {petKind}
+                        </Text>
+                    }
+                    {Boolean(unit) &&
+                        <Text color={themes.colors.placeholder}>
+                            {unit}
+                        </Text>
+                    }
                 </UserInfoBlock>
             </ProfileBlock>
         </ProfileSectionBlock>

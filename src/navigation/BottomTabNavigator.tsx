@@ -122,7 +122,8 @@ function HomeNavigator() {
 
 export type ManageParamList = {
     ManageProducts: {
-        needRefresh: boolean
+        needRefresh?: boolean
+        pushModal?: boolean
     }
     RegistrationPet: undefined
     RegistFeedBoard: undefined

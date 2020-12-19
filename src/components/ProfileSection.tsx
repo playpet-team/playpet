@@ -15,7 +15,7 @@ import useMyPet from '../hooks/useMyPet'
 import { useNavigation } from '@react-navigation/native'
 
 function ProfileSection({ moreBtn = false }: {
-    moreBtn: boolean
+    moreBtn?: boolean
 }) {
     const {
         uid,

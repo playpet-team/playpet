@@ -1,3 +1,4 @@
+import { TextStyle } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
 export interface TextProps {
@@ -6,6 +7,7 @@ export interface TextProps {
     size?: number
     color?: string
     align?: 'left' | 'center' | 'right'
+    style?: TextStyle
 }
 export const Text = styled.Text<TextProps>`
     ${({ bold }) => bold && css`
@@ -23,6 +25,7 @@ export const Text = styled.Text<TextProps>`
     ${({ align = 'left' }) => align && css`
         text-align: ${align};
     `}
+    ${({ style }) => style && css`...style`}
 `
 
 interface DividerProps {
@@ -73,6 +76,7 @@ export const Layout = styled.View<layoutProps>`
     padding: ${({ padding = 0 }) => padding}px;
     align-items: ${({ alignItems = 'flex-start' }) => alignItems};
     justify-content: ${({ justifyContent = 'flex-start' }) => justifyContent};
+
     ${({ marginTop }) => marginTop && css`
         margin-top: ${marginTop}px;
     `}

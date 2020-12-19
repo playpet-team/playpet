@@ -4,8 +4,7 @@ import { useSelector } from 'react-redux'
 import styled, { useTheme } from 'styled-components/native'
 import { MyFeed } from '../../models'
 import { RootState } from '../../store/rootReducers'
-
-import { DividerBlock, Text } from '../../styles'
+import { Text } from '../../styles'
 import { getFeedsDoc } from '../../utils'
 import FeedCards from './FeedCards'
 
