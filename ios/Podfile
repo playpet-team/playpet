@@ -97,7 +97,6 @@ target 'playpet' do
 
   pod 'RNSentry', :path => '../node_modules/@sentry/react-native'
 
-  pod 'IamportReactNative', :path => '../node_modules/iamport-react-native'
 
   pod 'react-native-video', :path => '../node_modules/react-native-video'
 

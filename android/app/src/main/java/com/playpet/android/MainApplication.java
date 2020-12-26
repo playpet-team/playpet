@@ -6,7 +6,6 @@ import android.net.Uri;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.iamport.IamportPackage;
 import io.expo.appearance.RNCAppearancePackage;
 import org.reactnative.maskedview.RNCMaskedViewPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;

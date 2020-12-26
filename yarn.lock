@@ -1930,13 +1930,6 @@
   resolved "https://registry.yarnpkg.com/@types/i18n-js/-/i18n-js-3.0.3.tgz#84f66fb969741fecd91b854387e0682aa7fd70b7"
   integrity sha512-GiZzazvxQ5j+EA4Zf4MtDsSaokAR/gW7FxxTlHi2p2xKFUhwAUT0B/MB8WL77P1TcqAO3MefWorFFyZS8F7s0Q==
 
-"@types/iamport-react-native@^1.5.0":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@types/iamport-react-native/-/iamport-react-native-1.5.1.tgz#67e1870b630a43987991b8479a8f53b7793beb2f"
-  integrity sha512-ItRu5pZ3f2LG8eK3XY09J8C0HVAhd803lItfNT3PkLeAyqA+2jsCDW62OpnsGCE1rBCK0gxQ+VyRvEA7opwqww==
-  dependencies:
-    "@types/react" "*"
-
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.3.tgz#4ba8ddb720221f432e443bd5f9117fd22cfd4762"
@@ -4655,15 +4648,6 @@ i18n-js@^3.7.1:
   resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.8.0.tgz#b8fd6b12e1d88cb71f9806c29bca7c31c012e504"
   integrity sha512-hDsGgPuvw/2P+lXSbOafAwspK8Ste8YrwuuUg17W3wEcO1JkQxBlPgsN1t2+852nTnz4YSYTjZc/1nAA2PC/nw==
 
-iamport-react-native@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/iamport-react-native/-/iamport-react-native-1.5.2.tgz#6de1fb7626b9a2da572c1fcb844371e1e0494bfc"
-  integrity sha512-b2F3qqp/5lnzjgS+kS4ub1veYqiL9+2SU+b6zXBWIder3k9szhzY+insQM9v3yBHXVOGUs52cArclvTvIXI+GQ==
-  dependencies:
-    prop-types "^15.6.2"
-    query-string "^6.1.0"
-    react-native-webview ">=7.4.0"
-
 iconv-lite@0.4.24, iconv-lite@^0.4.17, iconv-lite@^0.4.24:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -7362,7 +7346,7 @@ query-string@^5.0.1:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
-query-string@^6.1.0, query-string@^6.13.6:
+query-string@^6.13.6:
   version "6.13.7"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.13.7.tgz#af53802ff6ed56f3345f92d40a056f93681026ee"
   integrity sha512-CsGs8ZYb39zu0WLkeOhe0NMePqgYdAuCqxOYKDR5LVCytDZYMGx3Bb+xypvQvPHVPijRXB0HZNFllCzHRe4gEA==
@@ -7642,7 +7626,7 @@ react-native-web@~0.14.8:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.4"
 
-react-native-webview@11.0.0, react-native-webview@>=7.4.0:
+react-native-webview@11.0.0:
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.0.0.tgz#d667cbcc772e963fe88a4156290d25fe47ed43b0"
   integrity sha512-gzID5ebCFVNkxreuabClymo6QkJbXCLEtiIUY9QAhxY58HsDUp8x0YzDVEROYyEJ4ghL71koAOeQRDNAgNnh1w==
