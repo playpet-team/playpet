@@ -10,11 +10,10 @@ import FeedCards from './FeedCards'
 
 export default function FeedSection() {
     const [myFeed, setMyFeed] = useState<MyFeed>()
-
     const navigation = useNavigation()
     const themes = useTheme()
     const isFocus = useIsFocused()
-    
+
     const {
         uid,
     } = useSelector((state: RootState) => state.auth)

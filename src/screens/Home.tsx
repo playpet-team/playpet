@@ -28,11 +28,11 @@ export default function Home() {
                 <DividerBlock marginTop={24} />
             </HomeBlock>
             <ScrollView>
-                {renderBanner &&
+                {/* renderBanner &&
                     <Layout alignItems='center'>
                         {renderBanner()}
                     </Layout>
-                }
+                */}
                 <DividerBlock marginTop={24} />
                 <ProfileSection />
                 <FeedSection />
