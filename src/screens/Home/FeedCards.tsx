@@ -17,8 +17,6 @@ import { StatusDescription } from './FeedSection'
 function FeedCards({ myFeed }: {
     myFeed: MyFeed | undefined
 }) {
-    // const navigation = useNavigation()
-    // const isFocus = useIsFocused()
     const themes = useTheme()
     const [openStatusModal, setOpenStatusModal] = useState(false)
     const [sliderValue, setSliderValue] = useState(-1)
