@@ -34,3 +34,6 @@ naver 로그인이 컴파일 에러가난다 하지만 업데이트가 안되고
 }`
 에서 모든 ext를 제거하고 마지막
 `compile 'com.facebook.react:react-native:+' 를 implementation로 변경한다`
+
+
+------------ repo private -> public 으로 변경. 모든 firebase, keystore, s3, env 등과 괄련된 콘솔 폐기. key 노출되어도 무방
